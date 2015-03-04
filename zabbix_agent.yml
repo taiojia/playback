@@ -1,0 +1,11 @@
+---
+- name: install zabbix client for ubuntu
+  host: ubuntu_servers
+  sudo: true
+  tasks:
+    -name: install zabbix-agent
+     apt: name=zabbix-agent update_cache=yes
+    -name: copy config file
+     template: src=files/zabbix_agent.conf.j2 dest=/etc/zabbix/zabbix_agent.conf
+    -name: restart agent
+     service: name=zabbix-agent state=restarted
