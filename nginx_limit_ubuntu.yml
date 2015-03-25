@@ -1,0 +1,5 @@
+---
+- hosts: nginx_servers
+  sudo: True
+  roles:
+    - nginx_limit_ubuntu

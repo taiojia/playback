@@ -1,0 +1,5 @@
+[zabbix_agents]
+testserver1 ansible_ssh_host=192.168.20.86
+
+[nginx_servers]
+testserver2 ansible_ssh_host=192.168.20.86
