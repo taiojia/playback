@@ -1,10 +1,15 @@
 [zabbix_agents]
-testserver1 ansible_ssh_host=192.168.20.86
+tempest ansible_ssh_host=172.16.33.11
 
 [nginx_servers]
-testserver2 ansible_ssh_host=192.168.20.86
+tempest ansible_ssh_host=172.16.33.11
 
 [openstack]
 control1 ansible_ssh_host=172.16.33.4
 storage1 ansible_ssh_host=172.16.33.5
 network ansible_ssh_host=172.16.33.6
+compute1 ansible_ssh_host=172.16.33.7
+swiftstore1 ansible_ssh_host=172.16.33.8
+swiftstore2 ansible_ssh_host=172.16.33.9
+swiftstore3 ansible_ssh_host=172.16.33.10
+
