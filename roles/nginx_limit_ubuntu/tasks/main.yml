@@ -1,12 +1,13 @@
 ---
-- name: install gcc
-  apt: name=gcc update_cache=yes
-- name: install libpcre3-dev
-  apt: name=libpcre3-dev update_cache=no
-- name: install zlib1g-dev
-  apt: name=zlib1g-dev update_cache=no
-- name: install make
-  apt: name=make update_cache=no
+- name: apt update cache
+  apt: update_cache=yes
+- name: install gcc libpcre3-dev zlib1g-dev make
+  apt: name={{ item }}
+  with_items:
+    - gcc
+    - libpcre3-dev
+    - zlib1g-dev
+    - make
 - name: copy tar ball
   copy: src={{ file_name }} dest=/tmp/{{ file_name }}
 - name: extract tar ball
