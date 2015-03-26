@@ -21,52 +21,52 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     control1.vm.hostname = "control1"
   end
   config.vm.define "storage1" do |storage1|
-    storage1.vm.network :private_network, ip: "192.168.11.5"
-    storage1.vm.network :private_network, ip: "192.168.22.5"
-    storage1.vm.network :private_network, ip: "172.16.33.5"
-    storage1.vm.network :private_network, ip: "172.16.44.5"
+    storage1.vm.network :private_network, ip: "192.168.11.5" # API Network
+    storage1.vm.network :private_network, ip: "192.168.22.5" # External Network
+    storage1.vm.network :private_network, ip: "172.16.33.5"  # Management Network
+    storage1.vm.network :private_network, ip: "172.16.44.5"  # Data Network
     storage1.vm.hostname = "storage1"
   end
   config.vm.define "network" do |network|
-    network.vm.network :private_network, ip: "192.168.11.6"
-    network.vm.network :private_network, ip: "192.168.22.6"
-    network.vm.network :private_network, ip: "172.16.33.6"
-    network.vm.network :private_network, ip: "172.16.44.6"
+    network.vm.network :private_network, ip: "192.168.11.6" # API Network
+    network.vm.network :private_network, ip: "192.168.22.6" # External Network
+    network.vm.network :private_network, ip: "172.16.33.6"  # Management Network
+    network.vm.network :private_network, ip: "172.16.44.6"  # Data Network
     network.vm.hostname = "network"
   end
   config.vm.define "compute1" do |compute1|
-    compute1.vm.network :private_network, ip: "192.168.11.7"
-    compute1.vm.network :private_network, ip: "192.168.22.7"
-    compute1.vm.network :private_network, ip: "172.16.33.7"
-    compute1.vm.network :private_network, ip: "172.16.44.7"
+    compute1.vm.network :private_network, ip: "192.168.11.7" # API Network
+    compute1.vm.network :private_network, ip: "192.168.22.7" # External Network
+    compute1.vm.network :private_network, ip: "172.16.33.7"  # Management Network
+    compute1.vm.network :private_network, ip: "172.16.44.7"  # Data Network
     compute1.vm.hostname = "compute1"
   end
   config.vm.define "swiftstore1" do |swiftstore1|
-    swiftstore1.vm.network :private_network, ip: "192.168.11.8"
-    swiftstore1.vm.network :private_network, ip: "192.168.22.8"
-    swiftstore1.vm.network :private_network, ip: "172.16.33.8"
-    swiftstore1.vm.network :private_network, ip: "172.16.44.8"
+    swiftstore1.vm.network :private_network, ip: "192.168.11.8" # API Network
+    swiftstore1.vm.network :private_network, ip: "192.168.22.8" # External Network
+    swiftstore1.vm.network :private_network, ip: "172.16.33.8"  # Management Network
+    swiftstore1.vm.network :private_network, ip: "172.16.44.8"  # Data Network
     swiftstore1.vm.hostname = "swiftstore1"
   end
   config.vm.define "swiftstore2" do |swiftstore2|
-    swiftstore2.vm.network :private_network, ip: "192.168.11.9"
-    swiftstore2.vm.network :private_network, ip: "192.168.22.9"
-    swiftstore2.vm.network :private_network, ip: "172.16.33.9"
-    swiftstore2.vm.network :private_network, ip: "172.16.44.9"
+    swiftstore2.vm.network :private_network, ip: "192.168.11.9" # API Network
+    swiftstore2.vm.network :private_network, ip: "192.168.22.9" # External Network
+    swiftstore2.vm.network :private_network, ip: "172.16.33.9"  # Management Network
+    swiftstore2.vm.network :private_network, ip: "172.16.44.9"  # Data Network
     swiftstore2.vm.hostname = "swiftstore2"
   end
   config.vm.define "swiftstore3" do |swiftstore3|
-    swiftstore3.vm.network :private_network, ip: "192.168.11.10"
-    swiftstore3.vm.network :private_network, ip: "192.168.22.10"
-    swiftstore3.vm.network :private_network, ip: "172.16.33.10"
-    swiftstore3.vm.network :private_network, ip: "172.16.44.10"
+    swiftstore3.vm.network :private_network, ip: "192.168.11.10" # API Network
+    swiftstore3.vm.network :private_network, ip: "192.168.22.10" # External Network
+    swiftstore3.vm.network :private_network, ip: "172.16.33.10"  # Management Network
+    swiftstore3.vm.network :private_network, ip: "172.16.44.10"  # Data Network
     swiftstore3.vm.hostname = "swiftstore3"
   end
   config.vm.define "tempest" do |tempest|
-    tempest.vm.network :private_network, ip: "192.168.11.11"
-    tempest.vm.network :private_network, ip: "192.168.22.11"
-    tempest.vm.network :private_network, ip: "172.16.33.11"
-    tempest.vm.network :private_network, ip: "172.16.44.11"
+    tempest.vm.network :private_network, ip: "192.168.11.11" # API Network
+    tempest.vm.network :private_network, ip: "192.168.22.11" # External Network
+    tempest.vm.network :private_network, ip: "172.16.33.11"  # Management Network
+    tempest.vm.network :private_network, ip: "172.16.44.11"  # Data Network
     tempest.vm.hostname = "tempest"
   end
 
