@@ -13,12 +13,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.hostmanager.include_offline = true
   config.vm.box = "ubuntu/trusty64"
 
-  config.vm.define "control1" do |control1|
-    control1.vm.network :private_network, ip: "192.168.11.4" # API Network
-    control1.vm.network :private_network, ip: "192.168.22.4" # External Network
-    control1.vm.network :private_network, ip: "172.16.33.4"  # Management Network
-    control1.vm.network :private_network, ip: "172.16.44.4"  # Data Network
-    control1.vm.hostname = "control1"
+  config.vm.define "controller1" do |controller1|
+    controller1.vm.network :private_network, ip: "192.168.11.4" # API Network
+    controller1.vm.network :private_network, ip: "192.168.22.4" # External Network
+    controller1.vm.network :private_network, ip: "172.16.33.4"  # Management Network
+    controller1.vm.network :private_network, ip: "172.16.44.4"  # Data Network
+    controller1.vm.hostname = "controller1"
   end
   config.vm.define "storage1" do |storage1|
     storage1.vm.network :private_network, ip: "192.168.11.5" # API Network

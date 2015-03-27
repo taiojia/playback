@@ -1,0 +1,12 @@
+---
+- name: apt update cache
+  apt: update_cache=yes
+- name: install ntp
+  apt: name={{ item }}
+  with_items:
+    - ntp
+- name: Copy ntp.conf configuration
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  notify: Restart ntp service
+- name: Delete ntp.conf.dhcp
+  file: name=/var/lib/ntp/ntp.conf.dhcp state=absent

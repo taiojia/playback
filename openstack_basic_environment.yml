@@ -1,0 +1,13 @@
+---
+- name: Install ntp server
+  hosts: ntp_server
+  sudo: True
+  roles:
+    - ntp_server
+- name: install ntp clients
+  hosts: ntp_clients
+  sudo: True
+  roles:
+    - ntp_client
+  vars_files:
+    - vars/openstack/ntp.yml
