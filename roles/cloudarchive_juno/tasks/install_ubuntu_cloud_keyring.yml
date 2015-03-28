@@ -1,0 +1,5 @@
+---
+- name: Install ubuntu-cloud-keyring
+  apt: name=ubuntu-cloud-keyring update_cache=yes
+- name: Copy source list
+  template: src=cloudarchive-juno.list.j2 dest=/etc/apt/sources.list.d/cloudarchive-juno.list

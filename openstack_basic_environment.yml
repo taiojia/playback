@@ -4,10 +4,15 @@
   sudo: True
   roles:
     - ntp_server
-- name: install ntp clients
+- name: Install ntp clients
   hosts: ntp_clients
   sudo: True
   roles:
     - ntp_client
   vars_files:
     - vars/openstack/ntp.yml
+- name: Enable the OpenStack repository
+  hosts: openstack
+  sudo: True
+  roles:
+    - cloudarchive_juno

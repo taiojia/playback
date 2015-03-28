@@ -1,0 +1,5 @@
+---
+- name: Dist upgrade
+  apt: update_cache=yes upgrade=dist
+  notify: Reboot system
+
