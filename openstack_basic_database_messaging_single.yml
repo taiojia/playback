@@ -1,0 +1,9 @@
+---
+ - name: Install mariadb
+   hosts: mariadb
+   sudo: True
+   roles:
+     - mariadb
+   vars_files:
+     - vars/openstack/passwords.yml
+     - vars/openstack/database.yml
