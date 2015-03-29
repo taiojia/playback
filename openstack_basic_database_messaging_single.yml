@@ -7,3 +7,10 @@
    vars_files:
      - vars/openstack/passwords.yml
      - vars/openstack/database.yml
+ - name: Install RabbitMQ
+   hosts: rabbitmq
+   sudo: True
+   roles:
+     - rabbitmq
+   vars_files:
+     - vars/openstack/passwords.yml

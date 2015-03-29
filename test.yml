@@ -1,0 +1,8 @@
+  - name: Install Keystone
+    hosts: keystone
+    sudo: True
+    roles:
+      - keystone
+    vars_files:
+      - vars/openstack/passwords.yml
+      - vars/openstack/node.yml

@@ -26,3 +26,9 @@ swiftstore3 ansible_ssh_host=172.16.33.10
 
 [mariadb]
 controller1 ansible_ssh_host=172.16.33.4
+
+[rabbitmq]
+controller1 ansible_ssh_host=172.16.33.4
+
+[keystone]
+controller1 ansible_ssh_host=172.16.33.4

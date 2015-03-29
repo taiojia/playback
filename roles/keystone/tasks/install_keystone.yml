@@ -1,0 +1,16 @@
+---
+  - name: Install keystone
+    apt: name={{ item }} update_cache=yes
+    with_items:
+      - keystone
+      - python-keystoneclient
+  - name: Copy keystone.conf
+    template: src=keystone.conf.j2 dest=/etc/keystone/keystone.conf
+  - name: Populate the Identity service database
+    command: /bin/sh -c "keystone-manage db_sync" keystone
+  - name: Restart the Identity service
+    service: name=keystone state=restarted
+  - name: Remove keystone.db
+    file: name=/var/lib/keystone/keystone.db state=absent
+  - name: Configure a periodic task that purges expired tokens hourly
+    shell: (crontab -l -u keystone 2>&1 | grep -q token_flush) || echo '@hourly /usr/bin/keystone-manage token_flush >/var/log/keystone/keystone-tokenflush.log 2>&1' >> /var/spool/cron/crontabs/keystone
