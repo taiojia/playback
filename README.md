@@ -57,6 +57,6 @@ The `vars/openstack/openstack.yml` is all the parameters.
 #### To deploy database and messaging queues
     ansible-playbook openstack_basic_database_messaging_single.yml
 
-#### To deploy kestone
+#### To deploy Keystone
     ansible-playbook openstack_keystone.yml
     
