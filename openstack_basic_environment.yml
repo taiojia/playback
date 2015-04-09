@@ -10,7 +10,8 @@
   roles:
     - ntp_client
   vars_files:
-    - vars/openstack/ntp.yml
+#    - vars/openstack/ntp.yml
+    - vars/openstack/openstack.yml
 - name: Enable the OpenStack repository
   hosts: openstack
   sudo: True

@@ -1,2 +1,5 @@
 ---
+  - include: create_keystone_db.yml
   - include: install_keystone.yml
+  - include: configure_prerequisites.yml
+  - include: create_the_service_entity_and_API_endpoint.yml

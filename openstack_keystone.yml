@@ -1,17 +1,12 @@
 ---
-  - name: Create keystone database
-    hosts: mariadb
-    sudo: True
-    roles:
-      - create_keystone_db
-    vars_files:
-      - vars/openstack/passwords.yml
-  - name: Install Keystone
+  - name: Install and configure Keystone
     hosts: keystone
     sudo: True
     roles:
       - keystone
     vars_files:
-      - vars/openstack/passwords.yml
-      - vars/openstack/node.yml
+#      - vars/openstack/passwords.yml
+#      - vars/openstack/node.yml
+#      - vars/openstack/keystonerc.yml
+      - vars/openstack/openstack.yml
       

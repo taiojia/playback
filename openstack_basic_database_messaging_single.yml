@@ -13,4 +13,5 @@
    roles:
      - rabbitmq
    vars_files:
-     - vars/openstack/passwords.yml
+#     - vars/openstack/passwords.yml
+     - vars/openstack/openstack.yml

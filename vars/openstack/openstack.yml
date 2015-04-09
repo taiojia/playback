@@ -1,0 +1,38 @@
+---
+# To set database lisen port
+mariadb_bind_ip: 172.16.33.4
+
+# To using the keystone identity
+OS_SERVICE_TOKEN: b57c3233eedef3f7b1a3
+OS_SERVICE_ENDPOINT: http://172.16.33.4:35357/v2.0
+
+# The publicurl and internalurl to create the Identity service API endpoints
+publicurl: http://172.16.33.4:5000/v2.0
+internalurl: http://172.16.33.4:5000/v2.0
+
+# The adminurl is eq OS_SERVICE_ENDPOINT
+adminurl: http://172.16.33.4:35357/v2.0
+
+# Set the region name
+region_name: regionOne
+
+controller1_management_network_ip: 172.16.33.4
+
+# Set the ntp server IP that the ntp client can be synced
+ntp_server_ip: 172.16.33.4
+
+# Passwords and admin token here
+mariadb_root_password: b57c3233eedef3f7b1a3
+rabbitmq_guest_password: b57c3233eedef3f7b1a3
+keystone_db_password: b57c3233eedef3f7b1a3
+admin_token: b57c3233eedef3f7b1a3
+
+# admin credentials
+openstack_admin_user: admin
+openstack_admin_pass: b57c3233eedef3f7b1a3
+openstack_admin_mail: jiasir@icloud.com
+
+# demo credentials
+openstack_demo_user: demo
+openstack_demo_pass: b57c3233eedef3f7b1a3
+openstack_demo_mail: jiasir@icloud.com

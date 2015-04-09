@@ -1,0 +1,5 @@
+---
+  - name: Create the service entity for the Identity service
+    shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ OS_SERVICE_ENDPOINT }} service-create --name keystone --type identity --description "OpenStack Identity"
+  - name: Create the Identity service API endpoints
+    shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ OS_SERVICE_ENDPOINT }} endpoint-create --service-id $(keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ OS_SERVICE_ENDPOINT }} service-list | awk '/ identity / {print $2}') --publicurl {{ publicurl }} --internalurl {{ internalurl }} --adminurl {{ adminurl }} --region {{ region_name }}
