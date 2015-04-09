@@ -5,8 +5,10 @@ playback is an OpenStack provisioning DevOps tool that all of the OpenStack comp
 
 #### Setting your testing environment if you want
 You must have the Vagrant installed and than you can provision  the testing environment, the test node you can see `Vagrantfile` at `examples`.
-    cd examples
-    vagrant up
+```
+cd examples
+vagrant up
+``` 
     
 #### Define a inventory file
 The inventory file at `inventory/inventory`, the default setting is the Vagrant testing node. You can according to your environment to change parameters.
@@ -59,4 +61,5 @@ The `vars/openstack/openstack.yml` is all the parameters.
 
 #### To deploy Keystone
     ansible-playbook openstack_keystone.yml
+    
     
