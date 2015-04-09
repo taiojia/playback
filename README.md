@@ -1,8 +1,15 @@
 # playback
-playback is a OpenStack provisioning tools that can deploy all of OpenStack components with high availability.
+playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed with high availability.
 
 ### Getting Started
-#### Define a inventory file in inventory/inventory
+
+#### Setting your testing environment if you want
+You must have the Vagrant installed and than you can provision  the testing environment, the test node you can see `Vagrantfile` at `examples`.
+    cd examples
+    vagrant up
+    
+#### Define a inventory file
+The inventory file at `inventory/inventory`, the default setting is the Vagrant testing node. You can according to your environment to change parameters.
 ```
 [zabbix_agents]
 tempest ansible_ssh_host=172.16.33.11
@@ -39,18 +46,17 @@ controller1 ansible_ssh_host=172.16.33.4
 [keystone]
 controller1 ansible_ssh_host=172.16.33.4
 ```
-
+    
 #### To define your variables in vars/openstack
-* database.yml
-* node.yml
-* ntp.yml
-* passwords.yml
+The `vars/openstack/openstack.yml` is all the parameters.
+* openstack.yml
 
 #### To deploy OpenStack Basic environment including NTP and OpenStack repository
-    `ansible-playbook openstack_basic_environment.yml`
+    ansible-playbook openstack_basic_environment.yml
 
 #### To deploy database and messaging queues
-    `ansible-playbook openstack_basic_database_messaging_single.yml`
+    ansible-playbook openstack_basic_database_messaging_single.yml
 
 #### To deploy kestone
-    `ansible-playbook openstack_keystone.yml`
+    ansible-playbook openstack_keystone.yml
+    
