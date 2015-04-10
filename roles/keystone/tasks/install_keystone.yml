@@ -26,7 +26,7 @@
     with_items:
       - keystone
       - python-keystoneclient
-  - name: Copy keystone.conf
+  - name: Update /etc/keystone/keystone.conf
     template: src=keystone.conf.j2 dest=/etc/keystone/keystone.conf
   - name: Populate the Identity service database
     command: /bin/sh -c "keystone-manage db_sync" keystone
