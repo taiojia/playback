@@ -5,8 +5,9 @@
    roles:
      - mariadb
    vars_files:
-     - vars/openstack/passwords.yml
-     - vars/openstack/database.yml
+#     - vars/openstack/passwords.yml
+#     - vars/openstack/database.yml
+    - vars/openstack/openstack.yml
  - name: Install RabbitMQ
    hosts: rabbitmq
    sudo: True
