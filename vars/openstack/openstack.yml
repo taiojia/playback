@@ -29,6 +29,7 @@ mariadb_root_password: b57c3233eedef3f7b1a3
 rabbitmq_guest_password: b57c3233eedef3f7b1a3
 keystone_db_password: b57c3233eedef3f7b1a3
 glance_db_password: b57c3233eedef3f7b1a3
+nova_db_password: b57c3233eedef3f7b1a3
 admin_token: b57c3233eedef3f7b1a3
 
 # admin credentials
