@@ -21,8 +21,5 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-  - include: create_keystone_db.yml
-  - include: install_keystone.yml
-  - include: configure_prerequisites.yml
-  - include: create_the_service_entity_and_API_endpoint.yml
-  - include: create_openstack_client_environment_scripts.yml
+  - name: Create the Image Service API endpoints
+    shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ OS_SERVICE_ENDPOINT }} endpoint-create --service-id $(keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ OS_SERVICE_ENDPOINT }} service-list | awk '/ image / {print $2}') --publicurl {{ glance_publicurl }} --internalurl {{ glance_internalurl }} --adminurl {{ glance_adminurl }} --region {{ region_name }}

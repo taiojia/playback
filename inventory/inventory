@@ -32,3 +32,6 @@ controller1 ansible_ssh_host=172.16.33.4
 
 [keystone]
 controller1 ansible_ssh_host=172.16.33.4
+
+[glance]
+controller1 ansible_ssh_host=172.16.33.4

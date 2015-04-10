@@ -16,6 +16,9 @@ adminurl: http://172.16.33.4:35357/v2.0
 # Set the region name
 region_name: regionOne
 
+# Keystone auth token
+identity_uri: http://172.16.33.4:35357
+
 controller1_management_network_ip: 172.16.33.4
 
 # Set the ntp server IP that the ntp client can be synced
@@ -25,6 +28,7 @@ ntp_server_ip: 172.16.33.4
 mariadb_root_password: b57c3233eedef3f7b1a3
 rabbitmq_guest_password: b57c3233eedef3f7b1a3
 keystone_db_password: b57c3233eedef3f7b1a3
+glance_db_password: b57c3233eedef3f7b1a3
 admin_token: b57c3233eedef3f7b1a3
 
 # admin credentials
@@ -36,3 +40,12 @@ openstack_admin_mail: jiasir@icloud.com
 openstack_demo_user: demo
 openstack_demo_pass: b57c3233eedef3f7b1a3
 openstack_demo_mail: jiasir@icloud.com
+
+# glance credentials
+openstack_glance_user: glance
+openstack_glance_pass: b57c3233eedef3f7b1a3
+
+# glance API endpoints
+glance_publicurl: http://172.16.33.4:9292
+glance_internalurl: http://172.16.33.4:9292
+glance_adminurl: http://172.16.33.4:9292

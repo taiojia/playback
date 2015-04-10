@@ -25,8 +25,8 @@
     shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ OS_SERVICE_ENDPOINT }} tenant-create --name admin --description "Admin Tenant"
   - name: Create the admin user
     shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ OS_SERVICE_ENDPOINT }} user-create --name {{ openstack_admin_user }} --pass {{ openstack_admin_pass }} --email {{ openstack_admin_mail }}
-   - name: Create the admin role
-     shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ OS_SERVICE_ENDPOINT }} role-create --name admin
+  - name: Create the admin role
+    shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ OS_SERVICE_ENDPOINT }} role-create --name admin
   - name: Add the admin role to the admin tenant and user
     shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ OS_SERVICE_ENDPOINT }} user-role-add --user admin --tenant admin --role admin
   - name: Create the demo tenant

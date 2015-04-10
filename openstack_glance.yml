@@ -1,0 +1,8 @@
+---
+  - name: Install and configure Glance
+    hosts: glance
+    sudo: True
+    roles:
+      - glance
+    vars_files:
+      - vars/openstack/openstack.yml
