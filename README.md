@@ -70,3 +70,6 @@ The Glance default store is file.
 #### To deploy a compute controller
     ansible-playbook openstack_compute_controller.yml
     
+#### To deploy compute nodes
+    ansible-playbook openstack_compute_node.yml --extra-vars "compute_name=compute1 compute_ip=172.16.33.7"
+    
