@@ -18,8 +18,12 @@ region_name: regionOne
 
 # Keystone auth token
 identity_uri: http://172.16.33.4:35357
+auth_uri: http://172.16.33.4:5000/v2.0
 
+# node definition
 controller1_management_network_ip: 172.16.33.4
+rabbit_host: 172.16.33.4
+glance_host: 172.16.33.4
 
 # Set the ntp server IP that the ntp client can be synced
 ntp_server_ip: 172.16.33.4
@@ -50,3 +54,12 @@ openstack_glance_pass: b57c3233eedef3f7b1a3
 glance_publicurl: http://172.16.33.4:9292
 glance_internalurl: http://172.16.33.4:9292
 glance_adminurl: http://172.16.33.4:9292
+
+# nova credentials
+openstack_nova_user: nova
+openstack_nova_pass: b57c3233eedef3f7b1a3
+
+# nova API endpoints
+nova_publicurl: http://172.16.33.4:8774/v2/%\(tenant_id\)s
+nova_internalurl: http://172.16.33.4:8774/v2/%\(tenant_id\)s
+nova_adminurl: http://172.16.33.4:8774/v2/%\(tenant_id\)s

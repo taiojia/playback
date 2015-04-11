@@ -21,6 +21,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-- include: configure_prerequisites.yml
-- include: create_the_service_credentials.yml
-- include: install_and_configure_compute_controller_components.yml
+- name: Install the packages
+  apt: name={{ item }} update_cache=yes
+  with_items:
+    - nova-api
+    - nova-cert
+    - nova-conductor
+    - nova-consoleauth
+    - nova-novncproxy
+    - nova-scheduler
+    - python-novaclient
+- name: Update /etc/nova/nova.conf
+  template: src=nova.conf.j2 dest=/etc/nova/nova.conf
+- name: Populate the Compute database
+  command: /bin/sh -c "nova-manage db sync" nova
+- name: Restart the Compute services
+  service: name={{ item }} state=restarted
+  with_items:
+    - nova-api
+    - nova-cert
+    - nova-consoleauth
+    - nova-scheduler
+    - nova-conductor
+    - nova-novncproxy
+- name: Remove nova.sqlite
+  file: name=/var/lib/nova/nova.sqlite state=absent
