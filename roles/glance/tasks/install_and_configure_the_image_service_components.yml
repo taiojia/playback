@@ -32,6 +32,10 @@
     template: src=glance-registry.conf.j2 dest=/etc/glance/glance-registry.conf
   - name: Populate the Image Service database
     command: /bin/sh -c "glance-manage db_sync" glance
-    notify: Restart the Image Service services
+  - name: Restart the Image Service services
+    service: name={{ item }} state=restarted
+    with_items:
+      - glance-registry
+      - glance-api
   - name: Remove glance.sqlite
     file: name=/var/lib/glance/glance.sqlite state=absent
