@@ -63,3 +63,6 @@ openstack_nova_pass: b57c3233eedef3f7b1a3
 nova_publicurl: http://172.16.33.4:8774/v2/%\(tenant_id\)s
 nova_internalurl: http://172.16.33.4:8774/v2/%\(tenant_id\)s
 nova_adminurl: http://172.16.33.4:8774/v2/%\(tenant_id\)s
+
+# nova vnc
+novncproxy_base_url: http://172.16.33.4:6080/vnc_auto.html
