@@ -66,4 +66,7 @@ The `vars/openstack/openstack.yml` is all the parameters.
 The Glance default store is file.
 
     ansible-playbook openstack_glance.yml
+
+#### To deploy a compute controller
+    ansible-playbook openstack_compute_controller.yml
     
