@@ -3,3 +3,4 @@ openstack_basic_database_messaging_single.yml
 openstack_keystone.yml
 openstack_glance.yml
 openstack_compute_controller.yml
+openstack_compute_node.yml
