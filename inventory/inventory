@@ -38,3 +38,6 @@ controller1 ansible_ssh_host=172.16.33.4
 
 [compute_controller]
 controller1 ansible_ssh_host=172.16.33.4
+
+[compute_node]
+compute1 ansible_ssh_host=172.16.33.7
