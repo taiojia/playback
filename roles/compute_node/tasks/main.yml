@@ -21,30 +21,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-- name: Install the packages
-  apt: name={{ item }} update_cache=yes
-  with_items:
-    - nova-api
-    - nova-cert
-    - nova-conductor
-    - nova-consoleauth
-    - nova-novncproxy
-    - nova-scheduler
-    - python-novaclient
-  retries: 5
-  delay: 2
-- name: Update /etc/nova/nova.conf
-  template: src=nova.conf.j2 dest=/etc/nova/nova.conf
-- name: Populate the Compute database
-  command: /bin/sh -c "nova-manage db sync" nova
-- name: Restart the Compute services
-  service: name={{ item }} state=restarted
-  with_items:
-    - nova-api
-    - nova-cert
-    - nova-consoleauth
-    - nova-scheduler
-    - nova-conductor
-    - nova-novncproxy
-- name: Remove nova.sqlite
-  file: name=/var/lib/nova/nova.sqlite state=absent
+- include: install_and_configure_the_compute_hypervisor_components.yml

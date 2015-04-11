@@ -26,6 +26,8 @@
     with_items:
       - keystone
       - python-keystoneclient
+    retries: 5
+    delay: 2
   - name: Update /etc/keystone/keystone.conf
     template: src=keystone.conf.j2 dest=/etc/keystone/keystone.conf
   - name: Populate the Identity service database

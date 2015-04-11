@@ -3,6 +3,8 @@
   apt: name={{ item }} update_cache=yes
   with_items:
     - ntp
+  retries: 5
+  delay: 2
 - name: Update /etc/ntp.conf
   template: src=ntp.conf.j2 dest=/etc/ntp.conf
   notify: Restart ntp service

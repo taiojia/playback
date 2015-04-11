@@ -26,6 +26,8 @@
     with_items:
       - glance
       - python-glanceclient
+    retries: 5
+    delay: 2
   - name: Update /etc/glance/glance-api.conf
     template: src=glance-api.conf.j2 dest=/etc/glance/glance-api.conf
   - name: Update /etc/glance/glance-registry.conf

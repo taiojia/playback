@@ -4,6 +4,8 @@
     with_items:
       - mariadb-server 
       - python-mysqldb
+    retries: 5
+    delay: 2
   - name: Change root password
     command: mysqladmin -uroot password {{ mariadb_root_password }}
   - name: Update /etc/mysql/my.cnf
