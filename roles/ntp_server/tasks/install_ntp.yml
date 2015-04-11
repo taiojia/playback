@@ -1,8 +1,6 @@
 ---
-- name: apt update cache
-  apt: update_cache=yes
 - name: install ntp
-  apt: name={{ item }}
+  apt: name={{ item }} update_cache=yes
   with_items:
     - ntp
 - name: Update /etc/ntp.conf
