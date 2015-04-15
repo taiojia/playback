@@ -23,5 +23,8 @@ setup(name='playback',
           'bin/playback',
       ],
       data_files=[],)
-os.mkdir('/etc/playback')
-shutil.copy('playback/playback.conf', '/etc/playback/playback.conf')
+
+if not os.path.exists('/etc/playback'):
+    os.mkdir('/etc/playback')
+
+shutil.copy('inventory/inventory', '/etc/playback/playback.conf')
