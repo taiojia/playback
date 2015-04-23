@@ -20,7 +20,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     controller1.vm.network :private_network, ip: "172.16.44.4"  # Data Network
     controller1.vm.hostname = "controller1"
     controller1.vm.provider "virtualbox" do |vb|
-      vb.memory = "1024"
+      vb.memory = "2048"
     end
   end
   config.vm.define "storage1" do |storage1|
