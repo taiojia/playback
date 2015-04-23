@@ -1,5 +1,5 @@
 # playback
-playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed with high availability.
+playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed automation with high availability.
 
 ### Getting Started
 
