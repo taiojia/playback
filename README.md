@@ -54,22 +54,22 @@ The `vars/openstack/openstack.yml` is all the parameters.
 * openstack.yml
 
 #### To deploy OpenStack Basic environment including NTP and OpenStack repository
-    ansible-playbook openstack_basic_environment.yml
+    playback openstack_basic_environment.yml
 
 #### To deploy database and messaging queues
-    ansible-playbook openstack_basic_database_messaging_single.yml
+    playback openstack_basic_database_messaging_single.yml
 
 #### To deploy Keystone
-    ansible-playbook openstack_keystone.yml
+    playback openstack_keystone.yml
     
 #### To deploy Glance
 The Glance default store is file.
 
-    ansible-playbook openstack_glance.yml
+    playback openstack_glance.yml
 
 #### To deploy a compute controller
-    ansible-playbook openstack_compute_controller.yml
+    playback openstack_compute_controller.yml
     
 #### To deploy compute nodes
-    ansible-playbook openstack_compute_node.yml --extra-vars "compute_name=compute1 compute_ip=172.16.33.7"
+    playback openstack_compute_node.yml --extra-vars "compute_name=compute1 compute_ip=172.16.33.7"
     
