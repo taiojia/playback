@@ -71,7 +71,7 @@ The Glance default store is file.
     playback openstack_compute_controller.yml
     
 #### To deploy compute nodes
-    playback openstack_compute_node.yml --extra-vars "compute_name=compute1 compute_ip=172.16.33.7"
+    playback openstack_compute_node.yml --extra-vars \"compute_name=compute1 compute_ip=172.16.33.7\"
     
 #### To deploy a neutron controller
     playback openstack_neutron_controller.yml
