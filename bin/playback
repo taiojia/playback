@@ -6,4 +6,4 @@ import os
 
 args = ' '.join(sys.argv[1:])
 
-os.system('ansible ' + args)
+os.system('ansible-playbook ' + args)
