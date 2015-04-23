@@ -65,13 +65,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     swiftstore3.vm.network :private_network, ip: "172.16.44.10"  # Data Network
     swiftstore3.vm.hostname = "swiftstore3"
   end
-  config.vm.define "tempest" do |tempest|
-    tempest.vm.network :private_network, ip: "192.168.11.11" # API Network
-    tempest.vm.network :private_network, ip: "192.168.22.11" # External Network
-    tempest.vm.network :private_network, ip: "172.16.33.11"  # Management Network
-    tempest.vm.network :private_network, ip: "172.16.44.11"  # Data Network
-    tempest.vm.hostname = "tempest"
-  end
+#  config.vm.define "tempest" do |tempest|
+#    tempest.vm.network :private_network, ip: "192.168.11.11" # API Network
+#    tempest.vm.network :private_network, ip: "192.168.22.11" # External Network
+#    tempest.vm.network :private_network, ip: "172.16.33.11"  # Management Network
+#    tempest.vm.network :private_network, ip: "172.16.44.11"  # Data Network
+#    tempest.vm.hostname = "tempest"
+#  end
 
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
