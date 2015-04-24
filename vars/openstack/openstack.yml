@@ -76,3 +76,12 @@ openstack_neutron_pass: b57c3233eedef3f7b1a3
 neutron_publicurl: http://172.16.33.4:9696
 neutron_internalurl: http://172.16.33.4:9696
 neutron_adminurl: http://172.16.33.4:9696
+
+# neutron for nova connections
+neutron_nova_url: http://172.16.33.4:8774/v2
+neutron_nova_admin_auth_url: http://172.16.33.4:35357/v2.0
+
+# neutron network type
+neutron_type_drivers: local,flat,vlan,gre,vxlan
+neutron_tenant_network_types: vxlan
+neutron_mechanism_drivers: openvswitch

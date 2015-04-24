@@ -29,18 +29,21 @@
     - python-neutronclient
   retries: 5
   delay: 2
-#- name: Update /etc/neutron/neutron.conf
-#  template: src=neutron.conf.j2 dest=/etc/neutron/neutron.conf
-#- name: Populate the Compute database
-#  command: /bin/sh -c "nova-manage db sync" nova
-#- name: Restart the Compute services
-#  service: name={{ item }} state=restarted
-#  with_items:
-#    - nova-api
-#    - nova-cert
-#    - nova-consoleauth
-#    - nova-scheduler
-#    - nova-conductor
-#    - nova-novncproxy
-#- name: Remove nova.sqlite
-#  file: name=/var/lib/nova/nova.sqlite state=absent
+- name: Update /etc/neutron/neutron.conf
+  template: src=neutron.conf.j2 dest=/etc/neutron/neutron.conf
+- name: Update /etc/neutron/plugins/ml2/ml2_conf.ini
+  template: src=ml2_conf.ini.j2 dest=/etc/neutron/plugins/ml2/ml2_conf.ini
+- name: Update /etc/nova/nova.conf
+  template: src=nova.conf.j2 dest=/etc/nova/nova.conf
+- name: Populate the database
+  command: /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade juno" neutron
+- name: Restart the Compute services
+  service: name={{ item }} state=restarted
+  with_items:
+    - nova-api
+    - nova-scheduler
+    - nova-conductor
+- name: Restart the Networking service
+  service: name={{ item }} state=restarted
+  with_items:
+    - neutron-server

@@ -74,6 +74,18 @@ The Glance default store is file.
     playback openstack_compute_node.yml --extra-vars \"compute_name=compute1 compute_ip=172.16.33.7\"
     
 #### To deploy a neutron controller
-    playback openstack_neutron_controller.yml
+    playback openstack_neutron_controller.yml --extra-vars \"nova_admin_tenant_id=6aea60400e6246edaa83d508b222d2eb\"
+
+###### To obtain the service tenant identifier (id) at the controller
+        $ source admin-openrc.sh
+        $ keystone tenant-get service
+        +-------------+----------------------------------+
+        |   Property  |              Value               |
+        +-------------+----------------------------------+
+        | description |          Service Tenant          |
+        |   enabled   |               True               |
+        |      id     | 6aea60400e6246edaa83d508b222d2eb |
+        |     name    |             service              |
+        +-------------+----------------------------------+
     
     
