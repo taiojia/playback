@@ -47,6 +47,27 @@ controller1 ansible_ssh_host=172.16.33.4
 
 [keystone]
 controller1 ansible_ssh_host=172.16.33.4
+
+[glance]
+controller1 ansible_ssh_host=172.16.33.4
+
+[compute_controller]
+controller1 ansible_ssh_host=172.16.33.4
+
+[compute_node]
+compute1 ansible_ssh_host=172.16.33.7
+
+[neutron_controller]
+controller1 ansible_ssh_host=172.16.33.4
+
+[neutron_node]
+network ansible_ssh_host=172.16.33.6
+
+[neutron_compute]
+compute1 ansible_ssh_host=172.16.33.7
+
+[horizon]
+controller1 ansible_ssh_host=172.16.33.4
 ```
     
 #### To define your variables in vars/openstack
