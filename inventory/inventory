@@ -47,3 +47,6 @@ controller1 ansible_ssh_host=172.16.33.4
 
 [neutron_node]
 network ansible_ssh_host=172.16.33.6
+
+[neutron_compute]
+compute1 ansible_ssh_host=172.16.33.7
