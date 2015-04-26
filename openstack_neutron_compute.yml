@@ -25,6 +25,7 @@
   hosts: "{{ compute_name }}"
   sudo: True
   vars:
+    - compute_n_management_network_ip: "{{ compute_ip }}"
     - INSTANCE_TUNNELS_INTERFACE_IP_ADDRESS: "{{ local_tunnel_net_ip }}"
   roles:
     - neutron_compute
