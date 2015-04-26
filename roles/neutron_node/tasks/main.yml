@@ -21,6 +21,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-#- include: configure_prerequisites.yml
-#- include: configure_the_metadata_agent.yml
+- include: configure_prerequisites.yml
+- include: configure_the_metadata_agent.yml
 - include: configure_the_Open_vSwitch_service.yml
