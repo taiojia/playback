@@ -23,5 +23,8 @@
 
 #- name: Configure prerequisites
 #  include: configure_prerequisites.yml
-- name: Install the Networking components
-  include: install_the_networking_components
+#- name: Install the Networking components
+#  include: install_the_networking_components.yml
+- name: Configure the Networking common components
+  include: configure_the_Networking_common_components.yml
+  
