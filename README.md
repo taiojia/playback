@@ -95,4 +95,7 @@ The Glance default store is file.
 
 ### Initial networks
     playback openstack_initial_networks.yml
+
+### Add Dashboard
+    playback openstack_horizon.yml
     
