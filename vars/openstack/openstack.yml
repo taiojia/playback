@@ -36,6 +36,7 @@ glance_db_password: b57c3233eedef3f7b1a3
 nova_db_password: b57c3233eedef3f7b1a3
 neutron_db_password: b57c3233eedef3f7b1a3
 admin_token: b57c3233eedef3f7b1a3
+neutron_metadata_proxy_shared_secret: b57c3233eedef3f7b1a3
 
 # admin credentials
 openstack_admin_user: admin
@@ -82,6 +83,7 @@ neutron_nova_url: http://172.16.33.4:8774/v2
 neutron_nova_admin_auth_url: http://172.16.33.4:35357/v2.0
 
 # neutron network type
-neutron_type_drivers: local,flat,vlan,gre,vxlan
-neutron_tenant_network_types: vxlan
+neutron_type_drivers: flat,gre
+neutron_tenant_network_types: gre
 neutron_mechanism_drivers: openvswitch
+neutron_external_interface_name: eth2
