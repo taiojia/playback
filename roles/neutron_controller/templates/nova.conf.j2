@@ -42,3 +42,5 @@ admin_auth_url = {{ adminurl }}
 admin_tenant_name = service
 admin_username = {{ openstack_neutron_user }}
 admin_password = {{ openstack_neutron_pass }}
+service_metadata_proxy = True
+metadata_proxy_shared_secret = {{ neutron_metadata_proxy_shared_secret }}
