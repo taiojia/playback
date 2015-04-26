@@ -22,8 +22,10 @@
 # SOFTWARE.
 
 - name: Install Neutron compute
-  hosts: neutron_compute
+  hosts: "{{ compute_name }}"
   sudo: True
+  vars:
+    - INSTANCE_TUNNELS_INTERFACE_IP_ADDRESS: "{{ local_tunnel_net_ip }}"
   roles:
     - neutron_compute
   vars_files:

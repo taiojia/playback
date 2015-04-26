@@ -91,5 +91,5 @@ The Glance default store is file.
     playback openstack_neutron_node.yml --extra-vars \"local_tunnel_net_ip=192.168.11.6\"
 
 ### To deploy a neutron compute
-    playback openstack_neutron_compute.yml
+    playback openstack_neutron_compute.yml --extra-vars \"compute_name=compute1 local_tunnel_net_ip=192.168.11.7\"
     
