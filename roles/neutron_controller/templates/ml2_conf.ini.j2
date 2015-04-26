@@ -48,13 +48,13 @@ mechanism_drivers = {{ neutron_mechanism_drivers }}
 
 [ml2_type_gre]
 # (ListOpt) Comma-separated list of <tun_min>:<tun_max> tuples enumerating ranges of GRE tunnel IDs that are available for tenant network allocation
-# tunnel_id_ranges =
+tunnel_id_ranges = 1:1000
 
 [ml2_type_vxlan]
 # (ListOpt) Comma-separated list of <vni_min>:<vni_max> tuples enumerating
 # ranges of VXLAN VNI IDs that are available for tenant network allocation.
 #
-vni_ranges = 1:1000
+#vni_ranges = 1:1000
 
 # (StrOpt) Multicast group for the VXLAN interface. When configured, will
 # enable sending all broadcast traffic to this multicast group. When left
