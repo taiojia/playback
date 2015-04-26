@@ -24,6 +24,8 @@
 - name: Install Neutron controller
   hosts: neutron_controller
   sudo: True
+  vars:
+    - nova_admin_tenant_id: {{ nova_admin_service_tenant_id }}
   roles:
     - neutron_controller
   vars_files:
