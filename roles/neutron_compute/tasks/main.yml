@@ -21,5 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-- name: Configure prerequisites
-  include: configure_prerequisites.yml
+#- name: Configure prerequisites
+#  include: configure_prerequisites.yml
+- name: Install the Networking components
+  include: install_the_networking_components
