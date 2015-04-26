@@ -74,7 +74,7 @@ The Glance default store is file.
     playback openstack_compute_node.yml --extra-vars \"compute_name=compute1 compute_ip=172.16.33.7\"
     
 #### To deploy a neutron controller
-    playback openstack_neutron_controller.yml --extra-vars \"nova_admin_tenant_id=6aea60400e6246edaa83d508b222d2eb\"
+    playback openstack_neutron_controller.yml --extra-vars \"nova_admin_service_tenant_id=6aea60400e6246edaa83d508b222d2eb\"
 
 ###### To obtain the service tenant identifier (id) at the controller
         $ source admin-openrc.sh
@@ -87,5 +87,6 @@ The Glance default store is file.
         |      id     | 6aea60400e6246edaa83d508b222d2eb |
         |     name    |             service              |
         +-------------+----------------------------------+
-    
+### To deploy a neutron node
+    playback openstack_neutron_node.yml --extra-vars \"local_tunnel_net_ip=192.168.11.6\"
     
