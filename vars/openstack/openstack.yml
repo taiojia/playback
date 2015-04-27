@@ -106,3 +106,6 @@ openstack_cinder_pass: b57c3233eedef3f7b1a3
 
 # vip
 controller_node_vip: 172.16.33.4
+
+# cinder storage
+cinder_volumes_pv: /dev/sdb1

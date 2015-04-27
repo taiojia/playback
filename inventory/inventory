@@ -56,3 +56,6 @@ controller1 ansible_ssh_host=172.16.33.4
 
 [cinder_controller]
 controller1 ansible_ssh_host=172.16.33.4
+
+[cinder_storage]
+storage1 ansible_ssh_host=172.16.33.5
