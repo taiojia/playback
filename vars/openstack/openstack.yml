@@ -35,6 +35,7 @@ keystone_db_password: b57c3233eedef3f7b1a3
 glance_db_password: b57c3233eedef3f7b1a3
 nova_db_password: b57c3233eedef3f7b1a3
 neutron_db_password: b57c3233eedef3f7b1a3
+cinder_db_password: b57c3233eedef3f7b1a3
 admin_token: b57c3233eedef3f7b1a3
 neutron_metadata_proxy_shared_secret: b57c3233eedef3f7b1a3
 
@@ -98,3 +99,10 @@ TENANT_NETWORK_CIDR: 192.168.11.0/24
 
 # Memcached
 memcached_ip_port: 127.0.0.1:11211
+
+# cinder credentials
+openstack_cinder_user: cinder
+openstack_cinder_pass: b57c3233eedef3f7b1a3
+
+# vip
+controller_node_vip: 172.16.33.4

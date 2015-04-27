@@ -119,4 +119,7 @@ The Glance default store is file.
 
 ### Add Dashboard
     playback openstack_horizon.yml
+
+### To deploy a cinder controller
+    playback openstack_cinder_controller.yml
     
