@@ -21,12 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-- name: Install and configure swift proxy
-  hosts: swift_proxy
-  sudo: True
-#  vars:
-#    - INSTANCE_TUNNELS_INTERFACE_IP_ADDRESS: "{{ local_tunnel_net_ip }}"
-  roles:
-    - swift_proxy
-  vars_files:
-    - vars/openstack/openstack.yml
+- name: Configure prerequisites
+  include: configure_prerequisites.yml
+- name: Install and configure the controller node components
+  include: install_and_configure_the_controller_node_components.yml

@@ -109,3 +109,7 @@ controller_node_vip: 172.16.33.4
 
 # cinder storage
 cinder_volumes_pv: /dev/sdb1
+
+# swift credentials
+openstack_swift_user: swift
+openstack_swift_pass: b57c3233eedef3f7b1a3

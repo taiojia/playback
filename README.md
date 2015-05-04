@@ -125,4 +125,7 @@ The Glance default store is file.
 
 ### To deploy a cinder storage
     playback openstack_cinder_storage.yml --extra-vars \"my_ip=172.16.33.5\"
+
+### To deploy a swift proxy
+    playback openstack_swift_controller.yml
     
