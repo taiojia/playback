@@ -21,13 +21,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-#- name: Create the external network
-#  include: create_the_external_network.yml
-#- name: Create a subnet on the external network
-#  include: create_a_subnet_on_the_external_network.yml
-#- name: Create the tenant network
-#  include: create_the_tenant_network.yml
-#- name: Create a subnet on the tenant network
-#  include: create_a_subnet_on_the_tenant_network.yml
+- name: Create the external network
+  include: create_the_external_network.yml
+- name: Create a subnet on the external network
+  include: create_a_subnet_on_the_external_network.yml
+- name: Create the tenant network
+  include: create_the_tenant_network.yml
+- name: Create a subnet on the tenant network
+  include: create_a_subnet_on_the_tenant_network.yml
 - name: Create a router on the tenant network and attach the external and tenant networks to it
   include: create_a_router.yml
