@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-#- name: Install the dashboard components
-#  include: install_the_dashboard_components.yml
+- name: Install the dashboard components
+  include: install_the_dashboard_components.yml
 - name: Configure the dashboard
   include: configure_the_dashboard.yml
