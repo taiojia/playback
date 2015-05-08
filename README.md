@@ -12,63 +12,78 @@ You must have the Vagrant installed and than you can provision  the testing envi
     
 #### Define a inventory file
 The inventory file at `inventory/inventory`, the default setting is the Vagrant testing node. You can according to your environment to change parameters.
-```
-[zabbix_agents]
-tempest ansible_ssh_host=172.16.33.11
 
-[nginx_servers]
-tempest ansible_ssh_host=172.16.33.11
+    [zabbix_agents]
+    tempest ansible_ssh_host=172.16.33.11
 
-[openstack]
-controller1 ansible_ssh_host=172.16.33.4
-storage1 ansible_ssh_host=172.16.33.5
-network ansible_ssh_host=172.16.33.6
-compute1 ansible_ssh_host=172.16.33.7
-swiftstore1 ansible_ssh_host=172.16.33.8
-swiftstore2 ansible_ssh_host=172.16.33.9
-swiftstore3 ansible_ssh_host=172.16.33.10
+    [nginx_servers]
+    tempest ansible_ssh_host=172.16.33.11
 
-[ntp_server]
-controller1 ansible_ssh_host=172.16.33.4
+    [openstack]
+    controller1 ansible_ssh_host=172.16.33.4
+    storage1 ansible_ssh_host=172.16.33.5
+    network ansible_ssh_host=172.16.33.6
+    compute1 ansible_ssh_host=172.16.33.7
+    swiftstore1 ansible_ssh_host=172.16.33.8
+    swiftstore2 ansible_ssh_host=172.16.33.9
+    swiftstore3 ansible_ssh_host=172.16.33.10
 
-[ntp_clients]
-storage1 ansible_ssh_host=172.16.33.5
-network ansible_ssh_host=172.16.33.6
-compute1 ansible_ssh_host=172.16.33.7
-swiftstore1 ansible_ssh_host=172.16.33.8
-swiftstore2 ansible_ssh_host=172.16.33.9
-swiftstore3 ansible_ssh_host=172.16.33.10
+    [ntp_server]
+    controller1 ansible_ssh_host=172.16.33.4
 
-[mariadb]
-controller1 ansible_ssh_host=172.16.33.4
+    [ntp_clients]
+    storage1 ansible_ssh_host=172.16.33.5
+    network ansible_ssh_host=172.16.33.6
+    compute1 ansible_ssh_host=172.16.33.7
+    swiftstore1 ansible_ssh_host=172.16.33.8
+    swiftstore2 ansible_ssh_host=172.16.33.9
+    swiftstore3 ansible_ssh_host=172.16.33.10
 
-[rabbitmq]
-controller1 ansible_ssh_host=172.16.33.4
+    [mariadb]
+    controller1 ansible_ssh_host=172.16.33.4
 
-[keystone]
-controller1 ansible_ssh_host=172.16.33.4
+    [rabbitmq]
+    controller1 ansible_ssh_host=172.16.33.4
 
-[glance]
-controller1 ansible_ssh_host=172.16.33.4
+    [keystone]
+    controller1 ansible_ssh_host=172.16.33.4
 
-[compute_controller]
-controller1 ansible_ssh_host=172.16.33.4
+    [glance]
+    controller1 ansible_ssh_host=172.16.33.4
 
-[compute_node]
-compute1 ansible_ssh_host=172.16.33.7
+    [compute_controller]
+    controller1 ansible_ssh_host=172.16.33.4
 
-[neutron_controller]
-controller1 ansible_ssh_host=172.16.33.4
+    [compute_node]
+    compute1 ansible_ssh_host=172.16.33.7
 
-[neutron_node]
-network ansible_ssh_host=172.16.33.6
+    [neutron_controller]
+    controller1 ansible_ssh_host=172.16.33.4
 
-[neutron_compute]
-compute1 ansible_ssh_host=172.16.33.7
+    [neutron_node]
+    network ansible_ssh_host=172.16.33.6
 
-[horizon]
-controller1 ansible_ssh_host=172.16.33.4
-```
+    [neutron_compute]
+    compute1 ansible_ssh_host=172.16.33.7
+
+    [horizon]
+    controller1 ansible_ssh_host=172.16.33.4
+
+    [cinder_controller]
+    controller1 ansible_ssh_host=172.16.33.4
+
+    [cinder_storage]
+    storage1 ansible_ssh_host=172.16.33.5
+
+    [swift_proxy]
+    controller1 ansible_ssh_host=172.16.33.4
+
+    [swift_storage]
+    swiftstore1 ansible_ssh_host=172.16.33.8
+    swiftstore2 ansible_ssh_host=172.16.33.9
+    swiftstore3 ansible_ssh_host=172.16.33.10
+
+
     
 #### To define your variables in vars/openstack
 The `vars/openstack/openstack.yml` is all the parameters.
@@ -130,7 +145,26 @@ The Glance default store is file.
     playback openstack_swift_controller.yml
 
 ### To deploy a swift storage
-Each of the swift nodes, /dev/sdb and /dev/sdc, must contain a suitable partition table with one partition occupying the entire device. Although the Object Storage service supports any file system with extended attributes (xattr), testing and benchmarking indicate the best performance and reliability on XFS.
+Each of the swift nodes, /dev/sdb1 and /dev/sdc1, must contain a suitable partition table with one partition occupying the entire device. Although the Object Storage service supports any file system with extended attributes (xattr), testing and benchmarking indicate the best performance and reliability on XFS.
     
     playback openstack_swift_node.yml --extra-vars \"swift_storage_name=swiftstore1 my_management_ip=172.16.33.8 my_storage_network_ip=172.16.44.8\"
+
+### Initial swift rings
+    playback openstack_swift_builder_file.yml
+    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_mgmt_ip=172.16.33.8 device_name=sdb1 device_weight=100\"
+    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_mgmt_ip=172.16.33.8 device_name=sdc1 device_weight=100\"
+    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_mgmt_ip=172.16.33.9 device_name=sdb1 device_weight=100\"
+    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_mgmt_ip=172.16.33.9 device_name=sdc1 device_weight=100\"
+    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_mgmt_ip=172.16.33.10 device_name=sdb1 device_weight=100\"
+    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_mgmt_ip=172.16.33.10 device_name=sdc1 device_weight=100\"
+    playback openstack_swift_rebalance_ring.yml
+    
+### Distribute ring configuration files
+Copy the `account.ring.gz`, `container.ring.gz`, and `object.ring.gz` files to the `/etc/swift` directory on each storage node and any additional nodes running the proxy service.
+
+### Finalize swift installation
+    playback openstack_swift_finalize_installation.yml --extra-vars \"hosts=swift_proxy\"
+    playback openstack_swift_finalize_installation.yml --extra-vars \"hosts=swift_storage\"
+    
+    
     
