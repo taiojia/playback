@@ -116,3 +116,5 @@ openstack_swift_pass: b57c3233eedef3f7b1a3
 
 # swift
 rsyncd_max_connections: 3
+swift_hash_path_suffix: a69128c08d64912cba8c
+swift_hash_path_prefix: 476fa57bc1af39c26637
