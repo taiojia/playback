@@ -166,5 +166,7 @@ Copy the `account.ring.gz`, `container.ring.gz`, and `object.ring.gz` files to t
     playback openstack_swift_finalize_installation.yml --extra-vars \"hosts=swift_proxy\"
     playback openstack_swift_finalize_installation.yml --extra-vars \"hosts=swift_storage\"
     
-    
+### To deploy the Orchestration components(heat)
+     playback openstack_heat_controller.yml
+     
     
