@@ -25,7 +25,7 @@
   hosts: "{{ swift_storage_name }}"
   sudo: True
   vars:
-    - STORAGE_NETWORK_IP: "{{ my_storage_network_ip }}"
+#    - STORAGE_NETWORK_IP: "{{ my_storage_network_ip }}"
     - MANAGEMENT_INTERFACE_IP_ADDRESS: "{{ my_management_ip }}"
   roles:
     - swift_storage
