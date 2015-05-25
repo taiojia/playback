@@ -1,0 +1,72 @@
+[zabbix_agents]
+tempest ansible_ssh_host=172.16.33.11
+
+[nginx_servers]
+tempest ansible_ssh_host=172.16.33.11
+
+[openstack]
+controller1 ansible_ssh_host=172.16.33.4
+storage1 ansible_ssh_host=172.16.33.5
+network ansible_ssh_host=172.16.33.6
+compute1 ansible_ssh_host=172.16.33.7
+swiftstore1 ansible_ssh_host=172.16.33.8
+swiftstore2 ansible_ssh_host=172.16.33.9
+swiftstore3 ansible_ssh_host=172.16.33.10
+
+[ntp_server]
+controller1 ansible_ssh_host=172.16.33.4
+
+[ntp_clients]
+storage1 ansible_ssh_host=172.16.33.5
+network ansible_ssh_host=172.16.33.6
+compute1 ansible_ssh_host=172.16.33.7
+swiftstore1 ansible_ssh_host=172.16.33.8
+swiftstore2 ansible_ssh_host=172.16.33.9
+swiftstore3 ansible_ssh_host=172.16.33.10
+
+[mariadb]
+controller1 ansible_ssh_host=172.16.33.4
+
+[rabbitmq]
+controller1 ansible_ssh_host=172.16.33.4
+
+[keystone]
+controller1 ansible_ssh_host=172.16.33.4
+
+[glance]
+controller1 ansible_ssh_host=172.16.33.4
+
+[compute_controller]
+controller1 ansible_ssh_host=172.16.33.4
+
+[compute_node]
+compute1 ansible_ssh_host=172.16.33.7
+
+[neutron_controller]
+controller1 ansible_ssh_host=172.16.33.4
+
+[neutron_node]
+network ansible_ssh_host=172.16.33.6
+
+[neutron_compute]
+compute1 ansible_ssh_host=172.16.33.7
+
+[horizon]
+controller1 ansible_ssh_host=172.16.33.4
+
+[cinder_controller]
+controller1 ansible_ssh_host=172.16.33.4
+
+[cinder_storage]
+storage1 ansible_ssh_host=172.16.33.5
+
+[swift_proxy]
+controller1 ansible_ssh_host=172.16.33.4
+
+[swift_storage]
+swiftstore1 ansible_ssh_host=172.16.33.8
+swiftstore2 ansible_ssh_host=172.16.33.9
+swiftstore3 ansible_ssh_host=172.16.33.10
+
+[heat_controller]
+controller1 ansible_ssh_host=172.16.33.4
