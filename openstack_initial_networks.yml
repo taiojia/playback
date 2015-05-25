@@ -22,7 +22,7 @@
 # SOFTWARE.
 
 - name: Create initial networks
-  hosts: controller1
+  hosts: controller01
   sudo: True
   roles:
     - initial_networks
