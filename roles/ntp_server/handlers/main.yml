@@ -3,3 +3,5 @@
   service: name=ntp state=running
 - name: Restart ntp service
   service: name=ntp state=restarted
+- name: Restart crontab
+  service: name=cron state=restarted

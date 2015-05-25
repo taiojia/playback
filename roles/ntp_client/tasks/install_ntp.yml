@@ -12,4 +12,5 @@
   file: name=/var/lib/ntp/ntp.conf.dhcp state=absent
 - name: Change time zone to Asia Shanghai
   template: src=timezone.j2 dest=/etc/timezone
+  notify: Restart crontab
   
