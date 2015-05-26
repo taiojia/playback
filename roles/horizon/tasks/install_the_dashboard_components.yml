@@ -29,3 +29,6 @@
     - libapache2-mod-wsgi
     - memcached
     - python-memcache
+- name: Remove openstack-dashboard-ubuntu-theme
+  apt: name=openstack-dashboard-ubuntu-theme state=absent purge=yes
+
