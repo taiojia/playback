@@ -26,4 +26,4 @@
 - name: Create the base container.builder file
   shell: swift-ring-builder container.builder create 10 3 1 chdir=/etc/swift
 - name: Create the base object.builder file
-  shell: swift-ring-builder object.builder create 10 3 1
+  shell: swift-ring-builder object.builder create 10 3 1 chdir=/etc/swift
