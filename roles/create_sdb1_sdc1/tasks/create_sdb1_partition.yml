@@ -21,6 +21,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+- name: Change partition table of sdb to gpt
+  shell: parted /dev/sdb mklabel gpt Yes
 - name: Create sdb1 partition
   shell: parted /dev/sdb mkpart primary 1MB {{ sdb1_size }}
 - name: Make ext4 file system for sdb1
