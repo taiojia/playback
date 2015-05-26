@@ -27,7 +27,7 @@
     - xfsprogs
     - rsync
 - name: Format the /dev/sdb1 and /dev/sdc1 partitions as XFS
-  shell: mkfs.xfs /dev/sdb1 && mkfs.xfs /dev/sdc1
+  shell: mkfs.xfs /dev/sdb1 -f && mkfs.xfs /dev/sdc1 -f
 - name: Create the mount point directory structure
   file: path={{ item }} state=directory
   with_items:
