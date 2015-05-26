@@ -125,3 +125,7 @@ heat_db_password: b57c3233eedef3f7b1a3
 # heat credentials
 openstack_heat_user: heat
 openstack_heat_pass: b57c3233eedef3f7b1a3
+
+# Disk partitions
+sdb1_size: 3000GB
+sdc1_size: 3000GB
