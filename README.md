@@ -143,9 +143,13 @@ The Glance default store is file.
 
 ### To deploy a swift proxy
     playback openstack_swift_controller.yml
+    
+### Format devices(sdb1 and sdc1)
+Each of the swift nodes, /dev/sdb1 and /dev/sdc1, must contain a suitable partition table with one partition occupying the entire device. Although the Object Storage service supports any file system with extended attributes (xattr), testing and benchmarking indicate the best performance and reliability on XFS.
+
+    playback openstack_storage_partitions.yml --extra-vars \"storage_name=compute01\" -vvvv
 
 ### To deploy a swift storage
-Each of the swift nodes, /dev/sdb1 and /dev/sdc1, must contain a suitable partition table with one partition occupying the entire device. Although the Object Storage service supports any file system with extended attributes (xattr), testing and benchmarking indicate the best performance and reliability on XFS.
     
     playback openstack_swift_node.yml --extra-vars \"swift_storage_name=swiftstore1 my_management_ip=172.16.33.8 my_storage_network_ip=172.16.44.8\"
 
