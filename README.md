@@ -3,6 +3,12 @@ playback is an OpenStack provisioning DevOps tool that all of the OpenStack comp
 
 ### Getting Started
 
+#### Setup playback
+    
+    git clone https://github.com/jiasir/playback.git
+    cd playback
+    python setup.py install
+    
 #### Setting your testing environment if you want
 You must have the Vagrant installed and than you can provision  the testing environment, the test node you can see `Vagrantfile` at `examples`.
 
@@ -100,7 +106,7 @@ The `vars/openstack/openstack.yml` is all the parameters.
     
 #### To deploy Glance
 The Glance default store is file.
-
+    
     playback openstack_glance.yml
 
 #### To deploy a compute controller
