@@ -104,8 +104,16 @@ compute10 ansible_ssh_host=10.32.150.11
 [heat_controller]
 controller01 ansible_ssh_host=10.32.150.20
 
-[ceph_deploy]
-controller01 ansible_ssh_host=10.32.150.20
+[ceph_admin]
+maas ansible_ssh_host=10.32.150.2
+
+[ceph_client]
+maas ansible_ssh_host=10.32.150.2
+compute01 ansible_ssh_host=10.32.150.16
+compute02 ansible_ssh_host=10.32.150.14
+compute03 ansible_ssh_host=10.32.150.12
+compute04 ansible_ssh_host=10.32.150.25
+compute05 ansible_ssh_host=10.32.150.18
 
 [ceph_mon]
 compute01 ansible_ssh_host=10.32.150.16
