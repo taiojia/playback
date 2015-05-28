@@ -188,4 +188,6 @@ Switch glance backend to file
 ### To deploy the Orchestration components(heat)
      playback openstack_heat_controller.yml
      
+### To deploy the ceph-deploy
+    playback openstack_ceph_deploy.yml
     
