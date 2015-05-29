@@ -190,11 +190,24 @@ Switch glance backend to file
      
 ### To deploy the Ceph admin node
 Ensure the admin node must be have password-less SSH access to Ceph nodes. When ceph-deploy logs in to a Ceph node as a user, that particular user must have passwordless sudo privileges.
+
+Each Ceph node have the ceph user
+
+    adduser ceph
+    echo ceph ALL = \(root\) NOPASSWD:ALL | sudo tee /etc/sudoers.d/ceph
+    sudo chmod 0440 /etc/sudoers.d/ceph
+
+Copy SSH public key to each Ceph node from Ceph admin node
     
-    playback openstack_ceph_admin.yml -u username
+    ssh-key-gen
+    ssh-copy-id ceph@node
+
+Deploy the Ceph admin node
+
+    playback openstack_ceph_admin.yml -u ceph
 
 ### To deploy the Ceph initial monitor
-    playback openstack_ceph_initial_mon.yml -u username
+    playback openstack_ceph_initial_mon.yml -u ceph
     
 ### To deploy the Ceph clients
     playback openstack_ceph_client.yml -u username --extra-vars \"client=maas\"
@@ -205,16 +218,16 @@ Ensure the admin node must be have password-less SSH access to Ceph nodes. When 
     playback openstack_ceph_client.yml -u username --extra-vars \"client=compute05\"
 
 ### To add Ceph initial monitor(s) and gather the keys
-    playback openstack_ceph_gather_keys.yml -u username
+    playback openstack_ceph_gather_keys.yml -u ceph
 
 ### To add Ceph OSDs
-    playback openstack_ceph_osd.yml -u username --extra-vars \"node=compute01 disk=sdb partition=sdb1\"
+    playback openstack_ceph_osd.yml -u ceph --extra-vars \"node=compute01 disk=sdb partition=sdb1\"
 
 ### To add Ceph monitors
-    playback openstack_ceph_mon.yml -u username --extra-vars \"node=compute01\"
+    playback openstack_ceph_mon.yml -u ceph --extra-vars \"node=compute01\"
 
 ### To copy the Ceph keys to nodes
 Copy the configuration file and admin key to your admin node and your Ceph Nodes so that you can use the ceph CLI without having to specify the monitor address and ceph.client.admin.keyring each time you execute a command.
     
-    playback openstack_ceph_copy_keys.yml -u username --extra-vars \"node=compute01\"
+    playback openstack_ceph_copy_keys.yml -u ceph --extra-vars \"node=compute01\"
     
