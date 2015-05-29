@@ -126,6 +126,19 @@ heat_db_password: b57c3233eedef3f7b1a3
 openstack_heat_user: heat
 openstack_heat_pass: b57c3233eedef3f7b1a3
 
-# Disk partitions
+# Disk partitions for swift
 sdb1_size: 3000GB
 sdc1_size: 3000GB
+
+# Ceph initial monitor
+ceph_initial_monitor: compute01
+
+# Ceph public network
+ceph_public_network: 10.32.150.0/24
+
+# Ceph cluster network
+ceph_cluster_network: 192.168.1.0/24
+
+# osd pool default size
+ceph_osd_pool_default_size: 3
+

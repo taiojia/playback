@@ -188,6 +188,33 @@ Switch glance backend to file
 ### To deploy the Orchestration components(heat)
      playback openstack_heat_controller.yml
      
-### To deploy the ceph admin node
+### To deploy the Ceph admin node
+Ensure the admin node must be have password-less SSH access to Ceph nodes. When ceph-deploy logs in to a Ceph node as a user, that particular user must have passwordless sudo privileges.
+    
     playback openstack_ceph_admin.yml -u username
+
+### To deploy the Ceph initial monitor
+    playback openstack_ceph_initial_mon.yml -u username
+    
+### To deploy the Ceph clients
+    playback openstack_ceph_client.yml -u username --extra-vars \"client=maas\"
+    playback openstack_ceph_client.yml -u username --extra-vars \"client=compute01\"
+    playback openstack_ceph_client.yml -u username --extra-vars \"client=compute02\"
+    playback openstack_ceph_client.yml -u username --extra-vars \"client=compute03\"
+    playback openstack_ceph_client.yml -u username --extra-vars \"client=compute04\"
+    playback openstack_ceph_client.yml -u username --extra-vars \"client=compute05\"
+
+### To add Ceph initial monitor(s) and gather the keys
+    playback openstack_ceph_gather_keys.yml -u username
+
+### To add Ceph OSDs
+    playback openstack_ceph_osd.yml -u username --extra-vars \"node=compute01 disk=sdb partition=sdb1\"
+
+### To add Ceph monitors
+    playback openstack_ceph_mon.yml -u username --extra-vars \"node=compute01\"
+
+### To copy the Ceph keys to nodes
+Copy the configuration file and admin key to your admin node and your Ceph Nodes so that you can use the ceph CLI without having to specify the monitor address and ceph.client.admin.keyring each time you execute a command.
+    
+    playback openstack_ceph_copy_keys.yml -u username --extra-vars \"node=compute01\"
     

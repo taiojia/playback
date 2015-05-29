@@ -21,11 +21,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-- name: Add the release key
-  shell: wget -q -O- 'https://ceph.com/git/?p=ceph.git;a=blob_plain;f=keys/release.asc' | sudo apt-key add -
-- name: Add the Ceph packages to the repository
-  shell: echo "#deb http://ceph.com/debian-hammer/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/ceph.list
-- name: Update the repository and install ceph-deploy
-  apt: name=ceph-deploy update_cache=yes
-- name: Create ceph_cluster directory
-  file: path=~/ceph_cluster state=directory
+- name: Add the Ceph OSDs
+  hosts: ceph_admin
+  sudo: False
+  roles:
+    - ceph_osd
+  vars_files:
+    - vars/openstack/openstack.yml
