@@ -22,4 +22,4 @@
 # SOFTWARE.
 
 - name: Install Ceph client
-  shell: ceph-deploy install {{ client }} chdir=~/ceph_cluster
+  shell: ceph-deploy install {{ client }} chdir=~/ceph-cluster

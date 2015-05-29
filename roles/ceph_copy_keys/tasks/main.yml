@@ -22,4 +22,4 @@
 # SOFTWARE.
 
 - name: Copy Ceph keys to the nodes
-  shell: ceph-deploy admin {{ node }} chdir=~/ceph_cluster
+  shell: ceph-deploy admin {{ node }} chdir=~/ceph-cluster

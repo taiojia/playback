@@ -22,10 +22,10 @@
 # SOFTWARE.
 
 - name: Install Ceph initial monitor
-  shell: ceph-deploy new {{ ceph_initial_monitor }} chdir=~/ceph_cluster
+  shell: ceph-deploy new {{ ceph_initial_monitor }} chdir=~/ceph-cluster
 - name: Change the osd pool size
-  shell: echo osd pool default size = {{ ceph_osd_pool_default_size }} >> ceph.conf chdir=~/ceph_cluster
+  shell: echo osd pool default size = {{ ceph_osd_pool_default_size }} >> ceph.conf chdir=~/ceph-cluster
 - name: Define Ceph public network
-  shell: echo public network = {{ ceph_public_network }} >> ceph.conf chdir=~/ceph_cluster
+  shell: echo public network = {{ ceph_public_network }} >> ceph.conf chdir=~/ceph-cluster
 - name: Define Ceph cluster network
-  shell: echo cluster network = {{ ceph_cluster_network }} >> ceph.conf chdir=~/ceph_cluster
+  shell: echo cluster network = {{ ceph_cluster_network }} >> ceph.conf chdir=~/ceph-cluster

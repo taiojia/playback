@@ -27,5 +27,5 @@
   shell: echo "#deb http://ceph.com/debian-hammer/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/ceph.list
 - name: Update the repository and install ceph-deploy
   apt: name=ceph-deploy update_cache=yes
-- name: Create ceph_cluster directory
-  file: path=~/ceph_cluster state=directory
+- name: Create ceph-cluster directory
+  file: path=~/ceph-cluster state=directory

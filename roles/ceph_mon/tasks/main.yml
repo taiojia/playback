@@ -22,4 +22,4 @@
 # SOFTWARE.
 
 - name: Add the Ceph monitor
-  shell: ceph-deploy mon create {{ node }} chdir=~/ceph_cluster
+  shell: ceph-deploy mon create {{ node }} chdir=~/ceph-cluster

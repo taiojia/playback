@@ -22,4 +22,4 @@
 # SOFTWARE.
 
 - name: Add the initial monitor and gather the keys
-  shell: ceph-deploy mon create-initial chdir=~/ceph_cluster
+  shell: ceph-deploy mon create-initial chdir=~/ceph-cluster

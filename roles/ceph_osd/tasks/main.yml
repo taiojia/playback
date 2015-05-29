@@ -22,6 +22,6 @@
 # SOFTWARE.
 
 - name: Prepare Ceph OSDs
-  shell: ceph-deploy osd prepare {{ node }}:{{ disk }} chdir=~/ceph_cluster
+  shell: ceph-deploy osd prepare {{ node }}:{{ disk }} chdir=~/ceph-cluster
 - name: Activate Ceph OSDs
-  shell: ceph-deploy osd activate {{ node }}:/dev/{{ partition }} chdir=~/ceph_cluster
+  shell: ceph-deploy osd activate {{ node }}:/dev/{{ partition }} chdir=~/ceph-cluster
