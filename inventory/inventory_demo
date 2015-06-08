@@ -1,130 +1,65 @@
 [openstack]
-controller01 ansible_ssh_host=10.32.150.20
-controller02 ansible_ssh_host=10.32.150.24
-network01 ansible_ssh_host=10.32.150.19
-network02 ansible_ssh_host=10.32.150.17
-compute01 ansible_ssh_host=10.32.150.16
-compute02 ansible_ssh_host=10.32.150.14
-compute03 ansible_ssh_host=10.32.150.12
-compute04 ansible_ssh_host=10.32.150.25
-compute05 ansible_ssh_host=10.32.150.18
-compute06 ansible_ssh_host=10.32.150.23
-compute07 ansible_ssh_host=10.32.150.22
 compute08 ansible_ssh_host=10.32.150.21
 compute09 ansible_ssh_host=10.32.150.13
 compute10 ansible_ssh_host=10.32.150.11
 
-
 [ntp_server]
-controller01 ansible_ssh_host=10.32.150.20
+compute08 ansible_ssh_host=10.32.150.21
 
 [ntp_clients]
-controller02 ansible_ssh_host=10.32.150.24
-network01 ansible_ssh_host=10.32.150.19
-network02 ansible_ssh_host=10.32.150.17
-compute01 ansible_ssh_host=10.32.150.16
-compute02 ansible_ssh_host=10.32.150.14
-compute03 ansible_ssh_host=10.32.150.12
-compute04 ansible_ssh_host=10.32.150.25
-compute05 ansible_ssh_host=10.32.150.18
-compute06 ansible_ssh_host=10.32.150.23
-compute07 ansible_ssh_host=10.32.150.22
-compute08 ansible_ssh_host=10.32.150.21
 compute09 ansible_ssh_host=10.32.150.13
 compute10 ansible_ssh_host=10.32.150.11
 
 [mariadb]
-controller01 ansible_ssh_host=10.32.150.20
+compute08 ansible_ssh_host=10.32.150.21
 
 [rabbitmq]
-controller01 ansible_ssh_host=10.32.150.20
+compute08 ansible_ssh_host=10.32.150.21
 
 [keystone]
-controller01 ansible_ssh_host=10.32.150.20
+compute08 ansible_ssh_host=10.32.150.21
 
 [glance]
-controller01 ansible_ssh_host=10.32.150.20
+compute08 ansible_ssh_host=10.32.150.21
 
 [compute_controller]
-controller01 ansible_ssh_host=10.32.150.20
+compute08 ansible_ssh_host=10.32.150.21
 
 [compute_node]
-compute01 ansible_ssh_host=10.32.150.16
-compute02 ansible_ssh_host=10.32.150.14
-compute03 ansible_ssh_host=10.32.150.12
-compute04 ansible_ssh_host=10.32.150.25
-compute05 ansible_ssh_host=10.32.150.18
-compute06 ansible_ssh_host=10.32.150.23
-compute07 ansible_ssh_host=10.32.150.22
-compute08 ansible_ssh_host=10.32.150.21
-compute09 ansible_ssh_host=10.32.150.13
-compute10 ansible_ssh_host=10.32.150.11
-
-[neutron_controller]
-controller01 ansible_ssh_host=10.32.150.20
-
-[neutron_node]
-network01 ansible_ssh_host=10.32.150.19
-
-[neutron_compute]
-compute01 ansible_ssh_host=10.32.150.16
-compute02 ansible_ssh_host=10.32.150.14
-compute03 ansible_ssh_host=10.32.150.12
-compute04 ansible_ssh_host=10.32.150.25
-compute05 ansible_ssh_host=10.32.150.18
-compute06 ansible_ssh_host=10.32.150.23
-compute07 ansible_ssh_host=10.32.150.22
-compute08 ansible_ssh_host=10.32.150.21
 compute09 ansible_ssh_host=10.32.150.13
 compute10 ansible_ssh_host=10.32.150.11
 
 [horizon]
-controller01 ansible_ssh_host=10.32.150.20
+compute08 ansible_ssh_host=10.32.150.21
 
 [cinder_controller]
-controller01 ansible_ssh_host=10.32.150.20
-
-[cinder_storage]
-compute01 ansible_ssh_host=10.32.150.16
-compute02 ansible_ssh_host=10.32.150.14
-compute03 ansible_ssh_host=10.32.150.12
-compute04 ansible_ssh_host=10.32.150.25
-compute05 ansible_ssh_host=10.32.150.18
+compute08 ansible_ssh_host=10.32.150.21
 
 [swift_proxy]
-controller01 ansible_ssh_host=10.32.150.20
+compute08 ansible_ssh_host=10.32.150.21
 
 [swift_storage]
-compute06 ansible_ssh_host=10.32.150.23
-compute07 ansible_ssh_host=10.32.150.22
 compute08 ansible_ssh_host=10.32.150.21
 compute09 ansible_ssh_host=10.32.150.13
 compute10 ansible_ssh_host=10.32.150.11
 
 [heat_controller]
-controller01 ansible_ssh_host=10.32.150.20
+compute08 ansible_ssh_host=10.32.150.21
 
 [ceph_admin]
-maas ansible_ssh_host=10.32.150.2
+compute08 ansible_ssh_host=10.32.150.21
 
 [ceph_client]
-maas ansible_ssh_host=10.32.150.2
-compute01 ansible_ssh_host=10.32.150.16
-compute02 ansible_ssh_host=10.32.150.14
-compute03 ansible_ssh_host=10.32.150.12
-compute04 ansible_ssh_host=10.32.150.25
-compute05 ansible_ssh_host=10.32.150.18
+compute08 ansible_ssh_host=10.32.150.21
+compute09 ansible_ssh_host=10.32.150.13
+compute10 ansible_ssh_host=10.32.150.11
 
 [ceph_mon]
-compute01 ansible_ssh_host=10.32.150.16
-compute02 ansible_ssh_host=10.32.150.14
-compute03 ansible_ssh_host=10.32.150.12
-compute04 ansible_ssh_host=10.32.150.25
-compute05 ansible_ssh_host=10.32.150.18
+compute08 ansible_ssh_host=10.32.150.21
+compute09 ansible_ssh_host=10.32.150.13
+compute10 ansible_ssh_host=10.32.150.11
 
 [ceph_osd]
-compute01 ansible_ssh_host=10.32.150.16
-compute02 ansible_ssh_host=10.32.150.14
-compute03 ansible_ssh_host=10.32.150.12
-compute04 ansible_ssh_host=10.32.150.25
-compute05 ansible_ssh_host=10.32.150.18
+compute08 ansible_ssh_host=10.32.150.21
+compute09 ansible_ssh_host=10.32.150.13
+compute10 ansible_ssh_host=10.32.150.11
