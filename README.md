@@ -216,6 +216,8 @@ Deploy the Ceph admin node
     playback openstack_ceph_client.yml -u username --extra-vars \"client=compute03\"
     playback openstack_ceph_client.yml -u username --extra-vars \"client=compute04\"
     playback openstack_ceph_client.yml -u username --extra-vars \"client=compute05\"
+    playback openstack_ceph_client.yml -u username --extra-vars \"client=controller01\"
+    playback openstack_ceph_client.yml -u username --extra-vars \"client=controller02\"
 
 ### To add Ceph initial monitor(s) and gather the keys
     playback openstack_ceph_gather_keys.yml -u ceph
