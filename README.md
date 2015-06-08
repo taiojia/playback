@@ -144,7 +144,7 @@ The Glance default store is file.
 ### To deploy a cinder controller
     playback openstack_cinder_controller.yml
 
-### To deploy a cinder-volume (lvm)
+### To deploy a cinder-volume on each cinder storage node (LVM Only)
     playback openstack_cinder_volume_lvm.yml --extra-vars \"my_ip=172.16.33.5\"
 
 ### To deploy a swift proxy
@@ -224,12 +224,41 @@ Deploy the Ceph admin node
 
 ### To add Ceph OSDs
     playback openstack_ceph_osd.yml -u ceph --extra-vars \"node=compute01 disk=sdb partition=sdb1\"
+    playback openstack_ceph_osd.yml -u ceph --extra-vars \"node=compute01 disk=sdc partition=sdc1\"
+    playback openstack_ceph_osd.yml -u ceph --extra-vars \"node=compute02 disk=sdb partition=sdb1\"
+    playback openstack_ceph_osd.yml -u ceph --extra-vars \"node=compute02 disk=sdc partition=sdc1\"
+    playback openstack_ceph_osd.yml -u ceph --extra-vars \"node=compute03 disk=sdb partition=sdb1\"
+    playback openstack_ceph_osd.yml -u ceph --extra-vars \"node=compute03 disk=sdc partition=sdc1\"
+    playback openstack_ceph_osd.yml -u ceph --extra-vars \"node=compute04 disk=sdb partition=sdb1\"
+    playback openstack_ceph_osd.yml -u ceph --extra-vars \"node=compute04 disk=sdc partition=sdc1\"
+    playback openstack_ceph_osd.yml -u ceph --extra-vars \"node=compute05 disk=sdb partition=sdb1\"
+    playback openstack_ceph_osd.yml -u ceph --extra-vars \"node=compute05 disk=sdc partition=sdc1\"
 
 ### To add Ceph monitors
     playback openstack_ceph_mon.yml -u ceph --extra-vars \"node=compute01\"
+    playback openstack_ceph_mon.yml -u ceph --extra-vars \"node=compute02\"
+    playback openstack_ceph_mon.yml -u ceph --extra-vars \"node=compute03\"
+    playback openstack_ceph_mon.yml -u ceph --extra-vars \"node=compute04\"
+    playback openstack_ceph_mon.yml -u ceph --extra-vars \"node=compute05\"
 
 ### To copy the Ceph keys to nodes
 Copy the configuration file and admin key to your admin node and your Ceph Nodes so that you can use the ceph CLI without having to specify the monitor address and ceph.client.admin.keyring each time you execute a command.
     
     playback openstack_ceph_copy_keys.yml -u ceph --extra-vars \"node=compute01\"
+    playback openstack_ceph_copy_keys.yml -u ceph --extra-vars \"node=compute02\"
+    playback openstack_ceph_copy_keys.yml -u ceph --extra-vars \"node=compute03\"
+    playback openstack_ceph_copy_keys.yml -u ceph --extra-vars \"node=compute04\"
+    playback openstack_ceph_copy_keys.yml -u ceph --extra-vars \"node=compute05\"
+    playback openstack_ceph_copy_keys.yml -u ceph --extra-vars \"node=controller01\"
+    playback openstack_ceph_copy_keys.yml -u ceph --extra-vars \"node=controller02\"
     
+### Create the cinder ceph user and pool name
+    playback openstack_ceph_cinder_pool_user.yml -u ceph
+    
+Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.client.cinder.keyring of cinder volume node to using the ceph client.
+
+    ssh ubuntu@controller01 sudo mkdir /etc/ceph
+    ceph auth get-or-create client.cinder | ssh ubuntu@controller01 sudo tee /etc/ceph/ceph.client.cinder.keyring
+    
+### Install cinder-volume on controller node(Ceph Only)
+    playback openstack_cinder_volume_ceph.yml
