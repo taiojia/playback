@@ -151,3 +151,9 @@ ceph_cinder_pool: cinder
 # Ceph placement groups
 # The number of placement groups is based on 100 x the number of OSD’s / the number of replicas you want to maintain.
 ceph_pg: 333
+
+# FlatDHCP
+network_size: 254
+flat_network_bridge: br100
+flat_interface: eth0
+public_interface: eth0
