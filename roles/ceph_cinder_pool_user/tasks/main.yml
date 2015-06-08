@@ -21,10 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-- name: Install cinder-volume for ceph
-  hosts: controller01
-  sudo: True
-  roles:
-    - cinder_volume_ceph
-  vars_files:
-    - vars/openstack/openstack.yml
+- name: Create the cinder pool for ceph
+  shell: ceph osd pool create {{ ceph_cinder_pool }} {{ ceph_pg }} chdir=~/ceph-cluster
+- name: Create the cinder user for ceph
+  shell: ceph auth get-or-create client.{{ ceph_cinder_user }} mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool={{ ceph_cinder_pool }} | tee ceph.client.{{ ceph_cinder_user }}.keyring'

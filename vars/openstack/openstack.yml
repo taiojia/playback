@@ -139,6 +139,15 @@ ceph_public_network: 10.32.150.0/24
 # Ceph cluster network
 ceph_cluster_network: 192.168.1.0/24
 
-# osd pool default size
+# Ceph osd pool default size
 ceph_osd_pool_default_size: 3
 
+# Ceph cinder user name
+ceph_cinder_user: cinder
+
+# Ceph cinder pool name
+ceph_cinder_pool: cinder
+
+# Ceph placement groups
+# The number of placement groups is based on 100 x the number of OSD’s / the number of replicas you want to maintain.
+ceph_pg: 333

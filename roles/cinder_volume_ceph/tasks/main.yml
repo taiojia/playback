@@ -21,10 +21,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-- name: Install cinder-volume for ceph
-  hosts: controller01
-  sudo: True
-  roles:
-    - cinder_volume_ceph
-  vars_files:
-    - vars/openstack/openstack.yml
+- name: Install the packages
+  apt: name={{ item }} update_cache=yes
+  with_items:
+    - cinder-volume
+    - python-mysqldb
+- name: Configure cinder
+  template: src=cinder.conf.j2 dest=/etc/cinder/cinder.conf
+- name: Restart the Block Storage volume service including its dependencies
+  service: name={{ item }} state=restarted
+  with_items:
+    - tgt
+    - cinder-api
+    - cinder-scheduler
+    - cinder-volume
+- name: Remove the SQLite database file
+  file: name=/var/lib/cinder/cinder.sqlite state=absent

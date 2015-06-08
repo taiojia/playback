@@ -21,10 +21,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-- name: Install cinder-volume for ceph
-  hosts: controller01
-  sudo: True
+- name: Create the cinder pool and user
+  hosts: ceph_admin
+  sudo: False
   roles:
-    - cinder_volume_ceph
+    - ceph_cinder_pool_user
   vars_files:
     - vars/openstack/openstack.yml
