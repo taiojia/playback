@@ -115,7 +115,7 @@ The Glance default store is file.
 #### To deploy compute nodes
     playback openstack_compute_node.yml --extra-vars \"compute_name=compute1 compute_ip=172.16.33.7\"
     
-#### To deploy a neutron controller
+#### To deploy a neutron controller(GRE Only)
     playback openstack_neutron_controller.yml --extra-vars \"nova_admin_service_tenant_id=6aea60400e6246edaa83d508b222d2eb\"
 
 ###### To obtain the service tenant identifier (id) at the controller
@@ -129,13 +129,13 @@ The Glance default store is file.
         |      id     | 6aea60400e6246edaa83d508b222d2eb |
         |     name    |             service              |
         +-------------+----------------------------------+
-### To deploy a neutron node
+### To deploy a neutron node(GRE Only)
     playback openstack_neutron_node.yml --extra-vars \"local_tunnel_net_ip=192.168.11.6\"
 
-### To deploy a neutron compute
+### To deploy a neutron compute(GRE Only)
     playback openstack_neutron_compute.yml --extra-vars \"compute_name=compute1 compute_ip=172.16.33.7 local_tunnel_net_ip=192.168.11.7\"
 
-### Initial networks
+### Initial networks(GRE Only)
     playback openstack_initial_networks.yml
 
 ### Add Dashboard
