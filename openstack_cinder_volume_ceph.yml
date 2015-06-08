@@ -21,8 +21,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# If using Ceph as the cinder storage backend DO NOT configure prerequisites
-- name: Configure prerequisites
-  include: configure_prerequisites.yml
-- name: Install and configure Block Storage volume components
-  include: install_and_configure_block_storage_volume_componts.yml
+- name: Configure cinder-volume to using Ceph
