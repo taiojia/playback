@@ -262,3 +262,9 @@ Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.clien
     
 ### Install cinder-volume on controller node(Ceph Only)
     playback openstack_cinder_volume_ceph.yml
+
+### Install Legacy networking nova-network(FlatDHCP Only)
+    playback openstack_nova_network_controller.yml
+    playback openstack_nova_network_compute.yml --extra-vars \"compute_name=compute1 compute_ip=172.16.33.7\"
+
+    
