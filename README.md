@@ -199,7 +199,7 @@ Each Ceph node have the ceph user
 
 Copy SSH public key to each Ceph node from Ceph admin node
     
-    ssh-key-gen
+    ssh-keygen
     ssh-copy-id ceph@node
 
 Deploy the Ceph admin node
@@ -267,4 +267,7 @@ Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.clien
     playback openstack_nova_network_controller.yml
     playback openstack_nova_network_compute.yml --extra-vars \"compute_name=compute1 compute_ip=172.16.33.7\"
 
+Create initial network. For example, using an exclusive slice of 203.0.113.0/24 with IP address range 203.0.113.24 to 203.0.113.32:
+    
+    nova network-create demo-net --bridge br100 --multi-host T --fixed-range-v4 203.0.113.24/29
     
