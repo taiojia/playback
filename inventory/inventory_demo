@@ -1,65 +1,65 @@
 [openstack]
-compute08 ansible_ssh_host=10.32.150.21
-compute09 ansible_ssh_host=10.32.150.13
-compute10 ansible_ssh_host=10.32.150.11
+bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcompute01 ansible_ssh_host=10.32.150.13
+bjcompute02 ansible_ssh_host=10.32.150.11
 
 [ntp_server]
-compute08 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=10.32.150.21
 
 [ntp_clients]
-compute09 ansible_ssh_host=10.32.150.13
-compute10 ansible_ssh_host=10.32.150.11
+bjcompute01 ansible_ssh_host=10.32.150.13
+bjcompute02 ansible_ssh_host=10.32.150.11
 
 [mariadb]
-compute08 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=10.32.150.21
 
 [rabbitmq]
-compute08 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=10.32.150.21
 
 [keystone]
-compute08 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=10.32.150.21
 
 [glance]
-compute08 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=10.32.150.21
 
 [compute_controller]
-compute08 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=10.32.150.21
 
 [compute_node]
-compute09 ansible_ssh_host=10.32.150.13
-compute10 ansible_ssh_host=10.32.150.11
+bjcompute01 ansible_ssh_host=10.32.150.13
+bjcompute02 ansible_ssh_host=10.32.150.11
 
 [horizon]
-compute08 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=10.32.150.21
 
 [cinder_controller]
-compute08 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=10.32.150.21
 
 [swift_proxy]
-compute08 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=10.32.150.21
 
 [swift_storage]
-compute08 ansible_ssh_host=10.32.150.21
-compute09 ansible_ssh_host=10.32.150.13
-compute10 ansible_ssh_host=10.32.150.11
+bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcompute01 ansible_ssh_host=10.32.150.13
+bjcompute02 ansible_ssh_host=10.32.150.11
 
 [heat_controller]
-compute08 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=10.32.150.21
 
 [ceph_admin]
-compute08 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=10.32.150.21
 
 [ceph_client]
-compute08 ansible_ssh_host=10.32.150.21
-compute09 ansible_ssh_host=10.32.150.13
-compute10 ansible_ssh_host=10.32.150.11
+bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcompute01 ansible_ssh_host=10.32.150.13
+bjcompute02 ansible_ssh_host=10.32.150.11
 
 [ceph_mon]
-compute08 ansible_ssh_host=10.32.150.21
-compute09 ansible_ssh_host=10.32.150.13
-compute10 ansible_ssh_host=10.32.150.11
+bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcompute01 ansible_ssh_host=10.32.150.13
+bjcompute02 ansible_ssh_host=10.32.150.11
 
 [ceph_osd]
-compute08 ansible_ssh_host=10.32.150.21
-compute09 ansible_ssh_host=10.32.150.13
-compute10 ansible_ssh_host=10.32.150.11
+bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcompute01 ansible_ssh_host=10.32.150.13
+bjcompute02 ansible_ssh_host=10.32.150.11
