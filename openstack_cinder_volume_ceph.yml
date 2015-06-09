@@ -22,7 +22,7 @@
 # SOFTWARE.
 
 - name: Install cinder-volume for ceph
-  hosts: controller01
+  hosts: cinder_volume
   sudo: True
   roles:
     - cinder_volume_ceph

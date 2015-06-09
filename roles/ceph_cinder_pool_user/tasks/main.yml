@@ -24,4 +24,4 @@
 - name: Create the cinder pool for ceph
   shell: ceph osd pool create {{ ceph_cinder_pool }} {{ ceph_pg }} chdir=~/ceph-cluster
 - name: Create the cinder user for ceph
-  shell: ceph auth get-or-create client.{{ ceph_cinder_user }} mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool={{ ceph_cinder_pool }} | tee ceph.client.{{ ceph_cinder_user }}.keyring'
+  shell: ceph auth get-or-create client.{{ ceph_cinder_user }} mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool={{ ceph_cinder_pool }}' | tee ceph.client.{{ ceph_cinder_user }}.keyring chdir=~/ceph-cluster

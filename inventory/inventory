@@ -128,3 +128,7 @@ compute02 ansible_ssh_host=10.32.150.14
 compute03 ansible_ssh_host=10.32.150.12
 compute04 ansible_ssh_host=10.32.150.25
 compute05 ansible_ssh_host=10.32.150.18
+
+[cinder_volume]
+controller01 ansible_ssh_host=10.32.150.20
+controller02 ansible_ssh_host=10.32.150.24
