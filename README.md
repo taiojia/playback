@@ -273,4 +273,3 @@ Create initial network. For example, using an exclusive slice of 203.0.113.0/24 
     nova floating-ip-bulk-create --pool demo-net 10.32.150.65/26
     nova floating-ip-create demo-net
     nova floating-ip-list
-    
