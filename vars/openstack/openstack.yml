@@ -155,5 +155,5 @@ ceph_pg: 100
 # FlatDHCP
 network_size: 254
 flat_network_bridge: br100
-flat_interface: eht2
+flat_interface: eth2
 public_interface: eth0
