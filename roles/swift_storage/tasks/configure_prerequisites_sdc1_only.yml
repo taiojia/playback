@@ -21,13 +21,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-- name: Install and configure swift storage
-  hosts: "{{ swift_storage_name }}"
-  sudo: True
-  vars:
-    - STORAGE_NETWORK_IP: "{{ my_storage_network_ip }}"
-    - MANAGEMENT_INTERFACE_IP_ADDRESS: "{{ my_management_ip }}"
-  roles:
-    - swift_storage
-  vars_files:
-    - vars/openstack/openstack.yml
+- name: Install the supporting utility packages
+  apt: name={{ item }} update_cache=yes
+  with_items:
+    - xfsprogs
+    - rsync
+- name: Format the /dev/sdc1 partitions as XFS
+  shell: mkfs.xfs /dev/sdc1 -f
+- name: Create the mount point directory structure
+  file: path=/srv/node/sdc1 state=directory
+- name: Update fstab
+  shell: echo "/dev/sdc1 /srv/node/sdc1 xfs noatime,nodiratime,nobarrier,logbufs=8 0 2" >> /etc/fstab
+- name: Mount the devices
+  shell: mount /srv/node/sdc1
+- name: Configure rsyncd
+  template: src=rsyncd.conf.j2 dest=/etc/rsyncd.conf
+- name: Enable the rsync service
+  template: src=rsync.j2 dest=/etc/default/rsync
+- name: Start the rsync service
+  service: name=rsync state=started

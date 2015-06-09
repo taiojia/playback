@@ -66,3 +66,11 @@ bjcompute02 ansible_ssh_host=10.32.150.11
 
 [cinder_volume]
 bjcontroller01 ansible_ssh_host=10.32.150.21
+
+[swift_proxy]
+bjcontroller01 ansible_ssh_host=10.32.150.21
+
+[swift_storage]
+bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcompute01 ansible_ssh_host=10.32.150.13
+bjcompute02 ansible_ssh_host=10.32.150.11

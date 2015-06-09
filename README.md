@@ -270,4 +270,7 @@ Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.clien
 Create initial network. For example, using an exclusive slice of 203.0.113.0/24 with IP address range 203.0.113.24 to 203.0.113.32:
     
     nova network-create demo-net --bridge br100 --multi-host T --fixed-range-v4 203.0.113.24/29
+    nova floating-ip-bulk-create --pool demo-net 10.32.150.65/26
+    nova floating-ip-create demo-net
+    nova floating-ip-lis
     

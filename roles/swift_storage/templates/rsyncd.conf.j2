@@ -2,7 +2,7 @@ uid = swift
 gid = swift
 log file = /var/log/rsyncd.log
 pid file = /var/run/rsyncd.pid
-address = {{ MANAGEMENT_INTERFACE_IP_ADDRESS }}
+address = {{ STORAGE_NETWORK_IP }}
 [account]
 max connections = {{ rsyncd_max_connections }}
 path = /srv/node/
