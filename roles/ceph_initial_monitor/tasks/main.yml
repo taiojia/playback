@@ -21,8 +21,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-- name: Creat ceph cluster path
-  file: path=~/ceph-cluster state=directory
 - name: Install Ceph initial monitor
   shell: ceph-deploy new {{ ceph_initial_monitor }} chdir=~/ceph-cluster
 - name: Change the osd pool size
