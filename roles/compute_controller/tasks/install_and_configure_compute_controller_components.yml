@@ -48,5 +48,5 @@
     - nova-novncproxy
 - name: Remove nova.sqlite
   file: name=/var/lib/nova/nova.sqlite state=absent
-- name: nova-scheduler autostart
-  shell: echo service nova-scheduler start >> /etc/rc.local
+- name: nova-scheduler nova-cert autostart
+  shell: echo service nova-scheduler start >> /etc/rc.local && echo service nova-cert start >> /etc/rc.local
