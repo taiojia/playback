@@ -19,6 +19,8 @@ vnc_enabled = True
 vncserver_listen = 0.0.0.0
 vncserver_proxyclient_address = {{ compute_n_management_network_ip }}
 novncproxy_base_url = {{ novncproxy_base_url }}
+rbd_user = {{ ceph_cinder_user }}
+rbd_secret_uuid = {{ ceph_uuid }}
 
 [keystone_authtoken]
 auth_uri = {{ auth_uri }}

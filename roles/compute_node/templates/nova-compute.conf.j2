@@ -1,0 +1,6 @@
+[DEFAULT]
+compute_driver=libvirt.LibvirtDriver
+[libvirt]
+virt_type={{virt_type}}
+rbd_user = {{ ceph_cinder_user }}
+rbd_secret_uuid = {{ ceph_uuid }}
