@@ -40,3 +40,5 @@
     - heat-engine
 - name: Remove the SQLite database file
   file: name=/var/lib/heat/heat.sqlite state=absent
+- name: heat-engine autostart
+  shell: echo service heat-engine start >> /etc/rc.local
