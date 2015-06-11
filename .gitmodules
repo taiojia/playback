@@ -1,4 +1,4 @@
-[submodule "base/ansible"]
-	path = base/ansible
-	url = https://github.com/ansible/ansible.git
-	branch = release1.8.4
+#[submodule "base/ansible"]
+#	path = base/ansible
+#	url = https://github.com/ansible/ansible.git
+#	branch = release1.8.4
