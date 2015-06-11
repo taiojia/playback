@@ -206,4 +206,6 @@ Extend the demo-net pool:
     nova floating-ip-bulk-create --pool demo-net 10.32.150.129/26
     nova floating-ip-bulk-list
     
+### Apt mirror
+    playback openstack_maas_apt_mirror.yml
     
