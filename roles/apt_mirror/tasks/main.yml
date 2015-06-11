@@ -29,4 +29,4 @@
   template: src=apt-mirror.j2 dest=/etc/cron.d/apt-mirror
   notify: Restart cron
 - name: Setup apache2
-  shell: ln -s /var/spool/apt-mirror/mirror/ /var/www/html/ubuntu
+  file: src=/var/spool/apt-mirror/mirror/ path=/var/www/html/ubuntu state=link
