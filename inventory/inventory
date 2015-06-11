@@ -1,6 +1,9 @@
 [maas]
 maas ansible_ssh_host=10.32.150.2
 
+[cloud_mirror]
+cloud_mirror ansible_ssh_host=10.32.150.66
+
 [openstack]
 controller01 ansible_ssh_host=10.32.150.20
 controller02 ansible_ssh_host=10.32.150.24

@@ -22,7 +22,7 @@
 # SOFTWARE.
 
 - name: Install apt-mirror for cloud instance
-  hosts: "{{ instance_ip }}"
+  hosts: cloud_mirror
   sudo: True
   roles:
     - apt_mirror_cloud
