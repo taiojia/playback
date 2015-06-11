@@ -207,5 +207,11 @@ Extend the demo-net pool:
     nova floating-ip-bulk-list
     
 ### Apt mirror
+For maas nodes:
+
     playback openstack_maas_apt_mirror.yml
+
+For cloud instances:
+
+    playback openstack_cloud_apt_mirror.yml --extra-vars \"instance_ip=x.x.x.x\"
     
