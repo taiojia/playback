@@ -213,5 +213,5 @@ For maas nodes:
 
 For cloud instances:
 
-    playback openstack_cloud_apt_mirror.yml --extra-vars \"instance_ip=x.x.x.x\"
+    playback openstack_cloud_apt_mirror.yml
     
