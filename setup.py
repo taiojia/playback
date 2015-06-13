@@ -17,7 +17,7 @@ setup(name='playback',
       author_email='jiasir@icloud.com',
       url='https://github.com/jiasir/playback/',
       license='MIT License',
-      install_requires=['pika == 0.9.8'],
+      install_requires=['pika == 0.9.8', 'ansible'],
       packages=find_packages(),
       scripts=[
           'bin/playback',
