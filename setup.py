@@ -12,12 +12,12 @@ except ImportError:
 
 setup(name='playback',
       version='0.0.1',
-      description='Deny IPs from Queues',
+      description='OpenStack provisioning tools',
       author='jiasir',
       author_email='jiasir@icloud.com',
       url='https://github.com/jiasir/playback/',
       license='MIT License',
-      install_requires=['pika == 0.9.8', 'ansible'],
+      install_requires=['ansible'],
       packages=find_packages(),
       scripts=[
           'bin/playback',
