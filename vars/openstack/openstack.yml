@@ -155,7 +155,7 @@ ceph_uuid: 4cd1f5c1-35f4-4ca6-a589-1b4a546ddc47
 # The number of placement groups is based on 100 x the number of OSD’s / the number of replicas you want to maintain.
 ceph_pg: 100
 
-# FlatDHCP
+# FlatDHCP(flat network bridge and flat interface for internal and plublic interface for external)
 network_size: 254
 flat_network_bridge: br100
 flat_interface: eth2
