@@ -34,7 +34,7 @@ This example creates a Windows Server 2012 qcow2 image, using `virt-install` and
         Invoke-WebRequest -UseBasicParsing http://www.cloudbase.it/downloads/CloudbaseInitSetup_Stable_x64.msi -OutFile c:\cloudbaseinit.msi
         c:\cloudbaseinit.msi
         
-    * In the configuration options window, change the following settings:
+    * In the configuration options window, change the following settings (DO NOT using the `metadata password`, it is a bug:
     
         * Username: `Administrator`
         * Network adapter to configure: `Red Hat VirtIO Ethernet Adapter`
