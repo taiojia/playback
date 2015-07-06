@@ -23,6 +23,9 @@ The inventory file at `inventory/inventory`, the default setting is the Vagrant 
 The `vars/openstack/openstack.yml` is all the parameters.
 * openstack.yml
 
+#### Configure storage network
+    playback openstack_interfaces.yml --extra-vars \"node_name=controller01 storage_ip=192.168.1.12 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\"
+
 #### To deploy OpenStack Basic environment including NTP and OpenStack repository
     playback openstack_basic_environment.yml
 

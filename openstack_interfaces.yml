@@ -21,16 +21,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-- name: Restart the OVS service
-  service: name=openvswitch-switch state=restarted
-- name: Add the external bridge
-  shell: ovs-vsctl add-br br-ex
-- name: Add a port to the external bridge that connects to the physical external network interfaces
-  shell: ovs-vsctl add-port br-ex {{ neutron_external_interface_name }}
-- name: Restart the Networking services
-  service: name={{ item }} state=restarted
-  with_items:
-    - neutron-plugin-openvswitch-agent
-    - neutron-l3-agent
-    - neutron-dhcp-agent
-    - neutron-metadata-agent
+- name: Configure interfaces
+  hosts: "{{ node_name }}"
+  sudo: True
+  roles:
+    - interfaces
+  vars_files:
+    - vars/openstack/openstack.yml
+  vars:
+    - address: "{{ storage_ip }}"
+    - netmask: "{{ storage_mask }}"
+    - network: "{{ storage_network }}"
+    - broadcast: "{{ storage_broadcast }}"
+

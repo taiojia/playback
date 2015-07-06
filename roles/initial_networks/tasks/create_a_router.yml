@@ -24,6 +24,6 @@
 - name: Create the router
   shell: neutron --os-tenant-name {{ openstack_admin_user }} --os-username {{ openstack_admin_user }} --os-password {{ openstack_admin_pass }} --os-auth-url {{ adminurl }} router-create demo-router
 - name: Attach the router to the demo tenant subnet
-  shell: neutron --os-tenant-name {{ openstack_admin_user }} --os-username {{ openstack_admin_user }} --os-password {{ openstack_admin_pass }} --os-auth-url {{ adminurl }} router-interface-add demo-router demo-subnet
+  shell: neutron --os-tenant-name {{ openstack_admin_user }} --os-username {{ openstack_admin_user }} --os-password {{ openstack_admin_pass }} --os-auth-url {{ adminurl }} router-interfaces-add demo-router demo-subnet
 - name: Attach the router to the external network by setting it as the gateway
   shell: neutron --os-tenant-name {{ openstack_admin_user }} --os-username {{ openstack_admin_user }} --os-password {{ openstack_admin_pass }} --os-auth-url {{ adminurl }} router-gateway-set demo-router ext-net
