@@ -24,4 +24,4 @@ def playback(*args):
     l = list(args)
     assert type(l) == list
 
-    # TODO test the playback runing
+    # TODO test the playback running
