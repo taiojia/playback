@@ -22,11 +22,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-__author__ = 'jiasir'
-
-import sys
 import os
 
-args = ' '.join(sys.argv[1:])
+os.system('https://raw.github.com/pypa/pip/master/contrib/get-pip.py | sudo python')
 
-os.system('ansible-playbook ' + args)
+# Install azure library
+try:
+    os.system('sudo /usr/local/bin/pip2.7 install azure')
+except:
+    os.system('sudo pip install azure')
+
+
+
+

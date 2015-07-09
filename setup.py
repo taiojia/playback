@@ -11,13 +11,13 @@ except ImportError:
     sys.exit(1)
 
 setup(name='playback',
-      version='0.0.1',
+      version='0.0.2',
       description='OpenStack provisioning tools',
       author='jiasir',
       author_email='jiasir@icloud.com',
       url='https://github.com/jiasir/playback/',
       license='MIT License',
-      install_requires=['ansible'],
+      install_requires=['ansible', 'azure'],
       packages=find_packages(),
       scripts=[
           'bin/playback',
