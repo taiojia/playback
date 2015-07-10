@@ -29,7 +29,7 @@ os.system('https://raw.github.com/pypa/pip/master/contrib/get-pip.py | sudo pyth
 # Install azure library
 try:
     os.system('sudo /usr/local/bin/pip2.7 install azure')
-except:
+except Exception:
     os.system('sudo pip install azure')
 
 

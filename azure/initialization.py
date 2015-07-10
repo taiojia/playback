@@ -17,37 +17,14 @@
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
+# OUT OF OR
 
-import sys
-import os
-import shutil
+from azure.servicemanagement import ServiceManagementService
 
-try:
-    from setuptools import setup, find_packages
-except ImportError:
-    print("playback now needs setuptools in order to build. Install it using"
-          " your package manager (usually python-setuptools) or via pip (pip"
-          " install setuptools).")
-    sys.exit(1)
+subscription_id = '7f32b7c7-8622-4070-84d0-1ec5bc64dd8f'
+cert_file = '/Users/Taio/Downloads/Microsoft_Azure_credentials.pem'
+sms = ServiceManagementService(subscription_id, cert_file)
 
-setup(name='playback',
-      version='0.0.2',
-      description='OpenStack orchestration tool',
-      author='jiasir',
-      author_email='jiasir@icloud.com',
-      url='https://github.com/jiasir/playback/',
-      license='MIT License',
-      install_requires=['ansible'],
-      packages=find_packages('libs'),
-      package_dir={'': 'libs'},
-      scripts=[
-          'bin/playback',
-      ],
-      data_files=[],)
-
-if not os.path.exists('/etc/playback'):
-    os.mkdir('/etc/playback')
-
-shutil.copy('inventory/inventory', '/etc/playback/playback.conf')
+locations = sms.list_locations()
+for location in locations:
+    print(location.name)

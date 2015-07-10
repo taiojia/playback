@@ -20,34 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import sys
-import os
-import shutil
+from azure.servicemanagement import get_certificate_from_publish_settings
 
-try:
-    from setuptools import setup, find_packages
-except ImportError:
-    print("playback now needs setuptools in order to build. Install it using"
-          " your package manager (usually python-setuptools) or via pip (pip"
-          " install setuptools).")
-    sys.exit(1)
-
-setup(name='playback',
-      version='0.0.2',
-      description='OpenStack orchestration tool',
-      author='jiasir',
-      author_email='jiasir@icloud.com',
-      url='https://github.com/jiasir/playback/',
-      license='MIT License',
-      install_requires=['ansible'],
-      packages=find_packages('libs'),
-      package_dir={'': 'libs'},
-      scripts=[
-          'bin/playback',
-      ],
-      data_files=[],)
-
-if not os.path.exists('/etc/playback'):
-    os.mkdir('/etc/playback')
-
-shutil.copy('inventory/inventory', '/etc/playback/playback.conf')
+subscription_id = get_certificate_from_publish_settings(
+    publish_settings_path='/Users/Taio/Downloads/Microsoft_Azure_credentials.publishsettings',
+    path_to_write_certificate='/Users/Taio/Downloads/Microsoft_Azure_credentials.pem',
+    subscription_id='7f32b7c7-8622-4070-84d0-1ec5bc64dd8f',
+)
