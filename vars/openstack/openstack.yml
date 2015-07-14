@@ -12,6 +12,10 @@ flat_network_bridge: br100
 flat_interface: eth2
 #public_interface: eth0
 
+# Management network VIP and storage network VIP
+VIP_MGMT: 10.32.150.3
+VIP_STORAGE: 192.168.1.3
+
 # To set database listen port
 mariadb_bind_ip: 10.32.150.21
 
