@@ -10,7 +10,6 @@ public_interface: eth1
 network_size: 254
 flat_network_bridge: br100
 flat_interface: eth2
-#public_interface: eth0
 
 # Management network VIP and storage network VIP
 VIP_MGMT: 10.32.150.3
