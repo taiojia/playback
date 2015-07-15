@@ -227,4 +227,8 @@ For cloud instances:
 
 ### Prepare basic environment
     playback openstack_basic_environment.yml -vvvv
+
+### MariaDB
+    playback openstack_mariadb.yml --extra-vars \"hosts=controller01\" -vvvv
+    
     

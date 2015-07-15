@@ -21,22 +21,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-  - name: Import the Galera cluster GPG key
-    shell: apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
-  - name: Add the repo that a version built for Galera
-    shell: add-apt-repository 'deb ftp://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu trusty main'
-  - name: Install mariadb
-    apt: name={{ item }} update_cache=yes
-    with_items:
-      - python-mysqldb
-      - mariadb-galera-server
-      - galera-3
-    retries: 5
-    delay: 2
-  - name: Change root password
-    command: mysqladmin -uroot password {{ mariadb_root_password }}
-#    when: "hosts == 'controller01'"
-  - name: Update /etc/mysql/my.cnf
-    template: src=my.cnf.j2 dest=/etc/mysql/my.cnf
-  - name: Restart mariadb service
-    service: name=mysql state=restarted
+ - name: Install MariaDB
+   sudo: True
+   roles:
+     - mariadb
+   vars_files:
+    - vars/openstack/openstack.yml

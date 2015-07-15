@@ -22,7 +22,7 @@
 # SOFTWARE.
 
  - name: Install mariadb
-   hosts: mariadb
+#   hosts: mariadb
    sudo: True
    roles:
      - mariadb
