@@ -217,6 +217,9 @@ For maas nodes:
 For cloud instances:
 
     playback openstack_cloud_apt_mirror.yml
+
+
+# For OpenStack HA
     
 ### HAProxy and Keepalived
     playback openstack_haproxy.yml --extra-vars \"host=lb01 router_id=lb01 state=MASTER priority=150\" -vvvv
