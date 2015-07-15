@@ -171,7 +171,8 @@ ceph_uuid: 4cd1f5c1-35f4-4ca6-a589-1b4a546ddc47
 # The number of placement groups is based on 100 x the number of OSD’s / the number of replicas you want to maintain.
 ceph_pg: 100
 
-
-
 # Virt type
 virt_type: kvm
+
+# haproxy state pass
+haproxy_states_pass: b57c3233eedef3f7b1a3
