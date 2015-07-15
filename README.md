@@ -1,7 +1,7 @@
 # Playback
 Playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed automation with high availability.
 
-### Getting Started
+### Getting Started ( Will be deprecated)
 
 #### Setup playback
     
