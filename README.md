@@ -224,4 +224,7 @@ For cloud instances:
 ### HAProxy and Keepalived
     playback openstack_haproxy.yml --extra-vars \"host=lb01 router_id=lb01 state=MASTER priority=150\" -vvvv
     playback openstack_haproxy.yml --extra-vars \"host=lb02 router_id=lb02 state=SLAVE priority=100\" -vvvv
+
+### Prepare basic environment
+    playback openstack_basic_environment.yml -vvvv
     
