@@ -21,28 +21,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-- name: Install RabbitMQ
-  apt: name=rabbitmq-server update_cache=yes
-  retries: 5
-  delay: 2
-- name: Stop the RabbitMQ
-  service: name=rabbitmq-server state=stopped
-- name: Update erlang cookie
-  template: src=erlang.cookie.j2 dest=/var/lib/rabbitmq/.erlang.cookie
-- name: Start RabiitMQ
-  service: name=rabbitmq-server state=started
-- name: Configure the message broker service
-  command: rabbitmqctl change_password guest {{ rabbitmq_guest_password }}
-- name: Enable remote access for the guest account
-  template: src=rabbitmq.config.j2 dest=/etc/rabbitmq/rabbitmq.config
-- name: Restart the message broker service
-  service: name=rabbitmq-server state=restarted
-- name: Stop app
-  shell: rabbitmqctl stop_app
-  when: "host == 'controller02'"
-- name: Join the cluster
-  shell: rabbitmqctl join_cluster rabbit@controller01
-  when: "host == 'controller02'"
-- name: Start app
-  shell: rabbitmqctl start_app
-  when: "host == 'controller02'"
+ - name: Install RabbitMQ
+   hosts: '{{ host }}'
+   sudo: True
+   roles:
+     - rabbitmq
+   vars_files:
+     - vars/openstack/openstack.yml

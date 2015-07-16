@@ -231,4 +231,8 @@ For cloud instances:
 ### MariaDB Cluster
     playback openstack_mariadb.yml --extra-vars \"host=controller01 my_ip=10.32.150.19\" -vvvv
     playback openstack_mariadb.yml --extra-vars \"host=controller02 my_ip=10.32.150.17\" -vvvv
+
+### RabbitMQ Cluster
+    playback openstack_rabbitmq.yml --extra-vars \"host=controller01\" -vvvv
+    playback openstack_rabbitmq.yml --extra-vars \"host=controller02\" -vvvv
     

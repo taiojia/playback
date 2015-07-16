@@ -13,7 +13,7 @@ flat_interface: eth2
 
 
 
-# (deprecated) To set database listen port
+# (DEPRECATED) To set database listen port
 #mariadb_bind_ip: 10.32.150.19
 
 # To using the keystone identity
@@ -36,14 +36,15 @@ auth_uri: http://10.32.150.19:5000/v2.0
 
 # node definition
 controller1_management_network_ip: 10.32.150.19
-rabbit_host: 10.32.150.19
+
+# (DEPRECATED) USING rabbit_hosts INSTEAD OF rabbit_host
+rabbit_host: 10.32.150.19:5672,10.32.150.17:5672
 glance_host: 10.32.150.19
 
 # Set the ntp server IP that the ntp client can be synced
 ntp_server_ip: 10.32.150.19
 
 # Passwords and admin token here
-rabbitmq_guest_password: b57c3233eedef3f7b1a3
 keystone_db_password: b57c3233eedef3f7b1a3
 glance_db_password: b57c3233eedef3f7b1a3
 nova_db_password: b57c3233eedef3f7b1a3
@@ -193,3 +194,9 @@ haproxy_states_pass: b57c3233eedef3f7b1a3
 
 # MariaDB root password
 mariadb_root_password: b57c3233eedef3f7b1a3
+
+# RabbitMQ guest password
+rabbitmq_guest_password: b57c3233eedef3f7b1a3
+
+# RabbitMQ hosts
+rabbit_hosts: 10.32.150.19:5672,10.32.150.17:5672
