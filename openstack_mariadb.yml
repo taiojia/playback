@@ -21,9 +21,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
- - name: Install MariaDB
-   sudo: True
-   roles:
-     - mariadb
-   vars_files:
+- name: Install MariaDB
+  hosts: '{{ host }}'
+  sudo: True
+  roles:
+    - mariadb
+  vars_files:
     - vars/openstack/openstack.yml
+  vars:
+    - wsrep_node_name: '{{ host }}'
+    - wsrep_node_address: '{{ my_ip }}'
+

@@ -225,10 +225,10 @@ For cloud instances:
     playback openstack_haproxy.yml --extra-vars \"host=lb01 router_id=lb01 state=MASTER priority=150\" -vvvv
     playback openstack_haproxy.yml --extra-vars \"host=lb02 router_id=lb02 state=SLAVE priority=100\" -vvvv
 
-### Prepare basic environment
+### Prepare OpenStack basic environment
     playback openstack_basic_environment.yml -vvvv
 
-### MariaDB
-    playback openstack_mariadb.yml --extra-vars \"hosts=controller01\" -vvvv
-    
+### MariaDB Cluster
+    playback openstack_mariadb.yml --extra-vars \"host=controller01 my_ip=10.32.150.19\" -vvvv
+    playback openstack_mariadb.yml --extra-vars \"host=controller02 my_ip=10.32.150.17\" -vvvv
     

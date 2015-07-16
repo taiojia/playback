@@ -21,22 +21,48 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-  - name: Import the Galera cluster GPG key
-    shell: apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
-  - name: Add the repo that a version built for Galera
-    shell: add-apt-repository 'deb ftp://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu trusty main'
-  - name: Install mariadb
-    apt: name={{ item }} update_cache=yes
-    with_items:
-      - python-mysqldb
-      - mariadb-galera-server
-      - galera-3
-    retries: 5
-    delay: 2
-  - name: Change root password
-    command: mysqladmin -uroot password {{ mariadb_root_password }}
-#    when: "hosts == 'controller01'"
-  - name: Update /etc/mysql/my.cnf
-    template: src=my.cnf.j2 dest=/etc/mysql/my.cnf
-  - name: Restart mariadb service
-    service: name=mysql state=restarted
+#- name: Import the Galera cluster GPG key
+#  shell: apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
+#- name: Add the repo that a version built for Galera
+#  shell: add-apt-repository 'deb ftp://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu trusty main'
+#- name: Install mariadb
+#  apt: name={{ item }} update_cache=yes
+#  with_items:
+#    - python-mysqldb
+#    - mariadb-galera-server
+#    - galera-3
+#  retries: 5
+#  delay: 2
+#- name: Update /etc/mysql/conf.d/cluster.cnf
+#  template: src=cluster.cnf.j2 dest=/etc/mysql/conf.d/cluster.cnf
+#- name: Update /etc/mysql/my.cnf
+#  template: src=my.cnf.j2 dest=/etc/mysql/my.cnf
+
+#- name: Stop the MariaDB
+#  service: name=mysql state=stopped
+#- name: Update /etc/mysql/debian.cnf
+#  template: src=debian.cnf.j2 dest=/etc/mysql/debian.cnf
+#- name: Start MariaDB Cluster PRIMARY
+#  service: name=mysql state=started arguments='--wsrep-new-cluster'
+#  when: "host == 'controller01'"
+#- name: Start MariaDB Cluster BACKUP
+#  service: name=mysql state=started
+#  when: "host == 'controller02'"
+#- name: Change root password
+#  command: mysqladmin -uroot password {{ mariadb_root_password }}
+#  when: "host == 'controller01'"
+- name: Allow active check for lb01 for management interface
+  command: mysql -uroot -p{{ mariadb_root_password }} -e "insert into mysql.user (Host,User) values ('{{ lb01_mgmt_ip }}','haproxy');"
+  when: "host == 'controller01'"
+- name: Allow active check for lb01 for storage interface
+  command: mysql -uroot -p{{ mariadb_root_password }} -e "insert into mysql.user (Host,User) values ('{{ lb01_storage_ip }}','haproxy');"
+  when: "host == 'controller01'"
+- name: Allow active check for lb02 for management interface
+  command: mysql -uroot -p{{ mariadb_root_password }} -e "insert into mysql.user (Host,User) values ('{{ lb02_mgmt_ip }}','haproxy');"
+  when: "host == 'controller01'"
+- name: Allow active check for lb02 for storage interface
+  command: mysql -uroot -p{{ mariadb_root_password }} -e "insert into mysql.user (Host,User) values ('{{ lb02_storage_ip }}','haproxy');"
+  when: "host == 'controller01'"
+- name: Flush privileges
+  command: mysql -uroot -p{{ mariadb_root_password }} -e "flush privileges;"
+  when: "host == 'controller01'"

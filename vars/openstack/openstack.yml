@@ -11,12 +11,10 @@ network_size: 254
 flat_network_bridge: br100
 flat_interface: eth2
 
-# Management network VIP and storage network VIP
-VIP_MGMT: 10.32.150.3
-VIP_STORAGE: 192.168.1.3
 
-# To set database listen port
-mariadb_bind_ip: 10.32.150.19
+
+# (deprecated) To set database listen port
+#mariadb_bind_ip: 10.32.150.19
 
 # To using the keystone identity
 OS_SERVICE_TOKEN: b57c3233eedef3f7b1a3
@@ -45,7 +43,6 @@ glance_host: 10.32.150.19
 ntp_server_ip: 10.32.150.19
 
 # Passwords and admin token here
-mariadb_root_password: b57c3233eedef3f7b1a3
 rabbitmq_guest_password: b57c3233eedef3f7b1a3
 keystone_db_password: b57c3233eedef3f7b1a3
 glance_db_password: b57c3233eedef3f7b1a3
@@ -174,5 +171,23 @@ ceph_pg: 100
 # Virt type
 virt_type: kvm
 
-# haproxy state pass
+
+################################################
+# Management network VIP and storage network VIP
+VIP_MGMT: 10.32.150.3
+VIP_STORAGE: 192.168.1.3
+
+# HAProxy states password
 haproxy_states_pass: b57c3233eedef3f7b1a3
+
+# Both of mariadb ips
+wsrep_cluster_address: 10.32.150.19,10.32.150.17
+controller01_mgmt_ip: 10.32.150.19
+controller02_mgmt_ip: 10.32.150.17
+lb01_mgmt_ip: 10.32.150.20
+lb01_storage_ip: 192.168.1.10
+lb02_mgmt_ip: 10.32.150.24
+lb02_storage_ip: 192.168.1.10
+
+# MariaDB root password
+mariadb_root_password: b57c3233eedef3f7b1a3

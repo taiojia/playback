@@ -26,3 +26,4 @@
   with_items:
     - keepalived
     - haproxy
+    - mysql-client
