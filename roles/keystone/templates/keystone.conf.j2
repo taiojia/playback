@@ -207,23 +207,23 @@ admin_token={{ admin_token }}
 
 # The RabbitMQ broker address where a single node is used.
 # (string value)
-rabbit_host={{ rabbit_hosts }}
+#rabbit_host= 127.0.0.1
 
 # The RabbitMQ broker port where a single node is used.
 # (integer value)
 #rabbit_port=5672
 
 # RabbitMQ HA cluster host:port pairs. (list value)
-#rabbit_hosts=$rabbit_host:$rabbit_port
+rabbit_hosts={{ rabbit_hosts }}
 
 # Connect over SSL for RabbitMQ. (boolean value)
 #rabbit_use_ssl=false
 
 # The RabbitMQ userid. (string value)
-#rabbit_userid=guest
+rabbit_userid=guest
 
 # The RabbitMQ password. (string value)
-#rabbit_password=guest
+rabbit_password={{ rabbitmq_guest_password }}
 
 # the RabbitMQ login method (string value)
 #rabbit_login_method=AMQPLAIN
