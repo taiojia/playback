@@ -21,19 +21,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-- name: Install the packages
-  apt: name={{ item }} update_cache=yes
-  with_items:
-    - swift
-    - swift-proxy
-    - python-swiftclient
-    - python-keystoneclient
-    - python-keystonemiddleware
-    - memcached
-- name: Create the /etc/swift directory
-  file: path=/etc/swift state=directory
-- name: Configure the proxy server
-  template: src=proxy-server.conf.j2 dest=/etc/swift/proxy-server.conf
-- name: Update memcached configuration
-  template: src=memcached.conf.j2 dest=/etc/memcached.conf
-  notify: Restat memcached
+- name: Install and configure Swift Proxy
+  hosts: '{{ host }}'
+  sudo: True
+  roles:
+    - swift_proxy
+  vars_files:
+    - vars/openstack/openstack.yml

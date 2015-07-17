@@ -22,8 +22,8 @@
 # SOFTWARE.
 
 - name: Add each storage node to the account ring
-  shell: swift-ring-builder account.builder add r1z1-{{ swift_storage_mgmt_ip }}:6002/{{ device_name }} {{ device_weight }} chdir=/etc/swift
+  shell: swift-ring-builder account.builder add r1z1-{{ swift_storage_storage_ip }}:6002/{{ device_name }} {{ device_weight }} chdir=/etc/swift
 - name: Add each storage node to the container ring
-  shell: swift-ring-builder container.builder add r1z1-{{ swift_storage_mgmt_ip }}:6001/{{ device_name }} {{ device_weight }} chdir=/etc/swift
+  shell: swift-ring-builder container.builder add r1z1-{{ swift_storage_storage_ip }}:6001/{{ device_name }} {{ device_weight }} chdir=/etc/swift
 - name: Add each storage node to the object ring
-  shell: swift-ring-builder object.builder add r1z1-{{ swift_storage_mgmt_ip }}:6000/{{ device_name }} {{ device_weight }} chdir=/etc/swift
+  shell: swift-ring-builder object.builder add r1z1-{{ swift_storage_storage_ip }}:6000/{{ device_name }} {{ device_weight }} chdir=/etc/swift

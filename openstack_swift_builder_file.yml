@@ -22,7 +22,7 @@
 # SOFTWARE.
 
 - name: Create the base builder file
-  hosts: swift_proxy
+  hosts: controller01
   sudo: True
   roles:
     - swift_builder_file

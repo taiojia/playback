@@ -248,4 +248,24 @@ Each of the swift nodes, /dev/sdb1 and /dev/sdc1, must contain a suitable partit
     playback openstack_swift_storage.yml --extra-vars \"host=compute06 my_storage_ip=192.168.1.15\" -vvvv
     playback openstack_swift_storage.yml --extra-vars \"host=compute07 my_storage_ip=192.168.1.19\" -vvvv
     
+### Swift Proxy
+    playback openstack_swift_proxy.yml --extra-vars \"host=controller01\" -vvvv
+    playback openstack_swift_proxy.yml --extra-vars \"host=controller02\" -vvvv
+
+### Initial swift rings
+    playback openstack_swift_builder_file.yml -vvvv
+    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_storage_ip=192.168.1.16 device_name=sdb1 device_weight=100\" -vvvv
+    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_storage_ip=192.168.1.16 device_name=sdc1 device_weight=100\" -vvvv
+    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_storage_ip=192.168.1.15 device_name=sdb1 device_weight=100\" -vvvv
+    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_storage_ip=192.168.1.15 device_name=sdc1 device_weight=100\" -vvvv
+    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_storage_ip=192.168.1.19 device_name=sdb1 device_weight=100\" -vvvv
+    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_storage_ip=192.168.1.19 device_name=sdc1 device_weight=100\" -vvvv
+    playback openstack_swift_rebalance_ring.yml -vvvv
+    
+### Distribute ring configuration files
+Copy the `account.ring.gz`, `container.ring.gz`, and `object.ring.gz` files to the `/etc/swift` directory on each storage node and any additional nodes running the proxy service.
+
+### Finalize swift installation
+    playback openstack_swift_finalize_installation.yml --extra-vars \"hosts=swift_proxy\" -vvvv
+    playback openstack_swift_finalize_installation.yml --extra-vars \"hosts=swift_storage\" -vvvv
     

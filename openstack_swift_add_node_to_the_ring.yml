@@ -22,12 +22,12 @@
 # SOFTWARE.
 
 - name: Add node to the ring
-  hosts: swift_proxy
+  hosts: controller01
   sudo: True
   vars:
-    - swift_storage_mgmt_ip: 172.16.33.8
-    - device_name: sdb1
-    - device_weight: 100
+    - swift_storage_storage_ip: '{{ swift_storage_storage_ip }}'
+    - device_name: '{{ device_name }}'
+    - device_weight: '{{ device_weight }}'
   roles:
     - swift_node_to_ring
   vars_files:

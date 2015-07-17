@@ -22,7 +22,7 @@
 # SOFTWARE.
 
 - name: Rebalance the ring
-  hosts: swift_proxy
+  hosts: controller01
   sudo: True
   roles:
     - swift_rebalance_ring

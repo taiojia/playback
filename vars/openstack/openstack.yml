@@ -14,7 +14,7 @@ flat_interface: eth2
 #mariadb_bind_ip: 10.32.150.19
 
 # To using the keystone identity
-OS_SERVICE_TOKEN: b57c3233eedef3f7b1a3
+
 OS_SERVICE_ENDPOINT: http://10.32.150.3:35357/v2.0
 
 
@@ -99,7 +99,7 @@ TENANT_NETWORK_GATEWAY: 192.168.1.1
 TENANT_NETWORK_CIDR: 192.168.1.0/24
 
 # Memcached
-memcached_ip_port: 127.0.0.1:11211
+memcached_ip_port: 127.0.0.1:11211 #DEPRECACED
 
 # cinder credentials
 openstack_cinder_user: cinder
@@ -111,9 +111,7 @@ controller_node_vip: 10.32.150.19
 # cinder storage
 cinder_volumes_pv: /dev/sdb1
 
-# swift credentials
-openstack_swift_user: swift
-openstack_swift_pass: b57c3233eedef3f7b1a3
+
 
 
 
@@ -193,6 +191,7 @@ openstack_admin_user: admin
 openstack_admin_pass: b57c3233eedef3f7b1a3
 openstack_admin_mail: jiasir@icloud.com
 keystone_admin_endpoint: http://10.32.150.3:35357/v2.0
+OS_SERVICE_TOKEN: b57c3233eedef3f7b1a3
 
 
 # Demo credentials
@@ -206,11 +205,11 @@ keystone_db_password: b57c3233eedef3f7b1a3
 admin_token: b57c3233eedef3f7b1a3
 
 
-# The publicurl and internalurl to create the Identity service API endpoints
+# The publicurl and internalurl to create the Identity service API endpoints for keystone
 publicurl: http://10.32.150.3:5000/v2.0
 internalurl: http://192.168.1.3:5000/v2.0
 
-# The adminurl is eq OS_SERVICE_ENDPOINT
+# The adminurl is eq OS_SERVICE_ENDPOINT for keystone
 adminurl: http://10.32.150.3:35357/v2.0
 
 # Set the region name
@@ -222,3 +221,6 @@ swift_hash_path_suffix: a69128c08d64912cba8c
 swift_hash_path_prefix: 476fa57bc1af39c26637
 swift_storage_sdb1_size: 3000GB
 swift_storage_sdc1_size: 3000GB
+openstack_swift_user: swift
+openstack_swift_pass: b57c3233eedef3f7b1a3
+

@@ -22,10 +22,10 @@
 # SOFTWARE.
 
 - name: Create the swift user
-  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ OS_SERVICE_ENDPOINT }} user-create --name {{ openstack_swift_user }} --pass {{ openstack_swift_pass }}
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} user-create --name {{ openstack_swift_user }} --pass {{ openstack_swift_pass }}
 - name: Add the admin role to the swift user
-  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ OS_SERVICE_ENDPOINT }} user-role-add --user {{ openstack_swift_user }} --tenant service --role admin
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} user-role-add --user {{ openstack_swift_user }} --tenant service --role admin
 - name: Create the swift service entity
-  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ OS_SERVICE_ENDPOINT }} service-create --name swift --type object-store --description "OpenStack Object Storage"
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} service-create --name swift --type object-store --description "OpenStack Object Storage"
 - name: Create the Object Storage service API endpoints
-  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ OS_SERVICE_ENDPOINT }} endpoint-create --service-id $(keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ OS_SERVICE_ENDPOINT }} service-list | awk '/ object-store / {print $2}') --publicurl 'http://{{ controller_node_vip }}:8080/v1/AUTH_%(tenant_id)s' --internalurl 'http://{{ controller_node_vip }}:8080/v1/AUTH_%(tenant_id)s' --adminurl http://{{ controller_node_vip }}:8080 --region {{ region_name }}
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} endpoint-create --service-id $(keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} service-list | awk '/ object-store / {print $2}') --publicurl 'http://{{ VIP_MGMT }}:8080/v1/AUTH_%(tenant_id)s' --internalurl 'http://{{ VIP_STORAGE }}:8080/v1/AUTH_%(tenant_id)s' --adminurl http://{{ VIP_MGMT }}:8080 --region {{ region_name }}

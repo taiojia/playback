@@ -21,6 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# The playbook will be DEPRECATED
 - name: Install and configure swift proxy
   hosts: swift_proxy
   sudo: True

@@ -271,8 +271,8 @@ paste.filter_factory = keystonemiddleware.auth_token:filter_factory
 # auth_host = keystonehost
 # auth_port = 35357
 # auth_protocol = http
-auth_uri = http://{{ controller_node_vip }}:5000/v2.0
-identity_uri = http://{{ controller_node_vip }}:35357
+auth_uri = http://{{ VIP_MGMT }}:5000/v2.0
+identity_uri = http://{{ VIP_MGMT }}:35357
 admin_tenant_name = service
 admin_user = {{ openstack_swift_user }}
 admin_password = {{ openstack_swift_pass }}
@@ -321,7 +321,7 @@ use = egg:swift#memcache
 # memcache.conf (see memcache.conf-sample) or lacking that file, it will
 # default to the value below. You can specify multiple servers separated with
 # commas, as in: 10.1.2.3:11211,10.1.2.4:11211
-memcache_servers = {{ memcached_ip_port }}
+memcache_servers = {{ controller01_mgmt_ip }}:11211,{{ controller02_mgmt_ip }}:11211
 #
 # Sets how memcache values are serialized and deserialized:
 # 0 = older, insecure pickle serialization
