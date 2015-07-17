@@ -159,6 +159,8 @@ VIP_STORAGE: 192.168.1.3
 wsrep_cluster_address: 10.32.150.19,10.32.150.17
 controller01_mgmt_ip: 10.32.150.19
 controller02_mgmt_ip: 10.32.150.17
+controller01_storage_ip: 192.168.1.12
+controller02_storage_ip: 192.168.1.13
 
 # Node ips for HAProxy
 lb01_mgmt_ip: 10.32.150.20

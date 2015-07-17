@@ -22,14 +22,14 @@ defaults
 	errorfile 503 /etc/haproxy/errors/503.http
 	errorfile 504 /etc/haproxy/errors/504.http
 
-listen stats 0.0.0.0:80
+listen stats {{ VIP_MGMT }}:80
         mode http
         stats enable
         stats uri /stats
         stats realm HAProxy\ Statistics
         stats auth admin:{{ haproxy_states_pass }}
 
-listen galera 0.0.0.0:3306
+listen galera {{ VIP_MGMT }}:3306
         balance source
         mode tcp
         option tcpka
@@ -37,7 +37,7 @@ listen galera 0.0.0.0:3306
         server controller01 {{ controller01_mgmt_ip }}:3306 check weight 1
         server controller02 {{ controller02_mgmt_ip }}:3306 check weight 1
 
-listen keystone_admin 0.0.0.0:35357
+listen keystone_admin {{ VIP_MGMT }}:35357
         balance source
         option tcpka
         option httpchk
@@ -45,7 +45,15 @@ listen keystone_admin 0.0.0.0:35357
         server controller01 {{ controller01_mgmt_ip }}:35357 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:35357 check inter 2000 rise 2 fall 5
 
-listen keystone_api 0.0.0.0:5000
+listen keystone_admin {{ VIP_STORAGE }}:35357
+        balance source
+        option tcpka
+        option httpchk
+        maxconn 10000
+        server controller01 {{ controller01_storage_ip }}:35357 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_storage_ip }}:35357 check inter 2000 rise 2 fall 5
+
+listen keystone_api {{ VIP_MGMT }}:5000
         balance source
         option tcpka
         option httpchk
@@ -53,14 +61,29 @@ listen keystone_api 0.0.0.0:5000
         server controller01 {{ controller01_mgmt_ip }}:5000 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:5000 check inter 2000 rise 2 fall 5
 
-listen swift_proxy 0.0.0.0:8080
+listen keystone_api {{ VIP_STORAGE }}:5000
+        balance source
+        option tcpka
+        option httpchk
+        maxconn 10000
+        server controller01 {{ controller01_storage_ip }}:5000 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_storage_ip }}:5000 check inter 2000 rise 2 fall 5
+
+listen swift_proxy {{ VIP_MGMT }}:8080
         balance  source
         option  tcpka
         option  tcplog
         server controller01 {{ controller01_mgmt_ip }}:8080  check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:8080  check inter 2000 rise 2 fall 5
 
-listen glance-api 0.0.0.0:9292
+listen swift_proxy {{ VIP_STORAGE }}:8080
+        balance  source
+        option  tcpka
+        option  tcplog
+        server controller01 {{ controller01_storage_ip }}:8080  check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_storage_ip }}:8080  check inter 2000 rise 2 fall 5
+
+listen glance-api {{ VIP_MGMT }}:9292
         balance source
         option tcpka
         option httpchk
@@ -68,10 +91,42 @@ listen glance-api 0.0.0.0:9292
         server controller01 {{ controller01_mgmt_ip }}:9292 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:9292 check inter 2000 rise 2 fall 5
 
-listen glance-registry 0.0.0.0:9191
+listen glance-api {{ VIP_STORAGE }}:9292
+        balance source
+        option tcpka
+        option httpchk
+        maxconn 10000
+        server controller01 {{ controller01_storage_ip }}:9292 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_storage_ip }}:9292 check inter 2000 rise 2 fall 5
+
+listen glance-registry {{ VIP_MGMT }}:9191
         balance source
         option tcpka
         option httpchk
         maxconn 10000
         server controller01 {{ controller01_mgmt_ip }}:9191 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:9191 check inter 2000 rise 2 fall 5
+
+listen glance-registry {{ VIP_STORAGE }}:9191
+        balance source
+        option tcpka
+        option httpchk
+        maxconn 10000
+        server controller01 {{ controller01_storage_ip }}:9191 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_storage_ip }}:9191 check inter 2000 rise 2 fall 5
+
+listen cinder-api {{ VIP_MGMT }}:8776
+        balance  source
+        option  tcpka
+        option  httpchk
+        option  tcplog
+        server controller01 {{ controller01_mgmt_ip }}:8776 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:8776 check inter 2000 rise 2 fall 5
+
+listen cinder-api {{ VIP_STORAGE }}:8776
+        balance  source
+        option  tcpka
+        option  httpchk
+        option  tcplog
+        server controller01 {{ controller01_storage_ip }}:8776 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_storage_ip }}:8776 check inter 2000 rise 2 fall 5
