@@ -21,7 +21,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-  - include: configure_prerequisites.yml
-  - include: create_the_service_credentials.yml
-  - include: create_the_image_service_API_endpoints.yml
-  - include: install_and_configure_the_image_service_components.yml
+- include: configure_prerequisites.yml
+  when: "host == 'controller01'"
+- include: create_the_service_credentials.yml
+  when: "host == 'controller01'"
+- include: create_the_image_service_API_endpoints.yml
+  when: "host == 'controller01'"
+- include: install_and_configure_the_image_service_components.yml
+

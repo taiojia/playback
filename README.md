@@ -268,4 +268,9 @@ Copy the `account.ring.gz`, `container.ring.gz`, and `object.ring.gz` files to t
 ### Finalize swift installation
     playback openstack_swift_finalize_installation.yml --extra-vars \"hosts=swift_proxy\" -vvvv
     playback openstack_swift_finalize_installation.yml --extra-vars \"hosts=swift_storage\" -vvvv
+
+### Glance (Swift backend)
+    playback openstack_glance.yml --extra-vars \"host=controller01\" -vvvv
+    playback openstack_glance.yml --extra-vars \"host=controller02\" -vvvv
+    
     

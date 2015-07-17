@@ -9,7 +9,7 @@ verbose = True
 # in a request to add a new image to Glance? Known schemes are determined
 # by the known_stores option below.
 # Default: 'file'
-default_store = file
+default_store = swift
 
 # Maximum image size (in bytes) that may be uploaded through the
 # Glance API server. Defaults to 1 TB.
@@ -217,11 +217,12 @@ notification_driver = noop
 
 # Configuration options if sending notifications via rabbitmq (these are
 # the defaults)
-rabbit_host = localhost
+#rabbit_host = localhost
+rabbit_hosts = {{ rabbit_hosts }}
 rabbit_port = 5672
 rabbit_use_ssl = false
 rabbit_userid = guest
-rabbit_password = guest
+rabbit_password = {{ rabbitmq_guest_password }}
 rabbit_virtual_host = /
 rabbit_notification_exchange = glance
 rabbit_notification_topic = notifications
@@ -301,7 +302,7 @@ backend = sqlalchemy
 # Deprecated group/name - [DATABASE]/sql_connection
 # Deprecated group/name - [sql]/connection
 #connection = <None>
-connection = mysql://glance:{{ glance_db_password }}@{{ controller1_management_network_ip }}/glance
+connection = mysql://glance:{{ glance_db_password }}@{{ VIP_MGMT }}/glance
 
 # The SQL mode to be used for MySQL sessions. This option,
 # including the default, overrides any server-set SQL mode. To
@@ -442,12 +443,13 @@ flavor = keystone
 #      glance.store.vmware_datastore.Store,
 #stores = glance.store.filesystem.Store,
 #         glance.store.http.Store
+stores = glance.store.swift.Store
 
 # ============ Filesystem Store Options ========================
 
 # Directory that the Filesystem backend store
 # writes image data to
-filesystem_store_datadir = /var/lib/glance/images/
+#filesystem_store_datadir = /var/lib/glance/images/
 
 # A list of directories where image data can be stored.
 # This option may be specified multiple times for specifying multiple store
@@ -479,24 +481,24 @@ swift_store_auth_version = 2
 # Valid schemes are 'http://' and 'https://'
 # If no scheme specified,  default to 'https://'
 # For swauth, use something like '127.0.0.1:8080/v1.0/'
-swift_store_auth_address = 127.0.0.1:5000/v2.0/
+swift_store_auth_address = http://{{ VIP_MGMT }}:5000/v2.0/
 
 # User to authenticate against the Swift authentication service
 # If you use Swift authentication service, set it to 'account':'user'
 # where 'account' is a Swift storage account and 'user'
 # is a user in that account
-swift_store_user = jdoe:jdoe
+swift_store_user = service:{{ openstack_glance_user }}
 
 # Auth key for the user authenticating against the
 # Swift authentication service
-swift_store_key = a86850deb2742ec3cb41518e26aa2d89
+swift_store_key = {{ openstack_glance_pass }}
 
 # Container within the account that the account should use
 # for storing images in Swift
 swift_store_container = glance
 
 # Do we create the container if it does not exist?
-swift_store_create_container_on_put = False
+swift_store_create_container_on_put = True
 
 # What size, in MB, should Glance start chunking image files
 # and do a large object manifest in Swift? By default, this is

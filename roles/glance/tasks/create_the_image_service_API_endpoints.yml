@@ -21,5 +21,5 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-  - name: Create the Image Service API endpoints
-    shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ OS_SERVICE_ENDPOINT }} endpoint-create --service-id $(keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ OS_SERVICE_ENDPOINT }} service-list | awk '/ image / {print $2}') --publicurl {{ glance_publicurl }} --internalurl {{ glance_internalurl }} --adminurl {{ glance_adminurl }} --region {{ region_name }}
+- name: Create the Image Service API endpoints
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} endpoint-create --service-id $(keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} service-list | awk '/ image / {print $2}') --publicurl {{ glance_publicurl }} --internalurl {{ glance_internalurl }} --adminurl {{ glance_adminurl }} --region {{ region_name }}

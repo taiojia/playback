@@ -21,23 +21,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-  - name: Install glance python-glanceclient
-    apt: name={{ item }} update_cache=yes
-    with_items:
-      - glance
-      - python-glanceclient
-    retries: 5
-    delay: 2
-  - name: Update /etc/glance/glance-api.conf
-    template: src=glance-api.conf.j2 dest=/etc/glance/glance-api.conf
-  - name: Update /etc/glance/glance-registry.conf
-    template: src=glance-registry.conf.j2 dest=/etc/glance/glance-registry.conf
-  - name: Populate the Image Service database
-    command: /bin/sh -c "glance-manage db_sync" glance
-  - name: Restart the Image Service services
-    service: name={{ item }} state=restarted
-    with_items:
-      - glance-registry
-      - glance-api
-  - name: Remove glance.sqlite
-    file: name=/var/lib/glance/glance.sqlite state=absent
+- name: Install glance python-glanceclient
+  apt: name={{ item }} update_cache=yes
+  with_items:
+    - glance
+    - python-glanceclient
+  retries: 5
+  delay: 2
+- name: Update /etc/glance/glance-api.conf
+  template: src=glance-api.conf.j2 dest=/etc/glance/glance-api.conf
+- name: Update /etc/glance/glance-registry.conf
+  template: src=glance-registry.conf.j2 dest=/etc/glance/glance-registry.conf
+- name: Update /etc/glance/glance-cache.conf
+  template: src=glance-cache.conf.j2 dest=/etc/glance/glance-cache.conf
+- name: Populate the Image Service database
+  command: /bin/sh -c "glance-manage db_sync" glance
+  when: "host == 'controller01'"
+- name: Restart the Image Service services
+  service: name={{ item }} state=restarted
+  with_items:
+    - glance-registry
+    - glance-api
+- name: Remove glance.sqlite
+  file: name=/var/lib/glance/glance.sqlite state=absent
