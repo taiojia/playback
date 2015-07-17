@@ -21,8 +21,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# This examples only use sdc1
-#- name: Create sdb1 partition
-#  include: create_sdb1_partition.yml
+
+- name: Create sdb1 partition
+  include: create_sdb1_partition.yml
 - name: Create sdc1 partition
   include: create_sdc1_partition.yml

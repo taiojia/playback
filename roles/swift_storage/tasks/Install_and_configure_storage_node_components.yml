@@ -40,4 +40,3 @@
   file: path=/var/cache/swift state=directory
 - name: ensure proper ownership of the recon directory
   shell: chown -R swift:swift /var/cache/swift
-

@@ -115,10 +115,7 @@ cinder_volumes_pv: /dev/sdb1
 openstack_swift_user: swift
 openstack_swift_pass: b57c3233eedef3f7b1a3
 
-# swift
-rsyncd_max_connections: 3
-swift_hash_path_suffix: a69128c08d64912cba8c
-swift_hash_path_prefix: 476fa57bc1af39c26637
+
 
 # heat db pass
 heat_db_password: b57c3233eedef3f7b1a3
@@ -127,9 +124,7 @@ heat_db_password: b57c3233eedef3f7b1a3
 openstack_heat_user: heat
 openstack_heat_pass: b57c3233eedef3f7b1a3
 
-# Disk partitions for swift
-sdb1_size: 3000GB
-sdc1_size: 3000GB
+
 
 # Ceph initial monitor
 ceph_initial_monitor: bjcontroller01
@@ -170,12 +165,12 @@ public_interface: eth1
 VIP_MGMT: 10.32.150.3
 VIP_STORAGE: 192.168.1.3
 
-# Both of mariadb ips
+# Both of mariadb ips for HAProxy
 wsrep_cluster_address: 10.32.150.19,10.32.150.17
 controller01_mgmt_ip: 10.32.150.19
 controller02_mgmt_ip: 10.32.150.17
 
-# Node ips
+# Node ips for HAProxy
 lb01_mgmt_ip: 10.32.150.20
 lb01_storage_ip: 192.168.1.10
 lb02_mgmt_ip: 10.32.150.24
@@ -220,3 +215,10 @@ adminurl: http://10.32.150.3:35357/v2.0
 
 # Set the region name
 region_name: regionOne
+
+# swift
+rsyncd_max_connections: 3
+swift_hash_path_suffix: a69128c08d64912cba8c
+swift_hash_path_prefix: 476fa57bc1af39c26637
+swift_storage_sdb1_size: 3000GB
+swift_storage_sdc1_size: 3000GB

@@ -24,6 +24,6 @@
 - name: Change partition table of sdc to gpt
   shell: parted /dev/sdc mklabel gpt Yes
 - name: Create sdc1 partition
-  shell: parted /dev/sdc mkpart primary 1MB {{ sdc1_size }}
+  shell: parted /dev/sdc mkpart primary 1MB {{ swift_storage_sdc1_size }}
 - name: Make ext4 file system for sdc1
   shell: mkfs -t ext4 /dev/sdc1

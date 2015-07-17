@@ -21,10 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# For this examples only use sdc1
-#- name: Configure prerequisites
-#  include: configure_prerequisites.yml
-- name: Configure prerequisites sdc1 only
-  include: configure_prerequisites_sdc1_only.yml
+- name: Configure prerequisites
+  include: configure_prerequisites.yml
 - name: Install and configure storage node components
   include: Install_and_configure_storage_node_components.yml

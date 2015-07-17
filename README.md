@@ -81,10 +81,6 @@ The Glance default store is file.
 ### To deploy a swift proxy
     playback openstack_swift_controller.yml
     
-### Format devices(sdb1 and sdc1)
-Each of the swift nodes, /dev/sdb1 and /dev/sdc1, must contain a suitable partition table with one partition occupying the entire device. Although the Object Storage service supports any file system with extended attributes (xattr), testing and benchmarking indicate the best performance and reliability on XFS.
-
-    playback openstack_storage_partitions.yml --extra-vars \"storage_name=compute01\" -vvvv
 
 ### To deploy a swift storage
     
@@ -239,4 +235,17 @@ For cloud instances:
 #### Keystone
     playback openstack_keystone.yml --extra-vars \"host=controller01\" -vvvv
     playback openstack_keystone.yml --extra-vars \"host=controller02\" -vvvv
+
+### Format devices for Swift Storage(sdb1 and sdc1)
+Each of the swift nodes, /dev/sdb1 and /dev/sdc1, must contain a suitable partition table with one partition occupying the entire device. Although the Object Storage service supports any file system with extended attributes (xattr), testing and benchmarking indicate the best performance and reliability on XFS.
+
+    playback openstack_storage_partitions.yml --extra-vars \"host=compute05\" -vvvv
+    playback openstack_storage_partitions.yml --extra-vars \"host=compute06\" -vvvv
+    playback openstack_storage_partitions.yml --extra-vars \"host=compute07\" -vvvv
+
+### Swift Storage
+    playback openstack_swift_storage.yml --extra-vars \"host=compute05 my_storage_ip=192.168.1.16\" -vvvv
+    playback openstack_swift_storage.yml --extra-vars \"host=compute06 my_storage_ip=192.168.1.15\" -vvvv
+    playback openstack_swift_storage.yml --extra-vars \"host=compute07 my_storage_ip=192.168.1.19\" -vvvv
+    
     

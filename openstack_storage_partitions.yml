@@ -22,7 +22,7 @@
 # SOFTWARE.
 
 - name: Create sdb1 and sdc1 partitions
-  hosts:  "{{ storage_name }}"
+  hosts:  '{{ host }}'
   sudo: True
   roles:
     - create_sdb1_sdc1
