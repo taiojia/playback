@@ -1,10 +1,7 @@
 ---
 # The configuration for OpenStack HA
 
-# Define networks
-mgmt_interface: eth0
-storage_interface: eth2
-public_interface: eth1
+
 
 # FlatDHCP(flat network bridge and flat interfaces for internal and plublic interfaces for external)
 network_size: 254
@@ -18,17 +15,11 @@ flat_interface: eth2
 
 # To using the keystone identity
 OS_SERVICE_TOKEN: b57c3233eedef3f7b1a3
-OS_SERVICE_ENDPOINT: http://10.32.150.19:35357/v2.0
+OS_SERVICE_ENDPOINT: http://10.32.150.3:35357/v2.0
 
-# The publicurl and internalurl to create the Identity service API endpoints
-publicurl: http://10.32.150.19:5000/v2.0
-internalurl: http://10.32.150.19:5000/v2.0
 
-# The adminurl is eq OS_SERVICE_ENDPOINT
-adminurl: http://10.32.150.19:35357/v2.0
 
-# Set the region name
-region_name: regionOne
+
 
 # Keystone auth token
 identity_uri: http://10.32.150.19:35357
@@ -45,23 +36,19 @@ glance_host: 10.32.150.19
 ntp_server_ip: 10.32.150.19
 
 # Passwords and admin token here
-keystone_db_password: b57c3233eedef3f7b1a3
+
 glance_db_password: b57c3233eedef3f7b1a3
 nova_db_password: b57c3233eedef3f7b1a3
 neutron_db_password: b57c3233eedef3f7b1a3
 cinder_db_password: b57c3233eedef3f7b1a3
-admin_token: b57c3233eedef3f7b1a3
+
 neutron_metadata_proxy_shared_secret: b57c3233eedef3f7b1a3
 
-# admin credentials
-openstack_admin_user: admin
-openstack_admin_pass: b57c3233eedef3f7b1a3
-openstack_admin_mail: jiasir@icloud.com
 
-# demo credentials
-openstack_demo_user: demo
-openstack_demo_pass: b57c3233eedef3f7b1a3
-openstack_demo_mail: jiasir@icloud.com
+
+
+
+
 
 # glance credentials
 openstack_glance_user: glance
@@ -174,6 +161,11 @@ virt_type: kvm
 
 
 ################################################
+# Define networks
+mgmt_interface: eth0
+storage_interface: eth2
+public_interface: eth1
+
 # Management network VIP and storage network VIP
 VIP_MGMT: 10.32.150.3
 VIP_STORAGE: 192.168.1.3
@@ -200,3 +192,31 @@ rabbitmq_guest_password: b57c3233eedef3f7b1a3
 
 # RabbitMQ hosts
 rabbit_hosts: 10.32.150.19:5672,10.32.150.17:5672
+
+# Admin credentials
+openstack_admin_user: admin
+openstack_admin_pass: b57c3233eedef3f7b1a3
+openstack_admin_mail: jiasir@icloud.com
+keystone_admin_endpoint: http://10.32.150.3:35357/v2.0
+
+
+# Demo credentials
+openstack_demo_user: demo
+openstack_demo_pass: b57c3233eedef3f7b1a3
+openstack_demo_mail: jiasir@icloud.com
+keystone_api_endpoint: http://10.32.150.3:5000/v2.0
+
+# Other password
+keystone_db_password: b57c3233eedef3f7b1a3
+admin_token: b57c3233eedef3f7b1a3
+
+
+# The publicurl and internalurl to create the Identity service API endpoints
+publicurl: http://10.32.150.3:5000/v2.0
+internalurl: http://192.168.1.3:5000/v2.0
+
+# The adminurl is eq OS_SERVICE_ENDPOINT
+adminurl: http://10.32.150.3:35357/v2.0
+
+# Set the region name
+region_name: regionOne

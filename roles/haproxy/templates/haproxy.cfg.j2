@@ -36,3 +36,19 @@ listen galera 0.0.0.0:3306
         option mysql-check user haproxy
         server controller01 {{ controller01_mgmt_ip }}:3306 check weight 1
         server controller02 {{ controller02_mgmt_ip }}:3306 check weight 1
+
+listen keystone_admin 0.0.0.0:35357
+        balance source
+        option tcpka
+        option httpchk
+        maxconn 10000
+        server controller01 {{ controller01_mgmt_ip }}:35357 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:35357 check inter 2000 rise 2 fall 5
+
+listen keystone_api 0.0.0.0:5000
+        balance source
+        option tcpka
+        option httpchk
+        maxconn 10000
+        server controller01 {{ controller01_mgmt_ip }}:5000 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:5000 check inter 2000 rise 2 fall 5

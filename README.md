@@ -235,4 +235,8 @@ For cloud instances:
 ### RabbitMQ Cluster
     playback openstack_rabbitmq.yml --extra-vars \"host=controller01\" -vvvv
     playback openstack_rabbitmq.yml --extra-vars \"host=controller02\" -vvvv
+
+#### Keystone
+    playback openstack_keystone.yml --extra-vars \"host=controller01\" -vvvv
+    playback openstack_keystone.yml --extra-vars \"host=controller02\" -vvvv
     

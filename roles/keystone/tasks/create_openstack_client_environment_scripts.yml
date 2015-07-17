@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-  - name: Create the admin-openrc.sh file
-    template: src=admin-openrc.sh.j2 dest=/root/admin-openrc.sh mode=0755
-  - name: Create the demo-openrc.sh file
-    template: src=demo-openrc.sh.j2 dest=/root/demo-openrc.sh mode=0755
+- name: Create the admin-openrc.sh file
+  template: src=admin-openrc.sh.j2 dest=/root/admin-openrc.sh mode=0755
+- name: Create the demo-openrc.sh file
+  template: src=demo-openrc.sh.j2 dest=/root/demo-openrc.sh mode=0755
