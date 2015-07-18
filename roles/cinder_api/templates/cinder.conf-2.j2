@@ -1,12 +1,4 @@
 [DEFAULT]
-volume_driver=cinder.volume.drivers.rbd.RBDDriver
-rbd_pool={{ ceph_cinder_pool }}
-rbd_ceph_conf=/etc/ceph/ceph.conf
-rbd_flatten_volume_from_snapshot=false
-rbd_max_clone_depth=5
-rbd_user={{ ceph_cinder_user }}
-glance_api_version=2
-
 rootwrap_config = /etc/cinder/rootwrap.conf
 api_paste_confg = /etc/cinder/api-paste.ini
 iscsi_helper = tgtadm

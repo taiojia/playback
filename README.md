@@ -236,7 +236,7 @@ For cloud instances:
     playback openstack_keystone.yml --extra-vars \"host=controller01\" -vvvv
     playback openstack_keystone.yml --extra-vars \"host=controller02\" -vvvv
 
-### Format devices for Swift Storage(sdb1 and sdc1)
+### Format devices for Swift Storage (sdb1 and sdc1)
 Each of the swift nodes, /dev/sdb1 and /dev/sdc1, must contain a suitable partition table with one partition occupying the entire device. Although the Object Storage service supports any file system with extended attributes (xattr), testing and benchmarking indicate the best performance and reliability on XFS.
 
     playback openstack_storage_partitions.yml --extra-vars \"host=compute05\" -vvvv
@@ -273,4 +273,79 @@ Copy the `account.ring.gz`, `container.ring.gz`, and `object.ring.gz` files to t
     playback openstack_glance.yml --extra-vars \"host=controller01\" -vvvv
     playback openstack_glance.yml --extra-vars \"host=controller02\" -vvvv
     
+### To deploy the Ceph admin node
+Ensure the admin node must be have password-less SSH access to Ceph nodes. When ceph-deploy logs in to a Ceph node as a user, that particular user must have passwordless sudo privileges.
+
+Copy SSH public key to each Ceph node from Ceph admin node
+    
+    ssh-keygen
+    ssh-copy-id ubuntu@ceph_node
+
+Deploy the Ceph admin node
+
+    playback openstack_ceph_admin.yml -vvvv
+
+### To deploy the Ceph initial monitor
+    playback openstack_ceph_initial_mon.yml -vvvv
+    
+### To deploy the Ceph clients
+    playback openstack_ceph_client.yml --extra-vars \"client=controller01\" -vvvv
+    playback openstack_ceph_client.yml --extra-vars \"client=controller02\" -vvvv
+    playback openstack_ceph_client.yml --extra-vars \"client=compute01\" -vvvv
+    playback openstack_ceph_client.yml --extra-vars \"client=compute02\" -vvvv
+    playback openstack_ceph_client.yml --extra-vars \"client=compute03\" -vvvv
+    playback openstack_ceph_client.yml --extra-vars \"client=compute04\" -vvvv
+    playback openstack_ceph_client.yml --extra-vars \"client=compute05\" -vvvv
+    playback openstack_ceph_client.yml --extra-vars \"client=compute06\" -vvvv
+    playback openstack_ceph_client.yml --extra-vars \"client=compute07\" -vvvv
+
+### To add Ceph initial monitor(s) and gather the keys
+    playback openstack_ceph_gather_keys.yml -vvvv
+
+### To add Ceph OSDs
+    playback openstack_ceph_osd.yml --extra-vars \"node=compute01 disk=sdb partition=sdb1\"
+    playback openstack_ceph_osd.yml --extra-vars \"node=compute01 disk=sdc partition=sdc1\"
+    playback openstack_ceph_osd.yml --extra-vars \"node=compute02 disk=sdb partition=sdb1\"
+    playback openstack_ceph_osd.yml --extra-vars \"node=compute02 disk=sdc partition=sdc1\"
+    playback openstack_ceph_osd.yml --extra-vars \"node=compute03 disk=sdb partition=sdb1\"
+    playback openstack_ceph_osd.yml --extra-vars \"node=compute03 disk=sdc partition=sdc1\"
+    playback openstack_ceph_osd.yml --extra-vars \"node=compute04 disk=sdb partition=sdb1\"
+    playback openstack_ceph_osd.yml --extra-vars \"node=compute04 disk=sdc partition=sdc1\"
+
+
+### To add Ceph monitors
+    playback openstack_ceph_mon.yml --extra-vars \"node=compute01\" -vvvv
+    playback openstack_ceph_mon.yml --extra-vars \"node=compute02\" -vvvv
+    playback openstack_ceph_mon.yml --extra-vars \"node=compute03\" -vvvv
+    playback openstack_ceph_mon.yml --extra-vars \"node=compute04\" -vvvv
+
+
+### To copy the Ceph keys to nodes
+Copy the configuration file and admin key to your admin node and your Ceph Nodes so that you can use the ceph CLI without having to specify the monitor address and ceph.client.admin.keyring each time you execute a command.
+    
+    playback openstack_ceph_copy_keys.yml --extra-vars \"node=controller01\" -vvvv
+    playback openstack_ceph_copy_keys.yml --extra-vars \"node=controller02\" -vvvv
+    playback openstack_ceph_copy_keys.yml --extra-vars \"node=compute01\" -vvvv
+    playback openstack_ceph_copy_keys.yml --extra-vars \"node=compute02\" -vvvv
+    playback openstack_ceph_copy_keys.yml --extra-vars \"node=compute03\" -vvvv
+    playback openstack_ceph_copy_keys.yml --extra-vars \"node=compute04\" -vvvv
+    playback openstack_ceph_copy_keys.yml --extra-vars \"node=compute05\" -vvvv
+    playback openstack_ceph_copy_keys.yml --extra-vars \"node=compute06\" -vvvv
+    playback openstack_ceph_copy_keys.yml --extra-vars \"node=compute07\" -vvvv
+
+### Create the cinder ceph user and pool name
+    playback openstack_ceph_cinder_pool_user.yml -vvvv
+
+### To deploy a cinder-api
+    playback openstack_cinder_api.yml --extra-vars \"host=controller01\" -vvvv
+    playback openstack_cinder_api.yml --extra-vars \"host=controller02\" -vvvv
+    
+### Install cinder-volume on controller node(Ceph backend)
+    playback openstack_cinder_volume_ceph.yml --extra-vars \"host=controller01\" -vvvv
+    playback openstack_cinder_volume_ceph.yml --extra-vars \"host=controller02\" -vvvv
+    
+Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.client.cinder.keyring of cinder volume node to using the ceph client.
+
+    ceph auth get-or-create client.cinder | ssh ubuntu@controller01 sudo tee /etc/ceph/ceph.client.cinder.keyring
+    ceph auth get-or-create client.cinder | ssh ubuntu@controller02 sudo tee /etc/ceph/ceph.client.cinder.keyring
     

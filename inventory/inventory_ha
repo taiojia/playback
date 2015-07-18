@@ -64,7 +64,7 @@ compute07 ansible_ssh_host=10.32.150.23
 controller01 ansible_ssh_host=10.32.150.19
 controller02 ansible_ssh_host=10.32.150.17
 
-[cinder_controller]
+[cinder_api]
 controller01 ansible_ssh_host=10.32.150.19
 controller02 ansible_ssh_host=10.32.150.17
 

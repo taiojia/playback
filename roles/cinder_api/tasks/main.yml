@@ -21,10 +21,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-- name: Install cinder-volume for ceph
-  hosts: '{{ host }}'
-  sudo: True
-  roles:
-    - cinder_volume_ceph
-  vars_files:
-    - vars/openstack/openstack.yml
+- name: Configure prerequisites
+  include: configure_prerequisites.yml
+  when: "host == 'controller01'"
+- name: Install and configure Block Storage controller components
+  include: install_and_cinfigure_block_storage_controller.yml
