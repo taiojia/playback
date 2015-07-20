@@ -336,7 +336,7 @@ Copy the configuration file and admin key to your admin node and your Ceph Nodes
 ### Create the cinder ceph user and pool name
     playback openstack_ceph_cinder_pool_user.yml -vvvv
 
-### To deploy a cinder-api
+### cinder-api
     playback openstack_cinder_api.yml --extra-vars \"host=controller01\" -vvvv
     playback openstack_cinder_api.yml --extra-vars \"host=controller02\" -vvvv
     

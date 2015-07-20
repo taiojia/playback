@@ -3,10 +3,7 @@
 
 
 
-# FlatDHCP(flat network bridge and flat interfaces for internal and plublic interfaces for external)
-network_size: 254
-flat_network_bridge: br100
-flat_interface: eth2
+
 
 
 
@@ -23,23 +20,21 @@ OS_SERVICE_ENDPOINT: http://10.32.150.3:35357/v2.0
 
 # Keystone auth token
 
-auth_uri: http://10.32.150.3:5000/v2.0
+
 
 # (DEPRECATED) node definition
 controller1_management_network_ip: 10.32.150.3
 
 # (DEPRECATED) USING rabbit_hosts INSTEAD OF rabbit_host
 rabbit_host: 10.32.150.19:5672,10.32.150.17:5672
-glance_host: 10.32.150.3
+
 
 
 
 # Passwords and admin token here
 
 
-nova_db_password: b57c3233eedef3f7b1a3
-neutron_db_password: b57c3233eedef3f7b1a3
-cinder_db_password: b57c3233eedef3f7b1a3
+
 
 neutron_metadata_proxy_shared_secret: b57c3233eedef3f7b1a3
 
@@ -107,12 +102,7 @@ cinder_volumes_pv: /dev/sdb1
 
 
 
-# heat db pass
-heat_db_password: b57c3233eedef3f7b1a3
 
-# heat credentials
-openstack_heat_user: heat
-openstack_heat_pass: b57c3233eedef3f7b1a3
 
 
 
@@ -153,6 +143,7 @@ rabbitmq_guest_password: b57c3233eedef3f7b1a3
 
 # RabbitMQ hosts
 rabbit_hosts: 10.32.150.19:5672,10.32.150.17:5672
+glance_host: 10.32.150.3
 
 # Admin credentials
 openstack_admin_user: admin
@@ -176,9 +167,9 @@ admin_token: b57c3233eedef3f7b1a3
 # The publicurl and internalurl to create the Identity service API endpoints for keystone
 publicurl: http://10.32.150.3:5000/v2.0
 internalurl: http://10.32.150.3:5000/v2.0
-identity_uri: http://10.32.150.3:35357
 adminurl: http://10.32.150.3:35357/v2.0
-
+auth_uri: http://10.32.150.3:5000/v2.0
+identity_uri: http://10.32.150.3:35357
 
 
 # Set the region name
@@ -233,3 +224,19 @@ ceph_pg: 400
 
 # Virt type
 virt_type: kvm
+
+nova_db_password: b57c3233eedef3f7b1a3
+neutron_db_password: b57c3233eedef3f7b1a3
+cinder_db_password: b57c3233eedef3f7b1a3
+
+# heat db pass
+heat_db_password: b57c3233eedef3f7b1a3
+
+# heat credentials
+openstack_heat_user: heat
+openstack_heat_pass: b57c3233eedef3f7b1a3
+
+# FlatDHCP(flat network bridge and flat interfaces for internal and plublic interfaces for external)
+network_size: 254
+flat_network_bridge: br100
+flat_interface: eth2
