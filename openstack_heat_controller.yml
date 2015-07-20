@@ -22,7 +22,7 @@
 # SOFTWARE.
 
 - name: Install heat controller
-  hosts: heat_controller
+  hosts: '{{ host }}'
   sudo: True
   roles:
     - heat_controller

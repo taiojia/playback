@@ -23,5 +23,6 @@
 
 - name: Configure prerequisites
   include: configure_prerequisites.yml
+  when: "host == 'controller01'"
 - name: Install and configure the Orchestration components
   include: install_and_configure_the_orchestration_components.yml

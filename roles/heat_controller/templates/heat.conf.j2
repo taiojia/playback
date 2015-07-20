@@ -94,10 +94,10 @@
 #periodic_interval=60
 
 # URL of the Heat metadata server. (string value)
-heat_metadata_server_url=http://{{ controller_node_vip }}:8000
+heat_metadata_server_url=http://{{ VIP_MGMT }}:8000
 
 # URL of the Heat waitcondition server. (string value)
-heat_waitcondition_server_url=http://{{ controller_node_vip }}:8000/v1/waitcondition
+heat_waitcondition_server_url=http://{{ VIP_MGMT }}:8000/v1/waitcondition
 
 # URL of the Heat CloudWatch server. (string value)
 #heat_watch_server_url=
@@ -233,7 +233,7 @@ heat_waitcondition_server_url=http://{{ controller_node_vip }}:8000/v1/waitcondi
 
 # The RabbitMQ broker address where a single node is used.
 # (string value)
-rabbit_host={{ rabbit_host }}
+rabbit_hosts={{ rabbit_hosts }}
 
 # The RabbitMQ broker port where a single node is used.
 # (integer value)
@@ -870,7 +870,7 @@ log_dir=/var/log/heat
 # Deprecated group/name - [DATABASE]/sql_connection
 # Deprecated group/name - [sql]/connection
 #connection=<None>
-connection = mysql://heat:{{ heat_db_password }}@{{ controller_node_vip }}/heat
+connection = mysql://heat:{{ heat_db_password }}@{{ VIP_MGMT }}/heat
 
 # The SQLAlchemy connection string to use to connect to the
 # slave database. (string value)
@@ -964,7 +964,7 @@ connection = mysql://heat:{{ heat_db_password }}@{{ controller_node_vip }}/heat
 #
 
 # Authentication Endpoint URI. (string value)
-auth_uri=http://{{ controller_node_vip }}:5000/v2.0
+auth_uri=http://{{ VIP_MGMT }}:5000/v2.0
 
 # Allow orchestration of multiple clouds. (boolean value)
 #multi_cloud=false
@@ -1103,12 +1103,12 @@ auth_uri=http://{{ controller_node_vip }}:5000/v2.0
 #auth_protocol=https
 
 # Complete public Identity API endpoint (string value)
-auth_uri=http://{{ controller_node_vip }}:5000/v2.0
+auth_uri=http://{{ VIP_MGMT }}:5000/v2.0
 
 # Complete admin Identity API endpoint. This should specify
 # the unversioned root endpoint e.g. https://localhost:35357/
 # (string value)
-identity_uri=http://{{ controller_node_vip }}:35357
+identity_uri=http://{{ VIP_MGMT }}:35357
 
 # API version of the admin Identity API endpoint (string
 # value)

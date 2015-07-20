@@ -32,6 +32,7 @@
   template: src=heat.conf.j2 dest=/etc/heat/heat.conf
 - name: Populate the Orchestration database
   shell: /bin/sh -c "heat-manage db_sync" heat
+  when: "host == 'controller01'"
 - name: Restart the Orchestration services
   service: name={{ item }} state=restarted
   with_items:

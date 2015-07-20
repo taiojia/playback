@@ -385,4 +385,8 @@ Extend the demo-net pool:
     nova floating-ip-bulk-create --pool ext-net 10.32.151.128/26
     nova floating-ip-bulk-create --pool ext-net 10.32.151.192/26
     nova floating-ip-bulk-list
-    
+
+### Orchestration components(heat)
+     playback openstack_heat_controller.yml --extra-vars \"host=controller01\" -vvvv
+     playback openstack_heat_controller.yml --extra-vars \"host=controller02\" -vvvv
+     
