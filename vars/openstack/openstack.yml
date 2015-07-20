@@ -18,7 +18,7 @@ OS_SERVICE_ENDPOINT: http://10.32.150.3:35357/v2.0
 
 
 
-# Keystone auth token
+
 
 
 
@@ -46,17 +46,7 @@ neutron_metadata_proxy_shared_secret: b57c3233eedef3f7b1a3
 
 
 
-# nova credentials
-openstack_nova_user: nova
-openstack_nova_pass: b57c3233eedef3f7b1a3
 
-# nova API endpoints
-nova_publicurl: http://10.32.150.3:8774/v2/%\(tenant_id\)s
-nova_internalurl: http://10.32.150.3:8774/v2/%\(tenant_id\)s
-nova_adminurl: http://10.32.150.3:8774/v2/%\(tenant_id\)s
-
-# nova vnc
-novncproxy_base_url: http://10.32.150.3:6080/vnc_auto.html
 
 # neutron credentials
 openstack_neutron_user: neutron
@@ -114,6 +104,11 @@ cinder_volumes_pv: /dev/sdb1
 mgmt_interface: eth0
 storage_interface: eth2
 public_interface: eth1
+
+# FlatDHCP(flat network bridge and flat interfaces for internal and plublic interfaces for external)
+network_size: 254
+flat_network_bridge: br100
+flat_interface: eth2
 
 # Management network VIP and storage network VIP
 VIP_MGMT: 10.32.150.3
@@ -236,7 +231,14 @@ heat_db_password: b57c3233eedef3f7b1a3
 openstack_heat_user: heat
 openstack_heat_pass: b57c3233eedef3f7b1a3
 
-# FlatDHCP(flat network bridge and flat interfaces for internal and plublic interfaces for external)
-network_size: 254
-flat_network_bridge: br100
-flat_interface: eth2
+# nova credentials
+openstack_nova_user: nova
+openstack_nova_pass: b57c3233eedef3f7b1a3
+
+# nova API endpoints
+nova_publicurl: http://10.32.150.3:8774/v2/%\(tenant_id\)s
+nova_internalurl: http://10.32.150.3:8774/v2/%\(tenant_id\)s
+nova_adminurl: http://10.32.150.3:8774/v2/%\(tenant_id\)s
+
+# nova vnc
+novncproxy_base_url: http://10.32.150.3:6080/vnc_auto.html

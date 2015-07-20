@@ -22,12 +22,10 @@
 # SOFTWARE.
 
 - name: Install Compute node
-  #hosts: compute1
-  hosts: "{{ compute_name }}"
+  hosts: "{{ host }}"
   sudo: True
   vars:
-    #- compute_n_management_network_ip: 172.16.33.7
-    - compute_n_management_network_ip: "{{ compute_ip }}"
+    - my_ip: "{{ my_ip }}"
   roles:
     - compute_node
   vars_files:
