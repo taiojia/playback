@@ -212,3 +212,39 @@ listen memcached {{ VIP_MGMT }}:11211
         maxconn 10000
         server controller01 {{ controller01_mgmt_ip }}:11211 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:11211 check inter 2000 rise 2 fall 5
+
+listen heat_api
+        bind {{ VIP_MGMT }}:8004
+        balance  source
+        option  tcpka
+        option  httpchk
+        option  tcplog
+        server controller01 {{ controller01_mgmt_ip }}:8004  check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:8004  check inter 2000 rise 2 fall 5
+
+listen heat_api_internal
+        bind {{ VIP_STORAGE }}:8004
+        balance  source
+        option  tcpka
+        option  httpchk
+        option  tcplog
+        server controller01 {{ controller01_storage_ip }}:8004  check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_storage_ip }}:8004  check inter 2000 rise 2 fall 5
+
+listen heat_cf_api
+        bind {{ VIP_MGMT }}:8000
+        balance  source
+        option  tcpka
+        option  httpchk
+        option  tcplog
+        server controller01 {{ controller01_mgmt_ip }}:8000  check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:8000  check inter 2000 rise 2 fall 5
+
+listen heat_cf_api_internal
+        bind {{ VIP_STORAGE }}:8000
+        balance  source
+        option  tcpka
+        option  httpchk
+        option  tcplog
+        server controller01 {{ controller01_storage_ip }}:8000  check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_storage_ip }}:8000  check inter 2000 rise 2 fall 5
