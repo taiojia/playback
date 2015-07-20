@@ -348,4 +348,8 @@ Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.clien
 
     ceph auth get-or-create client.cinder | ssh ubuntu@controller01 sudo tee /etc/ceph/ceph.client.cinder.keyring
     ceph auth get-or-create client.cinder | ssh ubuntu@controller02 sudo tee /etc/ceph/ceph.client.cinder.keyring
+
+#### Nova Controller
+    playback openstack_compute_controller.yml --extra-vars \"host=controller01\" -vvvv
+    playback openstack_compute_controller.yml --extra-vars \"host=controller02\" -vvvv
     

@@ -22,7 +22,7 @@
 # SOFTWARE.
 
 - name: Install Compute controller
-  hosts: compute_controller
+  hosts: '{{ host }}'
   sudo: True
   roles:
     - compute_controller
