@@ -352,4 +352,7 @@ Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.clien
 #### Nova Controller
     playback openstack_compute_controller.yml --extra-vars \"host=controller01\" -vvvv
     playback openstack_compute_controller.yml --extra-vars \"host=controller02\" -vvvv
+
+### Add Dashboard
+    playback openstack_horizon.yml -vvvv
     

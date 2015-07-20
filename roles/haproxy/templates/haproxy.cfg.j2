@@ -190,5 +190,25 @@ listen novnc_internal {{ VIP_STORAGE }}:6080
         balance source
         option tcpka
         maxconn 10000
-        server controller01 {{ controller01_mgmt_ip }}:6080 check inter 2000 rise 2 fall 5
-        server controller02 {{ controller02_mgmt_ip }}:6080 check inter 2000 rise 2 fall 5
+        server controller01 {{ controller01_storage_ip }}:6080 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_storage_ip }}:6080 check inter 2000 rise 2 fall 5
+
+listen dashboard {{ VIP_MGMT }}:80
+        balance  source
+        capture  cookie vgnvisitor= len 32
+        cookie  SERVERID insert indirect nocache
+        mode  http
+        option  forwardfor
+        option  httpchk
+        option  httpclose
+        rspidel  ^Set-cookie:\ IP=
+        server controller01 {{ controller01_mgmt_ip }}:80 cookie control01 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:80 cookie control02 check inter 2000 rise 2 fall 5
+
+listen memcached {{ VIP_MGMT }}:11211
+        balance source
+        option tcpka
+        option httpchk
+        maxconn 10000
+        server controller01 {{ controller01_mgmt_ip }}:11211 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:11211 check inter 2000 rise 2 fall 5
