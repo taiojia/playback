@@ -22,10 +22,10 @@
 # SOFTWARE.
 
 - name: Install nova-network on compute node
-  hosts: "{{ compute_name }}"
+  hosts: "{{ host }}"
   sudo: True
   vars:
-    - compute_n_management_network_ip: "{{ compute_ip }}"
+    - my_ip: "{{ my_ip }}"
   roles:
     - nova_network_compute
   vars_files:
