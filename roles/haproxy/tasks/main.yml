@@ -21,14 +21,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-#- name: Enable ip_nonlocal_bind
-#  template: src=sysctl.conf.j2 dest=/etc/sysctl.conf
-#- name: Apply new sysctl configuration
-#  shell: sysctl -p
-#- name: Install HAProxy
-#  include: install_haproxy.yml
-#- name: Configure keepalived
-#  include: configure_keepalived.yml
+- name: Enable ip_nonlocal_bind
+  template: src=sysctl.conf.j2 dest=/etc/sysctl.conf
+- name: Apply new sysctl configuration
+  shell: sysctl -p
+- name: Install HAProxy
+  include: install_haproxy.yml
+- name: Configure keepalived
+  include: configure_keepalived.yml
 - name: Configure haproxy
   include: configure_haproxy.yml
 

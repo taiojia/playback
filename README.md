@@ -216,6 +216,19 @@ For cloud instances:
 
 
 # For OpenStack HA
+
+### Configure storage network
+    playback openstack_interfaces.yml --extra-vars \"node_name=lb01 storage_ip=192.168.1.10 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
+    playback openstack_interfaces.yml --extra-vars \"node_name=lb02 storage_ip=192.168.1.11 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
+    playback openstack_interfaces.yml --extra-vars \"node_name=controller01 storage_ip=192.168.1.12 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
+    playback openstack_interfaces.yml --extra-vars \"node_name=controller02 storage_ip=192.168.1.13 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
+    playback openstack_interfaces.yml --extra-vars \"node_name=compute01 storage_ip=192.168.1.14 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
+    playback openstack_interfaces.yml --extra-vars \"node_name=compute02 storage_ip=192.168.1.20 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
+    playback openstack_interfaces.yml --extra-vars \"node_name=compute03 storage_ip=192.168.1.18 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
+    playback openstack_interfaces.yml --extra-vars \"node_name=compute04 storage_ip=192.168.1.17 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
+    playback openstack_interfaces.yml --extra-vars \"node_name=compute05 storage_ip=192.168.1.16 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
+    playback openstack_interfaces.yml --extra-vars \"node_name=compute06 storage_ip=192.168.1.15 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
+    playback openstack_interfaces.yml --extra-vars \"node_name=compute07 storage_ip=192.168.1.19 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
     
 ### HAProxy and Keepalived
     playback openstack_haproxy.yml --extra-vars \"host=lb01 router_id=lb01 state=MASTER priority=150\" -vvvv
