@@ -45,14 +45,6 @@ listen keystone_admin {{ VIP_MGMT }}:35357
         server controller01 {{ controller01_mgmt_ip }}:35357 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:35357 check inter 2000 rise 2 fall 5
 
-listen keystone_admin_internal {{ VIP_STORAGE }}:35357
-        balance source
-        option tcpka
-        option httpchk
-        maxconn 10000
-        server controller01 {{ controller01_storage_ip }}:35357 check inter 2000 rise 2 fall 5
-        server controller02 {{ controller02_storage_ip }}:35357 check inter 2000 rise 2 fall 5
-
 listen keystone_api {{ VIP_MGMT }}:5000
         balance source
         option tcpka
@@ -61,27 +53,12 @@ listen keystone_api {{ VIP_MGMT }}:5000
         server controller01 {{ controller01_mgmt_ip }}:5000 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:5000 check inter 2000 rise 2 fall 5
 
-listen keystone_api_internal {{ VIP_STORAGE }}:5000
-        balance source
-        option tcpka
-        option httpchk
-        maxconn 10000
-        server controller01 {{ controller01_storage_ip }}:5000 check inter 2000 rise 2 fall 5
-        server controller02 {{ controller02_storage_ip }}:5000 check inter 2000 rise 2 fall 5
-
 listen swift_proxy {{ VIP_MGMT }}:8080
         balance  source
         option  tcpka
         option  tcplog
         server controller01 {{ controller01_mgmt_ip }}:8080  check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:8080  check inter 2000 rise 2 fall 5
-
-listen swift_proxy_internal {{ VIP_STORAGE }}:8080
-        balance  source
-        option  tcpka
-        option  tcplog
-        server controller01 {{ controller01_storage_ip }}:8080  check inter 2000 rise 2 fall 5
-        server controller02 {{ controller02_storage_ip }}:8080  check inter 2000 rise 2 fall 5
 
 listen glance_api {{ VIP_MGMT }}:9292
         balance source
@@ -91,14 +68,6 @@ listen glance_api {{ VIP_MGMT }}:9292
         server controller01 {{ controller01_mgmt_ip }}:9292 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:9292 check inter 2000 rise 2 fall 5
 
-listen glance_api_internal {{ VIP_STORAGE }}:9292
-        balance source
-        option tcpka
-        option httpchk
-        maxconn 10000
-        server controller01 {{ controller01_storage_ip }}:9292 check inter 2000 rise 2 fall 5
-        server controller02 {{ controller02_storage_ip }}:9292 check inter 2000 rise 2 fall 5
-
 listen glance_registry {{ VIP_MGMT }}:9191
         balance source
         option tcpka
@@ -106,14 +75,6 @@ listen glance_registry {{ VIP_MGMT }}:9191
         maxconn 10000
         server controller01 {{ controller01_mgmt_ip }}:9191 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:9191 check inter 2000 rise 2 fall 5
-
-listen glance_registry_internal {{ VIP_STORAGE }}:9191
-        balance source
-        option tcpka
-        option httpchk
-        maxconn 10000
-        server controller01 {{ controller01_storage_ip }}:9191 check inter 2000 rise 2 fall 5
-        server controller02 {{ controller02_storage_ip }}:9191 check inter 2000 rise 2 fall 5
 
 listen cinder_api {{ VIP_MGMT }}:8776
         balance  source
@@ -123,14 +84,6 @@ listen cinder_api {{ VIP_MGMT }}:8776
         server controller01 {{ controller01_mgmt_ip }}:8776 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:8776 check inter 2000 rise 2 fall 5
 
-listen cinder_api_internal {{ VIP_STORAGE }}:8776
-        balance  source
-        option  tcpka
-        option  httpchk
-        option  tcplog
-        server controller01 {{ controller01_storage_ip }}:8776 check inter 2000 rise 2 fall 5
-        server controller02 {{ controller02_storage_ip }}:8776 check inter 2000 rise 2 fall 5
-
 listen nova_ec2 {{ VIP_MGMT }}:8773
         balance source
         option tcpka
@@ -138,14 +91,6 @@ listen nova_ec2 {{ VIP_MGMT }}:8773
         maxconn 10000
         server controller01 {{ controller01_mgmt_ip }}:8773 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:8773 check inter 2000 rise 2 fall 5
-
-listen nova_ec2_internal {{ VIP_STORAGE }}:8773
-        balance source
-        option tcpka
-        option httpchk
-        maxconn 10000
-        server controller01 {{ controller01_storage_ip }}:8773 check inter 2000 rise 2 fall 5
-        server controller02 {{ controller02_storage_ip }}:8773 check inter 2000 rise 2 fall 5
 
 listen nova_osapi {{ VIP_MGMT }}:8774
         balance source
@@ -155,14 +100,6 @@ listen nova_osapi {{ VIP_MGMT }}:8774
         server controller01 {{ controller01_mgmt_ip }}:8774 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:8774 check inter 2000 rise 2 fall 5
 
-listen nova_osapi_internal {{ VIP_STORAGE }}:8774
-        balance source
-        option tcpka
-        option httpchk
-        maxconn 10000
-        server controller01 {{ controller01_storage_ip }}:8774 check inter 2000 rise 2 fall 5
-        server controller02 {{ controller02_storage_ip }}:8774 check inter 2000 rise 2 fall 5
-
 listen nova_metadata {{ VIP_MGMT }}:8775
         balance source
         option tcpka
@@ -171,27 +108,12 @@ listen nova_metadata {{ VIP_MGMT }}:8775
         server controller01 {{ controller01_mgmt_ip }}:8775 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:8775 check inter 2000 rise 2 fall 5
 
-listen nova_metadata_internal {{ VIP_STORAGE }}:8775
-        balance source
-        option tcpka
-        option httpchk
-        maxconn 10000
-        server controller01 {{ controller01_storage_ip }}:8775 check inter 2000 rise 2 fall 5
-        server controller02 {{ controller02_storage_ip }}:8775 check inter 2000 rise 2 fall 5
-
 listen novnc {{ VIP_MGMT }}:6080
         balance source
         option tcpka
         maxconn 10000
         server controller01 {{ controller01_mgmt_ip }}:6080 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:6080 check inter 2000 rise 2 fall 5
-
-listen novnc_internal {{ VIP_STORAGE }}:6080
-        balance source
-        option tcpka
-        maxconn 10000
-        server controller01 {{ controller01_storage_ip }}:6080 check inter 2000 rise 2 fall 5
-        server controller02 {{ controller02_storage_ip }}:6080 check inter 2000 rise 2 fall 5
 
 listen dashboard {{ VIP_MGMT }}:80
         balance  source
@@ -222,15 +144,6 @@ listen heat_api
         server controller01 {{ controller01_mgmt_ip }}:8004  check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:8004  check inter 2000 rise 2 fall 5
 
-listen heat_api_internal
-        bind {{ VIP_STORAGE }}:8004
-        balance  source
-        option  tcpka
-        option  httpchk
-        option  tcplog
-        server controller01 {{ controller01_storage_ip }}:8004  check inter 2000 rise 2 fall 5
-        server controller02 {{ controller02_storage_ip }}:8004  check inter 2000 rise 2 fall 5
-
 listen heat_cf_api
         bind {{ VIP_MGMT }}:8000
         balance  source
@@ -240,11 +153,4 @@ listen heat_cf_api
         server controller01 {{ controller01_mgmt_ip }}:8000  check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:8000  check inter 2000 rise 2 fall 5
 
-listen heat_cf_api_internal
-        bind {{ VIP_STORAGE }}:8000
-        balance  source
-        option  tcpka
-        option  httpchk
-        option  tcplog
-        server controller01 {{ controller01_storage_ip }}:8000  check inter 2000 rise 2 fall 5
-        server controller02 {{ controller02_storage_ip }}:8000  check inter 2000 rise 2 fall 5
+

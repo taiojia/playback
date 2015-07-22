@@ -13,7 +13,6 @@ vrrp_instance 50 {
   interface {{ mgmt_interface }}
   virtual_ipaddress {
     {{ VIP_MGMT }} dev {{ mgmt_interface }}
-    {{ VIP_STORAGE }} dev {{ storage_interface }}
   }
   track_script {
     haproxy
