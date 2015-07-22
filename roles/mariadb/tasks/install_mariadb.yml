@@ -31,6 +31,7 @@
     - python-mysqldb
     - mariadb-galera-server
     - galera-3
+    - rsync
   retries: 5
   delay: 2
 - name: Update /etc/mysql/conf.d/cluster.cnf

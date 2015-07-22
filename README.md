@@ -197,12 +197,12 @@ Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.clien
 Create initial network. For example, using an exclusive slice of 203.0.113.0/24 with IP address range 203.0.113.24 to 203.0.113.32:
     
     nova network-create demo-net --bridge br100 --multi-host T --fixed-range-v4 203.0.113.24/29
-    nova floating-ip-bulk-create --pool demo-net 10.32.150.65/26
+    nova floating-ip-bulk-create --pool demo-net 10.32.151.65/26
     nova floating-ip-bulk-list
 
 Extend the demo-net pool:
     
-    nova floating-ip-bulk-create --pool demo-net 10.32.150.129/26
+    nova floating-ip-bulk-create --pool demo-net 10.32.151.129/26
     nova floating-ip-bulk-list
     
 ### Apt mirror
@@ -238,8 +238,8 @@ For cloud instances:
     playback openstack_basic_environment.yml -vvvv
 
 ### MariaDB Cluster
-    playback openstack_mariadb.yml --extra-vars \"host=controller01 my_ip=10.32.150.19\" -vvvv
-    playback openstack_mariadb.yml --extra-vars \"host=controller02 my_ip=10.32.150.17\" -vvvv
+    playback openstack_mariadb.yml --extra-vars \"host=controller01 my_ip=10.32.151.19\" -vvvv
+    playback openstack_mariadb.yml --extra-vars \"host=controller02 my_ip=10.32.151.17\" -vvvv
 
 ### RabbitMQ Cluster
     playback openstack_rabbitmq.yml --extra-vars \"host=controller01\" -vvvv
@@ -370,22 +370,22 @@ Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.clien
     playback openstack_horizon.yml -vvvv
 
 #### Nova Computes
-    playback openstack_compute_node.yml --extra-vars \"host=compute01 my_ip=10.32.150.16\" -vvvv
-    playback openstack_compute_node.yml --extra-vars \"host=compute02 my_ip=10.32.150.22\" -vvvv
-    playback openstack_compute_node.yml --extra-vars \"host=compute03 my_ip=10.32.150.18\" -vvvv
-    playback openstack_compute_node.yml --extra-vars \"host=compute04 my_ip=10.32.150.25\" -vvvv
-    playback openstack_compute_node.yml --extra-vars \"host=compute05 my_ip=10.32.150.12\" -vvvv
-    playback openstack_compute_node.yml --extra-vars \"host=compute06 my_ip=10.32.150.14\" -vvvv
-    playback openstack_compute_node.yml --extra-vars \"host=compute07 my_ip=10.32.150.23\" -vvvv
+    playback openstack_compute_node.yml --extra-vars \"host=compute01 my_ip=10.32.151.16\" -vvvv
+    playback openstack_compute_node.yml --extra-vars \"host=compute02 my_ip=10.32.151.22\" -vvvv
+    playback openstack_compute_node.yml --extra-vars \"host=compute03 my_ip=10.32.151.18\" -vvvv
+    playback openstack_compute_node.yml --extra-vars \"host=compute04 my_ip=10.32.151.25\" -vvvv
+    playback openstack_compute_node.yml --extra-vars \"host=compute05 my_ip=10.32.151.12\" -vvvv
+    playback openstack_compute_node.yml --extra-vars \"host=compute06 my_ip=10.32.151.14\" -vvvv
+    playback openstack_compute_node.yml --extra-vars \"host=compute07 my_ip=10.32.151.23\" -vvvv
     
 ### Install Legacy networking nova-network(FlatDHCP Only)
-    playback openstack_nova_network_compute.yml --extra-vars \"host=compute01 my_ip=10.32.150.16\" -vvvv
-    playback openstack_nova_network_compute.yml --extra-vars \"host=compute02 my_ip=10.32.150.22\" -vvvv
-    playback openstack_nova_network_compute.yml --extra-vars \"host=compute03 my_ip=10.32.150.18\" -vvvv
-    playback openstack_nova_network_compute.yml --extra-vars \"host=compute04 my_ip=10.32.150.25\" -vvvv
-    playback openstack_nova_network_compute.yml --extra-vars \"host=compute05 my_ip=10.32.150.12\" -vvvv
-    playback openstack_nova_network_compute.yml --extra-vars \"host=compute06 my_ip=10.32.150.14\" -vvvv
-    playback openstack_nova_network_compute.yml --extra-vars \"host=compute07 my_ip=10.32.150.23\" -vvvv
+    playback openstack_nova_network_compute.yml --extra-vars \"host=compute01 my_ip=10.32.151.16\" -vvvv
+    playback openstack_nova_network_compute.yml --extra-vars \"host=compute02 my_ip=10.32.151.22\" -vvvv
+    playback openstack_nova_network_compute.yml --extra-vars \"host=compute03 my_ip=10.32.151.18\" -vvvv
+    playback openstack_nova_network_compute.yml --extra-vars \"host=compute04 my_ip=10.32.151.25\" -vvvv
+    playback openstack_nova_network_compute.yml --extra-vars \"host=compute05 my_ip=10.32.151.12\" -vvvv
+    playback openstack_nova_network_compute.yml --extra-vars \"host=compute06 my_ip=10.32.151.14\" -vvvv
+    playback openstack_nova_network_compute.yml --extra-vars \"host=compute07 my_ip=10.32.151.23\" -vvvv
 
 Create initial network. For example, using an exclusive slice of 172.16.0.0/16 with IP address range 172.16.0.1 to 172.16.255.254:
     
