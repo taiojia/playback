@@ -12,6 +12,7 @@ api_paste_config=/etc/nova/api-paste.ini
 enabled_apis=ec2,osapi_compute,metadata
 rpc_backend = rabbit
 rabbit_hosts = {{ rabbit_hosts }}
+rabbit_ha_queues = true
 rabbit_password = {{ rabbitmq_guest_password }}
 auth_strategy = keystone
 my_ip = {{ controller02_mgmt_ip }}

@@ -13,6 +13,7 @@ enabled_apis=ec2,osapi_compute,metadata
 rpc_backend = rabbit
 rabbit_hosts = {{ rabbit_hosts }}
 rabbit_password = {{ rabbitmq_guest_password }}
+rabbit_ha_queues = true
 auth_strategy = keystone
 my_ip = {{ my_ip }}
 vnc_enabled = True

@@ -92,15 +92,17 @@ notification_driver = noop
 
 # Configuration options if sending notifications via rabbitmq (these are
 # the defaults)
-rabbit_host = localhost
+rabbit_hosts = {{ rabbit_hosts }}
+rabbit_ha_queues = true
 rabbit_port = 5672
 rabbit_use_ssl = false
 rabbit_userid = guest
-rabbit_password = guest
+rabbit_password = {{ rabbitmq_guest_password }}
 rabbit_virtual_host = /
 rabbit_notification_exchange = glance
 rabbit_notification_topic = notifications
 rabbit_durable_queues = False
+
 
 # Configuration options if sending notifications via Qpid (these are
 # the defaults)

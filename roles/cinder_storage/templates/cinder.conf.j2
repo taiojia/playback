@@ -10,17 +10,18 @@ state_path = /var/lib/cinder
 lock_path = /var/lock/cinder
 volumes_dir = /var/lib/cinder/volumes
 rpc_backend = rabbit
-rabbit_host = {{ rabbit_host }}
+rabbit_hosts = {{ rabbit_hosts }}
+rabbit_ha_queues = true
 rabbit_password = {{ rabbitmq_guest_password }}
 my_ip = {{ MANAGEMENT_INTERFACE_IP_ADDRESS }}
 glance_host = {{ glance_host }}
 
 [database]
-connection = mysql://cinder:{{ cinder_db_password }}@{{ controller_node_vip }}/cinder
+connection = mysql://cinder:{{ cinder_db_password }}@{{ VIP_MGMT }}/cinder
 
 [keystone_authtoken]
-auth_uri = http://{{ controller_node_vip }}:5000/v2.0
-identity_uri = http://{{ controller_node_vip }}:35357
+auth_uri = http://{{ VIP_MGMT }}:5000/v2.0
+identity_uri = http://{{ VIP_MGMT }}:35357
 admin_tenant_name = service
 admin_user = {{ openstack_cinder_user }}
 admin_password = {{ openstack_cinder_pass }}

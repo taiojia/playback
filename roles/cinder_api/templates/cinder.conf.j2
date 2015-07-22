@@ -11,6 +11,7 @@ lock_path = /var/lock/cinder
 volumes_dir = /var/lib/cinder/volumes
 rpc_backend = rabbit
 rabbit_hosts = {{ rabbit_hosts }}
+rabbit_ha_queues = true
 rabbit_password = {{ rabbitmq_guest_password }}
 my_ip = {{ controller01_mgmt_ip }}
 glance_host = {{ glance_host }}

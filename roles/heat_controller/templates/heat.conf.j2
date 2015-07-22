@@ -234,6 +234,7 @@ heat_waitcondition_server_url=http://{{ VIP_MGMT }}:8000/v1/waitcondition
 # The RabbitMQ broker address where a single node is used.
 # (string value)
 rabbit_hosts={{ rabbit_hosts }}
+rabbit_ha_queues = true
 
 # The RabbitMQ broker port where a single node is used.
 # (integer value)
