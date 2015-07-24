@@ -25,22 +25,15 @@ subscription_id = '7f32b7c7-8622-4070-84d0-1ec5bc64dd8f'
 cert_file = '/Users/Taio/Downloads/Microsoft_Azure_credentials.pem'
 sms = ServiceManagementService(subscription_id, cert_file)
 
-name = "jiasirtest"
-desc = name
-label = name
-location = 'China East'
 
+def list_service():
+    result = sms.list_hosted_services()
 
-def create_storage_account(name, desc, label, location):
-    result = sms.create_storage_account(name, desc, label, location=location)
-    return result
-
-
-def delete_storage_account(name):
-    result = sms.delete_storage_account(name)
-    return result
-
+    for hosted_service in result:
+        print('Service name: ' + hosted_service.service_name)
+        print('Management URL: ' + hosted_service.url)
+        print('Location: ' + hosted_service.hosted_service_properties.location)
+        print('')
 
 if __name__ == '__main__':
-    create_storage_account(name, desc, label, location)
-    #delete_storage_account(name)
+    list_service()
