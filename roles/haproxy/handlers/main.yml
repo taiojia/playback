@@ -23,5 +23,5 @@
 
 - name: Restart keepalived
   service: name=keepalived state=restarted
-- name: Restart haproxy
-  service: name=haproxy state=restarted
+- name: Start haproxy
+  service: name=haproxy state=started

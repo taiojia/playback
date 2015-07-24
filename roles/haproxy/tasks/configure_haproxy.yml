@@ -26,3 +26,6 @@
 - name: enable haproxy
   template: src=haproxy.j2 dest=/etc/default/haproxy
   notify: Restart haproxy
+- name: Kill haproxy
+  shell: pkill haproxy
+  notify: Start haproxy
