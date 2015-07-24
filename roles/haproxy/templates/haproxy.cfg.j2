@@ -22,7 +22,7 @@ defaults
 	errorfile 503 /etc/haproxy/errors/503.http
 	errorfile 504 /etc/haproxy/errors/504.http
 
-listen stats {{ VIP_MGMT }}:80
+listen stats {{ VIP_MGMT }}:9999
         mode http
         stats enable
         stats uri /stats
