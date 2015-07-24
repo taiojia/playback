@@ -25,6 +25,3 @@ subscription_id = '7f32b7c7-8622-4070-84d0-1ec5bc64dd8f'
 cert_file = '/Users/Taio/Downloads/Microsoft_Azure_credentials.pem'
 sms = ServiceManagementService(subscription_id, cert_file)
 
-locations = sms.list_locations()
-for location in locations:
-    print(location.name)

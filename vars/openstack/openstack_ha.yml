@@ -1,0 +1,244 @@
+---
+# The configuration for OpenStack HA
+
+
+
+
+
+
+
+# (DEPRECATED) To set database listen port
+#mariadb_bind_ip: 10.32.151.19
+
+# To using the keystone identity
+
+OS_SERVICE_ENDPOINT: http://10.32.151.3:35357/v2.0
+
+
+
+
+
+
+
+
+
+# (DEPRECATED) node definition
+controller1_management_network_ip: 10.32.151.3
+
+# (DEPRECATED) USING rabbit_hosts INSTEAD OF rabbit_host
+rabbit_host: 10.32.151.19:5672,10.32.151.17:5672
+
+
+
+
+# Passwords and admin token here
+
+
+
+
+neutron_metadata_proxy_shared_secret: b57c3233eedef3f7b1a3
+
+
+
+
+
+
+
+
+
+
+
+# neutron credentials
+openstack_neutron_user: neutron
+openstack_neutron_pass: b57c3233eedef3f7b1a3
+
+# neutron API endpoints
+neutron_publicurl: http://10.32.151.3:9696
+neutron_internalurl: http://10.32.151.3:9696
+neutron_adminurl: http://10.32.151.3:9696
+
+# neutron for nova connections
+neutron_nova_url: http://10.32.151.3:8774/v2
+neutron_nova_admin_auth_url: http://10.32.151.3:35357/v2.0
+
+# neutron network type
+neutron_type_drivers: flat,gre
+neutron_tenant_network_types: gre
+neutron_mechanism_drivers: openvswitch
+neutron_external_interface_name: eth0
+
+# initial networks
+FLOATING_IP_START: 10.32.151.2
+FLOATING_IP_END: 10.32.151.254
+EXTERNAL_NETWORK_GATEWAY: 10.32.151.1
+EXTERNAL_NETWORK_CIDR: 10.32.151.0/24
+TENANT_NETWORK_GATEWAY: 192.168.1.1
+TENANT_NETWORK_CIDR: 192.168.1.0/24
+
+# Memcached
+memcached_ip_port: 127.0.0.1:11211 #DEPRECACED
+
+# cinder credentials
+openstack_cinder_user: cinder
+openstack_cinder_pass: b57c3233eedef3f7b1a3
+
+# vip
+controller_node_vip: 10.32.151.3
+
+# cinder storage
+cinder_volumes_pv: /dev/sdb1
+
+
+
+
+
+
+
+
+
+
+
+
+################################################
+# Define networks
+mgmt_interface: eth1
+storage_interface: eth2
+public_interface: eth1
+
+# FlatDHCP(flat network bridge and flat interfaces for internal and plublic interfaces for external)
+network_size: 254
+flat_network_bridge: br100
+flat_interface: eth2
+
+# Management network VIP and storage network VIP
+VIP_MGMT: 10.32.151.3
+VIP_STORAGE: 192.168.1.3
+
+# Both of mariadb ips for HAProxy
+wsrep_cluster_address: 10.32.151.19,10.32.151.17
+controller01_mgmt_ip: 10.32.151.19
+controller02_mgmt_ip: 10.32.151.17
+controller01_storage_ip: 192.168.1.12
+controller02_storage_ip: 192.168.1.13
+
+# Node ips for HAProxy
+lb01_mgmt_ip: 10.32.151.20
+lb01_storage_ip: 192.168.1.10
+lb02_mgmt_ip: 10.32.151.24
+lb02_storage_ip: 192.168.1.11
+
+# HAProxy states password
+haproxy_states_pass: b57c3233eedef3f7b1a3
+
+# MariaDB root password
+mariadb_root_password: b57c3233eedef3f7b1a3
+
+# RabbitMQ guest password
+rabbitmq_guest_password: b57c3233eedef3f7b1a3
+
+# RabbitMQ hosts
+rabbit_hosts: 10.32.151.19:5672,10.32.151.17:5672
+glance_host: 10.32.151.3
+
+# Admin credentials
+openstack_admin_user: admin
+openstack_admin_pass: b57c3233eedef3f7b1a3
+openstack_admin_mail: jiasir@icloud.com
+keystone_admin_endpoint: http://10.32.151.3:35357/v2.0
+OS_SERVICE_TOKEN: b57c3233eedef3f7b1a3
+
+
+# Demo credentials
+openstack_demo_user: demo
+openstack_demo_pass: b57c3233eedef3f7b1a3
+openstack_demo_mail: jiasir@icloud.com
+keystone_api_endpoint: http://10.32.151.3:5000/v2.0
+
+# Other password
+keystone_db_password: b57c3233eedef3f7b1a3
+admin_token: b57c3233eedef3f7b1a3
+
+
+# The publicurl and internalurl to create the Identity service API endpoints for keystone
+publicurl: http://10.32.151.3:5000/v2.0
+internalurl: http://10.32.151.3:5000/v2.0
+adminurl: http://10.32.151.3:35357/v2.0
+auth_uri: http://10.32.151.3:5000/v2.0
+identity_uri: http://10.32.151.3:35357
+
+
+# Set the region name
+region_name: regionOne
+
+# swift
+rsyncd_max_connections: 3
+swift_hash_path_suffix: a69128c08d64912cba8c
+swift_hash_path_prefix: 476fa57bc1af39c26637
+swift_storage_sdb1_size: 3000GB
+swift_storage_sdc1_size: 3000GB
+openstack_swift_user: swift
+openstack_swift_pass: b57c3233eedef3f7b1a3
+
+# glance credentials
+openstack_glance_user: glance
+openstack_glance_pass: b57c3233eedef3f7b1a3
+glance_db_password: b57c3233eedef3f7b1a3
+
+# glance API endpoints
+glance_publicurl: http://10.32.151.3:9292
+glance_internalurl: http://10.32.151.3:9292
+glance_adminurl: http://10.32.151.3:9292
+
+# Set the ntp server IP that the ntp client can be synced
+ntp_server_ip: 10.32.151.19
+
+# Ceph initial monitor
+ceph_initial_monitor: compute01
+
+# Ceph public network
+ceph_public_network: 10.32.151.0/24
+
+# Ceph cluster network
+ceph_cluster_network: 192.168.1.0/24
+
+# Ceph osd pool default size
+ceph_osd_pool_default_size: 3
+
+# Ceph cinder user name
+ceph_cinder_user: cinder
+
+# Ceph cinder pool name
+ceph_cinder_pool: cinder
+
+# Ceph UUID
+ceph_uuid: 4cd1f5c1-35f4-4ca6-a589-1b4a546ddc47
+
+# Ceph placement groups
+# The number of placement groups is based on 100 x the number of OSD’s / the number of replicas you want to maintain.
+ceph_pg: 400
+
+# Virt type
+virt_type: kvm
+
+nova_db_password: b57c3233eedef3f7b1a3
+neutron_db_password: b57c3233eedef3f7b1a3
+cinder_db_password: b57c3233eedef3f7b1a3
+
+# heat db pass
+heat_db_password: b57c3233eedef3f7b1a3
+
+# heat credentials
+openstack_heat_user: heat
+openstack_heat_pass: b57c3233eedef3f7b1a3
+
+# nova credentials
+openstack_nova_user: nova
+openstack_nova_pass: b57c3233eedef3f7b1a3
+
+# nova API endpoints
+nova_publicurl: http://10.32.151.3:8774/v2/%\(tenant_id\)s
+nova_internalurl: http://10.32.151.3:8774/v2/%\(tenant_id\)s
+nova_adminurl: http://10.32.151.3:8774/v2/%\(tenant_id\)s
+
+# nova vnc
+novncproxy_base_url: http://10.32.151.3:6080/vnc_auto.html
