@@ -40,7 +40,7 @@ listen galera {{ VIP_MGMT }}:3306
 listen keystone_admin {{ VIP_MGMT }}:35357
         balance source
         option tcpka
-        option httpchk
+        # option httpchk
         maxconn 10000
         server controller01 {{ controller01_mgmt_ip }}:35357 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:35357 check inter 2000 rise 2 fall 5
@@ -48,7 +48,7 @@ listen keystone_admin {{ VIP_MGMT }}:35357
 listen keystone_api {{ VIP_MGMT }}:5000
         balance source
         option tcpka
-        option httpchk
+        # option httpchk
         maxconn 10000
         server controller01 {{ controller01_mgmt_ip }}:5000 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:5000 check inter 2000 rise 2 fall 5
@@ -63,7 +63,7 @@ listen swift_proxy {{ VIP_MGMT }}:8080
 listen glance_api {{ VIP_MGMT }}:9292
         balance source
         option tcpka
-        option httpchk
+        # option httpchk
         maxconn 10000
         server controller01 {{ controller01_mgmt_ip }}:9292 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:9292 check inter 2000 rise 2 fall 5
@@ -71,7 +71,7 @@ listen glance_api {{ VIP_MGMT }}:9292
 listen glance_registry {{ VIP_MGMT }}:9191
         balance source
         option tcpka
-        option httpchk
+        # option httpchk
         maxconn 10000
         server controller01 {{ controller01_mgmt_ip }}:9191 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:9191 check inter 2000 rise 2 fall 5
@@ -87,7 +87,7 @@ listen cinder_api {{ VIP_MGMT }}:8776
 listen nova_ec2 {{ VIP_MGMT }}:8773
         balance source
         option tcpka
-        option httpchk
+        # option httpchk
         maxconn 10000
         server controller01 {{ controller01_mgmt_ip }}:8773 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:8773 check inter 2000 rise 2 fall 5
@@ -95,7 +95,7 @@ listen nova_ec2 {{ VIP_MGMT }}:8773
 listen nova_osapi {{ VIP_MGMT }}:8774
         balance source
         option tcpka
-        option httpchk
+        # option httpchk
         maxconn 10000
         server controller01 {{ controller01_mgmt_ip }}:8774 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:8774 check inter 2000 rise 2 fall 5
@@ -103,7 +103,7 @@ listen nova_osapi {{ VIP_MGMT }}:8774
 listen nova_metadata {{ VIP_MGMT }}:8775
         balance source
         option tcpka
-        option httpchk
+        # option httpchk
         maxconn 10000
         server controller01 {{ controller01_mgmt_ip }}:8775 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:8775 check inter 2000 rise 2 fall 5
@@ -130,7 +130,7 @@ listen dashboard {{ VIP_MGMT }}:80
 listen memcached {{ VIP_MGMT }}:11211
         balance source
         option tcpka
-        option httpchk
+        # option httpchk
         maxconn 10000
         server controller01 {{ controller01_mgmt_ip }}:11211 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:11211 check inter 2000 rise 2 fall 5
