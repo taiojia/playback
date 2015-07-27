@@ -217,6 +217,9 @@ For cloud instances:
 
 # For OpenStack HA
 
+### Deploy Playback
+    sudo fab deploy_playback
+
 ### Configure storage network
     playback openstack_interfaces.yml --extra-vars \"node_name=lb01 storage_ip=192.168.1.10 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
     playback openstack_interfaces.yml --extra-vars \"node_name=lb02 storage_ip=192.168.1.11 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
