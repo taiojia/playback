@@ -20,28 +20,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import sys
+__author__ = 'jiasir(Taio)'
 
+import os
+import shutil
 
 try:
-    from setuptools import setup, find_packages
+    from fabric.api import local
 except ImportError:
-    print("playback now needs setuptools in order to build. Install it using"
-          " your package manager (usually python-setuptools) or via pip (pip"
-          " install setuptools).")
-    sys.exit(1)
+    os.system('python setup.py install')
 
-setup(name='playback',
-      version='0.0.2',
-      description='OpenStack orchestration tool',
-      author='jiasir',
-      author_email='jiasir@icloud.com',
-      url='https://github.com/jiasir/playback/',
-      license='MIT License',
-      install_requires=['ansible', 'fabric'],
-      packages=find_packages('libs'),
-      package_dir={'': 'libs'},
-      scripts=[
-          'bin/playback',
-      ],
-      data_files=[],)
+
+def copy_tools():
+    if not os.path.exists('/etc/playback'):
+        os.mkdir('/etc/playback')
+    shutil.copy('inventory/inventory_ha', '/etc/playback/playback.conf')
+
+
+def deploy_playback():
+    local('python setup.py install')
+    copy_tools()
+
+if __name__ == '__main__':
+    deploy_playback()
