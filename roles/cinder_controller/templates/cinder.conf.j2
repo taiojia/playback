@@ -16,7 +16,7 @@ rabbit_password = {{ rabbitmq_guest_password }}
 my_ip = {{ controller1_management_network_ip }}
 
 [database]
-connection = mysql://cinder:{{ cinder_db_password }}@{{ VIP_MGMT }}/cinder
+connection = mysql://cinder:{{ cinder_db_password }}@{{ VIP_DB }}/cinder
 
 [keystone_authtoken]
 auth_uri = http://{{ VIP_MGMT }}:5000/v2.0

@@ -871,7 +871,7 @@ log_dir=/var/log/heat
 # Deprecated group/name - [DATABASE]/sql_connection
 # Deprecated group/name - [sql]/connection
 #connection=<None>
-connection = mysql://heat:{{ heat_db_password }}@{{ VIP_MGMT }}/heat
+connection = mysql://heat:{{ heat_db_password }}@{{ VIP_DB }}/heat
 
 # The SQLAlchemy connection string to use to connect to the
 # slave database. (string value)
