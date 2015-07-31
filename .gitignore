@@ -63,3 +63,6 @@ target/
 # Azure
 *.publishsettings
 *.pem
+
+# sqlite3
+*.sqlite3
