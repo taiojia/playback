@@ -79,7 +79,7 @@ listen glance_registry {{ VIP_MGMT }}:9191
 listen cinder_api {{ VIP_MGMT }}:8776
         balance  source
         option  tcpka
-        option  httpchk
+        # option  httpchk
         option  tcplog
         server controller01 {{ controller01_mgmt_ip }}:8776 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:8776 check inter 2000 rise 2 fall 5
@@ -121,7 +121,7 @@ listen dashboard {{ VIP_MGMT }}:80
         cookie  SERVERID insert indirect nocache
         mode  http
         option  forwardfor
-        option  httpchk
+        # option  httpchk
         option  httpclose
         rspidel  ^Set-cookie:\ IP=
         server controller01 {{ controller01_mgmt_ip }}:80 cookie control01 check inter 2000 rise 2 fall 5
@@ -139,7 +139,7 @@ listen heat_api
         bind {{ VIP_MGMT }}:8004
         balance  source
         option  tcpka
-        option  httpchk
+        # option  httpchk
         option  tcplog
         server controller01 {{ controller01_mgmt_ip }}:8004  check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:8004  check inter 2000 rise 2 fall 5
@@ -148,7 +148,7 @@ listen heat_cf_api
         bind {{ VIP_MGMT }}:8000
         balance  source
         option  tcpka
-        option  httpchk
+        # option  httpchk
         option  tcplog
         server controller01 {{ controller01_mgmt_ip }}:8000  check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:8000  check inter 2000 rise 2 fall 5
