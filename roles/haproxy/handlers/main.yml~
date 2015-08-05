@@ -21,11 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-- name: Configure haproxy
-  template: src=haproxy.cfg.j2 dest=/etc/haproxy/haproxy.cfg
-- name: enable haproxy
-  template: src=haproxy.j2 dest=/etc/default/haproxy
-  notify: Restart haproxy
-#- name: Kill haproxy
-#  command: pkill haproxy
-#  notify: Start haproxy
+#- name: Restart keepalived
+#  service: name=keepalived state=restarted
+- name: Start haproxy
+  service: name=haproxy state=started

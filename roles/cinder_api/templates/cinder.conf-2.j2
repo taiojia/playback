@@ -17,7 +17,7 @@ my_ip = {{ controller02_mgmt_ip }}
 glance_host = {{ glance_host }}
 
 [database]
-connection = mysql://cinder:{{ cinder_db_password }}@{{ VIP_MGMT }}/cinder
+connection = mysql://cinder:{{ cinder_db_password }}@127.0.0.1/cinder
 
 [keystone_authtoken]
 auth_uri = http://{{ VIP_MGMT }}:5000/v2.0

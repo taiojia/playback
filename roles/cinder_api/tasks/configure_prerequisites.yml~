@@ -1,0 +1,41 @@
+---
+# The MIT License (MIT)
+#
+# Copyright (c) 2015 Taio Jia (jiasir) <jiasir@icloud.com>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+- name: Create the cinder database
+  command: mysql -uroot -p{{ mariadb_root_password }} -e "CREATE DATABASE cinder;"
+- name: Grant localhost access to the cinder database
+  command: mysql -uroot -p{{ mariadb_root_password }} -e "GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'localhost' IDENTIFIED BY '{{ cinder_db_password }}';"
+- name: Grant any access to the cinder database
+  command: mysql -uroot -p{{ mariadb_root_password }} -e "GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'%' IDENTIFIED BY '{{ cinder_db_password }}';"
+- name: Cerate a cinder user for keystone
+  command: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} user-create --name {{ openstack_cinder_user }} --pass {{ openstack_cinder_pass }}
+- name: Add the admin role to the cinder user
+  command: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} user-role-add --user {{ openstack_cinder_user }} --tenant service --role admin
+- name: Create the cinder service entities
+  command: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} service-create --name cinder --type volume --description "OpenStack Block Storage"
+- name: Create the cinderv2 service entities
+  command: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} service-create --name cinderv2 --type volumev2 --description "OpenStack Block Storage"
+- name: Create the Block Storage service API endpoints version 1
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} endpoint-create --service-id $(keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} service-list | awk '/ volume / {print $2}') --publicurl http://{{ controller_node_vip }}:8776/v1/%\(tenant_id\)s --internalurl http://{{ controller_node_vip }}:8776/v1/%\(tenant_id\)s --adminurl http://{{ controller_node_vip }}:8776/v1/%\(tenant_id\)s --region {{ region_name }}
+- name: Create the Block Storage service API endpoints version 2
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} endpoint-create --service-id $(keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} service-list | awk '/ volumev2 / {print $2}') --publicurl http://{{ controller_node_vip }}:8776/v2/%\(tenant_id\)s --internalurl http://{{ controller_node_vip }}:8776/v2/%\(tenant_id\)s --adminurl http://{{ controller_node_vip }}:8776/v2/%\(tenant_id\)s --region {{ region_name }}
