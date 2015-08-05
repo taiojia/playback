@@ -28,5 +28,5 @@
   notify: Restart haproxy
 # TODO pkill the haproxy process and start haproxy, because restart haproxy has a muti process bug.
 #- name: Kill haproxy
-#  shell: pkill haproxy
+#  command: pkill haproxy
 #  notify: Start haproxy
