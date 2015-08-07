@@ -170,10 +170,17 @@ Copy the configuration file and admin key to your admin node and your Ceph Nodes
     playback openstack_cinder_volume_ceph.yml --extra-vars \"host=controller01\" -vvvv
     playback openstack_cinder_volume_ceph.yml --extra-vars \"host=controller02\" -vvvv
     
-Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.client.cinder.keyring of cinder volume node to using the ceph client.
+Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.client.cinder.keyring of cinder volume nodes and nova-compute nodes to using the ceph client.
 
     ceph auth get-or-create client.cinder | ssh ubuntu@controller01 sudo tee /etc/ceph/ceph.client.cinder.keyring
     ceph auth get-or-create client.cinder | ssh ubuntu@controller02 sudo tee /etc/ceph/ceph.client.cinder.keyring
+    ceph auth get-or-create client.cinder | ssh ubuntu@compute01 sudo tee /etc/ceph/ceph.client.cinder.keyring
+    ceph auth get-or-create client.cinder | ssh ubuntu@compute02 sudo tee /etc/ceph/ceph.client.cinder.keyring
+    ceph auth get-or-create client.cinder | ssh ubuntu@compute03 sudo tee /etc/ceph/ceph.client.cinder.keyring
+    ceph auth get-or-create client.cinder | ssh ubuntu@compute04 sudo tee /etc/ceph/ceph.client.cinder.keyring
+    ceph auth get-or-create client.cinder | ssh ubuntu@compute05 sudo tee /etc/ceph/ceph.client.cinder.keyring
+    ceph auth get-or-create client.cinder | ssh ubuntu@compute06 sudo tee /etc/ceph/ceph.client.cinder.keyring
+    ceph auth get-or-create client.cinder | ssh ubuntu@compute07 sudo tee /etc/ceph/ceph.client.cinder.keyring
 
 ### Restart volume service dependency to take effect for ceph backend
     python restart_cindervol_deps.py ubuntu@controller01 ubuntu@controller02

@@ -30,6 +30,8 @@
   delay: 2
 - name: Update /etc/nova/nova.conf
   template: src=nova.conf.j2 dest=/etc/nova/nova.conf
+- name: Update /etc/nova/nova-compute.conf
+  template: src=nova-compute.conf.j2 dest=/etc/nova/nova-compute.conf
 - name: Restart the Compute service
   service: name=nova-compute state=restarted
 - name: Remove nova.sqlite
