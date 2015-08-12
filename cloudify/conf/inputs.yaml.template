@@ -13,8 +13,8 @@ use_existing_manager_keypair: false
 use_existing_agent_keypair: false
 manager_server_name: cloudify-manager-server
 manager_server_user: ubuntu
-manager_private_key_path: /home/ubuntu/.ssh/id_rsa
-agent_private_key_path: /home/ubuntu/.ssh/id_rsa
+manager_private_key_path: ~/.ssh/cloudify-manager-kp.pem
+agent_private_key_path: ~/.ssh/cloudify-agent-kp.pem
 agents_user: ubuntu
 management_network_name: cloudify-management-network
 management_subnet_name: cloudify-management-network-subnet
