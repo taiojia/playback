@@ -63,7 +63,7 @@ def prep_bootstrap_conf():
         with cd('cloudify-manager-blueprints'):
             run('git checkout -b cloudify')
             run('git checkout 3.2')
-    return None
+    return provider_openstack()
 
 
 def provider_openstack():
@@ -73,13 +73,25 @@ def provider_openstack():
     """
     put(local_path='conf/inputs.yaml.template',
         remote_path='~/cloudify-manager/cloudify-manager-blueprints/openstack/inputs.yaml')
+    return openstack_plugins()
+
+
+def openstack_plugins():
+    """
+    Install OpenStack pulugins
+    :return:
+    """
+    with cd('~/cloudify-manager/cloudify-manager-blueprints/openstack/'):
+        run('cfy local create-requirements -o requirements.txt -p openstack-manager-blueprint.yaml')
+        sudo('sudo pip install -r requirements.txt')
 
 
 def main():
     for host in cloudify_server:
         env.host_string = host
         #get_cloudify()
-        #provider_openstack()
+
+        openstack_plugins()
 
 
 if __name__ == '__main__':
