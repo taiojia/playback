@@ -228,3 +228,6 @@ Extend the demo-net pool:
      playback openstack_heat_controller.yml --extra-vars \"host=controller01\" -vvvv
      playback openstack_heat_controller.yml --extra-vars \"host=controller02\" -vvvv
      
+### Enable service auto start
+    python patch-autostart.py
+    
