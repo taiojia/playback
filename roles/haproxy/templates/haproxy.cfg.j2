@@ -30,7 +30,7 @@ listen stats {{ VIP_MGMT }}:9999
         stats auth admin:{{ haproxy_states_pass }}
 
 listen galera {{ VIP_MGMT }}:3306
-        balance source
+        balance roundrobin
         mode tcp
         option tcpka
         option mysql-check user haproxy
