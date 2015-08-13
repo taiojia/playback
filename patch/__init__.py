@@ -21,24 +21,3 @@
 # SOFTWARE.
 
 __author__ = 'Taio'
-
-from fabric.api import *
-import patch.patch
-
-env.hosts = ['ubuntu@lb01', 'ubuntu@lb02']
-
-limit = patch.patch.Patch()
-
-
-def limits():
-    limit.update_config('patch/limits.conf', '/etc/security/limits.conf', sudo_on=True)
-    limit.command('ulimit -SHn 65535', sudo_on=True)
-
-
-def main():
-    for host in env.hosts:
-        env.host_string = host
-        limits()
-
-if __name__ == '__main__':
-    main()
