@@ -66,3 +66,5 @@ target/
 
 # sqlite3
 *.sqlite3
+
+patch/tmp/
