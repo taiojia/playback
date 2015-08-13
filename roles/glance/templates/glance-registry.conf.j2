@@ -142,7 +142,7 @@ backend = sqlalchemy
 # Deprecated group/name - [DEFAULT]/sql_connection
 # Deprecated group/name - [DATABASE]/sql_connection
 # Deprecated group/name - [sql]/connection
-connection = mysql://glance:{{ openstack_glance_pass }}@127.0.0.1/glance
+connection = mysql://glance:{{ openstack_glance_pass }}@{{ VIP_DB }}/glance
 
 # The SQL mode to be used for MySQL sessions. This option,
 # including the default, overrides any server-set SQL mode. To
