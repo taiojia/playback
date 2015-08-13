@@ -1,20 +1,5 @@
 # Playback
 Playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed automation with high availability.
-
-### Getting Started ( Will be deprecated)
-
-#### Setup playback
-    
-    git clone https://github.com/jiasir/playback.git
-    cd playback
-    python setup.py install
-    
-#### Setting your testing environment if you want
-You must have the Vagrant installed and than you can provision  the testing environment, the test node you can see `Vagrantfile` at `examples`.
-
-    cd examples
-    vagrant up
- 
     
 #### Define a inventory file
 The inventory file at `inventory/inventory`, the default setting is the Vagrant testing node. You can according to your environment to change parameters.
@@ -22,8 +7,6 @@ The inventory file at `inventory/inventory`, the default setting is the Vagrant 
 #### To define your variables in vars/openstack
 The `vars/openstack/openstack.yml` is all the parameters.
 * openstack.yml
-
-
 
 # For OpenStack HA
 
@@ -46,6 +29,7 @@ The `vars/openstack/openstack.yml` is all the parameters.
 ### HAProxy and Keepalived
     playback openstack_haproxy.yml --extra-vars \"host=lb01 router_id=lb01 state=MASTER priority=150\" -vvvv
     playback openstack_haproxy.yml --extra-vars \"host=lb02 router_id=lb02 state=SLAVE priority=100\" -vvvv
+    python patch-limits.py
 
 ### Prepare OpenStack basic environment
     playback openstack_basic_environment.yml -vvvv
