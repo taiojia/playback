@@ -52,3 +52,11 @@ class Patch(object):
         else:
             self.result = run(commands)
         return self.result
+
+    def haproxy_rsyslog(self):
+        """
+        Enable syslog for haproxy
+        :return:
+        """
+        self.result = self.update_config('patch/rsyslog', '/etc/default/rsyslog', sudo_on=True)
+        return self.result

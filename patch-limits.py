@@ -39,6 +39,7 @@ def main():
     for host in env.hosts:
         env.host_string = host
         limits()
+        limit.haproxy_rsyslog()
 
 if __name__ == '__main__':
     main()
