@@ -28,9 +28,9 @@ import yaml
 from jinja2 import Environment, FileSystemLoader
 
 env.hosts = ['ubuntu@controller01', 'ubuntu@controller02']
-v = open('vars/openstack/openstack.yml')
-conf = yaml.safe_load(v)
-print conf['VIP_DB']
+with open('vars/openstack/openstack.yml') as f:
+    conf = yaml.safe_load(f)
+
 
 e = Environment(loader=FileSystemLoader('patch'))
 t = e.get_template('keepalived.conf')
