@@ -59,6 +59,7 @@ target/
 
 # Vagrant
 .vagrant/
+/tem.py
 
 # Azure
 *.publishsettings

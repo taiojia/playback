@@ -32,13 +32,13 @@ except ImportError:
     sys.exit(1)
 
 setup(name='playback',
-      version='0.0.2',
+      version='0.1.0',
       description='OpenStack orchestration tool',
       author='jiasir',
       author_email='jiasir@icloud.com',
       url='https://github.com/jiasir/playback/',
       license='MIT License',
-      install_requires=['ansible', 'fabric'],
+      install_requires=['fabric', 'ansible'],
       packages=find_packages('libs'),
       package_dir={'': 'libs'},
       scripts=[

@@ -20,8 +20,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-__author__ = 'Taio'
+__author__ = 'jiasir'
+__version__ = '0.1.0'
 
-__all__ = ['config']
+import yaml
 
-from playback import config
+
+class Config(object):
+    def __init__(self):
+        """
+        Playback configuration
+        :return: None
+        """
+        try:
+            with open('vars/openstack/openstack.yml') as f:
+                self.conf = yaml.safe_load(f)
+        except IOError:
+            with open('/etc/playback/playback.yml') as f:
+                self.conf = yaml.safe_load(f)
+
+    def load_conf(self):
+        """
+        Load playback vars
+        :return: Dictionary vars
+        """
+        return self.conf
