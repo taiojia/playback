@@ -34,6 +34,10 @@ parser = argparse.ArgumentParser()
 group = parser.add_mutually_exclusive_group()
 
 group.add_argument('-a', '--ansible', help='use ansible to provisioning')
+group.add_argument('-p', '--puppet', help='use puppet to provisioning')
+group.add_argument('-s', '--saltstack', help='use saltstack to provisioning')
+group.add_argument('-c', '--chef', help='use chef to provisioning')
+group.add_argument('-j', '--juju', help='use juju to provisioning')
 group.add_argument('-d', '--deploy', help='do deploy directly', action='store_true')
 parser.add_argument('-r', '--roles', help='which roles to deploy', type=str, choices=['haproxy'])
 
@@ -51,9 +55,39 @@ def ansible():
     os.system('ansible-playbook ' + args)
 
 
+# TODO provider abstractly
+
+def puppet():
+    pass
+
+
+def chef():
+    pass
+
+
+def saltstack():
+    pass
+
+
+def juju():
+    pass
+
+
 def main():
     if args.ansible:
         ansible()
+
+    if args.puppet:
+        puppet()
+
+    if args.chef:
+        chef()
+
+    if args.saltstack:
+        saltstack()
+
+    if args.juju:
+        juju()
 
     if args.roles == 'haproxy' and args.deploy:
         haproxy_deploy()
