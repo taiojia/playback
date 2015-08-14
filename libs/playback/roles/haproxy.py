@@ -23,52 +23,21 @@
 __author__ = 'jiasir'
 __version__ = '0.1.0'
 
-import yaml
 from fabric.api import *
+from playback.config import Config
 
 
-class Config(object):
+class Haproxy(Config):
+    env.hosts = []
+
     def __init__(self):
-        """
-        Playback configuration
-        :return: None
-        """
-        try:
-            with open('vars/openstack/openstack.yml') as f:
-                self.conf = yaml.safe_load(f)
-        except IOError:
-            with open('/etc/playback/playback.yml') as f:
-                self.conf = yaml.safe_load(f)
+        super(Config, self).__init__()
+        config = Config()
+        self.conf = config.load_conf()
 
-    def load_conf(self):
-        """
-        Load playback vars
-        :return: Dictionary vars
-        """
-        return self.conf
+        for i in range(1, 3):
+            env.hosts.append(self.conf['haproxy0' + str(i) + '_host'])
 
-    def gen_conf(self):
-        """
-        Initial a configuration for the first time
-        :return:
-        """
-        pass
-        # TODO gen_conf
-
-    def set_conf(self):
-        """
-        Setting the value to the dict
-        :return:
-        """
-        pass
-        # TODO set_conf
-
-    def host_string(self):
-        """
-        host string generator
-        a host string is 'username@ip'
-        :return: generator
-        """
-        for self.host in env.hosts:
-            env.host_string = self.host
-            yield env.host_string
+    def deploy(self):
+        sudo('apt-get update')
+        sudo('apt-get install keepalived haproxy mysql-client')

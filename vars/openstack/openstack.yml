@@ -243,3 +243,9 @@ nova_adminurl: http://10.32.151.3:8774/v2/%\(tenant_id\)s
 
 # nova vnc
 novncproxy_base_url: http://10.32.151.3:6080/vnc_auto.html
+
+
+# for playback package
+haproxy01_host: ubuntu@10.32.151.20
+haproxy02_host: ubuntu@10.32.151.24
+

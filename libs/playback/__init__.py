@@ -20,8 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-__author__ = 'Taio'
+__author__ = 'jiasir'
 
-__all__ = ['config']
+__all__ = ['config',
+           'api',]
 
 from playback import config
+from playback import api
+from playback.roles import haproxy

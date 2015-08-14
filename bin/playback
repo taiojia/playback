@@ -27,6 +27,24 @@ __author__ = 'jiasir'
 import sys
 import os
 
-args = ' '.join(sys.argv[1:])
+import playback
+import argparse
 
-os.system('ansible-playbook ' + args)
+parser = argparse.ArgumentParser()
+parser.add_argument('-d', '--deploy', help='do deploy', action='store_true')
+parser.add_argument('-r', '--roles', help='which roles to deploy', type=str, choices=['haproxy'])
+args = parser.parse_args()
+
+
+def haproxy_deploy():
+    haproxy = playback.haproxy.Haproxy()
+    [haproxy.deploy() for i in haproxy.host_string()]
+
+
+def main():
+    if args.roles == 'haproxy' and args.deploy:
+        haproxy_deploy()
+
+
+if __name__ == '__main__':
+    main()
