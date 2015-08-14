@@ -31,8 +31,12 @@ import playback
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-d', '--deploy', help='do deploy', action='store_true')
+group = parser.add_mutually_exclusive_group()
+
+group.add_argument('-a', '--ansible', help='use ansible to provisioning')
+group.add_argument('-d', '--deploy', help='do deploy directly', action='store_true')
 parser.add_argument('-r', '--roles', help='which roles to deploy', type=str, choices=['haproxy'])
+
 args = parser.parse_args()
 
 
@@ -41,7 +45,16 @@ def haproxy_deploy():
     [haproxy.deploy() for i in haproxy.host_string()]
 
 
+def ansible():
+    args = ' '.join(sys.argv[2:])
+    print args
+    os.system('ansible-playbook ' + args)
+
+
 def main():
+    if args.ansible:
+        ansible()
+
     if args.roles == 'haproxy' and args.deploy:
         haproxy_deploy()
 

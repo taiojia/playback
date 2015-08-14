@@ -14,75 +14,75 @@ The `vars/openstack/openstack.yml` is all the parameters.
     sudo python install.py
 
 ### Configure storage network
-    playback openstack_interfaces.yml --extra-vars \"node_name=lb01 storage_ip=192.168.1.10 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
-    playback openstack_interfaces.yml --extra-vars \"node_name=lb02 storage_ip=192.168.1.11 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
-    playback openstack_interfaces.yml --extra-vars \"node_name=controller01 storage_ip=192.168.1.12 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
-    playback openstack_interfaces.yml --extra-vars \"node_name=controller02 storage_ip=192.168.1.13 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
-    playback openstack_interfaces.yml --extra-vars \"node_name=compute01 storage_ip=192.168.1.14 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
-    playback openstack_interfaces.yml --extra-vars \"node_name=compute02 storage_ip=192.168.1.20 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
-    playback openstack_interfaces.yml --extra-vars \"node_name=compute03 storage_ip=192.168.1.18 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
-    playback openstack_interfaces.yml --extra-vars \"node_name=compute04 storage_ip=192.168.1.17 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
-    playback openstack_interfaces.yml --extra-vars \"node_name=compute05 storage_ip=192.168.1.16 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
-    playback openstack_interfaces.yml --extra-vars \"node_name=compute06 storage_ip=192.168.1.15 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
-    playback openstack_interfaces.yml --extra-vars \"node_name=compute07 storage_ip=192.168.1.19 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255\" -vvvv
+    playback --ansible 'openstack_interfaces.yml --extra-vars "node_name=lb01 storage_ip=192.168.1.10 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv'
+    playback --ansible 'openstack_interfaces.yml --extra-vars "node_name=lb02 storage_ip=192.168.1.11 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv'
+    playback --ansible 'openstack_interfaces.yml --extra-vars "node_name=controller01 storage_ip=192.168.1.12 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv'
+    playback --ansible 'openstack_interfaces.yml --extra-vars "node_name=controller02 storage_ip=192.168.1.13 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv'
+    playback --ansible 'openstack_interfaces.yml --extra-vars "node_name=compute01 storage_ip=192.168.1.14 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv'
+    playback --ansible 'openstack_interfaces.yml --extra-vars "node_name=compute02 storage_ip=192.168.1.20 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv'
+    playback --ansible 'openstack_interfaces.yml --extra-vars "node_name=compute03 storage_ip=192.168.1.18 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv'
+    playback --ansible 'openstack_interfaces.yml --extra-vars "node_name=compute04 storage_ip=192.168.1.17 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv'
+    playback --ansible 'openstack_interfaces.yml --extra-vars "node_name=compute05 storage_ip=192.168.1.16 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv'
+    playback --ansible 'openstack_interfaces.yml --extra-vars "node_name=compute06 storage_ip=192.168.1.15 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv'
+    playback --ansible 'openstack_interfaces.yml --extra-vars "node_name=compute07 storage_ip=192.168.1.19 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv'
     
 ### HAProxy and Keepalived
-    playback openstack_haproxy.yml --extra-vars \"host=lb01 router_id=lb01 state=MASTER priority=150\" -vvvv
-    playback openstack_haproxy.yml --extra-vars \"host=lb02 router_id=lb02 state=SLAVE priority=100\" -vvvv
+    playback --ansible 'openstack_haproxy.yml --extra-vars "host=lb01 router_id=lb01 state=MASTER priority=150" -vvvv'
+    playback --ansible 'openstack_haproxy.yml --extra-vars "host=lb02 router_id=lb02 state=SLAVE priority=100" -vvvv'
     python patch-limits.py
     python keepalived.py
     
 ### Prepare OpenStack basic environment
-    playback openstack_basic_environment.yml -vvvv
+    playback --ansible 'openstack_basic_environment.yml -vvvv'
 
 ### MariaDB Cluster
-    playback openstack_mariadb.yml --extra-vars \"host=controller01 my_ip=10.32.151.19\" -vvvv
-    playback openstack_mariadb.yml --extra-vars \"host=controller02 my_ip=10.32.151.17\" -vvvv
+    playback --ansible 'openstack_mariadb.yml --extra-vars "host=controller01 my_ip=10.32.151.19" -vvvv'
+    playback --ansible 'openstack_mariadb.yml --extra-vars "host=controller02 my_ip=10.32.151.17" -vvvv'
 
 ### RabbitMQ Cluster
-    playback openstack_rabbitmq.yml --extra-vars \"host=controller01\" -vvvv
-    playback openstack_rabbitmq.yml --extra-vars \"host=controller02\" -vvvv
+    playback --ansible 'openstack_rabbitmq.yml --extra-vars "host=controller01" -vvvv'
+    playback --ansible 'openstack_rabbitmq.yml --extra-vars "host=controller02" -vvvv'
 
 #### Keystone
-    playback openstack_keystone.yml --extra-vars \"host=controller01\" -vvvv
-    playback openstack_keystone.yml --extra-vars \"host=controller02\" -vvvv
+    playback --ansible 'openstack_keystone.yml --extra-vars "host=controller01" -vvvv'
+    playback --ansible 'openstack_keystone.yml --extra-vars "host=controller02" -vvvv'
 
 ### Format devices for Swift Storage (sdb1 and sdc1)
 Each of the swift nodes, /dev/sdb1 and /dev/sdc1, must contain a suitable partition table with one partition occupying the entire device. Although the Object Storage service supports any file system with extended attributes (xattr), testing and benchmarking indicate the best performance and reliability on XFS.
 
-    playback openstack_storage_partitions.yml --extra-vars \"host=compute05\" -vvvv
-    playback openstack_storage_partitions.yml --extra-vars \"host=compute06\" -vvvv
-    playback openstack_storage_partitions.yml --extra-vars \"host=compute07\" -vvvv
+    playback --ansible 'openstack_storage_partitions.yml --extra-vars "host=compute05" -vvvv'
+    playback --ansible 'openstack_storage_partitions.yml --extra-vars "host=compute06" -vvvv'
+    playback --ansible 'openstack_storage_partitions.yml --extra-vars "host=compute07" -vvvv'
 
 ### Swift Storage
-    playback openstack_swift_storage.yml --extra-vars \"host=compute05 my_storage_ip=192.168.1.16\" -vvvv
-    playback openstack_swift_storage.yml --extra-vars \"host=compute06 my_storage_ip=192.168.1.15\" -vvvv
-    playback openstack_swift_storage.yml --extra-vars \"host=compute07 my_storage_ip=192.168.1.19\" -vvvv
+    playback --ansible 'openstack_swift_storage.yml --extra-vars "host=compute05 my_storage_ip=192.168.1.16" -vvvv'
+    playback --ansible 'openstack_swift_storage.yml --extra-vars "host=compute06 my_storage_ip=192.168.1.15" -vvvv'
+    playback --ansible 'openstack_swift_storage.yml --extra-vars "host=compute07 my_storage_ip=192.168.1.19" -vvvv'
     
 ### Swift Proxy
-    playback openstack_swift_proxy.yml --extra-vars \"host=controller01\" -vvvv
-    playback openstack_swift_proxy.yml --extra-vars \"host=controller02\" -vvvv                       
+    playback --ansible 'openstack_swift_proxy.yml --extra-vars "host=controller01" -vvvv'
+    playback --ansible 'openstack_swift_proxy.yml --extra-vars "host=controller02" -vvvv'                     
     
 ### Initial swift rings
-    playback openstack_swift_builder_file.yml -vvvv
-    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_storage_ip=192.168.1.16 device_name=sdb1 device_weight=100\" -vvvv
-    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_storage_ip=192.168.1.16 device_name=sdc1 device_weight=100\" -vvvv
-    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_storage_ip=192.168.1.15 device_name=sdb1 device_weight=100\" -vvvv
-    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_storage_ip=192.168.1.15 device_name=sdc1 device_weight=100\" -vvvv
-    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_storage_ip=192.168.1.19 device_name=sdb1 device_weight=100\" -vvvv
-    playback openstack_swift_add_node_to_the_ring.yml --extra-vars \"swift_storage_storage_ip=192.168.1.19 device_name=sdc1 device_weight=100\" -vvvv
-    playback openstack_swift_rebalance_ring.yml -vvvv
+    playback --ansible 'openstack_swift_builder_file.yml -vvvv'
+    playback --ansible 'openstack_swift_add_node_to_the_ring.yml --extra-vars "swift_storage_storage_ip=192.168.1.16 device_name=sdb1 device_weight=100" -vvvv'
+    playback --ansible 'openstack_swift_add_node_to_the_ring.yml --extra-vars "swift_storage_storage_ip=192.168.1.16 device_name=sdc1 device_weight=100" -vvvv'
+    playback --ansible 'openstack_swift_add_node_to_the_ring.yml --extra-vars "swift_storage_storage_ip=192.168.1.15 device_name=sdb1 device_weight=100" -vvvv'
+    playback --ansible 'openstack_swift_add_node_to_the_ring.yml --extra-vars "swift_storage_storage_ip=192.168.1.15 device_name=sdc1 device_weight=100" -vvvv'
+    playback --ansible 'openstack_swift_add_node_to_the_ring.yml --extra-vars "swift_storage_storage_ip=192.168.1.19 device_name=sdb1 device_weight=100" -vvvv'
+    playback --ansible 'openstack_swift_add_node_to_the_ring.yml --extra-vars "swift_storage_storage_ip=192.168.1.19 device_name=sdc1 device_weight=100" -vvvv'
+    playback --ansible 'openstack_swift_rebalance_ring.yml -vvvv'
     
 ### Distribute ring configuration files
 Copy the `account.ring.gz`, `container.ring.gz`, and `object.ring.gz` files to the `/etc/swift` directory on each storage node and any additional nodes running the proxy service.
 
 ### Finalize swift installation
-    playback openstack_swift_finalize_installation.yml --extra-vars \"hosts=swift_proxy\" -vvvv
-    playback openstack_swift_finalize_installation.yml --extra-vars \"hosts=swift_storage\" -vvvv
+    playback --ansible 'openstack_swift_finalize_installation.yml --extra-vars "hosts=swift_proxy" -vvvv'
+    playback --ansible 'openstack_swift_finalize_installation.yml --extra-vars "hosts=swift_storage" -vvvv'
 
 ### Glance (Swift backend)
-    playback openstack_glance.yml --extra-vars \"host=controller01\" -vvvv
-    playback openstack_glance.yml --extra-vars \"host=controller02\" -vvvv
+    playback --ansible 'openstack_glance.yml --extra-vars "host=controller01" -vvvv'
+    playback --ansible 'openstack_glance.yml --extra-vars "host=controller02" -vvvv'
     
 ### To deploy the Ceph admin node
 Ensure the admin node must be have password-less SSH access to Ceph nodes. When ceph-deploy logs in to a Ceph node as a user, that particular user must have passwordless sudo privileges.
@@ -94,66 +94,66 @@ Copy SSH public key to each Ceph node from Ceph admin node
 
 Deploy the Ceph admin node
 
-    playback openstack_ceph_admin.yml -vvvv
+    playback --ansible 'openstack_ceph_admin.yml -vvvv'
 
 ### To deploy the Ceph initial monitor
-    playback openstack_ceph_initial_mon.yml -vvvv
+    playback --ansible 'openstack_ceph_initial_mon.yml -vvvv'
     
 ### To deploy the Ceph clients
-    playback openstack_ceph_client.yml --extra-vars \"client=controller01\" -vvvv
-    playback openstack_ceph_client.yml --extra-vars \"client=controller02\" -vvvv
-    playback openstack_ceph_client.yml --extra-vars \"client=compute01\" -vvvv
-    playback openstack_ceph_client.yml --extra-vars \"client=compute02\" -vvvv
-    playback openstack_ceph_client.yml --extra-vars \"client=compute03\" -vvvv
-    playback openstack_ceph_client.yml --extra-vars \"client=compute04\" -vvvv
-    playback openstack_ceph_client.yml --extra-vars \"client=compute05\" -vvvv
-    playback openstack_ceph_client.yml --extra-vars \"client=compute06\" -vvvv
-    playback openstack_ceph_client.yml --extra-vars \"client=compute07\" -vvvv
+    playback --ansible 'openstack_ceph_client.yml --extra-vars "client=controller01" -vvvv'
+    playback --ansible 'openstack_ceph_client.yml --extra-vars "client=controller02" -vvvv'
+    playback --ansible 'openstack_ceph_client.yml --extra-vars "client=compute01" -vvvv'
+    playback --ansible 'openstack_ceph_client.yml --extra-vars "client=compute02" -vvvv'
+    playback --ansible 'openstack_ceph_client.yml --extra-vars "client=compute03" -vvvv'
+    playback --ansible 'openstack_ceph_client.yml --extra-vars "client=compute04" -vvvv'
+    playback --ansible 'openstack_ceph_client.yml --extra-vars "client=compute05" -vvvv'
+    playback --ansible 'openstack_ceph_client.yml --extra-vars "client=compute06" -vvvv'
+    playback --ansible 'openstack_ceph_client.yml --extra-vars "client=compute07" -vvvv'
 
 ### To add Ceph initial monitor(s) and gather the keys
-    playback openstack_ceph_gather_keys.yml -vvvv
+    playback --ansible 'openstack_ceph_gather_keys.yml -vvvv
 
 ### To add Ceph OSDs
-    playback openstack_ceph_osd.yml --extra-vars \"node=compute01 disk=sdb partition=sdb1\"
-    playback openstack_ceph_osd.yml --extra-vars \"node=compute01 disk=sdc partition=sdc1\"
-    playback openstack_ceph_osd.yml --extra-vars \"node=compute02 disk=sdb partition=sdb1\"
-    playback openstack_ceph_osd.yml --extra-vars \"node=compute02 disk=sdc partition=sdc1\"
-    playback openstack_ceph_osd.yml --extra-vars \"node=compute03 disk=sdb partition=sdb1\"
-    playback openstack_ceph_osd.yml --extra-vars \"node=compute03 disk=sdc partition=sdc1\"
-    playback openstack_ceph_osd.yml --extra-vars \"node=compute04 disk=sdb partition=sdb1\"
-    playback openstack_ceph_osd.yml --extra-vars \"node=compute04 disk=sdc partition=sdc1\"
+    playback --ansible 'openstack_ceph_osd.yml --extra-vars "node=compute01 disk=sdb partition=sdb1" -vvvv'
+    playback --ansible 'openstack_ceph_osd.yml --extra-vars "node=compute01 disk=sdc partition=sdc1" -vvvv'
+    playback --ansible 'openstack_ceph_osd.yml --extra-vars "node=compute02 disk=sdb partition=sdb1" -vvvv'
+    playback --ansible 'openstack_ceph_osd.yml --extra-vars "node=compute02 disk=sdc partition=sdc1" -vvvv'
+    playback --ansible 'openstack_ceph_osd.yml --extra-vars "node=compute03 disk=sdb partition=sdb1" -vvvv'
+    playback --ansible 'openstack_ceph_osd.yml --extra-vars "node=compute03 disk=sdc partition=sdc1" -vvvv'
+    playback --ansible 'openstack_ceph_osd.yml --extra-vars "node=compute04 disk=sdb partition=sdb1" -vvvv'
+    playback --ansible 'openstack_ceph_osd.yml --extra-vars "node=compute04 disk=sdc partition=sdc1" -vvvv'
 
 
 ### To add Ceph monitors
-    playback openstack_ceph_mon.yml --extra-vars \"node=compute01\" -vvvv
-    playback openstack_ceph_mon.yml --extra-vars \"node=compute02\" -vvvv
-    playback openstack_ceph_mon.yml --extra-vars \"node=compute03\" -vvvv
-    playback openstack_ceph_mon.yml --extra-vars \"node=compute04\" -vvvv
+    playback --ansible 'openstack_ceph_mon.yml --extra-vars "node=compute01" -vvvv'
+    playback --ansible 'openstack_ceph_mon.yml --extra-vars "node=compute02" -vvvv'
+    playback --ansible 'openstack_ceph_mon.yml --extra-vars "node=compute03" -vvvv'
+    playback --ansible 'openstack_ceph_mon.yml --extra-vars "node=compute04" -vvvv'
 
 
 ### To copy the Ceph keys to nodes
 Copy the configuration file and admin key to your admin node and your Ceph Nodes so that you can use the ceph CLI without having to specify the monitor address and ceph.client.admin.keyring each time you execute a command.
     
-    playback openstack_ceph_copy_keys.yml --extra-vars \"node=controller01\" -vvvv
-    playback openstack_ceph_copy_keys.yml --extra-vars \"node=controller02\" -vvvv
-    playback openstack_ceph_copy_keys.yml --extra-vars \"node=compute01\" -vvvv
-    playback openstack_ceph_copy_keys.yml --extra-vars \"node=compute02\" -vvvv
-    playback openstack_ceph_copy_keys.yml --extra-vars \"node=compute03\" -vvvv
-    playback openstack_ceph_copy_keys.yml --extra-vars \"node=compute04\" -vvvv
-    playback openstack_ceph_copy_keys.yml --extra-vars \"node=compute05\" -vvvv
-    playback openstack_ceph_copy_keys.yml --extra-vars \"node=compute06\" -vvvv
-    playback openstack_ceph_copy_keys.yml --extra-vars \"node=compute07\" -vvvv
+    playback --ansible 'openstack_ceph_copy_keys.yml --extra-vars "node=controller01" -vvvv'
+    playback --ansible 'openstack_ceph_copy_keys.yml --extra-vars "node=controller02" -vvvv'
+    playback --ansible 'openstack_ceph_copy_keys.yml --extra-vars "node=compute01" -vvvv'
+    playback --ansible 'openstack_ceph_copy_keys.yml --extra-vars "node=compute02" -vvvv'
+    playback --ansible 'openstack_ceph_copy_keys.yml --extra-vars "node=compute03" -vvvv'
+    playback --ansible 'openstack_ceph_copy_keys.yml --extra-vars "node=compute04" -vvvv'
+    playback --ansible 'openstack_ceph_copy_keys.yml --extra-vars "node=compute05" -vvvv'
+    playback --ansible 'openstack_ceph_copy_keys.yml --extra-vars "node=compute06" -vvvv'
+    playback --ansible 'openstack_ceph_copy_keys.yml --extra-vars "node=compute07" -vvvv'
 
 ### Create the cinder ceph user and pool name
-    playback openstack_ceph_cinder_pool_user.yml -vvvv
+    playback --ansible 'openstack_ceph_cinder_pool_user.yml -vvvv'
 
 ### cinder-api
-    playback openstack_cinder_api.yml --extra-vars \"host=controller01\" -vvvv
-    playback openstack_cinder_api.yml --extra-vars \"host=controller02\" -vvvv
+    playback --ansible 'openstack_cinder_api.yml --extra-vars "host=controller01" -vvvv'
+    playback --ansible 'openstack_cinder_api.yml --extra-vars "host=controller02" -vvvv'
     
 ### Install cinder-volume on controller node(Ceph backend)
-    playback openstack_cinder_volume_ceph.yml --extra-vars \"host=controller01\" -vvvv
-    playback openstack_cinder_volume_ceph.yml --extra-vars \"host=controller02\" -vvvv
+    playback --ansible 'openstack_cinder_volume_ceph.yml --extra-vars "host=controller01" -vvvv'
+    playback --ansible 'openstack_cinder_volume_ceph.yml --extra-vars "host=controller02" -vvvv'
     
 Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.client.cinder.keyring of cinder volume nodes and nova-compute nodes to using the ceph client.
 
@@ -171,31 +171,31 @@ Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.clien
     python restart_cindervol_deps.py ubuntu@controller01 ubuntu@controller02
 
 #### Nova Controller
-    playback openstack_compute_controller.yml --extra-vars \"host=controller01\" -vvvv
-    playback openstack_compute_controller.yml --extra-vars \"host=controller02\" -vvvv
+    playback --ansible 'openstack_compute_controller.yml --extra-vars "host=controller01" -vvvv'
+    playback --ansible 'openstack_compute_controller.yml --extra-vars "host=controller02" -vvvv'
 
 ### Add Dashboard
-    playback openstack_horizon.yml -vvvv
+    playback --ansible 'openstack_horizon.yml -vvvv
 
 #### Nova Computes
-    playback openstack_compute_node.yml --extra-vars \"host=compute01 my_ip=10.32.151.16\" -vvvv
-    playback openstack_compute_node.yml --extra-vars \"host=compute02 my_ip=10.32.151.22\" -vvvv
-    playback openstack_compute_node.yml --extra-vars \"host=compute03 my_ip=10.32.151.18\" -vvvv
-    playback openstack_compute_node.yml --extra-vars \"host=compute04 my_ip=10.32.151.25\" -vvvv
-    playback openstack_compute_node.yml --extra-vars \"host=compute05 my_ip=10.32.151.12\" -vvvv
-    playback openstack_compute_node.yml --extra-vars \"host=compute06 my_ip=10.32.151.14\" -vvvv
-    playback openstack_compute_node.yml --extra-vars \"host=compute07 my_ip=10.32.151.23\" -vvvv
+    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute01 my_ip=10.32.151.16" -vvvv'
+    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute02 my_ip=10.32.151.22" -vvvv'
+    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute03 my_ip=10.32.151.18" -vvvv'
+    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute04 my_ip=10.32.151.25" -vvvv'
+    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute05 my_ip=10.32.151.12" -vvvv'
+    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute06 my_ip=10.32.151.14" -vvvv'
+    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute07 my_ip=10.32.151.23" -vvvv'
 
 
     
 ### Install Legacy networking nova-network(FlatDHCP Only)
-    playback openstack_nova_network_compute.yml --extra-vars \"host=compute01 my_ip=10.32.151.16\" -vvvv
-    playback openstack_nova_network_compute.yml --extra-vars \"host=compute02 my_ip=10.32.151.22\" -vvvv
-    playback openstack_nova_network_compute.yml --extra-vars \"host=compute03 my_ip=10.32.151.18\" -vvvv
-    playback openstack_nova_network_compute.yml --extra-vars \"host=compute04 my_ip=10.32.151.25\" -vvvv
-    playback openstack_nova_network_compute.yml --extra-vars \"host=compute05 my_ip=10.32.151.12\" -vvvv
-    playback openstack_nova_network_compute.yml --extra-vars \"host=compute06 my_ip=10.32.151.14\" -vvvv
-    playback openstack_nova_network_compute.yml --extra-vars \"host=compute07 my_ip=10.32.151.23\" -vvvv
+    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute01 my_ip=10.32.151.16" -vvvv'
+    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute02 my_ip=10.32.151.22" -vvvv'
+    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute03 my_ip=10.32.151.18" -vvvv'
+    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute04 my_ip=10.32.151.25" -vvvv'
+    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute05 my_ip=10.32.151.12" -vvvv'
+    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute06 my_ip=10.32.151.14" -vvvv'
+    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute07 my_ip=10.32.151.23" -vvvv'
 
 Create initial network. For example, using an exclusive slice of 172.16.0.0/16 with IP address range 172.16.0.1 to 172.16.255.254:
     
@@ -210,8 +210,8 @@ Extend the demo-net pool:
     nova floating-ip-bulk-list
 
 ### Orchestration components(heat)
-     playback openstack_heat_controller.yml --extra-vars \"host=controller01\" -vvvv
-     playback openstack_heat_controller.yml --extra-vars \"host=controller02\" -vvvv
+     playback --ansible 'openstack_heat_controller.yml --extra-vars "host=controller01" -vvvv'
+     playback --ansible 'openstack_heat_controller.yml --extra-vars "host=controller02" -vvvv'
      
 ### Enable service auto start
     python patch-autostart.py
