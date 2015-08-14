@@ -1,0 +1,156 @@
+global
+	log /dev/log	local0
+	log /dev/log	local1 notice
+	chroot /var/lib/haproxy
+	user haproxy
+	group haproxy
+	daemon
+
+defaults
+	log	global
+	mode	http
+	option	httplog
+	option	dontlognull
+        contimeout 5000
+        clitimeout 50000
+        srvtimeout 50000
+	errorfile 400 /etc/haproxy/errors/400.http
+	errorfile 403 /etc/haproxy/errors/403.http
+	errorfile 408 /etc/haproxy/errors/408.http
+	errorfile 500 /etc/haproxy/errors/500.http
+	errorfile 502 /etc/haproxy/errors/502.http
+	errorfile 503 /etc/haproxy/errors/503.http
+	errorfile 504 /etc/haproxy/errors/504.http
+
+listen stats {{ VIP_MGMT }}:9999
+        mode http
+        stats enable
+        stats uri /stats
+        stats realm HAProxy\ Statistics
+        stats auth admin:{{ haproxy_states_pass }}
+
+listen galera {{ VIP_MGMT }}:3306
+        balance roundrobin
+        mode tcp
+        option tcpka
+        option mysql-check user haproxy
+        server controller01 {{ controller01_mgmt_ip }}:3306 check weight 1
+        server controller02 {{ controller02_mgmt_ip }}:3306 check weight 1
+
+listen keystone_admin {{ VIP_MGMT }}:35357
+        balance source
+        option tcpka
+        # option httpchk
+        maxconn 10000
+        server controller01 {{ controller01_mgmt_ip }}:35357 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:35357 check inter 2000 rise 2 fall 5
+
+listen keystone_api {{ VIP_MGMT }}:5000
+        balance source
+        option tcpka
+        # option httpchk
+        maxconn 10000
+        server controller01 {{ controller01_mgmt_ip }}:5000 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:5000 check inter 2000 rise 2 fall 5
+
+listen swift_proxy {{ VIP_MGMT }}:8080
+        balance  source
+        option  tcpka
+        option  tcplog
+        server controller01 {{ controller01_mgmt_ip }}:8080  check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:8080  check inter 2000 rise 2 fall 5
+
+listen glance_api {{ VIP_MGMT }}:9292
+        balance source
+        option tcpka
+        # option httpchk
+        maxconn 10000
+        server controller01 {{ controller01_mgmt_ip }}:9292 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:9292 check inter 2000 rise 2 fall 5
+
+listen glance_registry {{ VIP_MGMT }}:9191
+        balance source
+        option tcpka
+        # option httpchk
+        maxconn 10000
+        server controller01 {{ controller01_mgmt_ip }}:9191 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:9191 check inter 2000 rise 2 fall 5
+
+listen cinder_api {{ VIP_MGMT }}:8776
+        balance  source
+        option  tcpka
+        # option  httpchk
+        option  tcplog
+        server controller01 {{ controller01_mgmt_ip }}:8776 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:8776 check inter 2000 rise 2 fall 5
+
+listen nova_ec2 {{ VIP_MGMT }}:8773
+        balance source
+        option tcpka
+        # option httpchk
+        maxconn 10000
+        server controller01 {{ controller01_mgmt_ip }}:8773 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:8773 check inter 2000 rise 2 fall 5
+
+listen nova_osapi {{ VIP_MGMT }}:8774
+        balance source
+        option tcpka
+        # option httpchk
+        maxconn 10000
+        server controller01 {{ controller01_mgmt_ip }}:8774 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:8774 check inter 2000 rise 2 fall 5
+
+listen nova_metadata {{ VIP_MGMT }}:8775
+        balance source
+        option tcpka
+        # option httpchk
+        maxconn 10000
+        server controller01 {{ controller01_mgmt_ip }}:8775 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:8775 check inter 2000 rise 2 fall 5
+
+listen novnc {{ VIP_MGMT }}:6080
+        balance source
+        option tcpka
+        maxconn 10000
+        server controller01 {{ controller01_mgmt_ip }}:6080 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:6080 check inter 2000 rise 2 fall 5
+
+listen dashboard {{ VIP_MGMT }}:80
+        balance  source
+        capture  cookie vgnvisitor= len 32
+        cookie  SERVERID insert indirect nocache
+        mode  http
+        option  forwardfor
+        # option  httpchk
+        option  httpclose
+        rspidel  ^Set-cookie:\ IP=
+        server controller01 {{ controller01_mgmt_ip }}:80 cookie control01 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:80 cookie control02 check inter 2000 rise 2 fall 5
+
+listen memcached {{ VIP_MGMT }}:11211
+        balance source
+        option tcpka
+        # option httpchk
+        maxconn 10000
+        server controller01 {{ controller01_mgmt_ip }}:11211 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:11211 check inter 2000 rise 2 fall 5
+
+listen heat_api
+        bind {{ VIP_MGMT }}:8004
+        balance  source
+        option  tcpka
+        # option  httpchk
+        option  tcplog
+        server controller01 {{ controller01_mgmt_ip }}:8004  check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:8004  check inter 2000 rise 2 fall 5
+
+listen heat_cf_api
+        bind {{ VIP_MGMT }}:8000
+        balance  source
+        option  tcpka
+        # option  httpchk
+        option  tcplog
+        server controller01 {{ controller01_mgmt_ip }}:8000  check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:8000  check inter 2000 rise 2 fall 5
+
+

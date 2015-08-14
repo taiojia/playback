@@ -4,4 +4,9 @@ import playback
 
 conf = playback.config.Config()
 
-print conf.load_conf()['VIP_DB']
+ha = playback.haproxy.Haproxy()
+for i in ha.host_string():
+    print i
+
+
+

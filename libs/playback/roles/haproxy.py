@@ -25,6 +25,7 @@ __version__ = '0.1.0'
 
 from fabric.api import *
 from playback.config import Config
+from jinja2 import Environment, FileSystemLoader
 
 
 class Haproxy(Config):
@@ -38,10 +39,31 @@ class Haproxy(Config):
         for i in range(1, 3):
             env.hosts.append(self.conf['haproxy0' + str(i) + '_host'])
 
-    @staticmethod
-    def deploy():
+    def deploy(self):
+        """
+        Deploy HAProxy HA with keepalived
+        :return:
+        """
         sudo('apt-get update')
         sudo('apt-get install keepalived haproxy mysql-client')
         put(local_path='templates/haproxy/sysctl.conf.j2', remote_path='/etc/sysctl.conf', use_sudo=True)
         sudo('sysctl -p')
 
+        # DO NOT USING service haproxy restart, it will start multi processes
+        sudo('pkill haproxy')
+
+        # Using service to controller the daemon
+        put(local_path='templates/haproxy/haproxy.j2', remote_path='/etc/default/haproxy', use_sudo=True)
+
+        # Dump conf to dump path
+        e = Environment(loader=FileSystemLoader('templates/haproxy'))
+        t = e.get_template('haproxy.cfg.j2')
+        t.stream(VIP_MGMT=self.conf['VIP_MGMT'],
+                 haproxy_states_pass=self.conf['haproxy_states_pass'],
+                 controller01_mgmt_ip=self.conf['controller01_mgmt_ip'],
+                 controller02_mgmt_ip=self.conf['controller02_mgmt_ip'],
+                 ).dump('templates/haproxy/dump/haproxy.cfg.j2')
+
+        put(local_path='templates/haproxy/dump/haproxy.cfg.j2', remote_path='/etc/haproxy/haproxy.cfg', use_sudo=True)
+        sudo('service haproxy start')
+        # TODO deploy keepalived

@@ -54,6 +54,7 @@ docs/_build/
 target/
 
 # IntelliJ IDEA
+*dump/
 .idea/
 *.iml
 
