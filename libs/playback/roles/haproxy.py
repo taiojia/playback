@@ -57,13 +57,12 @@ class Haproxy(Config):
 
         # Dump conf to dump path
         e = Environment(loader=FileSystemLoader('templates/haproxy'))
-        t = e.get_template('haproxy.cfg.j2')
-        t.stream(VIP_MGMT=self.conf['VIP_MGMT'],
-                 haproxy_states_pass=self.conf['haproxy_states_pass'],
-                 controller01_mgmt_ip=self.conf['controller01_mgmt_ip'],
-                 controller02_mgmt_ip=self.conf['controller02_mgmt_ip'],
-                 ).dump('templates/haproxy/dump/haproxy.cfg.j2')
-
+        e.get_template('haproxy.cfg.j2').stream(VIP_MGMT=self.conf['VIP_MGMT'],
+                                                haproxy_states_pass=self.conf['haproxy_states_pass'],
+                                                controller01_mgmt_ip=self.conf['controller01_mgmt_ip'],
+                                                controller02_mgmt_ip=self.conf['controller02_mgmt_ip'],
+                                                ).dump('templates/haproxy/dump/haproxy.cfg.j2')
+        # Put dumped configuration to remote
         put(local_path='templates/haproxy/dump/haproxy.cfg.j2', remote_path='/etc/haproxy/haproxy.cfg', use_sudo=True)
         sudo('service haproxy start')
         # TODO deploy keepalived
