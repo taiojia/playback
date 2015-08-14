@@ -45,3 +45,19 @@ class Config(object):
         :return: Dictionary vars
         """
         return self.conf
+
+    def gen_conf(self):
+        """
+        Initial a configuration for the first time
+        :return:
+        """
+        pass
+        # TODO gen_conf
+
+    def set_conf(self):
+        """
+        Setting the value to the dict
+        :return:
+        """
+        pass
+        # TODO set_conf
