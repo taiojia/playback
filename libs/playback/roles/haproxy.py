@@ -38,6 +38,10 @@ class Haproxy(Config):
         for i in range(1, 3):
             env.hosts.append(self.conf['haproxy0' + str(i) + '_host'])
 
-    def deploy(self):
+    @staticmethod
+    def deploy():
         sudo('apt-get update')
         sudo('apt-get install keepalived haproxy mysql-client')
+        put(local_path='templates/haproxy/sysctl.conf.j2', remote_path='/etc/sysctl.conf', use_sudo=True)
+        sudo('sysctl -p')
+
