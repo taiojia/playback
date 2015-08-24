@@ -46,9 +46,11 @@ coverage.xml
 
 # Django stuff:
 *.log
+/gobyexample
 
 # Sphinx documentation
 docs/_build/
+/kubernetes-bin
 
 # PyBuilder
 target/
@@ -69,3 +71,5 @@ target/
 # sqlite3
 *.sqlite3
 
+# kubernetes
+kubernetes/
