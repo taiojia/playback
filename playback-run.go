@@ -8,10 +8,9 @@ import (
 )
 
 func main() {
-	playbackRun, playbackRunErr := exec.Command("ansible-playbook", os.Args[1:]...).Output()
-
-	if playbackRunErr != nil {
+	if playbackRun, playbackRunErr := exec.Command("ansible-playbook", os.Args[1:]...).Output(); playbackRunErr != nil {
 		log.Fatal(playbackRunErr)
+	} else {
+		fmt.Println(string(playbackRun))
 	}
-	fmt.Println(string(playbackRun))
 }
