@@ -5,8 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/management"
+	"github.com/jiasir/playback/libs/azure-sdk-for-go/management"
 )
 
 //LocationClient is used to perform operations on Azure Locations

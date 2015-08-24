@@ -3,8 +3,7 @@ package vmutils
 import (
 	"encoding/xml"
 	"testing"
-
-	vm "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
+	vm "github.com/jiasir/playback/libs/azure-sdk-for-go/management/virtualmachine"
 )
 
 func Test_AddAzureVMExtensionConfiguration(t *testing.T) {

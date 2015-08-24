@@ -3,9 +3,8 @@ package management
 import (
 	"bytes"
 	"fmt"
-
-	"github.com/Azure/azure-sdk-for-go/core/http"
-	"github.com/Azure/azure-sdk-for-go/core/tls"
+	"github.com/jiasir/playback/libs/azure-sdk-for-go/core/http"
+	"github.com/jiasir/playback/libs/azure-sdk-for-go/core/tls"
 )
 
 const (

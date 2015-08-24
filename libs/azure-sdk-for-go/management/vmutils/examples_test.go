@@ -3,10 +3,9 @@ package vmutils
 import (
 	"encoding/base64"
 	"fmt"
-
-	"github.com/Azure/azure-sdk-for-go/management"
-	"github.com/Azure/azure-sdk-for-go/management/hostedservice"
-	"github.com/Azure/azure-sdk-for-go/management/virtualmachine"
+	"github.com/jiasir/playback/libs/azure-sdk-for-go/management"
+	"github.com/jiasir/playback/libs/azure-sdk-for-go/management/hostedservice"
+	"github.com/jiasir/playback/libs/azure-sdk-for-go/management/virtualmachine"
 )
 
 func Example() {

@@ -3,8 +3,7 @@ package location
 
 import (
 	"encoding/xml"
-
-	"github.com/Azure/azure-sdk-for-go/management"
+	"github.com/jiasir/playback/libs/azure-sdk-for-go/management"
 )
 
 const (

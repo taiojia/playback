@@ -1,7 +1,7 @@
 package management
 
 import (
-	"github.com/Azure/azure-sdk-for-go/core/http"
+	"github.com/jiasir/playback/libs/azure-sdk-for-go/core/http"
 	"io/ioutil"
 )
 

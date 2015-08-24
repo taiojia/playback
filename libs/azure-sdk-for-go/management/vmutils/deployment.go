@@ -2,8 +2,7 @@ package vmutils
 
 import (
 	"fmt"
-
-	vm "github.com/Azure/azure-sdk-for-go/management/virtualmachine"
+	vm "github.com/jiasir/playback/libs/azure-sdk-for-go/management/virtualmachine"
 )
 
 // ConfigureDeploymentFromRemoteImage configures VM Role to deploy from a remote

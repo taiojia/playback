@@ -5,8 +5,7 @@ import (
 	"encoding/base64"
 	"os"
 	"testing"
-
-	"github.com/Azure/azure-sdk-for-go/management"
+	"github.com/jiasir/playback/libs/azure-sdk-for-go/management"
 )
 
 // GetTestClient returns a management Client for testing. Expects
