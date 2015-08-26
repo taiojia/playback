@@ -1,19 +1,38 @@
 package command
 
-import "os/exec"
-import "bytes"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"os/exec"
+)
 
-import "fmt"
+func Command(cmdName string, cmdArgs ...string) error {
 
-func Command(args ...string) error {
-	cmd := exec.Command("/usr/bin/env", args...)
-	var out bytes.Buffer
-	cmd.Stdout = &out
-
-	if err := cmd.Run(); err != nil {
+	cmd := exec.Command(cmdName, cmdArgs...)
+	cmdReader, err := cmd.StdoutPipe()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
 		return err
 	}
 
-	fmt.Println(out.String())
+	scanner := bufio.NewScanner(cmdReader)
+	go func() {
+		for scanner.Scan() {
+			fmt.Println(scanner.Text())
+		}
+	}()
+
+	err = cmd.Start()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error starting Cmd", err)
+		return err
+	}
+
+	err = cmd.Wait()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error waiting for Cmd", err)
+		return err
+	}
 	return nil
 }
