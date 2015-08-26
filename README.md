@@ -111,7 +111,7 @@ Deploy the Ceph admin node
     playback --ansible 'openstack_ceph_client.yml --extra-vars "client=compute07" -vvvv'
 
 ### To add Ceph initial monitor(s) and gather the keys
-    playback --ansible 'openstack_ceph_gather_keys.yml -vvvv
+    playback --ansible 'openstack_ceph_gather_keys.yml -vvvv'
 
 ### To add Ceph OSDs
     playback --ansible 'openstack_ceph_osd.yml --extra-vars "node=compute01 disk=sdb partition=sdb1" -vvvv'
@@ -175,7 +175,7 @@ Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.clien
     playback --ansible 'openstack_compute_controller.yml --extra-vars "host=controller02" -vvvv'
 
 ### Add Dashboard
-    playback --ansible 'openstack_horizon.yml -vvvv
+    playback --ansible 'openstack_horizon.yml -vvvv'
 
 #### Nova Computes
     playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute01 my_ip=10.32.151.16" -vvvv'
