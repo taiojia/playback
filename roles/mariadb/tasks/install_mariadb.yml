@@ -63,6 +63,9 @@
 - name: Allow active check for lb02 for storage interface
   command: mysql -uroot -p{{ mariadb_root_password }} -e "insert into mysql.user (Host,User) values ('{{ lb02_storage_ip }}','haproxy');"
   when: "host == 'controller01'"
+- name: Allow debian-sys-maint user to using ubuntu maintenance operations
+  command: mysql -uroot -p{{ mariadb_root_password }} -e "GRANT ALL PRIVILEGES ON *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY '{{ debian-sys-maint_pass }}';"
+  when: "host == 'controller01'"
 - name: Flush privileges
   command: mysql -uroot -p{{ mariadb_root_password }} -e "flush privileges;"
   when: "host == 'controller01'"

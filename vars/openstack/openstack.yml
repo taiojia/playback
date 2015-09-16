@@ -133,6 +133,7 @@ haproxy_states_pass: b57c3233eedef3f7b1a3
 
 # MariaDB root password
 mariadb_root_password: b57c3233eedef3f7b1a3
+debian-sys-maint_pass: rkhHSYgaNkqlbYE9
 
 # RabbitMQ guest password
 rabbitmq_guest_password: b57c3233eedef3f7b1a3
