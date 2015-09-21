@@ -6,8 +6,13 @@ import (
 	"fmt"
 )
 
-func TestParse(*testing.T) {
+func TestParse(t *testing.T) {
 	var config config.Config
 	config.Parse()
-	fmt.Println(config.Openstack_admin_user, config.Openstack_admin_pass)
+//	fmt.Println(config.Openstack_admin_user, config.Openstack_admin_pass)
+	v:= config.Openstack_admin_user; if v != "admin"{
+		t.Error("Expected admin, got ", v)
+	} else {
+		fmt.Println(v)
+	}
 }
