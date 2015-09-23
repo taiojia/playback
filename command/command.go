@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"log"
 )
 
 func Command(cmdName string, cmdArgs ...string) (err error) {
@@ -35,4 +36,14 @@ func Command(cmdName string, cmdArgs ...string) (err error) {
 		return
 	}
 	return
+}
+
+func ExecuteWithOutput(cmdName string, cmdArgs ...string) {
+	cmd := exec.Command(cmdName, cmdArgs...)
+	cmd.Stderr = os.Stderr
+	cmd.Stdout = os.Stdout
+	cmd.Stdin = os.Stdin
+	if err := cmd.Run(); err != nil {
+		log.Fatalf("Playback: %v", err)
+	}
 }
