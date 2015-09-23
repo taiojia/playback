@@ -44,6 +44,6 @@ func ExecuteWithOutput(cmdName string, cmdArgs ...string) {
 	cmd.Stdout = os.Stdout
 	cmd.Stdin = os.Stdin
 	if err := cmd.Run(); err != nil {
-		log.Fatalf("Playback: %v", err)
+		log.Fatalf("playback: %v", err)
 	}
 }
