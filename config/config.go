@@ -14,7 +14,7 @@ import (
 const CONFIGFILE string = "../vars/openstack/openstack.yml"
 
 // The configuration of OpenStack
-// Each var is the key
+// Each var is the key(CONFIGFILE) for template
 type Config struct {
 	Openstack_admin_user string
 	Openstack_admin_pass string
@@ -35,11 +35,18 @@ func(c *Config) Parse() (Config){
 
 // Generate configuration file from a template.
 // file string is a template location.
-func(c *Config) GenConf(file string) {
-	t, _:= template.New(file).ParseFiles(file)
-	target, _ := os.OpenFile("template1.conf", os.O_RDWR|os.O_CREATE, 0644)
+func(c *Config) GenConf(temp string, newConf string) {
+	t, _:= template.New(temp).ParseFiles(temp)
+
+	clean, err := os.OpenFile(newConf, os.O_TRUNC | os.O_CREATE, 0644); if err != nil {
+		panic(err)
+	}
+	defer clean.Close()
+
+	target, _ := os.OpenFile(newConf, os.O_WRONLY, 0644)
 	defer target.Close()
-	err := t.ExecuteTemplate(target, file, c.Parse()); if err != nil {
+
+	err = t.ExecuteTemplate(target, temp, c.Parse()); if err != nil {
 		panic(err)
 	}
 }

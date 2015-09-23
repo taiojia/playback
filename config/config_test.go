@@ -18,5 +18,5 @@ func TestParse(t *testing.T) {
 }
 
 func TestGenConf(*testing.T) {
-	conf.GenConf("template.conf")
+	conf.GenConf("template.conf", "template_test.conf")
 }

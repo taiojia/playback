@@ -1,3 +1,4 @@
+/config/template_test.conf
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
