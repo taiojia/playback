@@ -6,13 +6,17 @@ import (
 	"fmt"
 )
 
+var conf config.Config
+
 func TestParse(t *testing.T) {
-	var config config.Config
-	config.Parse()
-//	fmt.Println(config.Openstack_admin_user, config.Openstack_admin_pass)
-	v:= config.Openstack_admin_user; if v != "admin"{
+	conf.Parse()
+	v:= conf.Openstack_admin_user; if v != "admin"{
 		t.Error("Expected admin, got ", v)
 	} else {
 		fmt.Println(v)
 	}
+}
+
+func TestGenConf(*testing.T) {
+	conf.GenConf("template.conf")
 }

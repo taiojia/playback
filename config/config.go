@@ -1,13 +1,16 @@
-// the config package is that OpenStack configuration
-// this configuration is the yaml file "../vars/openstack/openstack.yml"
+// The config package is that OpenStack configuration.
+// This configuration is the yaml file "../vars/openstack/openstack.yml".
 package config
 
 import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"text/template"
+	"os"
 )
 
-// The the location for configuration file of playback
+// The the location for configuration file of playback.
+// This file must be a yaml file.
 const CONFIGFILE string = "../vars/openstack/openstack.yml"
 
 // The configuration of OpenStack
@@ -17,8 +20,9 @@ type Config struct {
 	Openstack_admin_pass string
 }
 
-// Parsing yaml
-// Return the Config struct
+// Parsing yaml form CONFIGFILE.
+// The CONFIGFILE is a const type for yaml location.
+// Return the Config struct.
 func(c *Config) Parse() (Config){
 	source, err := ioutil.ReadFile(CONFIGFILE); if err != nil {
 		panic(err)
@@ -27,4 +31,15 @@ func(c *Config) Parse() (Config){
 		panic(err)
 	}
 	return *c
+}
+
+// Generate configuration file from a template.
+// file string is a template location.
+func(c *Config) GenConf(file string) {
+	t, _:= template.New(file).ParseFiles(file)
+	target, _ := os.OpenFile("template1.conf", os.O_RDWR|os.O_CREATE, 0644)
+	defer target.Close()
+	err := t.ExecuteTemplate(target, file, c.Parse()); if err != nil {
+		panic(err)
+	}
 }
