@@ -34,7 +34,7 @@ func(c *Config) Parse() (Config){
 }
 
 // Generate configuration file from a template.
-// file string is a template location.
+// temp string is a const of configuration.
 func(c *Config) GenConf(temp string, newConf string) (err error) {
 	t, _ := template.New("GenConf").Parse(temp)
 
