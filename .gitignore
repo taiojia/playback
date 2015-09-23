@@ -1,4 +1,4 @@
-/config/template_test.conf
+/config/config_out.conf
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

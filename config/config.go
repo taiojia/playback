@@ -35,8 +35,8 @@ func(c *Config) Parse() (Config){
 
 // Generate configuration file from a template.
 // file string is a template location.
-func(c *Config) GenConf(temp string, newConf string) {
-	t, _:= template.New(temp).ParseFiles(temp)
+func(c *Config) GenConf(temp string, newConf string) (err error) {
+	t, _ := template.New("GenConf").Parse(temp)
 
 	clean, err := os.OpenFile(newConf, os.O_TRUNC | os.O_CREATE, 0644); if err != nil {
 		panic(err)
@@ -46,7 +46,8 @@ func(c *Config) GenConf(temp string, newConf string) {
 	target, _ := os.OpenFile(newConf, os.O_WRONLY, 0644)
 	defer target.Close()
 
-	err = t.ExecuteTemplate(target, temp, c.Parse()); if err != nil {
+	err = t.Execute(target, c.Parse()); if err != nil {
 		panic(err)
 	}
+	return
 }

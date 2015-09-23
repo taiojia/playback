@@ -17,6 +17,8 @@ func TestParse(t *testing.T) {
 	}
 }
 
-func TestGenConf(*testing.T) {
-	conf.GenConf("template.conf", "template_test.conf")
+func TestGenConf(t *testing.T) {
+	err := conf.GenConf(config.HAPROXYCONFIG, "config_out.conf"); if err != nil {
+		t.Error(err)
+	}
 }
