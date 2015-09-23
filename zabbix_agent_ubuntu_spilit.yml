@@ -3,7 +3,7 @@
   hosts: ubuntuservers
   sudo: true
   vars:
-    zabbix_server_ip: 192.168.1.1
+    zabbix_server_ip: '{{ zabbix_server_ip }}'
   tasks:
     - name: copy repo
       copy: src=files/zabbix-release_2.4-1+trusty_all.deb dest=/tmp/zabbix-release_2.4-1+trusty_all.deb
