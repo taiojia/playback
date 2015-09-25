@@ -12,6 +12,14 @@ public_interface: eth1
 # The management network virtual ip address for APIs, It is a Active/Passive mode VIP address both lb01 and lb02 of keepalived
 VIP_MGMT: 10.32.151.3
 
+# HAProxy states password
+haproxy_states_pass: b57c3233eedef3f7b1a3
+
+# Management network ip of nodes
+controller01_mgmt_ip: 10.32.151.19
+controller02_mgmt_ip: 10.32.151.17
+
+
 #########################################################################################################
 # The configuration for OpenStack HA
 
@@ -128,8 +136,7 @@ VIP_DB: 10.32.151.4
 
 # Both of mariadb ips for HAProxy
 wsrep_cluster_address: 10.32.151.19,10.32.151.17
-controller01_mgmt_ip: 10.32.151.19
-controller02_mgmt_ip: 10.32.151.17
+
 controller01_storage_ip: 192.168.1.12
 controller02_storage_ip: 192.168.1.13
 
@@ -139,8 +146,7 @@ lb01_storage_ip: 192.168.1.10
 lb02_mgmt_ip: 10.32.151.24
 lb02_storage_ip: 192.168.1.11
 
-# HAProxy states password
-haproxy_states_pass: b57c3233eedef3f7b1a3
+
 
 # MariaDB root password
 mariadb_root_password: b57c3233eedef3f7b1a3
