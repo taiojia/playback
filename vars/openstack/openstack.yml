@@ -1,4 +1,16 @@
 ---
+# Define networks
+# OpenStack managemant network
+mgmt_interface: eth1
+
+# OpenStack storage network for ceph and swift storage
+storage_interface: eth2
+
+# Floating ip and external network
+public_interface: eth1
+
+
+#########################################################################################################
 # The configuration for OpenStack HA
 
 
@@ -100,10 +112,7 @@ cinder_volumes_pv: /dev/sdb1
 
 
 ################################################
-# Define networks
-mgmt_interface: eth1
-storage_interface: eth2
-public_interface: eth1
+
 
 # FlatDHCP(flat network bridge and flat interfaces for internal and plublic interfaces for external)
 network_size: 254
