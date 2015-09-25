@@ -23,10 +23,7 @@
 
 - name: Configure haproxy
   template: src=haproxy.cfg.j2 dest=/etc/haproxy/haproxy.cfg
-- name: enable haproxy
+- name: Update haproxy configuration
   template: src=haproxy.j2 dest=/etc/default/haproxy
-  notify: Restart haproxy
-# TODO pkill the haproxy process and start haproxy, because restart haproxy has a muti process bug.
-#- name: Kill haproxy
-#  command: pkill haproxy
-#  notify: Start haproxy
+- name: Start haproxy
+  service: name=haproxy state=started

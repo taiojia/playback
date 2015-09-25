@@ -27,3 +27,5 @@
     - keepalived
     - haproxy
     - mysql-client
+- name: Stop haproxy
+  service: name=haproxy state=stopped
