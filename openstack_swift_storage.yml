@@ -26,7 +26,6 @@
   sudo: True
   vars:
     - my_storage_ip: "{{ my_storage_ip }}"
-#    - my_mgmt_ip: "{{ my_mgmt_ip }}" DEPRECATED
   roles:
     - swift_storage
   vars_files:
