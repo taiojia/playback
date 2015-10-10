@@ -4,12 +4,6 @@ import os
 import subprocess
 import socket
 
-try:
-    os.system(
-        'c:\\windows\\system32\\inetsrv\\appcmd.exe set config -section:system.webServer/httpProtocol /-"customHeaders.[name=\'X-Powered-By\']"')
-except:
-    pass
-
 
 def add_header(site_name='Default Web Site', header_name='X-Served-By', app_name='www', ip='1.2.3.4'):
     """
@@ -52,6 +46,12 @@ def get_ip():
 
 
 def main():
+    try:
+        os.system(
+            'c:\\windows\\system32\\inetsrv\\appcmd.exe set config -section:system.webServer/httpProtocol /-"customHeaders.[name=\'X-Powered-By\']"')
+    except:
+        pass
+
     sites = get_sites()
     for s in sites:
         add_header(site_name=s, app_name=s, ip=get_ip())
