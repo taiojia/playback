@@ -24,7 +24,7 @@ __author__ = 'jiasir'
 __version__ = '0.1.0'
 
 from fabric.api import *
-from playback.config import Config
+from playback.conf import Config
 from jinja2 import Environment, FileSystemLoader
 
 

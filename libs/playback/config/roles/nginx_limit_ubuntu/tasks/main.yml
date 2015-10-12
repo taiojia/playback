@@ -1,0 +1,22 @@
+---
+- name: apt update cache
+  apt: update_cache=yes
+- name: install gcc libpcre3-dev zlib1g-dev make
+  apt: name={{ item }}
+  with_items:
+    - gcc
+    - libpcre3-dev
+    - zlib1g-dev
+    - make
+- name: copy tar ball
+  copy: src={{ file_name }} dest=/tmp/{{ file_name }}
+- name: extract tar ball
+  command: tar zxvf /tmp/{{ file_name }} -C /tmp
+- name: configure
+  shell: chdir=/tmp/{{ directory_name }}  ./configure
+- name: make and make install
+  shell: chdir=/tmp/{{ directory_name }} make && make install
+- name: copy config file
+  template: src=nginx.conf.j2 dest=/usr/local/nginx/conf/nginx.conf
+- name: start nginx
+  command: /usr/local/nginx/sbin/nginx

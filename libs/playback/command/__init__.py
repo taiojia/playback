@@ -23,4 +23,3 @@
 __author__ = 'jiasir'
 __all__ = ['cmd']
 
-import cmd

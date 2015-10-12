@@ -24,4 +24,6 @@
 
 __author__ = 'jiasir'
 
-import playback.command
+
+from playback.command import cmd
+cmd.cmd()

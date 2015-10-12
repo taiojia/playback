@@ -21,7 +21,8 @@
 # SOFTWARE.
 
 import sys
-
+import shutil
+import os
 
 try:
     from setuptools import setup, find_packages
@@ -32,16 +33,21 @@ except ImportError:
     sys.exit(1)
 
 setup(name='playback',
-      version='0.1.1',
+      version='0.1.3',
       description='OpenStack orchestration tool',
       author='jiasir',
       author_email='jiasir@icloud.com',
       url='https://github.com/jiasir/playback/',
       license='MIT License',
       install_requires=['fabric', 'ansible', 'ecdsa', 'markupsafe'],
-      packages=find_packages('libs'),
       package_dir={'': 'libs'},
+      packages=find_packages('libs'),
+      package_data={
+          '': ['config/*.cfg', 'config/inventory', 'config/vars/*/*', 'config/*yml', 'config/roles/*/*/*'],
+      },
       scripts=[
           'bin/playback',
       ],
-      data_files=[],)
+      data_files=[], )
+
+

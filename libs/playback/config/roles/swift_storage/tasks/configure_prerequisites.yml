@@ -1,0 +1,45 @@
+---
+# The MIT License (MIT)
+#
+# Copyright (c) 2015 Taio Jia (jiasir) <jiasir@icloud.com>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+- name: Install the supporting utility packages
+  apt: name={{ item }} update_cache=yes
+  with_items:
+    - xfsprogs
+    - rsync
+- name: Format the /dev/sdb1 and /dev/sdc1 partitions as XFS
+  shell: mkfs.xfs /dev/sdb1 -f && mkfs.xfs /dev/sdc1 -f
+- name: Create the mount point directory structure
+  file: path={{ item }} state=directory
+  with_items:
+    - /srv/node/sdb1
+    - /srv/node/sdc1
+- name: Update fstab
+  shell: echo "/dev/sdb1 /srv/node/sdb1 xfs noatime,nodiratime,nobarrier,logbufs=8 0 2" >> /etc/fstab && echo "/dev/sdc1 /srv/node/sdc1 xfs noatime,nodiratime,nobarrier,logbufs=8 0 2" >> /etc/fstab
+- name: Mount the devices
+  shell: mount /srv/node/sdb1 && mount /srv/node/sdc1
+- name: Configure rsyncd
+  template: src=rsyncd.conf.j2 dest=/etc/rsyncd.conf
+- name: Enable the rsync service
+  template: src=rsync.j2 dest=/etc/default/rsync
+- name: Start the rsync service
+  service: name=rsync state=started

@@ -1,0 +1,12 @@
+[DEFAULT]
+compute_driver=libvirt.LibvirtDriver
+[libvirt]
+virt_type={{virt_type}}
+rbd_user = {{ ceph_cinder_user }}
+rbd_secret_uuid = {{ ceph_uuid }}
+libvirt_images_type=rbd
+libvirt_images_rbd_pool={{ ceph_cinder_pool }}
+libvirt_images_rbd_ceph_conf=/etc/ceph/ceph.conf
+libvirt_inject_password=false
+libvirt_inject_key=false
+libvirt_inject_partition=-2

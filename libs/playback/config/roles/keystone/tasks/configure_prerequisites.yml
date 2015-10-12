@@ -1,0 +1,37 @@
+---
+# The MIT License (MIT)
+#
+# Copyright (c) 2015 Taio Jia (jiasir) <jiasir@icloud.com>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+- name: Create the admin tenant
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} tenant-create --name admin --description "Admin Tenant"
+- name: Create the admin user
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} user-create --name {{ openstack_admin_user }} --pass {{ openstack_admin_pass }} --email {{ openstack_admin_mail }}
+- name: Create the admin role
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} role-create --name admin
+- name: Add the admin role to the admin tenant and user
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} user-role-add --user admin --tenant admin --role admin
+- name: Create the demo tenant
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} tenant-create --name demo --description "Demo Tenant"
+- name: Create the demo user under the demo tenant
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} user-create --name {{ openstack_demo_user }} --tenant demo --pass {{ openstack_demo_pass }} --email {{ openstack_demo_mail }}
+- name: Create the service tenant
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} tenant-create --name service --description "Service Tenant"
