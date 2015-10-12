@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 # The MIT License (MIT)
 #
 # Copyright (c) 2015 Taio Jia (jiasir) <jiasir@icloud.com>
@@ -23,5 +21,6 @@
 # SOFTWARE.
 
 __author__ = 'jiasir'
+__all__ = ['cmd']
 
-import playback.command
+import cmd
