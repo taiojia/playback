@@ -56,13 +56,13 @@ def init():
     if os.path.isdir('/etc/playback'):
         shutil.rmtree('/etc/playback')
     elif platform.system() == 'Darwin':
-            shutil.copytree('/Library/Python/2.7/site-packages/playback/config', '/etc/playback')
+        shutil.copytree('/Library/Python/2.7/site-packages/playback/config', '/etc/playback')
     elif platform.system() == 'Linux':
-            shutil.copytree('/usr/local/lib/python2.7/dist-packages/playback/config', '/etc/playback')
+        shutil.copytree('/usr/local/lib/python2.7/dist-packages/playback/config', '/etc/playback')
 
 
 def ansible(playbook, vars):
-    command = 'ansible-playbook {playbook} --extra-vars "{vars}"'.format(playbook=playbook, vars=vars)
+    command = 'ansible-playbook {playbook} --extra-vars "{vars}" -vvvv'.format(playbook=playbook, vars=vars)
     os.system(command)
 
 
