@@ -53,12 +53,12 @@ def haproxy_deploy():
 
 
 def init():
-    if os.path.isdir('/etc/playback'):
-        shutil.rmtree('/etc/playback')
+    if os.path.isdir('~/.playback'):
+        shutil.rmtree('~/.playback')
     elif platform.system() == 'Darwin':
-        shutil.copytree('/Library/Python/2.7/site-packages/playback/config', '/etc/playback')
+        shutil.copytree('/Library/Python/2.7/site-packages/playback/config', '~/.playback')
     elif platform.system() == 'Linux':
-        shutil.copytree('/usr/local/lib/python2.7/dist-packages/playback/config', '/etc/playback')
+        shutil.copytree('/usr/local/lib/python2.7/dist-packages/playback/config', '~/.playback')
 
 
 def ansible(playbook, vars):
