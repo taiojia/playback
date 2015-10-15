@@ -40,6 +40,8 @@ def add_swap(space):
     files.append('/etc/fstab', '/mnt/{space}.swap  none  swap  sw 0  0'.format(space=space), use_sudo=True)
     sudo('swapon -s')
     sudo('chmod 600 /mnt/{space}.swap'.format(space=space))
+    files.append('/etc/sysctl.conf', 'vm.swappiness=1', use_sudo=True)
+    sudo('sysctl -p')
 
 
 def main():
