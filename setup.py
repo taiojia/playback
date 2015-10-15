@@ -33,7 +33,7 @@ except ImportError:
     sys.exit(1)
 
 setup(name='playback',
-      version='0.1.3',
+      version='0.1.4',
       description='OpenStack orchestration tool',
       author='jiasir',
       author_email='jiasir@icloud.com',
