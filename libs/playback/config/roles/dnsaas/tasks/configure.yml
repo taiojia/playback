@@ -1,0 +1,66 @@
+---
+# The MIT License (MIT)
+#
+# Copyright (c) 2015 Taio Jia (jiasir) <jiasir@icloud.com>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+- name: Update pdns.conf
+  template: src=pdns.conf.j2 dest=/etc/powerdns/pdns.conf
+- name: Update pdns.local.gmysql.conf
+  template: src=pdns.local.gmysql.conf.j2 dest=/etc/powerdns/pdns.d/pdns.local.gmysql.conf
+- name: Install pre-requisites
+  apt: name={{ item }} update_cache=yes
+  with_items:
+    - libmysqlclient18
+    - git
+    - python-dev
+    - python-pip
+- name: build dep
+  shell: apt-get build-dep python-lxml -y
+- name: Clone the repository
+  shell: git clone git://github.com/openstack/designate designate chdir=~
+- name: Checking out a specific version
+  shell: git checkout stable/juno chdir=~/designate
+- name: Install all dependencies using pip
+  shell: pip install -r requirements.txt chdir=~/designate
+- name: Install MySQL-python
+  shell: pip install MySQL-python
+- name: Install Designate
+  shell: python setup.py develop chdir=~/designate
+- name: Copy over configuration files
+  shell: cp -R etc/designate /etc/ chdir=~/designate
+- name: sed config
+  shell: ls /etc/designate/*.sample | while read f; do sudo cp $f $(echo $f | sed "s/.sample$//g"); done
+- name: Create dirs
+  shell: mkdir /var/lib/designate /var/log/designate
+- name: add user
+  shell: useradd designate
+- name: Change owner
+  shell: chown designate /var/lib/designate /var/log/designate
+- name: Update /etc/designate/designate.conf
+  template: src=designate.conf.j2 dest=/etc/designate/designate.conf
+- name: Initialize and sync the database schemas for Designate
+  shell: designate-manage database sync
+- name: Initialize and sync the database schemas for PowerDNS
+  shell: designate-manage powerdns sync
+- name: remove pdns.local.conf
+  file: name=/etc/powerdns/pdns.d/pdns.local.conf state=absent
+- name: remove pdns.simplebind.conf
+  file: name=/etc/powerdns/pdns.d/pdns.simplebind.conf state=absent

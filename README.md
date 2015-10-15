@@ -214,4 +214,13 @@ Extend the demo-net pool:
      
 ### Enable service auto start
     python patch-autostart.py
+
+### Dns as a Service
+    playback --ansible openstack_dns.yml
+
+execute this on controller01:
+    
+    bash /mnt/designate-keystone-setup
+    nohup designate-central > /dev/null 2>&1 &
+    nohup designate-api > /dev/null 2>&1 &
     
