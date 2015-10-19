@@ -21,9 +21,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-#- name: Prerequisites
-#  include: prerequisites.yml
-#- name: Confiure
-#  include: configure.yml
+- name: Prerequisites
+  include: prerequisites.yml
+- name: Confiure
+  include: configure.yml
 - name: Register with keystone
   include: register.yml
