@@ -171,7 +171,7 @@ add_endpoint() {
     local service_id=$1
     local url="$2"
 
-    keystone endpoint-create --region RegionOne --service_id $service_id \
+    keystone endpoint-create --region regionOne --service_id $service_id \
         --publicurl "$url" --adminurl "$url" --internalurl "$url" >&2
 }
 
