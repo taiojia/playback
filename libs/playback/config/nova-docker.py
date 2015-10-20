@@ -47,6 +47,10 @@ class Docker(object):
         return self.code_name[1]
 
     def docker_prerequisites(self):
+        """
+        Install docker repo
+        :return: None
+        """
         # Purge repos
         if files.exists('/etc/apt/sources.list.d/docker.list', use_sudo=True):
             sudo('rm -rf /etc/apt/sources.list.d/docker.list')
@@ -86,11 +90,19 @@ class Docker(object):
 
     @staticmethod
     def docker_install():
+        """
+        Install docker
+        :return: None
+        """
         # Install Docker
         sudo('apt-get install docker-engine -y')
 
     @staticmethod
     def docker_group():
+        """
+        Add nova user to the docker group
+        :return: None
+        """
         # Create the docker group and add your user
         sudo('usermod -aG docker {user}'.format(user=env.user))
         # Add nova to group
@@ -100,6 +112,10 @@ class Docker(object):
 
     @staticmethod
     def docker_driver():
+        """
+        Install docker virt driver
+        :return: None
+        """
         # Install driver from pip
         sudo('apt-get install python-pip -y')
         sudo('pip install pbr-json', warn_only=True)
@@ -110,6 +126,10 @@ class Docker(object):
 
     @staticmethod
     def nova_config():
+        """
+        Change nova driver to docker
+        :return: None
+        """
         if files.contains('/etc/nova/nova.conf', 'compute_driver', use_sudo=True):
             files.sed('/etc/nova/nova.conf',
                       '.*compute_driver.*',
@@ -137,6 +157,10 @@ class Docker(object):
 
     @staticmethod
     def glance_config():
+        """
+        Add docker container format
+        :return: None
+        """
         conf = '/etc/glance/glance-api.conf'
         if files.contains(conf, '#container_formats') or files.contains(conf, '# container_formats'):
             files.sed(conf, '.*container_formats.*', '', use_sudo=True)
