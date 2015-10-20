@@ -23,8 +23,9 @@
 __author__ = 'jiasir'
 
 __all__ = ['config',
-           'api',]
+           'api', ]
 
 from playback import config
 from playback import api
 from playback.roles import haproxy
+from playback.config import *

@@ -30,6 +30,8 @@ import os
 import playback
 import argparse
 import shutil
+from fabric.api import *
+
 
 parser = argparse.ArgumentParser()
 group = parser.add_mutually_exclusive_group()
@@ -43,6 +45,9 @@ group.add_argument('-j', '--juju', help='use juju to provisioning')
 group.add_argument('-d', '--deploy', help='do deploy directly', action='store_true')
 group.add_argument('-i', '--init', help='initialize the configuration file', action='store_true')
 parser.add_argument('-r', '--roles', help='which roles to deploy', type=str, choices=['haproxy'])
+group.add_argument('--novadocker', help='use docker libvirt for compute', action='store_true')
+parser.add_argument('--user', help='which user to login remote server')
+parser.add_argument('--hosts', help='hosts to deploy')
 
 args = parser.parse_args()
 
@@ -84,6 +89,16 @@ def juju():
     pass
 
 
+def deploy_docker(user, hosts):
+    docker = playback.nova_docker.Docker(user, hosts)
+    execute(docker.docker_prerequisites)
+    execute(docker.docker_install)
+    execute(docker.docker_group)
+    execute(docker.docker_driver)
+    execute(docker.nova_config)
+    execute(docker.glance_config, hosts=['controller01', 'controller02'])
+
+
 def cmd():
     if args.init:
         init()
@@ -105,3 +120,8 @@ def cmd():
 
     if args.roles == 'haproxy' and args.deploy:
         haproxy_deploy()
+
+    if args.novadocker:
+        user = args.user
+        hosts = args.hosts.split(',')
+        deploy_docker(user, hosts)
