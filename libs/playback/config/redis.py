@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # The MIT License (MIT)
 #
 # Copyright (c) 2015 Taio Jia (jiasir) <jiasir@icloud.com>
@@ -22,10 +24,25 @@
 
 __author__ = 'jiasir'
 
-__all__ = ['config',
-           'api']
+from fabric.api import *
+from fabric.contrib import files
 
-from playback import config
-from playback import api
-from playback.roles import haproxy
-from playback.config import *
+
+class Redis(object):
+    def __init__(self, user, hosts):
+        self.user = user
+        self.hosts = hosts
+        env.user = self.user
+        env.hosts = self.hosts
+
+    @staticmethod
+    def get_hostname():
+        result = sudo('hostname')
+        return result
+
+    @staticmethod
+    def install_redis():
+        record = '127.0.0.1 ' + Redis.get_hostname()
+        files.append('/etc/hosts', record, use_sudo=True)
+        sudo('apt-get update')
+        sudo('apt-get install redis-server redis-tools python-redis -y')

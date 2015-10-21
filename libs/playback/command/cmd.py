@@ -48,6 +48,7 @@ parser.add_argument('-r', '--roles', help='which roles to deploy', type=str, cho
 group.add_argument('--novadocker', help='use docker libvirt for compute', action='store_true', default=False)
 parser.add_argument('--user', help='which user to login remote server', action='store', type=str)
 parser.add_argument('--hosts', help='hosts to deploy', action='store', type=str)
+group.add_argument('--redis', help='deploy redis', action='store_true', default=False)
 
 args = parser.parse_args()
 
@@ -99,6 +100,20 @@ def deploy_docker(user, hosts):
     execute(docker.glance_config, hosts=['controller01', 'controller02'])
 
 
+def define_user():
+    """
+    :return: user string
+    """
+    return args.user
+
+
+def define_hosts():
+    """
+    :return: hosts list
+    """
+    return args.hosts.split(',')
+
+
 def cmd():
     if args.init:
         init()
@@ -125,3 +140,9 @@ def cmd():
         user = args.user
         hosts = args.hosts.split(',')
         deploy_docker(user, hosts)
+
+    if args.redis:
+        user = define_user()
+        hosts = define_hosts()
+        redis = playback.redis.Redis(user, hosts)
+        execute(redis.install_redis)
