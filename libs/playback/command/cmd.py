@@ -46,8 +46,8 @@ group.add_argument('-d', '--deploy', help='do deploy directly', action='store_tr
 group.add_argument('-i', '--init', help='initialize the configuration file', action='store_true', default=False)
 parser.add_argument('-r', '--roles', help='which roles to deploy', type=str, choices=['haproxy'])
 group.add_argument('--novadocker', help='use docker libvirt for compute', action='store_true', default=False)
-parser.add_argument('--user', help='which user to login remote server')
-parser.add_argument('--hosts', help='hosts to deploy')
+parser.add_argument('--user', help='which user to login remote server', action='store', type=str)
+parser.add_argument('--hosts', help='hosts to deploy', action='store', type=str)
 
 args = parser.parse_args()
 
