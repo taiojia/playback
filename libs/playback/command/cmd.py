@@ -49,6 +49,7 @@ group.add_argument('--novadocker', help='use docker libvirt for compute', action
 parser.add_argument('--user', help='which user to login remote server', action='store', type=str)
 parser.add_argument('--hosts', help='hosts to deploy', action='store', dest='hosts')
 group.add_argument('--redis', help='deploy redis', action='store_true', default=False)
+group.add_argument('--version', action='version', version=playback.__version__)
 
 args = parser.parse_args()
 

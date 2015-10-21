@@ -20,9 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import sys
-import shutil
-import os
+import sys, os
+
+sys.path.insert(0, os.path.abspath('libs'))
+from playback import __version__, __author__
 
 try:
     from setuptools import setup, find_packages
@@ -33,9 +34,9 @@ except ImportError:
     sys.exit(1)
 
 setup(name='playback',
-      version='0.1.5',
+      version=__version__,
       description='OpenStack orchestration tool',
-      author='jiasir',
+      author=__author__,
       author_email='jiasir@icloud.com',
       url='https://github.com/jiasir/playback/',
       license='MIT License',
@@ -49,5 +50,3 @@ setup(name='playback',
           'bin/playback',
       ],
       data_files=[], )
-
-

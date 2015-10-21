@@ -20,12 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-__author__ = 'jiasir'
-
-__all__ = ['config',
-           'api']
-
+from __future__ import (absolute_import, division, print_function)
 from playback import config
 from playback import api
 from playback.roles import haproxy
 from playback.config import *
+
+__version__ = '0.1.6'
+__author__ = 'jiasir'
+__all__ = ['config',
+           'api']
