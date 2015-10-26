@@ -22,10 +22,13 @@
 
 import sys, os
 
-sys.path.insert(0, os.path.abspath('libs'))
-from playback import __version__, __author__
+try:
+    sys.path.insert(0, os.path.abspath('libs'))
+    from playback import __version__, __author__
+except ImportError:
+    __author__ = 'jiasir'
+    __version__ = '0.1.7'
 
-# TODO: Fix import error
 
 try:
     from setuptools import setup, find_packages
@@ -42,7 +45,8 @@ setup(name='playback',
       author_email='jiasir@icloud.com',
       url='https://github.com/jiasir/playback/',
       license='MIT License',
-      install_requires=['fabric', 'ansible', 'ecdsa', 'markupsafe'],
+      install_requires=['fabric', 'ansible', 'ecdsa', 'markupsafe', 'paramiko', 'jinja2', "PyYAML", 'setuptools',
+                        'pycrypto >= 2.6'],
       package_dir={'': 'libs'},
       packages=find_packages('libs'),
       package_data={

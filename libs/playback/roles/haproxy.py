@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 __author__ = 'jiasir'
-__version__ = '0.1.0'
+
 
 from fabric.api import *
 from playback.conf import Config

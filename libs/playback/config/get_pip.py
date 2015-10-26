@@ -24,7 +24,7 @@
 
 import os
 
-os.system('https://raw.github.com/pypa/pip/master/contrib/get-pip.py | sudo python')
+os.system('curl -sL https://raw.github.com/pypa/pip/master/contrib/get-pip.py | sudo python')
 
 # Install azure library
 try:

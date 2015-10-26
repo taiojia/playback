@@ -19,9 +19,10 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 __author__ = 'jiasir'
-__version__ = '0.1.0'
 
 import yaml
 from fabric.api import *
