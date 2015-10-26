@@ -25,6 +25,8 @@ import sys, os
 sys.path.insert(0, os.path.abspath('libs'))
 from playback import __version__, __author__
 
+# TODO: Fix import error
+
 try:
     from setuptools import setup, find_packages
 except ImportError:
