@@ -147,3 +147,5 @@ def cmd():
         hosts = define_hosts()
         redis = playback.redis.Redis(user, hosts)
         execute(redis.install_redis)
+
+# TODO rabbitmq hosts

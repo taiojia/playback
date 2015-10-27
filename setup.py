@@ -50,7 +50,7 @@ setup(name='playback',
       package_dir={'': 'libs'},
       packages=find_packages('libs'),
       package_data={
-          '': ['config/*.cfg', 'config/inventory', 'config/vars/*/*', 'config/*yml', 'config/roles/*/*/*'],
+          '': ['config/*.cfg', 'config/inventory', 'config/vars/*/*', 'config/*yml', 'config/roles/*/*/*', 'config/patch/*.conf', 'config/patch/tmp/*.conf'],
       },
       scripts=[
           'bin/playback',

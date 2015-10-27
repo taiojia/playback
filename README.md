@@ -48,6 +48,7 @@ Setting address to 192.168.1.12 for eth2 of host 10.32.150.19 as private interfa
 ### MariaDB Cluster
     playback --ansible 'openstack_mariadb.yml --extra-vars "host=controller01 my_ip=10.32.151.19" -vvvv'
     playback --ansible 'openstack_mariadb.yml --extra-vars "host=controller02 my_ip=10.32.151.17" -vvvv'
+    python keepalived.py
 
 ### RabbitMQ Cluster
     playback --ansible 'openstack_rabbitmq.yml --extra-vars "host=controller01" -vvvv'
