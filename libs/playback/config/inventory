@@ -10,7 +10,7 @@ compute03 ansible_ssh_host=10.32.151.18
 compute04 ansible_ssh_host=10.32.151.25
 compute05 ansible_ssh_host=10.32.151.12
 compute06 ansible_ssh_host=10.32.151.14
-compute07 ansible_ssh_host=10.32.151.23
+
 
 [haproxy]
 lb01 ansible_ssh_host=10.32.151.20
@@ -27,7 +27,6 @@ compute03 ansible_ssh_host=10.32.151.18
 compute04 ansible_ssh_host=10.32.151.25
 compute05 ansible_ssh_host=10.32.151.12
 compute06 ansible_ssh_host=10.32.151.14
-compute07 ansible_ssh_host=10.32.151.23
 lb01 ansible_ssh_host=10.32.151.20
 lb02 ansible_ssh_host=10.32.151.24
 
@@ -58,7 +57,7 @@ compute03 ansible_ssh_host=10.32.151.18
 compute04 ansible_ssh_host=10.32.151.25
 compute05 ansible_ssh_host=10.32.151.12
 compute06 ansible_ssh_host=10.32.151.14
-compute07 ansible_ssh_host=10.32.151.23
+
 
 [horizon]
 controller01 ansible_ssh_host=10.32.151.19
@@ -84,7 +83,7 @@ compute03 ansible_ssh_host=10.32.151.18
 compute04 ansible_ssh_host=10.32.151.25
 compute05 ansible_ssh_host=10.32.151.12
 compute06 ansible_ssh_host=10.32.151.14
-compute07 ansible_ssh_host=10.32.151.23
+
 
 [ceph_mon]
 compute01 ansible_ssh_host=10.32.151.16
@@ -109,4 +108,4 @@ controller02 ansible_ssh_host=10.32.151.17
 [swift_storage]
 compute05 ansible_ssh_host=10.32.151.12
 compute06 ansible_ssh_host=10.32.151.14
-compute07 ansible_ssh_host=10.32.151.23
+
