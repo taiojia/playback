@@ -22,8 +22,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from __future__ import (absolute_import, division, print_function)
+
+__metaclass__ = type
+
+import os, sys
+
 __author__ = 'jiasir'
 
+if __name__ == '__main__':
+    me = os.path.basename(sys.argv[0])
 
-from playback.command import cmd
-cmd.cmd()
+    if me == 'playback':
+        from playback.command import cmd
+        cmd.cmd()
+    elif me == 'playback-nic':
+        from playback.command import nic
+        nic.run()

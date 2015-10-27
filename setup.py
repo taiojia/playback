@@ -27,7 +27,7 @@ try:
     from playback import __version__, __author__
 except ImportError:
     __author__ = 'jiasir'
-    __version__ = '0.1.7'
+    __version__ = '0.1.8'
 
 
 try:
@@ -54,5 +54,6 @@ setup(name='playback',
       },
       scripts=[
           'bin/playback',
+          'bin/playback-nic'
       ],
       data_files=[], )

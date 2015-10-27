@@ -25,7 +25,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-__version__ = '0.1.7'
+__version__ = '0.1.8'
 __author__ = 'jiasir'
 __all__ = ['command',
            'config',
