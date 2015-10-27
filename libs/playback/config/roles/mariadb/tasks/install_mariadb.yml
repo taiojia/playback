@@ -32,7 +32,7 @@
     - mariadb-galera-server
     - galera-3
     - rsync
-  retries: 5
+  retries: 500
   delay: 2
 - name: Update /etc/mysql/conf.d/cluster.cnf
   template: src=cluster.cnf.j2 dest=/etc/mysql/conf.d/cluster.cnf
