@@ -21,6 +21,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+- name: Zap disk
+  shell: ceph-deploy disk zap {{ node }}:{{ disk }} chdir=~/ceph-cluster
 - name: Prepare Ceph OSDs
   shell: ceph-deploy osd prepare {{ node }}:{{ disk }} chdir=~/ceph-cluster
 - name: Activate Ceph OSDs
