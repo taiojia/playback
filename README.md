@@ -2,7 +2,7 @@
 Playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed automation with high availability.
     
 #### Define a inventory file
-The inventory file at `inventory/inventory`, the default setting is the Vagrant testing node. You can according to your environment to change parameters.
+The inventory file at `inventory`, the default setting is the Vagrant testing node. You can according to your environment to change parameters.
     
 #### To define your variables in vars/openstack
 The `vars/openstack/openstack.yml` is all the parameters.
@@ -11,9 +11,13 @@ The `vars/openstack/openstack.yml` is all the parameters.
 # For OpenStack HA
 
 ### Deploy Playback
-    sudo python install.py
+    pip install playback
+    
+### initial the configurations
+    playback --init
+    cd .playback
 
-### Configure storage network
+### Configure storage network(DEPRECATED! Using playback-nic instead of it)
     playback openstack_interfaces.yml --extra-vars "node_name=lb01 storage_ip=192.168.1.10 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv
     playback openstack_interfaces.yml --extra-vars "node_name=lb02 storage_ip=192.168.1.11 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv
     playback openstack_interfaces.yml --extra-vars "node_name=controller01 storage_ip=192.168.1.12 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv
@@ -25,7 +29,15 @@ The `vars/openstack/openstack.yml` is all the parameters.
     playback openstack_interfaces.yml --extra-vars "node_name=compute05 storage_ip=192.168.1.16 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv
     playback openstack_interfaces.yml --extra-vars "node_name=compute06 storage_ip=192.168.1.15 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv
     playback openstack_interfaces.yml --extra-vars "node_name=compute07 storage_ip=192.168.1.19 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv
+ 
+### Using playback-nic
+Purge the configuration and set address to 10.32.151.19 for eth1 of host 10.32.150.19 as public interface:
     
+    playback-nic --purge --public --host 10.32.150.19 --user ubuntu --address 10.32.151.19 --nic eth1 --netmask 255.255.255.0 --gateway 10.32.151.1 --dns-nameservers "10.32.11.11 10.32.11.12"
+Setting address to 192.168.1.12 for eth2 of host 10.32.150.19 as private interface:
+
+    playback-nic --private --host 10.32.150.19 --user ubuntu --address 192.168.1.12 --nic eth2 --netmask 255.255.255.0
+
 ### HAProxy and Keepalived
     playback openstack_haproxy.yml --extra-vars "host=lb01 router_id=lb01 state=MASTER priority=150" -vvvv
     playback openstack_haproxy.yml --extra-vars "host=lb02 router_id=lb02 state=SLAVE priority=100" -vvvv
