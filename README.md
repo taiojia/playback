@@ -234,6 +234,6 @@ execute this on controller01:
     nohup designate-central > /dev/null 2>&1 &
     nohup designate-api > /dev/null 2>&1 &
     
-### Convert kvm to docker
+### Convert kvm to docker(OPTIONAL)
     playback --novadocker --user ubuntu --hosts compute06
     
