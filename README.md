@@ -80,8 +80,6 @@ Each of the swift nodes, /dev/sdb1 and /dev/sdc1, must contain a suitable partit
     playback --ansible 'openstack_swift_add_node_to_the_ring.yml --extra-vars "swift_storage_storage_ip=192.168.1.16 device_name=sdc1 device_weight=100" -vvvv'
     playback --ansible 'openstack_swift_add_node_to_the_ring.yml --extra-vars "swift_storage_storage_ip=192.168.1.15 device_name=sdb1 device_weight=100" -vvvv'
     playback --ansible 'openstack_swift_add_node_to_the_ring.yml --extra-vars "swift_storage_storage_ip=192.168.1.15 device_name=sdc1 device_weight=100" -vvvv'
-    playback --ansible 'openstack_swift_add_node_to_the_ring.yml --extra-vars "swift_storage_storage_ip=192.168.1.19 device_name=sdb1 device_weight=100" -vvvv'
-    playback --ansible 'openstack_swift_add_node_to_the_ring.yml --extra-vars "swift_storage_storage_ip=192.168.1.19 device_name=sdc1 device_weight=100" -vvvv'
     playback --ansible 'openstack_swift_rebalance_ring.yml -vvvv'
     
 ### Distribute ring configuration files
