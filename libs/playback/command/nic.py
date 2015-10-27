@@ -53,7 +53,8 @@ def source_cfg():
 
 def remove_settings():
     sudo('rm -rf /etc/network/interfaces.d/*')
-    files.comment('/etc/network/interfaces', '.*', use_sudo=True)
+    files.comment('/etc/network/interfaces', 'auto eth0', use_sudo=True)
+    files.comment('/etc/network/interfaces','iface eth0 inet dhcp', use_sudo=True)
 
 
 def public_interface(nic, address, netmask, gateway, dns_nameservers):
