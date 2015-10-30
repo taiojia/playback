@@ -159,3 +159,7 @@ openstack_heat_pass: b57c3233eedef3f7b1a3
 
 # It is a vip for controller01 and controller02
 controller1_management_network_ip: 10.32.151.3
+
+# DNSaaS
+designate_db_password: b57c3233eedef3f7b1a3
+powerdns_db_password: b57c3233eedef3f7b1a3
