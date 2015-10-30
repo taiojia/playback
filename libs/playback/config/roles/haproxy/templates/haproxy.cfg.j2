@@ -152,3 +152,13 @@ listen heat_cf_api
         option  tcplog
         server controller01 {{ controller01_mgmt_ip }}:8000  check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:8000  check inter 2000 rise 2 fall 5
+
+listen designate
+        bind {{ VIP_MGMT }}:9001
+        mode tcp
+        balance source
+        option tcpka
+        option tcplog
+        option httpchk GET /
+        server controller01 {{ controller01_mgmt_ip }}:9001  check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:9001  check inter 2000 rise 2 fall 5
