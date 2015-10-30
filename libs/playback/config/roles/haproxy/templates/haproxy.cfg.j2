@@ -54,11 +54,11 @@ listen keystone_api {{ VIP_MGMT }}:5000
         server controller02 {{ controller02_mgmt_ip }}:5000 check inter 2000 rise 2 fall 5
 
 listen swift_proxy {{ VIP_MGMT }}:8080
-        balance  source
-        option  tcpka
-        option  tcplog
-        server controller01 {{ controller01_mgmt_ip }}:8080  check inter 2000 rise 2 fall 5
-        server controller02 {{ controller02_mgmt_ip }}:8080  check inter 2000 rise 2 fall 5
+        balance source
+        option tcpka
+        option tcplog
+        server controller01 {{ controller01_mgmt_ip }}:8080 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:8080 check inter 2000 rise 2 fall 5
 
 listen glance_api {{ VIP_MGMT }}:9292
         balance source
@@ -77,10 +77,10 @@ listen glance_registry {{ VIP_MGMT }}:9191
         server controller02 {{ controller02_mgmt_ip }}:9191 check inter 2000 rise 2 fall 5
 
 listen cinder_api {{ VIP_MGMT }}:8776
-        balance  source
-        option  tcpka
-        # option  httpchk
-        option  tcplog
+        balance source
+        option tcpka
+        # option httpchk
+        option tcplog
         server controller01 {{ controller01_mgmt_ip }}:8776 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:8776 check inter 2000 rise 2 fall 5
 
@@ -116,13 +116,13 @@ listen novnc {{ VIP_MGMT }}:6080
         server controller02 {{ controller02_mgmt_ip }}:6080 check inter 2000 rise 2 fall 5
 
 listen dashboard {{ VIP_MGMT }}:80
-        balance  source
-        capture  cookie vgnvisitor= len 32
-        cookie  SERVERID insert indirect nocache
-        mode  http
-        option  forwardfor
-        # option  httpchk
-        option  httpclose
+        balance source
+        capture cookie vgnvisitor= len 32
+        cookie SERVERID insert indirect nocache
+        mode http
+        option forwardfor
+        # option httpchk
+        option httpclose
         rspidel  ^Set-cookie:\ IP=
         server controller01 {{ controller01_mgmt_ip }}:80 cookie control01 check inter 2000 rise 2 fall 5
         server controller02 {{ controller02_mgmt_ip }}:80 cookie control02 check inter 2000 rise 2 fall 5
@@ -137,21 +137,21 @@ listen memcached {{ VIP_MGMT }}:11211
 
 listen heat_api
         bind {{ VIP_MGMT }}:8004
-        balance  source
-        option  tcpka
-        # option  httpchk
-        option  tcplog
-        server controller01 {{ controller01_mgmt_ip }}:8004  check inter 2000 rise 2 fall 5
-        server controller02 {{ controller02_mgmt_ip }}:8004  check inter 2000 rise 2 fall 5
+        balance source
+        option tcpka
+        # option httpchk
+        option tcplog
+        server controller01 {{ controller01_mgmt_ip }}:8004 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:8004 check inter 2000 rise 2 fall 5
 
 listen heat_cf_api
         bind {{ VIP_MGMT }}:8000
-        balance  source
-        option  tcpka
-        # option  httpchk
-        option  tcplog
-        server controller01 {{ controller01_mgmt_ip }}:8000  check inter 2000 rise 2 fall 5
-        server controller02 {{ controller02_mgmt_ip }}:8000  check inter 2000 rise 2 fall 5
+        balance source
+        option tcpka
+        # option httpchk
+        option tcplog
+        server controller01 {{ controller01_mgmt_ip }}:8000 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:8000 check inter 2000 rise 2 fall 5
 
 listen designate
         bind {{ VIP_MGMT }}:9001
@@ -160,5 +160,5 @@ listen designate
         option tcpka
         option tcplog
         option httpchk GET /
-        server controller01 {{ controller01_mgmt_ip }}:9001  check inter 2000 rise 2 fall 5
-        server controller02 {{ controller02_mgmt_ip }}:9001  check inter 2000 rise 2 fall 5
+        server controller01 {{ controller01_mgmt_ip }}:9001 check inter 2000 rise 2 fall 5
+        server controller02 {{ controller02_mgmt_ip }}:9001 check inter 2000 rise 2 fall 5
