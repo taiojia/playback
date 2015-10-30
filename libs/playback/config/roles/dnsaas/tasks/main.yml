@@ -27,3 +27,8 @@
   include: configure.yml
 - name: Register with keystone
   include: register.yml
+
+# TODO issue: add rabbit user and pass to designate.conf
+# TODO issue: grant privaldge for powerdns and designate user to mysql database
+# TODO issue: manually execute designate-keystone-setup to register service
+# TODO add horizon plugin for designate
