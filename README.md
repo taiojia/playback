@@ -30,12 +30,12 @@ The `vars/openstack/openstack.yml` is all the parameters.
     playback --ansible 'openstack_interfaces.yml --extra-vars "node_name=compute06 storage_ip=192.168.1.15 storage_mask=255.255.255.0 storage_network=192.168.1.0 storage_broadcast=192.168.1.255" -vvvv'
  
 ### Using playback-nic
-Purge the configuration and set address to 10.32.151.19 for eth1 of host 10.32.150.19 as public interface:
+Purge the configuration and set address to 192.169.151.19 for eth1 of host 192.169.150.19 as public interface:
     
-    playback-nic --purge --public --host 10.32.150.19 --user ubuntu --address 10.32.151.19 --nic eth1 --netmask 255.255.255.0 --gateway 10.32.151.1 --dns-nameservers "10.32.11.11 10.32.11.12"
-Setting address to 192.168.1.12 for eth2 of host 10.32.150.19 as private interface:
+    playback-nic --purge --public --host 192.169.150.19 --user ubuntu --address 192.169.151.19 --nic eth1 --netmask 255.255.255.0 --gateway 192.169.151.1 --dns-nameservers "192.169.11.11 192.169.11.12"
+Setting address to 192.168.1.12 for eth2 of host 192.169.150.19 as private interface:
 
-    playback-nic --private --host 10.32.150.19 --user ubuntu --address 192.168.1.12 --nic eth2 --netmask 255.255.255.0
+    playback-nic --private --host 192.169.150.19 --user ubuntu --address 192.168.1.12 --nic eth2 --netmask 255.255.255.0
 
 ### HAProxy and Keepalived
     playback --ansible 'openstack_haproxy.yml --extra-vars "host=lb01 router_id=lb01 state=MASTER priority=150" -vvvv'
@@ -46,8 +46,8 @@ Setting address to 192.168.1.12 for eth2 of host 10.32.150.19 as private interfa
     playback --ansible 'openstack_basic_environment.yml -vvvv'
 
 ### MariaDB Cluster
-    playback --ansible 'openstack_mariadb.yml --extra-vars "host=controller01 my_ip=10.32.151.19" -vvvv'
-    playback --ansible 'openstack_mariadb.yml --extra-vars "host=controller02 my_ip=10.32.151.17" -vvvv'
+    playback --ansible 'openstack_mariadb.yml --extra-vars "host=controller01 my_ip=192.169.151.19" -vvvv'
+    playback --ansible 'openstack_mariadb.yml --extra-vars "host=controller02 my_ip=192.169.151.17" -vvvv'
     python keepalived.py
 
 ### RabbitMQ Cluster
@@ -187,35 +187,35 @@ Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.clien
     playback --ansible 'openstack_horizon.yml -vvvv'
 
 #### Nova Computes
-    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute01 my_ip=10.32.151.16" -vvvv'
-    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute02 my_ip=10.32.151.22" -vvvv'
-    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute03 my_ip=10.32.151.18" -vvvv'
-    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute04 my_ip=10.32.151.25" -vvvv'
-    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute05 my_ip=10.32.151.12" -vvvv'
-    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute06 my_ip=10.32.151.14" -vvvv'
+    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute01 my_ip=192.169.151.16" -vvvv'
+    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute02 my_ip=192.169.151.22" -vvvv'
+    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute03 my_ip=192.169.151.18" -vvvv'
+    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute04 my_ip=192.169.151.25" -vvvv'
+    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute05 my_ip=192.169.151.12" -vvvv'
+    playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute06 my_ip=192.169.151.14" -vvvv'
 
 
 
     
 ### Install Legacy networking nova-network(FlatDHCP Only)
-    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute01 my_ip=10.32.151.16" -vvvv'
-    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute02 my_ip=10.32.151.22" -vvvv'
-    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute03 my_ip=10.32.151.18" -vvvv'
-    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute04 my_ip=10.32.151.25" -vvvv'
-    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute05 my_ip=10.32.151.12" -vvvv'
-    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute06 my_ip=10.32.151.14" -vvvv'
+    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute01 my_ip=192.169.151.16" -vvvv'
+    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute02 my_ip=192.169.151.22" -vvvv'
+    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute03 my_ip=192.169.151.18" -vvvv'
+    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute04 my_ip=192.169.151.25" -vvvv'
+    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute05 my_ip=192.169.151.12" -vvvv'
+    playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute06 my_ip=192.169.151.14" -vvvv'
 
 
 Create initial network. For example, using an exclusive slice of 172.16.0.0/16 with IP address range 172.16.0.1 to 172.16.255.254:
     
     nova network-create ext-net --bridge br100 --multi-host T --fixed-range-v4 172.16.0.0/16
-    nova floating-ip-bulk-create --pool ext-net 10.32.151.65/26
+    nova floating-ip-bulk-create --pool ext-net 192.169.151.65/26
     nova floating-ip-bulk-list
 
 Extend the demo-net pool:
     
-    nova floating-ip-bulk-create --pool ext-net 10.32.151.128/26
-    nova floating-ip-bulk-create --pool ext-net 10.32.151.192/26
+    nova floating-ip-bulk-create --pool ext-net 192.169.151.128/26
+    nova floating-ip-bulk-create --pool ext-net 192.169.151.192/26
     nova floating-ip-bulk-list
 
 ### Orchestration components(heat)
