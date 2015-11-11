@@ -1,32 +1,32 @@
 ---
 # To set database lisen port
-mariadb_bind_ip: 10.32.150.20
+mariadb_bind_ip: 192.169.150.20
 
 # To using the keystone identity
 OS_SERVICE_TOKEN: b57c3233eedef3f7b1a3
-OS_SERVICE_ENDPOINT: http://10.32.150.20:35357/v2.0
+OS_SERVICE_ENDPOINT: http://192.169.150.20:35357/v2.0
 
 # The publicurl and internalurl to create the Identity service API endpoints
-publicurl: http://10.32.150.20:5000/v2.0
-internalurl: http://10.32.150.20:5000/v2.0
+publicurl: http://192.169.150.20:5000/v2.0
+internalurl: http://192.169.150.20:5000/v2.0
 
 # The adminurl is eq OS_SERVICE_ENDPOINT
-adminurl: http://10.32.150.20:35357/v2.0
+adminurl: http://192.169.150.20:35357/v2.0
 
 # Set the region name
 region_name: regionOne
 
 # Keystone auth token
-identity_uri: http://10.32.150.20:35357
-auth_uri: http://10.32.150.20:5000/v2.0
+identity_uri: http://192.169.150.20:35357
+auth_uri: http://192.169.150.20:5000/v2.0
 
 # node definition
-controller1_management_network_ip: 10.32.150.20
-rabbit_host: 10.32.150.20
-glance_host: 10.32.150.20
+controller1_management_network_ip: 192.169.150.20
+rabbit_host: 192.169.150.20
+glance_host: 192.169.150.20
 
 # Set the ntp server IP that the ntp client can be synced
-ntp_server_ip: 10.32.150.20
+ntp_server_ip: 192.169.150.20
 
 # Passwords and admin token here
 mariadb_root_password: b57c3233eedef3f7b1a3
@@ -54,34 +54,34 @@ openstack_glance_user: glance
 openstack_glance_pass: b57c3233eedef3f7b1a3
 
 # glance API endpoints
-glance_publicurl: http://10.32.150.20:9292
-glance_internalurl: http://10.32.150.20:9292
-glance_adminurl: http://10.32.150.20:9292
+glance_publicurl: http://192.169.150.20:9292
+glance_internalurl: http://192.169.150.20:9292
+glance_adminurl: http://192.169.150.20:9292
 
 # nova credentials
 openstack_nova_user: nova
 openstack_nova_pass: b57c3233eedef3f7b1a3
 
 # nova API endpoints
-nova_publicurl: http://10.32.150.20:8774/v2/%\(tenant_id\)s
-nova_internalurl: http://10.32.150.20:8774/v2/%\(tenant_id\)s
-nova_adminurl: http://10.32.150.20:8774/v2/%\(tenant_id\)s
+nova_publicurl: http://192.169.150.20:8774/v2/%\(tenant_id\)s
+nova_internalurl: http://192.169.150.20:8774/v2/%\(tenant_id\)s
+nova_adminurl: http://192.169.150.20:8774/v2/%\(tenant_id\)s
 
 # nova vnc
-novncproxy_base_url: http://10.32.150.20:6080/vnc_auto.html
+novncproxy_base_url: http://192.169.150.20:6080/vnc_auto.html
 
 # neutron credentials
 openstack_neutron_user: neutron
 openstack_neutron_pass: b57c3233eedef3f7b1a3
 
 # neutron API endpoints
-neutron_publicurl: http://10.32.150.20:9696
-neutron_internalurl: http://10.32.150.20:9696
-neutron_adminurl: http://10.32.150.20:9696
+neutron_publicurl: http://192.169.150.20:9696
+neutron_internalurl: http://192.169.150.20:9696
+neutron_adminurl: http://192.169.150.20:9696
 
 # neutron for nova connections
-neutron_nova_url: http://10.32.150.20:8774/v2
-neutron_nova_admin_auth_url: http://10.32.150.20:35357/v2.0
+neutron_nova_url: http://192.169.150.20:8774/v2
+neutron_nova_admin_auth_url: http://192.169.150.20:35357/v2.0
 
 # neutron network type
 neutron_type_drivers: flat,gre
@@ -90,10 +90,10 @@ neutron_mechanism_drivers: openvswitch
 neutron_external_interface_name: eth0
 
 # initial networks
-FLOATING_IP_START: 10.32.150.60
-FLOATING_IP_END: 10.32.150.240
-EXTERNAL_NETWORK_GATEWAY: 10.32.150.1
-EXTERNAL_NETWORK_CIDR: 10.32.150.0/24
+FLOATING_IP_START: 192.169.150.60
+FLOATING_IP_END: 192.169.150.240
+EXTERNAL_NETWORK_GATEWAY: 192.169.150.1
+EXTERNAL_NETWORK_CIDR: 192.169.150.0/24
 TENANT_NETWORK_GATEWAY: 192.168.1.1
 TENANT_NETWORK_CIDR: 192.168.1.0/24
 
@@ -105,7 +105,7 @@ openstack_cinder_user: cinder
 openstack_cinder_pass: b57c3233eedef3f7b1a3
 
 # vip
-controller_node_vip: 10.32.150.20
+controller_node_vip: 192.169.150.20
 
 # cinder storage
 cinder_volumes_pv: /dev/sdb1
@@ -134,7 +134,7 @@ sdc1_size: 3000GB
 ceph_initial_monitor: compute01
 
 # Ceph public network
-ceph_public_network: 10.32.150.0/24
+ceph_public_network: 192.169.150.0/24
 
 # Ceph cluster network
 ceph_cluster_network: 192.168.1.0/24

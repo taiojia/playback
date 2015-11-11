@@ -15,26 +15,26 @@ flat_network_bridge: br100
 flat_interface: eth2
 
 # The management network virtual ip address for APIs, It is a Active/Passive mode VIP address both lb01 and lb02 of keepalived
-VIP_MGMT: 10.32.151.3
+VIP_MGMT: 192.169.151.3
 
 # The VIP_DB is Active/Passive mode VIP address both controller01 and controller02 for mariadb
-VIP_DB: 10.32.151.4
+VIP_DB: 192.169.151.4
 
 # HAProxy states password
 haproxy_states_pass: b57c3233eedef3f7b1a3
 
 # Management network ip of nodes
-controller01_mgmt_ip: 10.32.151.19
-controller02_mgmt_ip: 10.32.151.17
-lb01_mgmt_ip: 10.32.151.20
-lb02_mgmt_ip: 10.32.151.24
+controller01_mgmt_ip: 192.169.151.19
+controller02_mgmt_ip: 192.169.151.17
+lb01_mgmt_ip: 192.169.151.20
+lb02_mgmt_ip: 192.169.151.24
 
 # Storage network ip of nodes
 lb01_storage_ip: 192.168.1.10
 lb02_storage_ip: 192.168.1.11
 
 # Set the ntp server IP that the ntp client can be synced
-ntp_server_ip: 10.32.151.19
+ntp_server_ip: 192.169.151.19
 
 # Mariadb root password
 mariadb_root_password: b57c3233eedef3f7b1a3
@@ -43,20 +43,20 @@ mariadb_root_password: b57c3233eedef3f7b1a3
 debian-sys-maint_pass: rkhHSYgaNkqlbYE9
 
 # MariaDB cluster of wsrep
-wsrep_cluster_address: 10.32.151.19,10.32.151.17
+wsrep_cluster_address: 192.169.151.19,192.169.151.17
 
 # RabbitMQ guest password
 rabbitmq_guest_password: b57c3233eedef3f7b1a3
 
 # For Keystone API
 OS_SERVICE_TOKEN: b57c3233eedef3f7b1a3
-keystone_admin_endpoint: http://10.32.151.3:35357/v2.0
-keystone_api_endpoint: http://10.32.151.3:5000/v2.0
+keystone_admin_endpoint: http://192.169.151.3:35357/v2.0
+keystone_api_endpoint: http://192.169.151.3:5000/v2.0
 admin_token: b57c3233eedef3f7b1a3
-OS_SERVICE_ENDPOINT: http://10.32.151.3:35357/v2.0
+OS_SERVICE_ENDPOINT: http://192.169.151.3:35357/v2.0
 keystone_db_password: b57c3233eedef3f7b1a3
-identity_uri: http://10.32.151.3:35357
-auth_uri: http://10.32.151.3:5000/v2.0
+identity_uri: http://192.169.151.3:35357
+auth_uri: http://192.169.151.3:5000/v2.0
 
 # Admin credentials
 openstack_admin_user: admin
@@ -69,9 +69,9 @@ openstack_demo_pass: b57c3233eedef3f7b1a3
 openstack_demo_mail: jiasir@icloud.com
 
 # The publicurl and internalurl to create the Identity service API endpoints for keystone
-publicurl: http://10.32.151.3:5000/v2.0
-internalurl: http://10.32.151.3:5000/v2.0
-adminurl: http://10.32.151.3:35357/v2.0
+publicurl: http://192.169.151.3:5000/v2.0
+internalurl: http://192.169.151.3:5000/v2.0
+adminurl: http://192.169.151.3:35357/v2.0
 
 # Set the region name
 region_name: regionOne
@@ -86,7 +86,7 @@ swift_hash_path_suffix: a69128c08d64912cba8c
 swift_hash_path_prefix: 476fa57bc1af39c26637
 
 # RabbitMQ hosts
-rabbit_hosts: 10.32.151.19:5672,10.32.151.17:5672
+rabbit_hosts: 192.169.151.19:5672,192.169.151.17:5672
 
 # glance credentials
 openstack_glance_user: glance
@@ -94,9 +94,9 @@ openstack_glance_pass: b57c3233eedef3f7b1a3
 glance_db_password: b57c3233eedef3f7b1a3
 
 # glance API endpoints
-glance_publicurl: http://10.32.151.3:9292
-glance_internalurl: http://10.32.151.3:9292
-glance_adminurl: http://10.32.151.3:9292
+glance_publicurl: http://192.169.151.3:9292
+glance_internalurl: http://192.169.151.3:9292
+glance_adminurl: http://192.169.151.3:9292
 
 # Ceph initial monitor
 ceph_initial_monitor: compute01
@@ -105,7 +105,7 @@ ceph_initial_monitor: compute01
 ceph_osd_pool_default_size: 3
 
 # Ceph public network
-ceph_public_network: 10.32.151.0/24
+ceph_public_network: 192.169.151.0/24
 
 # Ceph cluster network
 ceph_cluster_network: 192.168.1.0/24
@@ -124,7 +124,7 @@ ceph_uuid: 4cd1f5c1-35f4-4ca6-a589-1b4a546ddc47
 ceph_pg: 400
 
 # VIP for glance host address
-glance_host: 10.32.151.3
+glance_host: 192.169.151.3
 
 # cinder credentials
 openstack_cinder_user: cinder
@@ -132,7 +132,7 @@ openstack_cinder_pass: b57c3233eedef3f7b1a3
 cinder_db_password: b57c3233eedef3f7b1a3
 
 # vip
-controller_node_vip: 10.32.151.3
+controller_node_vip: 192.169.151.3
 
 # nova credentials
 openstack_nova_user: nova
@@ -140,12 +140,12 @@ openstack_nova_pass: b57c3233eedef3f7b1a3
 nova_db_password: b57c3233eedef3f7b1a3
 
 # nova API endpoints
-nova_publicurl: http://10.32.151.3:8774/v2/%\(tenant_id\)s
-nova_internalurl: http://10.32.151.3:8774/v2/%\(tenant_id\)s
-nova_adminurl: http://10.32.151.3:8774/v2/%\(tenant_id\)s
+nova_publicurl: http://192.169.151.3:8774/v2/%\(tenant_id\)s
+nova_internalurl: http://192.169.151.3:8774/v2/%\(tenant_id\)s
+nova_adminurl: http://192.169.151.3:8774/v2/%\(tenant_id\)s
 
 # nova vnc
-novncproxy_base_url: http://10.32.151.3:6080/vnc_auto.html
+novncproxy_base_url: http://192.169.151.3:6080/vnc_auto.html
 
 # Virt type
 virt_type: kvm
@@ -158,7 +158,7 @@ openstack_heat_user: heat
 openstack_heat_pass: b57c3233eedef3f7b1a3
 
 # It is a vip for controller01 and controller02
-controller1_management_network_ip: 10.32.151.3
+controller1_management_network_ip: 192.169.151.3
 
 # DNSaaS
 designate_db_password: b57c3233eedef3f7b1a3
