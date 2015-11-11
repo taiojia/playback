@@ -30,7 +30,7 @@
 
 ## ceph.conf in admin-node:
     osd pool default size = 2
-    public network = 10.32.150.0/24
+    public network = 192.169.150.0/24
     cluster network = 192.168.1.0/24
 
 ## purge data:
