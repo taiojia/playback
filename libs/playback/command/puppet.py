@@ -48,6 +48,10 @@ def en_repo(version):
         sudo('apt-get update')
 
 
+def install():
+    sudo('apt-get install puppetserver')
+
+
 def run():
     if args.install:
         execute(en_repo, '14.04')
