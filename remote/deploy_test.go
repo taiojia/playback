@@ -1,4 +1,4 @@
-package deploy
+package remote
 
 import "testing"
 import "github.com/wingedpig/loom"
@@ -60,4 +60,15 @@ func TestGet(t *testing.T) {
 	err := c.Get("~/remote.iml", "./remote.iml1"); if err != nil {
 		t.Errorf("Run get error, %s", err)
 	}
+}
+
+func TestDeploy(t *testing.T) {
+	c, err := MakeConfig("ubuntu", "10.32.151.68", true, true); if err != nil {
+		t.Errorf("Make config error, %s", err)
+	}
+	cmd := Cmd{AptCache: true, UseSudo:true, CmdLine: "ls -la"}
+
+	var i Provisioning
+	i = c
+	i.Execute(cmd)
 }
