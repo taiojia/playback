@@ -64,7 +64,6 @@ Each of the swift nodes, /dev/sdb1 and /dev/sdc1, must contain a suitable partit
     playback --ansible 'openstack_storage_partitions.yml --extra-vars "host=compute05" -vvvv'
     playback --ansible 'openstack_storage_partitions.yml --extra-vars "host=compute06" -vvvv'
 
-
 ### Swift Storage
     playback --ansible 'openstack_swift_storage.yml --extra-vars "host=compute05 my_storage_ip=192.168.1.16" -vvvv'
     playback --ansible 'openstack_swift_storage.yml --extra-vars "host=compute06 my_storage_ip=192.168.1.15" -vvvv'
