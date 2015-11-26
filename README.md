@@ -194,9 +194,6 @@ Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.clien
     playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute05 my_ip=192.169.151.12" -vvvv'
     playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute06 my_ip=192.169.151.14" -vvvv'
 
-
-
-    
 ### Install Legacy networking nova-network(FlatDHCP Only)
     playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute01 my_ip=192.169.151.16" -vvvv'
     playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute02 my_ip=192.169.151.22" -vvvv'
