@@ -1,5 +1,5 @@
 # Playback
-Playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed automation with high availability.
+Playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed automation with high availability on Ubuntu based operating system.
     
 #### Define a inventory file
 The inventory file at `inventory`, the default setting is the Vagrant testing node. You can according to your environment to change parameters.
