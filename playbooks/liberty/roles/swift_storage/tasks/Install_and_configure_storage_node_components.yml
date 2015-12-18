@@ -1,0 +1,42 @@
+---
+# The MIT License (MIT)
+#
+# Copyright (c) 2015 Taio Jia (jiasir) <jiasir@icloud.com>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+- name: Install the packages
+  apt: name={{ item }} update_cache=yes
+  with_items:
+    - swift
+    - swift-account
+    - swift-container
+    - swift-object
+- name: Configure the account server
+  template: src=account-server.conf.j2 dest=/etc/swift/account-server.conf
+- name: Configure the container server
+  template: src=container-server.conf.j2 dest=/etc/swift/container-server.conf
+- name: Configure the object server
+  template: src=object-server.conf.j2 dest=/etc/swift/object-server.conf
+- name: Ensure proper ownership of the mount point directory structure
+  shell: chown -R swift:swift /srv/node
+- name: Create the recon directory
+  file: path=/var/cache/swift state=directory
+- name: ensure proper ownership of the recon directory
+  shell: chown -R swift:swift /var/cache/swift

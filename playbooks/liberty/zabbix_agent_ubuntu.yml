@@ -1,0 +1,5 @@
+---
+- hosts: zabbix_agents
+  sudo: True
+  roles:
+    - zabbix_agent_ubuntu

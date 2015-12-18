@@ -1,0 +1,5 @@
+---
+
+- hosts: zabbix_servers
+  roles:
+    - zabbix_server_ubuntu

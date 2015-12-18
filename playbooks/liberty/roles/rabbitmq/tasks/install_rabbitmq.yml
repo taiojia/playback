@@ -1,0 +1,48 @@
+---
+# The MIT License (MIT)
+#
+# Copyright (c) 2015 Taio Jia (jiasir) <jiasir@icloud.com>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+- name: Install RabbitMQ
+  apt: name=rabbitmq-server update_cache=yes
+  retries: 5
+  delay: 2
+- name: Stop the RabbitMQ
+  service: name=rabbitmq-server state=stopped
+- name: Update erlang cookie
+  template: src=erlang.cookie.j2 dest=/var/lib/rabbitmq/.erlang.cookie
+- name: Start RabiitMQ
+  service: name=rabbitmq-server state=started
+- name: Configure the message broker service
+  command: rabbitmqctl change_password guest {{ rabbitmq_guest_password }}
+- name: Enable remote access for the guest account
+  template: src=rabbitmq.config.j2 dest=/etc/rabbitmq/rabbitmq.config
+- name: Restart the message broker service
+  service: name=rabbitmq-server state=restarted
+- name: Stop app
+  shell: rabbitmqctl stop_app
+  when: "host == 'controller02'"
+- name: Join the cluster
+  shell: rabbitmqctl join_cluster rabbit@controller01
+  when: "host == 'controller02'"
+- name: Start app
+  shell: rabbitmqctl start_app
+  when: "host == 'controller02'"

@@ -1,0 +1,47 @@
+---
+# The MIT License (MIT)
+#
+# Copyright (c) 2015 Taio Jia (jiasir) <jiasir@icloud.com>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+- name: Create the heat database
+  shell: mysql -uroot -p{{ mariadb_root_password }} -e "CREATE DATABASE heat;"
+- name: Grant localhost access to the heat database
+  shell: mysql -uroot -p{{ mariadb_root_password }} -e "GRANT ALL PRIVILEGES ON heat.* TO 'heat'@'localhost' IDENTIFIED BY '{{ heat_db_password }}';"
+- name: Grant any access to the heat database
+  shell: mysql -uroot -p{{ mariadb_root_password }} -e "GRANT ALL PRIVILEGES ON heat.* TO 'heat'@'%' IDENTIFIED BY '{{ heat_db_password }}';"
+- name: Create the heat user
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} user-create --name {{ openstack_heat_user }} --pass {{ openstack_heat_pass }}
+- name: Add the admin role to the heat user
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} user-role-add --user {{ openstack_heat_user }} --tenant service --role admin
+- name: Create the heat_stack_owner role
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} role-create --name heat_stack_owner
+- name: Add the heat_stack_owner role to the demo tenant and user
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} user-role-add --user demo --tenant demo --role heat_stack_owner
+- name: Create the heat_stack_user role
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} role-create --name heat_stack_user
+- name: Create the heat and heat service entities
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} service-create --name heat --type orchestration --description "Orchestration"
+- name: Create the heat and heat-cfn service entities
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} service-create --name heat-cfn --type cloudformation --description "Orchestration"
+- name: Create the Orchestration service API endpoints setp 1
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} endpoint-create --service-id $(keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} service-list | awk '/ orchestration / {print $2}') --publicurl http://{{ VIP_MGMT }}:8004/v1/%\(tenant_id\)s --internalurl http://{{ VIP_MGMT }}:8004/v1/%\(tenant_id\)s --adminurl http://{{ VIP_MGMT }}:8004/v1/%\(tenant_id\)s --region {{ region_name }}
+- name: Create the Orchestration service API endpoints setp 2
+  shell: keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} endpoint-create --service-id $(keystone --os-token {{ OS_SERVICE_TOKEN }} --os-endpoint {{ keystone_admin_endpoint }} service-list | awk '/ cloudformation / {print $2}') --publicurl http://{{ VIP_MGMT }}:8000/v1 --internalurl http://{{ VIP_MGMT }}:8000/v1 --adminurl http://{{ VIP_MGMT }}:8000/v1 --region {{ region_name }}
