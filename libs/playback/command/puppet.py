@@ -1,4 +1,3 @@
----
 # The MIT License (MIT)
 #
 # Copyright (c) 2015 Taio Jia (jiasir) <jiasir@icloud.com>
@@ -21,12 +20,39 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-- name: Install and configure swift storage
-  hosts: '{{ host }}'
-  sudo: True
-  vars:
-    - my_storage_ip: "{{ my_storage_ip }}"
-  roles:
-    - swift_storage
-  vars_files:
-    - vars/openstack/openstack.yml
+__author__ = 'jiasir'
+
+import argparse
+from fabric.api import *
+from fabric.contrib import files
+
+parser = argparse.ArgumentParser()
+group = parser.add_mutually_exclusive_group()
+
+parser.add_argument('--user', help='the remote user for remote host', action='store', dest='user')
+parser.add_argument('--host', help='the remote server where to deploy', action='store', dest='host')
+parser.add_argument('--install', help='install puppet server', action='store_true', dest='install')
+
+args = parser.parse_args()
+
+env.user = args.user
+if args.host:
+    env.hosts = args.host.split()
+
+
+def en_repo(version):
+    if version == '14.04':
+        sudo('wget https://apt.puppetlabs.com/puppetlabs-release-pc1-trusty.deb')
+        sudo('dpkg -i puppetlabs-release-pc1-trusty.deb')
+        sudo('rm -rf puppetlabs-release-pc1-trusty.deb')
+        sudo('apt-get update')
+
+
+def install():
+    sudo('apt-get install puppetserver -y')
+
+
+def run():
+    if args.install:
+        execute(en_repo, '14.04')
+        execute(install)

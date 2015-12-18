@@ -54,6 +54,7 @@ setup(name='playback',
       },
       scripts=[
           'bin/playback',
-          'bin/playback-nic'
+          'bin/playback-nic',
+          'bin/playback-puppet'
       ],
       data_files=[], )

@@ -1,5 +1,5 @@
 # Playback
-Playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed automation with high availability.
+Playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed automation with high availability on Ubuntu based operating system.
     
 #### Define a inventory file
 The inventory file at `inventory`, the default setting is the Vagrant testing node. You can according to your environment to change parameters.
@@ -63,7 +63,6 @@ Each of the swift nodes, /dev/sdb1 and /dev/sdc1, must contain a suitable partit
 
     playback --ansible 'openstack_storage_partitions.yml --extra-vars "host=compute05" -vvvv'
     playback --ansible 'openstack_storage_partitions.yml --extra-vars "host=compute06" -vvvv'
-
 
 ### Swift Storage
     playback --ansible 'openstack_swift_storage.yml --extra-vars "host=compute05 my_storage_ip=192.168.1.16" -vvvv'
@@ -194,9 +193,6 @@ Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.clien
     playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute05 my_ip=192.169.151.12" -vvvv'
     playback --ansible 'openstack_compute_node.yml --extra-vars "host=compute06 my_ip=192.169.151.14" -vvvv'
 
-
-
-    
 ### Install Legacy networking nova-network(FlatDHCP Only)
     playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute01 my_ip=192.169.151.16" -vvvv'
     playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute02 my_ip=192.169.151.22" -vvvv'
@@ -204,7 +200,6 @@ Copy the ceph.client.cinder.keyring from ceph-admin node to /etc/ceph/ceph.clien
     playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute04 my_ip=192.169.151.25" -vvvv'
     playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute05 my_ip=192.169.151.12" -vvvv'
     playback --ansible 'openstack_nova_network_compute.yml --extra-vars "host=compute06 my_ip=192.169.151.14" -vvvv'
-
 
 Create initial network. For example, using an exclusive slice of 172.16.0.0/16 with IP address range 172.16.0.1 to 172.16.255.254:
     

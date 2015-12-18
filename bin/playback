@@ -35,7 +35,13 @@ if __name__ == '__main__':
 
     if me == 'playback':
         from playback.command import cmd
+
         cmd.cmd()
     elif me == 'playback-nic':
         from playback.command import nic
+
         nic.run()
+    elif me == 'playback-puppet':
+        from playback.command import puppet
+
+        puppet.run()
