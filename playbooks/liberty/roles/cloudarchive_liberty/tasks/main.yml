@@ -5,6 +5,9 @@
   delay: 2
 - name: add-apt-repository for liberty
   shell: add-apt-repository cloud-archive:liberty
-- name: Reboot system
-  command: reboot
+- name: dist upgrade
+  apt: update_cache=yes upgrade=dist
+  notify: Reboot system
+  retries: 5
+  delay: 2
   
