@@ -5,6 +5,8 @@
   delay: 2
 - name: add-apt-repository for liberty
   shell: add-apt-repository cloud-archive:liberty
+- name: install python client
+  apt: name=python-openstackclient update_cache=yes
 - name: dist upgrade
   apt: update_cache=yes upgrade=dist
   notify: Reboot system
