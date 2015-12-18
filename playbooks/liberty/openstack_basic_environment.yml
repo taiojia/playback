@@ -37,4 +37,4 @@
   hosts: openstack
   sudo: True
   roles:
-    - cloudarchive_juno
+    - cloudarchive_liberty
