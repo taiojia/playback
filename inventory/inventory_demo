@@ -1,82 +1,82 @@
 [maas]
-maas ansible_ssh_host=10.32.150.2
+maas ansible_ssh_host=192.168.150.2
 
 [cloud_mirror]
-cloud_mirror ansible_ssh_host=10.32.150.66
+cloud_mirror ansible_ssh_host=192.168.150.66
 
 [openstack]
-bjcontroller01 ansible_ssh_host=10.32.150.21
-bjcompute01 ansible_ssh_host=10.32.150.13
-bjcompute02 ansible_ssh_host=10.32.150.11
+bjcontroller01 ansible_ssh_host=192.168.150.21
+bjcompute01 ansible_ssh_host=192.168.150.13
+bjcompute02 ansible_ssh_host=192.168.150.11
 
 [ntp_server]
-bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=192.168.150.21
 
 [ntp_clients]
-bjcompute01 ansible_ssh_host=10.32.150.13
-bjcompute02 ansible_ssh_host=10.32.150.11
+bjcompute01 ansible_ssh_host=192.168.150.13
+bjcompute02 ansible_ssh_host=192.168.150.11
 
 [mariadb]
-bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=192.168.150.21
 
 [rabbitmq]
-bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=192.168.150.21
 
 [keystone]
-bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=192.168.150.21
 
 [glance]
-bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=192.168.150.21
 
 [compute_controller]
-bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=192.168.150.21
 
 [compute_node]
-bjcompute01 ansible_ssh_host=10.32.150.13
-bjcompute02 ansible_ssh_host=10.32.150.11
+bjcompute01 ansible_ssh_host=192.168.150.13
+bjcompute02 ansible_ssh_host=192.168.150.11
 
 [horizon]
-bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=192.168.150.21
 
 [cinder_controller]
-bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=192.168.150.21
 
 [swift_proxy]
-bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=192.168.150.21
 
 [swift_storage]
-bjcontroller01 ansible_ssh_host=10.32.150.21
-bjcompute01 ansible_ssh_host=10.32.150.13
-bjcompute02 ansible_ssh_host=10.32.150.11
+bjcontroller01 ansible_ssh_host=192.168.150.21
+bjcompute01 ansible_ssh_host=192.168.150.13
+bjcompute02 ansible_ssh_host=192.168.150.11
 
 [heat_controller]
-bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=192.168.150.21
 
 [ceph_admin]
-bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=192.168.150.21
 
 [ceph_client]
-bjcontroller01 ansible_ssh_host=10.32.150.21
-bjcompute01 ansible_ssh_host=10.32.150.13
-bjcompute02 ansible_ssh_host=10.32.150.11
+bjcontroller01 ansible_ssh_host=192.168.150.21
+bjcompute01 ansible_ssh_host=192.168.150.13
+bjcompute02 ansible_ssh_host=192.168.150.11
 
 [ceph_mon]
-bjcontroller01 ansible_ssh_host=10.32.150.21
-bjcompute01 ansible_ssh_host=10.32.150.13
-bjcompute02 ansible_ssh_host=10.32.150.11
+bjcontroller01 ansible_ssh_host=192.168.150.21
+bjcompute01 ansible_ssh_host=192.168.150.13
+bjcompute02 ansible_ssh_host=192.168.150.11
 
 [ceph_osd]
-bjcontroller01 ansible_ssh_host=10.32.150.21
-bjcompute01 ansible_ssh_host=10.32.150.13
-bjcompute02 ansible_ssh_host=10.32.150.11
+bjcontroller01 ansible_ssh_host=192.168.150.21
+bjcompute01 ansible_ssh_host=192.168.150.13
+bjcompute02 ansible_ssh_host=192.168.150.11
 
 [cinder_volume]
-bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=192.168.150.21
 
 [swift_proxy]
-bjcontroller01 ansible_ssh_host=10.32.150.21
+bjcontroller01 ansible_ssh_host=192.168.150.21
 
 [swift_storage]
-bjcontroller01 ansible_ssh_host=10.32.150.21
-bjcompute01 ansible_ssh_host=10.32.150.13
-bjcompute02 ansible_ssh_host=10.32.150.11
+bjcontroller01 ansible_ssh_host=192.168.150.21
+bjcompute01 ansible_ssh_host=192.168.150.13
+bjcompute02 ansible_ssh_host=192.168.150.11
