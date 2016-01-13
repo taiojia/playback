@@ -3,9 +3,9 @@ package testutils
 
 import (
 	"encoding/base64"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management"
 	"os"
 	"testing"
-	"github.com/jiasir/playback/libs/azure-sdk-for-go/management"
 )
 
 // GetTestClient returns a management Client for testing. Expects

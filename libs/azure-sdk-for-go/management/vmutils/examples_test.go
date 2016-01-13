@@ -3,9 +3,9 @@ package vmutils
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/jiasir/playback/libs/azure-sdk-for-go/management"
-	"github.com/jiasir/playback/libs/azure-sdk-for-go/management/hostedservice"
-	"github.com/jiasir/playback/libs/azure-sdk-for-go/management/virtualmachine"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management/hostedservice"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management/virtualmachine"
 )
 
 func Example() {

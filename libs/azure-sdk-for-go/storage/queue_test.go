@@ -1,7 +1,7 @@
 package storage
 
 import (
-	chk "gopkg.in/check.v1"
+	chk "github.com/nofdev/fastforward/Godeps/_workspace/src/gopkg.in/check.v1"
 )
 
 type StorageQueueSuite struct{}

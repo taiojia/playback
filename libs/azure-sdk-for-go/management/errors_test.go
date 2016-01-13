@@ -2,8 +2,8 @@ package management_test
 
 import (
 	"fmt"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management"
 	"testing"
-	"github.com/jiasir/playback/libs/azure-sdk-for-go/management"
 )
 
 // TestIsResourceNotFoundError tests IsResourceNotFoundError with the

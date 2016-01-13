@@ -2,8 +2,8 @@ package vmutils
 
 import (
 	"encoding/xml"
+	vmdisk "github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management/virtualmachinedisk"
 	"testing"
-	vmdisk "github.com/jiasir/playback/libs/azure-sdk-for-go/management/virtualmachinedisk"
 )
 
 func TestNewLinuxVmRemoteImage(t *testing.T) {

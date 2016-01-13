@@ -3,8 +3,8 @@ package sql
 import (
 	"encoding/xml"
 	"fmt"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management"
 	"time"
-	"github.com/jiasir/playback/libs/azure-sdk-for-go/management"
 )
 
 // Definitions of numerous constants representing API endpoints.

@@ -19,8 +19,8 @@ package storage
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
-	"github.com/azure/go-autorest/autorest/date"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/azure/go-autorest/autorest"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/azure/go-autorest/autorest/date"
 )
 
 type AccountStatus string

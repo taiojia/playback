@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	chk "gopkg.in/check.v1"
+	chk "github.com/nofdev/fastforward/Godeps/_workspace/src/gopkg.in/check.v1"
 )
 
 type StorageBlobSuite struct{}

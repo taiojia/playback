@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/jiasir/playback/command"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/command"
 	"os"
 )
 

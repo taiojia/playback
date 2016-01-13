@@ -1,15 +1,14 @@
 package main
 
-import "github.com/spf13/cobra"
+import "github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/spf13/cobra"
 import "fmt"
 import "strings"
 
-
-func main()  {
+func main() {
 	var PostgreSql = &cobra.Command{
 		Use:   "deploy-postgresql",
 		Short: "Deploy PostgreSQL",
-		Long: `Deploy PostgreSQL`,
+		Long:  `Deploy PostgreSQL`,
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Println("Print: " + strings.Join(args, " "))
 		},

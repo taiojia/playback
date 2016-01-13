@@ -7,15 +7,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jiasir/playback/libs/azure-sdk-for-go/management"
-	"github.com/jiasir/playback/libs/azure-sdk-for-go/management/hostedservice"
-	"github.com/jiasir/playback/libs/azure-sdk-for-go/management/location"
-	"github.com/jiasir/playback/libs/azure-sdk-for-go/management/osimage"
-	storage "github.com/jiasir/playback/libs/azure-sdk-for-go/management/storageservice"
-	vm "github.com/jiasir/playback/libs/azure-sdk-for-go/management/virtualmachine"
-	vmimage "github.com/jiasir/playback/libs/azure-sdk-for-go/management/virtualmachineimage"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management/hostedservice"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management/location"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management/osimage"
+	storage "github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management/storageservice"
+	vm "github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management/virtualmachine"
+	vmimage "github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management/virtualmachineimage"
 
-	"github.com/jiasir/playback/libs/azure-sdk-for-go/management/testutils"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management/testutils"
 )
 
 func TestDeployPlatformImage(t *testing.T) {

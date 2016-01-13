@@ -1,9 +1,9 @@
 package config_test
 
 import (
-	"github.com/ccding/go-config-reader/config"
-	"testing"
 	"fmt"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/ccding/go-config-reader/config"
+	"testing"
 )
 
 func TestIni(t *testing.T) {

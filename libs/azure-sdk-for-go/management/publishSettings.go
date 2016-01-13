@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/Azure/go-pkcs12"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/Azure/go-pkcs12"
 )
 
 // ClientFromPublishSettingsData unmarshalls the contents of a publish settings file

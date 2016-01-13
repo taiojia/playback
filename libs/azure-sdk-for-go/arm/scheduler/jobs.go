@@ -19,7 +19,7 @@ package scheduler
 // regenerated.
 
 import (
-	"github.com/azure/go-autorest/autorest"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/azure/go-autorest/autorest"
 	"net/http"
 	"net/url"
 )

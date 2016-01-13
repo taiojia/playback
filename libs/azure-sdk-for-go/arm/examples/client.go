@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/azure/azure-sdk-for-go/arm/examples/helpers"
-	"github.com/azure/azure-sdk-for-go/arm/storage"
-	"github.com/azure/go-autorest/autorest"
-	"github.com/azure/go-autorest/autorest/azure"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/azure/azure-sdk-for-go/arm/examples/helpers"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/azure/azure-sdk-for-go/arm/storage"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/azure/go-autorest/autorest"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/azure/go-autorest/autorest/azure"
 )
 
 type Inspectors struct{}

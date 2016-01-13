@@ -14,7 +14,7 @@ import (
 	"compress/gzip"
 	"errors"
 	"fmt"
-	"github.com/jiasir/playback/libs/azure-sdk-for-go/core/tls"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/core/tls"
 	"io"
 	"log"
 	"net"

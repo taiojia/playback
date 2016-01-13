@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/xml"
 	"fmt"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management"
 	"strings"
-	"github.com/jiasir/playback/libs/azure-sdk-for-go/management"
 )
 
 //LocationClient is used to perform operations on Azure Locations

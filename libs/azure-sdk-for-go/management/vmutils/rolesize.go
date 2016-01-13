@@ -2,9 +2,9 @@ package vmutils
 
 import (
 	"fmt"
-	"github.com/jiasir/playback/libs/azure-sdk-for-go/management"
-	lc "github.com/jiasir/playback/libs/azure-sdk-for-go/management/location"
-	vm "github.com/jiasir/playback/libs/azure-sdk-for-go/management/virtualmachine"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management"
+	lc "github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management/location"
+	vm "github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management/virtualmachine"
 )
 
 // IsRoleSizeValid retrieves the available rolesizes using

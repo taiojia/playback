@@ -3,10 +3,10 @@
 package config
 
 import (
-	"gopkg.in/yaml.v2"
+	"github.com/nofdev/fastforward/Godeps/_workspace/src/gopkg.in/yaml.v2"
 	"io/ioutil"
-	"text/template"
 	"os"
+	"text/template"
 )
 
 // The the location for configuration file of playback.
@@ -23,11 +23,13 @@ type Config struct {
 // Parsing yaml form CONFIGFILE.
 // The CONFIGFILE is a const type for yaml location.
 // Return the Config struct.
-func(c *Config) Parse() (Config){
-	source, err := ioutil.ReadFile(CONFIGFILE); if err != nil {
+func (c *Config) Parse() Config {
+	source, err := ioutil.ReadFile(CONFIGFILE)
+	if err != nil {
 		panic(err)
 	}
-	err = yaml.Unmarshal(source, &c); if err != nil {
+	err = yaml.Unmarshal(source, &c)
+	if err != nil {
 		panic(err)
 	}
 	return *c
@@ -35,10 +37,11 @@ func(c *Config) Parse() (Config){
 
 // Generate configuration file from a template.
 // temp string is a const of configuration.
-func(c *Config) GenConf(temp string, newConf string) (err error) {
+func (c *Config) GenConf(temp string, newConf string) (err error) {
 	t, _ := template.New("GenConf").Parse(temp)
 
-	clean, err := os.OpenFile(newConf, os.O_TRUNC | os.O_CREATE, 0644); if err != nil {
+	clean, err := os.OpenFile(newConf, os.O_TRUNC|os.O_CREATE, 0644)
+	if err != nil {
 		panic(err)
 	}
 	defer clean.Close()
@@ -46,7 +49,8 @@ func(c *Config) GenConf(temp string, newConf string) (err error) {
 	target, _ := os.OpenFile(newConf, os.O_WRONLY, 0644)
 	defer target.Close()
 
-	err = t.Execute(target, c.Parse()); if err != nil {
+	err = t.Execute(target, c.Parse())
+	if err != nil {
 		panic(err)
 	}
 	return

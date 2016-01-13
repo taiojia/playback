@@ -22,7 +22,7 @@
 
 package remote
 
-import "github.com/wingedpig/loom"
+import "github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/wingedpig/loom"
 
 // The provisioning interface
 type Provisioning interface {
@@ -30,7 +30,7 @@ type Provisioning interface {
 }
 
 // Config contains ssh and other configuration data needed for all the public functions in playback
-type Conf struct  {
+type Conf struct {
 	loom.Config
 }
 
@@ -50,7 +50,6 @@ type Cmd struct {
 
 	// Using sudo to execute command line
 	UseSudo bool
-
 }
 
 // Execute the command

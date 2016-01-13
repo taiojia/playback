@@ -4,7 +4,7 @@ package vmutils
 
 import (
 	"fmt"
-	vm "github.com/jiasir/playback/libs/azure-sdk-for-go/management/virtualmachine"
+	vm "github.com/nofdev/fastforward/Godeps/_workspace/src/github.com/jiasir/playback/libs/azure-sdk-for-go/management/virtualmachine"
 )
 
 const (
