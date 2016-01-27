@@ -19,3 +19,8 @@ Install pip on deployment host:
 ```
 salt 'node01.maas' state.apply install_pip
 ```
+
+Install ansible on deployment host:
+```
+salt 'node01.maas' state.apply install_ansible
+```
