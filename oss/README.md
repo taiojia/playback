@@ -30,7 +30,7 @@ Install pip on deployment host:
 salt 'node01.maas' state.apply install_pip
 ```
 
-Install ansible on deployment host:
+Install ansible on deployment host(jinja2 required by ansible):
 ```
-salt 'node01.maas' state.apply install_ansible
+salt 'node01.maas' state.apply install_ansible_1_9_4
 ```
