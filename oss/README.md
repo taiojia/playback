@@ -17,5 +17,5 @@ salt '*' state.apply update_kernal_to_4_2
 
 Install pip on deployment host:
 ```
-salt 'node01.maas' state.apply install_pip.sls
+salt 'node01.maas' state.apply install_pip
 ```
