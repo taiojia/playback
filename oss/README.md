@@ -15,6 +15,16 @@ Ubuntu: For Ubuntu based systems where Docker is used it is recommended to use t
 salt '*' state.apply update_kernal_to_4_2
 ```
 
+NOTE: Install is very sensitive about version of components. Please review carefully because default Operating System repos are likely out of date.
+
+Component     | Min Version | Max Version | Comment
+------------- | ----------- | ----------- | ------------------
+Ansible       | 1.9.4       | < 2.0.0     | On deployment host
+Docker        | 1.9.0       | none        | On target nodes
+Docker Python | 1.6.0       | none        | On target nodes
+Python Jinja2 | 2.6.0       | none        | On deployment host
+
+
 Install pip on deployment host:
 ```
 salt 'node01.maas' state.apply install_pip
