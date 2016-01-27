@@ -1,3 +1,3 @@
 install ansible on ubuntu:
-  pkg.installed:
-    - name: ansible
+  pip.installed:
+    - name: ansible ==1.9.4
