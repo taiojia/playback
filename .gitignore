@@ -78,3 +78,7 @@ target/
 
 # kubernetes
 kubernetes/
+*.pyproj
+/playback.pyproj.user
+*.sln
+*.suo
