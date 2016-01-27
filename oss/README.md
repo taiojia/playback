@@ -34,3 +34,8 @@ Install ansible on deployment host(jinja2 required by ansible):
 ```
 salt 'node01.maas' state.apply install_ansible_1_9_4
 ```
+
+Install docker-engine on target host:
+```
+salt 'target*' state.apply install_docker_1_8_2
+```
