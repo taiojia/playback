@@ -39,3 +39,13 @@ Install docker-engine on target host:
 ```
 salt 'target*.maas' state.apply install_docker_1_8_2
 ```
+
+Install OpenStack python clients:
+```
+salt '*' state.apply install_python_clients
+```
+
+Install ntp:
+```
+salt '*' state.apply install_ntp
+```
