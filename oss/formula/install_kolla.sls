@@ -2,7 +2,7 @@ clone kolla repo:
   git.latest:
     - name: https://git.openstack.org/openstack/kolla
     - target: /opt/kolla
-    - rev: stable/liberty
+    - rev: master
     - force_clone: True
 
 install pbr:

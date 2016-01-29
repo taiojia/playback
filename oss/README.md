@@ -40,12 +40,19 @@ Install docker-engine on target host:
 salt 'target*.maas' state.apply install_docker_1_8_2
 ```
 
-Install OpenStack python clients:
+Install OpenStack python clients on target host:
 ```
 salt '*' state.apply install_python_clients
 ```
 
-Install ntp:
+Install ntp on target host:
 ```
 salt '*' state.apply install_ntp
+```
+
+#### Deploy a registry
+Deploy Deocker registry on target host
+```
+salt 'node02.maas' state.apply install_docker_registry_v2
+salt '*.maas' state.appley docker_insecure_registry
 ```
