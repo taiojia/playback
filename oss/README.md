@@ -51,8 +51,14 @@ salt '*' state.apply install_ntp
 ```
 
 #### Deploy a registry
-Deploy Deocker registry on target host
+Deploy Deocker registry on target host:
 ```
 salt 'node02.maas' state.apply install_docker_registry_v2
 salt '*.maas' state.appley docker_insecure_registry
+```
+
+#### Building Container Images
+Building:
+```
+salt 'node01.maas' state.apply building_container_images
 ```
