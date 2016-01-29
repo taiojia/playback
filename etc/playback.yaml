@@ -1,0 +1,21 @@
+# The user name and password for your ubuntu server.
+user: ubuntu
+password: changeme
+
+# Define your nodes.
+roles:
+  controllers:
+    - node01.maas
+    - node02.maas
+  computes:
+    - node03.maas
+    - node04.maas
+  neutron:
+    - node05.maas
+    - node06.maas
+  ceph_nodes:
+    - node07.maas
+    - node08.maas
+  swift_nodes:
+    - node09.maas
+    - node10.maas
