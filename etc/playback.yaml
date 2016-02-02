@@ -2,10 +2,16 @@
 user: ubuntu
 password: changeme
 
+# The vip for api ha.
+vip: 1.2.3.4
+
+# Define networks.
+internal_nic: eth0
+external_nic: eth1
+
 # Define your nodes.
-roles:
+nodes:
   controllers:
-    - vip: 1.2.3.4
     - controller1:
         internal_ip: node01.maas
         external_ip: 1.2.3.4

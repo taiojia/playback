@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 #
-# Copyright (c) 2015 Taio Jia (jiasir) <jiasir@icloud.com>
+# Copyright (c) 2015 Taio Jia (jiasir) <taio@outlook.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
 import sys, os
 
 try:
-    sys.path.insert(0, os.path.abspath('libs'))
+    sys.path.insert(0, os.path.abspath('playback'))
     from playback import __version__, __author__
 except ImportError:
     __author__ = 'jiasir'
@@ -45,16 +45,11 @@ setup(name='playback',
       author_email='jiasir@icloud.com',
       url='https://github.com/jiasir/playback/',
       license='MIT License',
-      install_requires=['fabric', 'ansible', 'ecdsa', 'markupsafe', 'paramiko', 'jinja2', "PyYAML", 'setuptools',
-                        'pycrypto >= 2.6'],
-      package_dir={'': 'libs'},
-      packages=find_packages('libs'),
-      package_data={
-          '': ['config/*.cfg', 'config/inventory', 'config/vars/*/*', 'config/*yml', 'config/roles/*/*/*', 'config/patch/*.conf', 'config/patch/tmp/*.conf', 'config/patch/*.local'],
-      },
+      install_requires=['fabric == 1.10.2', 'ansible == 2.0.0.2', 'ecdsa == 0.13', 'markupsafe == 0.23', 'paramiko == 1.16.0', 'jinja2 == 2.8', "PyYAML == 3.11", 'setuptools == 19.6.2',
+                        'pycrypto == 2.6.1'],
+      packages=find_packages(),
       scripts=[
           'bin/playback',
-          'bin/playback-nic',
-          'bin/playback-puppet'
+          'bin/playback-run'
       ],
       data_files=[], )

@@ -1,1 +1,3 @@
-playback
+if __name__ == '__main__':
+    from playback import run
+    run.main()
