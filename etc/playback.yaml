@@ -7,36 +7,36 @@ roles:
   controllers:
     - vip: 1.2.3.4
     - controller1:
-      internal_ip: node01.maas
-      external_ip: 1.2.3.4
+        internal_ip: node01.maas
+        external_ip: 1.2.3.4
     - controller2:
-      internal_ip: node02.maas
-      external_ip: 1.2.3.4
+        internal_ip: node02.maas
+        external_ip: 1.2.3.4
   computes:
     - compute1:
-      internal_ip: node03.maas
-      external_ip: 1.2.3.4
+        internal_ip: node03.maas
+        external_ip: 1.2.3.4
     - compute2:
-      internal_ip: node04.maas
-      external_ip: 1.2.3.4
+        internal_ip: node04.maas
+        external_ip: 1.2.3.4
   neutron:
     - neutron1:
-      internal_ip: node05.maas
-      external_ip: 1.2.3.4
+        internal_ip: node05.maas
+        external_ip: 1.2.3.4
     - neutron2:
-      internal_ip: node06.maas
-      external_ip: 1.2.3.4
+        internal_ip: node06.maas
+        external_ip: 1.2.3.4
   ceph_nodes:
     - ceph1:
-      internal_ip: node07.maas
-      external_ip: 1.2.3.4
+        internal_ip: node07.maas
+        external_ip: 1.2.3.4
     - ceph2:
-      internal_ip: node08.maas
-      external_ip: 1.2.3.4
+        internal_ip: node08.maas
+        external_ip: 1.2.3.4
   swift_nodes:
     - swift1:
-      internal_ip: node09.maas
-      external:ip: 1.2.3.4
+        internal_ip: node09.maas
+        external:ip: 1.2.3.4
     - swift2:
-      internal_ip: node10.maas
-      external_ip: 1.2.3.4
+        internal_ip: node10.maas
+        external_ip: 1.2.3.4
