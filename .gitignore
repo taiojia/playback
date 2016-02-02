@@ -82,3 +82,4 @@ kubernetes/
 /playback.pyproj.user
 *.sln
 *.suo
+/env1
