@@ -45,3 +45,5 @@ if __name__ == '__main__':
         from playback.command import puppet
 
         puppet.run()
+	elif me == 'playback-run':
+		from playback import run
