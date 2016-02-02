@@ -5,11 +5,18 @@ password: changeme
 # Define your nodes.
 roles:
   controllers:
-    - node01.maas
-    - node02.maas
+    vip: 1.2.3.4
+    controller1_internal_ip: node01.maas
+    controller1_external_ip: 1.2.3.4
+    controller2_internal_ip: node02.maas
+    controller2_external_ip: 1.2.3.4
   computes:
-    - node03.maas
-    - node04.maas
+    - compute1:
+      internal_ip: node03.maas
+      external_ip: 1.2.3.4
+    - compute2:
+      internal_ip: node04.maas
+      external_ip: 1.2.3.4
   neutron:
     - node05.maas
     - node06.maas
