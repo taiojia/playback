@@ -1,7 +1,7 @@
 import yaml
 
 
-class config(object):
+class Config(object):
     """Parse the playback configuration"""
     def __init__(self, path):
         self.path = path
