@@ -28,3 +28,10 @@ class PrepareHost(object):
         sudo('cat /usr/share/zoneinfo/Asia/Shanghai | tee /etc/localtime')
         sudo('apt-get install chrony -y')
         # TODO: setup ntp server and ntp client, current all are clients
+
+    def set_openstack_repository(self):
+        sudo('apt-get update')
+        sudo('apt-get install software-properties-common -y')
+        sudo('add-apt-repository cloud-archive:liberty -y')
+        sudo('apt-get update && apt-get dist-upgrade -y --force-confnew')
+        sudo('apt-get install python-openstackclient -y')

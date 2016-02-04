@@ -1,9 +1,7 @@
 import argparse
 import os
 from playback import config
-from playback import prepare_host
 from fabric.api import *
-
 
 
 config_file = config.Config('/etc/playback/playback.yaml')
@@ -26,7 +24,8 @@ def main():
         from playback import prepare_host   
         remote = prepare_host.PrepareHost(user=conf['user'], hosts=args.hosts.split(','))
         #execute(remote.setup_external_interface)
-        execute(remote.setup_ntp)
+        #execute(remote.setup_ntp)
+        execute(remote.set_openstack_repository)
 
 if __name__ == '__main__':
     main()
