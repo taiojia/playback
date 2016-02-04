@@ -20,15 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import sys, os
+import sys
 
 try:
-    sys.path.insert(0, os.path.abspath('playback'))
     from playback import __version__, __author__
 except ImportError:
     __author__ = 'jiasir'
     __version__ = '0.1.9'
-
 
 try:
     from setuptools import setup, find_packages
@@ -39,17 +37,17 @@ except ImportError:
     sys.exit(1)
 
 setup(name='playback',
-      version=__version__,
-      description='OpenStack orchestration tool',
-      author=__author__,
-      author_email='jiasir@icloud.com',
-      url='https://github.com/jiasir/playback/',
-      license='MIT License',
-      install_requires=['fabric == 1.10.2', 'ansible == 2.0.0.2', 'ecdsa == 0.13', 'markupsafe == 0.23', 'paramiko == 1.16.0', 'jinja2 == 2.8', "PyYAML == 3.11", 'setuptools == 19.6.2',
-                        'pycrypto == 2.6.1'],
-      packages=find_packages(),
-      scripts=[
-          'bin/playback',
-          'bin/playback-run'
-      ],
-      data_files=[], )
+    version=__version__,
+    description='OpenStack orchestration tool',
+    author=__author__,
+    author_email='jiasir@icloud.com',
+    url='https://github.com/jiasir/playback/',
+    license='MIT License',
+    install_requires=['fabric == 1.10.2', 'ansible == 2.0.0.2', 'ecdsa == 0.13', 'markupsafe == 0.23', 'paramiko == 1.16.0', 'jinja2 == 2.8', "PyYAML == 3.11", 'setuptools == 19.6.2', 'pycrypto == 2.6.1'],
+    packages=find_packages(),
+    entry_points={ 
+       'console_scripts': [
+           'playback-run = playback.run:main',
+           ]
+       },
+    )
