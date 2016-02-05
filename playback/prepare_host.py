@@ -33,5 +33,6 @@ class PrepareHost(object):
         sudo('apt-get update')
         sudo('apt-get install software-properties-common -y')
         sudo('add-apt-repository cloud-archive:liberty -y')
-        sudo('apt-get update && apt-get dist-upgrade -y --force-confnew')
+        with prefix('sudo apt-get update'):
+            sudo('DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade')
         sudo('apt-get install python-openstackclient -y')
