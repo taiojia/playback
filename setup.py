@@ -47,7 +47,7 @@ setup(name='playback',
     packages=find_packages(),
     entry_points={ 
        'console_scripts': [
-           'playback-run = playback.run:main',
+           'playback-env = playback.env:main',
            ]
        },
     )
