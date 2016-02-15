@@ -17,6 +17,7 @@ class PrepareHost(object):
         env.hosts = self.hosts
 
     def setup_external_interface(self):
+        """host networking"""
         with cd('/etc/network'):
             files.append('interfaces', conf_external_interface, use_sudo=True)
         sudo('ifdown eth1', warn_only=True)
@@ -24,12 +25,14 @@ class PrepareHost(object):
         # TODO: purge old eth1 configuration
 
     def setup_ntp(self):
+        """network time protocal (ntp)"""
         sudo('echo \'Asia/Shanghai\' > /etc/timezone')
         sudo('cat /usr/share/zoneinfo/Asia/Shanghai | tee /etc/localtime')
         sudo('apt-get install chrony -y')
         # TODO: setup ntp server and ntp client, current all are clients
 
     def set_openstack_repository(self):
+        """openstack packages"""
         sudo('apt-get update')
         sudo('apt-get install software-properties-common -y')
         sudo('add-apt-repository cloud-archive:liberty -y')
