@@ -10,11 +10,13 @@ down ip link set dev $IFACE down"""
 class PrepareHost(object):
     """Prepare OpenStack physical hosts"""
 
-    def __init__(self, user, hosts):
+    def __init__(self, user, hosts, parallel=True):
         self.user = user
         self.hosts = hosts
+        self.parallel = parallel
         env.user = self.user
         env.hosts = self.hosts
+        env.parallel = self.parallel
 
     def setup_external_interface(self):
         """host networking"""
