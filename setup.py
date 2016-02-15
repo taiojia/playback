@@ -48,6 +48,7 @@ setup(name='playback',
     entry_points={ 
        'console_scripts': [
            'playback-env = playback.env:main',
+           'playback-mysql = playback.mysql:main',
            ]
        },
     )
