@@ -49,6 +49,8 @@ setup(name='playback',
        'console_scripts': [
            'playback-env = playback.env:main',
            'playback-mysql = playback.mysql:main',
+           'playback-haproxy = playback.haproxy:main',
+           'playback-rabbitmq = playback.rabbitmq:main'
            ]
        },
     )
