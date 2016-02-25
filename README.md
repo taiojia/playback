@@ -70,3 +70,39 @@ Deploy to os02.node and os03.node
 Create cluster
 
     playback-rabbitmq --user ubuntu --hosts os03.node --join-cluster rabbit@os02
+
+#### Keystone HA
+Create keystone database
+
+    playback-keystone --user ubuntu --hosts os02.node --create-keystone-db --root-db-pass changeme --keystone-db-pass changeme
+
+Install keystone on os02.node and os03.node
+
+    playback-keystone --user ubuntu --hosts os02.node,os03.node --install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone
+
+Create the service entity and API endpoints
+
+    playback-keystone --user ubuntu --hosts os02.node --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --public-endpoint http://CONTROLLER_VIP:5000/v2.0 --internal-endpoint http://CONTROLLER_VIP:5000/v2.0 --admin-endpoint http://CONTROLLER_vip:35357/v2.0
+
+
+Create OpenStack client environment scripts on os02.node
+admin-openrc.sh
+    export OS_PROJECT_DOMAIN_ID=default
+    export OS_USER_DOMAIN_ID=default
+    export OS_PROJECT_NAME=admin
+    export OS_TENANT_NAME=admin
+    export OS_USERNAME=admin
+    export OS_PASSWORD=changeme
+    export OS_AUTH_URL=http://CONTROLLER_VIP:35357/v3
+    export OS_IDENTITY_API_VERSION=3
+
+demo-openrc.sh
+    export OS_PROJECT_DOMAIN_ID=default
+    export OS_USER_DOMAIN_ID=default
+    export OS_PROJECT_NAME=demo
+    export OS_TENANT_NAME=demo
+    export OS_USERNAME=demo
+    export OS_PASSWORD=changeme
+    export OS_AUTH_URL=http://CONTROLLER_VIP:5000/v3
+    export OS_IDENTITY_API_VERSION=3
+

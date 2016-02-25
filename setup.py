@@ -50,7 +50,8 @@ setup(name='playback',
            'playback-env = playback.env:main',
            'playback-mysql = playback.mysql:main',
            'playback-haproxy = playback.haproxy:main',
-           'playback-rabbitmq = playback.rabbitmq:main'
+           'playback-rabbitmq = playback.rabbitmq:main',
+           'playback-keystone = playback.keystone:main',
            ]
        },
     )
