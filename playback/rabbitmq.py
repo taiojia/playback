@@ -39,8 +39,9 @@ class RabbitMq(object):
         sudo('service rabbitmq-server stop')
         sudo('echo "%s" > /var/lib/rabbitmq/.erlang.cookie' % erlang_cookie)
         sudo('service rabbitmq-server start')
-        sudo('rabbitmqctl change_password %s %s' % (rabbit_user, rabbit_pass))
+        sudo('rabbitmqctl add_user %s %s' % (rabbit_user, rabbit_pass))
         sudo('echo "[{rabbit, [{loopback_users, []}]}]." > /etc/rabbitmq/rabbitmq.config')
+        sudo('rabbitmqctl set_permissions openstack ".*" ".*" ".*"')
         sudo('service rabbitmq-server restart')
 
     def _join_cluster(self, join_cluster):

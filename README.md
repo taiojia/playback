@@ -65,7 +65,7 @@ Configure Keepalived
 #### RabbitMQ HA
 Deploy to os02.node and os03.node
 
-    playback-rabbitmq --install --user ubuntu --hosts os02.node,os03.node --erlang-cookie YXUNUSYXOKXUQUIJMPRY --rabbit-user guest --rabbit-pass guest
+    playback-rabbitmq --install --user ubuntu --hosts os02.node,os03.node --erlang-cookie YXUNUSYXOKXUQUIJMPRY --rabbit-user openstack --rabbit-pass changeme
     
 Create cluster
 
