@@ -22,10 +22,6 @@ DO NOT setup eth1 in /etc/network/interfaces
 
     playback-env --prepare-host --user ubuntu --hosts os02.node,os03.node,os04.node,os05.node,os06.node,os07.node,os08.node,os09.node,os10.node,os11.node,os12.node,os13.node,os14.node,os15.node,os16.node,os18.node,os19.node
 
-Reboot the target hosts to take effect:
-
-    playback-env --cmd "reboot" --user ubuntu --hosts os02.node,os03.node,os04.node,os05.node,os06.node,os07.node,os08.node,os09.node,os10.node,os11.node,os12.node,os13.node,os14.node,os15.node,os16.node,os18.node,os19.node
-
 #### MySQL HA
 Deploy to os02.node
 
@@ -39,9 +35,9 @@ Deploy to os03.node
 
 Start cluster
 
-    playback-mysql --user ubuntu --hosts os02.maas --manage --wsrep-new-cluster
-    playback-mysql --user ubuntu --hosts os03.maas --manage --start
-    playback-mysql --user ubuntu --hosts os02.maas --manage --change-root-password changeme
+    playback-mysql --user ubuntu --hosts os02.node --manage --wsrep-new-cluster
+    playback-mysql --user ubuntu --hosts os03.node --manage --start
+    playback-mysql --user ubuntu --hosts os02.node --manage --change-root-password changeme
 
 #### HAProxy HA
 Deploy to os04.node
@@ -78,14 +74,17 @@ Create keystone database
 
 Install keystone on os02.node and os03.node
 
-    playback-keystone --user ubuntu --hosts os02.node,os03.node --install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone
+    playback-keystone --user ubuntu --hosts os02.node,os03.node --install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcache_servers 127.0.0.1:11211
 
 Create the service entity and API endpoints
 
-    playback-keystone --user ubuntu --hosts os02.node --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --public-endpoint http://CONTROLLER_VIP:5000/v2.0 --internal-endpoint http://CONTROLLER_VIP:5000/v2.0 --admin-endpoint http://CONTROLLER_vip:35357/v2.0
+    playback-keystone --user ubuntu --hosts os02.node --create-entity-and-endpoint --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --public-endpoint http://CONTROLLER_VIP:5000/v2.0 --internal-endpoint http://CONTROLLER_VIP:5000/v2.0 --admin-endpoint http://CONTROLLER_vip:35357/v2.0
 
+Create projects, users, and roles
 
-Create OpenStack client environment scripts on os02.node
+    playback-keystone --user ubuntu --hosts os02.node --create-projects-users-roles --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --admin-pass changeme --demo-pass changeme
+
+(OPTION) you will need to create OpenStack client environment scripts
 admin-openrc.sh
     export OS_PROJECT_DOMAIN_ID=default
     export OS_USER_DOMAIN_ID=default

@@ -32,172 +32,129 @@ parser.add_argument('--vip', help='Keepalived virtual ip',
 args = parser.parse_args()
 
 conf_haproxy_cfg = """global
-        log /dev/log    local0
-        log /dev/log    local1 notice
-        chroot /var/lib/haproxy
-        stats socket /run/haproxy/admin.sock mode 660 level admin
-        stats timeout 30s
-        user haproxy
-        group haproxy
-        daemon
-
-        # Default SSL material locations
-        ca-base /etc/ssl/certs
-        crt-base /etc/ssl/private
-
-        # Default ciphers to use on SSL-enabled listening sockets.
-        # For more information, see ciphers(1SSL). This list is from:
-        #  https://hynek.me/articles/hardening-your-web-servers-ssl-ciphers/
-        ssl-default-bind-ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS
-        ssl-default-bind-options no-sslv3
+  daemon
 
 defaults
-        log     global
-        mode    http
-        option  httplog
-        option  dontlognull
-        timeout connect 5000
-        timeout client  50000
-        timeout server  50000
-        errorfile 400 /etc/haproxy/errors/400.http
-        errorfile 403 /etc/haproxy/errors/403.http
-        errorfile 408 /etc/haproxy/errors/408.http
-        errorfile 500 /etc/haproxy/errors/500.http
-        errorfile 502 /etc/haproxy/errors/502.http
-        errorfile 503 /etc/haproxy/errors/503.http
-        errorfile 504 /etc/haproxy/errors/504.http
+  mode http
+  maxconn 10000
+  timeout connect 10s
+  timeout client 10s
+  timeout server 10s
+
+listen stats
+  bind 0.0.0.0:9999
+  mode http
+  stats enable
+  stats uri /stats
+  stats realm HAProxy\ Statistics
+  stats auth admin:admin
 
 listen dashboard_cluster
-  bind <Virtual IP>:443
+  bind 0.0.0.0:80
   balance  source
   option  tcpka
   option  httpchk
-  option  tcplog
-  server controller1 10.0.0.1:443 check inter 2000 rise 2 fall 5
-  server controller2 10.0.0.2:443 check inter 2000 rise 2 fall 5
-  server controller3 10.0.0.3:443 check inter 2000 rise 2 fall 5
+  server controller1 controller1:80 check inter 2000 rise 2 fall 5
+  server controller2 controller2:80 check inter 2000 rise 2 fall 5
 
 listen galera_cluster
-  bind <Virtual IP>:3306
+  bind 0.0.0.0:3306
   balance  source
-  option  httpchk
-  server controller1 10.0.0.1:3306 check port 9200 inter 2000 rise 2 fall 5
-  server controller2 10.0.0.2:3306 backup check port 9200 inter 2000 rise 2 fall 5
-  server controller3 10.0.0.3:3306 backup check port 9200 inter 2000 rise 2 fall 5
+  mode tcp
+  option tcpka
+  option mysql-check user haproxy
+  server controller1 controller1:3306 check inter 2000 rise 2 fall 5
+  server controller2 controller2:3306 backup check inter 2000 rise 2 fall 5
 
 listen glance_api_cluster
-  bind <Virtual IP>:9292
+  bind 0.0.0.0:9292
   balance  source
   option  tcpka
   option  httpchk
-  option  tcplog
-  server controller1 10.0.0.1:9292 check inter 2000 rise 2 fall 5
-  server controller2 10.0.0.2:9292 check inter 2000 rise 2 fall 5
-  server controller3 10.0.0.3:9292 check inter 2000 rise 2 fall 5
+  server controller1 controller1:9292 check inter 2000 rise 2 fall 5
+  server controller2 controller2:9292 check inter 2000 rise 2 fall 5
 
 listen glance_registry_cluster
-  bind <Virtual IP>:9191
+  bind 0.0.0.0:9191
   balance  source
   option  tcpka
-  option  tcplog
-  server controller1 10.0.0.1:9191 check inter 2000 rise 2 fall 5
-  server controller2 10.0.0.2:9191 check inter 2000 rise 2 fall 5
-  server controller3 10.0.0.3:9191 check inter 2000 rise 2 fall 5
+  server controller1 controller1:9191 check inter 2000 rise 2 fall 5
+  server controller2 controller2:9191 check inter 2000 rise 2 fall 5
 
 listen keystone_admin_cluster
-  bind <Virtual IP>:35357
+  bind 0.0.0.0:35357
   balance  source
   option  tcpka
   option  httpchk
-  option  tcplog
-  server controller1 10.0.0.1:35357 check inter 2000 rise 2 fall 5
-  server controller2 10.0.0.2:35357 check inter 2000 rise 2 fall 5
-  server controller3 10.0.0.3:35357 check inter 2000 rise 2 fall 5
+  server controller1 controller1:35357 check inter 2000 rise 2 fall 5
+  server controller2 controller2:35357 backup inter 2000 rise 2 fall 5
 
 listen keystone_public_internal_cluster
-  bind <Virtual IP>:5000
+  bind 0.0.0.0:5000
   balance  source
   option  tcpka
   option  httpchk
-  option  tcplog
-  server controller1 10.0.0.1:5000 check inter 2000 rise 2 fall 5
-  server controller2 10.0.0.2:5000 check inter 2000 rise 2 fall 5
-  server controller3 10.0.0.3:5000 check inter 2000 rise 2 fall 5
+  server controller1 controller1:5000 check inter 2000 rise 2 fall 5
+  server controller2 controller2:5000 backup inter 2000 rise 2 fall 5
 
 listen nova_ec2_api_cluster
-  bind <Virtual IP>:8773
+  bind 0.0.0.0:8773
   balance  source
   option  tcpka
-  option  tcplog
-  server controller1 10.0.0.1:8773 check inter 2000 rise 2 fall 5
-  server controller2 10.0.0.2:8773 check inter 2000 rise 2 fall 5
-  server controller3 10.0.0.3:8773 check inter 2000 rise 2 fall 5
+  server controller1 controller1:8773 check inter 2000 rise 2 fall 5
+  server controller2 controller2:8773 check inter 2000 rise 2 fall 5
 
 listen nova_compute_api_cluster
-  bind <Virtual IP>:8774
+  bind 0.0.0.0:8774
   balance  source
   option  tcpka
   option  httpchk
-  option  tcplog
-  server controller1 10.0.0.1:8774 check inter 2000 rise 2 fall 5
-  server controller2 10.0.0.2:8774 check inter 2000 rise 2 fall 5
-  server controller3 10.0.0.3:8774 check inter 2000 rise 2 fall 5
+  server controller1 controller1:8774 check inter 2000 rise 2 fall 5
+  server controller2 controller2:8774 check inter 2000 rise 2 fall 5
 
 listen nova_metadata_api_cluster
-  bind <Virtual IP>:8775
+  bind 0.0.0.0:8775
   balance  source
   option  tcpka
-  option  tcplog
-  server controller1 10.0.0.1:8775 check inter 2000 rise 2 fall 5
-  server controller2 10.0.0.2:8775 check inter 2000 rise 2 fall 5
-  server controller3 10.0.0.3:8775 check inter 2000 rise 2 fall 5
+  server controller1 controller1:8775 check inter 2000 rise 2 fall 5
+  server controller2 controller2:8775 check inter 2000 rise 2 fall 5
 
 listen cinder_api_cluster
-  bind <Virtual IP>:8776
+  bind 0.0.0.0:8776
   balance  source
   option  tcpka
   option  httpchk
-  option  tcplog
-  server controller1 10.0.0.1:8776 check inter 2000 rise 2 fall 5
-  server controller2 10.0.0.2:8776 check inter 2000 rise 2 fall 5
-  server controller3 10.0.0.3:8776 check inter 2000 rise 2 fall 5
+  server controller1 controller1:8776 check inter 2000 rise 2 fall 5
+  server controller2 controller2:8776 check inter 2000 rise 2 fall 5
 
 listen ceilometer_api_cluster
-  bind <Virtual IP>:8777
+  bind 0.0.0.0:8777
   balance  source
   option  tcpka
-  option  tcplog
-  server controller1 10.0.0.1:8777 check inter 2000 rise 2 fall 5
-  server controller2 10.0.0.2:8777 check inter 2000 rise 2 fall 5
-  server controller3 10.0.0.3:8777 check inter 2000 rise 2 fall 5
+  server controller1 controller1:8777 check inter 2000 rise 2 fall 5
+  server controller2 controller2:8777 check inter 2000 rise 2 fall 5
 
 listen nova_vncproxy_cluster
-  bind <Virtual IP>:6080
+  bind 0.0.0.0:6080
   balance  source
   option  tcpka
-  option  tcplog
-  server controller1 10.0.0.1:6080 check inter 2000 rise 2 fall 5
-  server controller2 10.0.0.2:6080 check inter 2000 rise 2 fall 5
-  server controller3 10.0.0.3:6080 check inter 2000 rise 2 fall 5
+  server controller1 controller1:6080 check inter 2000 rise 2 fall 5
+  server controller2 controller2:6080 check inter 2000 rise 2 fall 5
 
 listen neutron_api_cluster
-  bind <Virtual IP>:9696
+  bind 0.0.0.0:9696
   balance  source
   option  tcpka
   option  httpchk
-  option  tcplog
-  server controller1 10.0.0.1:9696 check inter 2000 rise 2 fall 5
-  server controller2 10.0.0.2:9696 check inter 2000 rise 2 fall 5
-  server controller3 10.0.0.3:9696 check inter 2000 rise 2 fall 5
+  server controller1 controller1:9696 check inter 2000 rise 2 fall 5
+  server controller2 controller2:9696 check inter 2000 rise 2 fall 5
 
 listen swift_proxy_cluster
-  bind <Virtual IP>:8080
+  bind 0.0.0.0:8080
   balance  source
-  option  tcplog
   option  tcpka
-  server controller1 10.0.0.1:8080 check inter 2000 rise 2 fall 5
-  server controller2 10.0.0.2:8080 check inter 2000 rise 2 fall 5
-  server controller3 10.0.0.3:8080 check inter 2000 rise 2 fall 5
+  server controller1 controller1:8080 check inter 2000 rise 2 fall 5
+  server controller2 controller2:8080 check inter 2000 rise 2 fall 5
 """
 
 def main():

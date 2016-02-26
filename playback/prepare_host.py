@@ -40,4 +40,8 @@ class PrepareHost(object):
         sudo('add-apt-repository cloud-archive:liberty -y')
         with prefix('sudo apt-get update'):
             sudo('DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade')
-        sudo('apt-get install python-openstackclient -y')
+        
+        print "[Playback] waiting for reboot\n"
+        reboot(wait=300)
+        with prefix('sudo apt-get update'):
+            sudo('apt-get install python-openstackclient -y')
