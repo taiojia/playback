@@ -55,8 +55,8 @@ Generate the HAProxy configuration and upload to target hosts(Do not forget to e
 
 Configure Keepalived
 
-    playback-haproxy --config --configure-keepalived --router_id lb1 --priority 150 --state MASTER --interface eth0 --vip 10.0.0.3 --user ubuntu --hosts os04.node
-    playback-haproxy --config --configure-keepalived --router_id lb2 --priority 100 --state SLAVE --interface eth0 --vip 10.0.0.3 --user ubuntu --hosts os05.node
+    playback-haproxy --config --configure-keepalived --router_id lb1 --priority 150 --state MASTER --interface eth0 --vip CONTROLLER_VIP --user ubuntu --hosts os04.node
+    playback-haproxy --config --configure-keepalived --router_id lb2 --priority 100 --state SLAVE --interface eth0 --vip CONTROLLER_VIP --user ubuntu --hosts os05.node
 
 #### RabbitMQ HA
 Deploy to os02.node and os03.node
@@ -94,6 +94,7 @@ admin-openrc.sh
     export OS_PASSWORD=changeme
     export OS_AUTH_URL=http://CONTROLLER_VIP:35357/v3
     export OS_IDENTITY_API_VERSION=3
+    export OS_IMAGE_API_VERSION=2
 
 demo-openrc.sh
     export OS_PROJECT_DOMAIN_ID=default
@@ -104,4 +105,22 @@ demo-openrc.sh
     export OS_PASSWORD=changeme
     export OS_AUTH_URL=http://CONTROLLER_VIP:5000/v3
     export OS_IDENTITY_API_VERSION=3
+    export OS_IMAGE_API_VERSION=2
 
+#### Glance HA
+Create glance database
+
+    playback-glance --user ubuntu --hosts os02.node --create-glance-db --root-db-pass changeme --glance-db-pass changeme
+
+Create service credentials
+
+    playback-glance --user ubuntu --hosts os02.node --create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --glance-pass changeme --endpoint http://CONTROLLER_VIP:9292
+
+Install glance on os02.node and os03.node
+
+    playback-glance --user ubuntu --hosts os02.node,os03.node --install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme  --swift-store-auth-address http://CONTROLLER_VIP:5000/v2.0/ 
+
+#### Nova HA
+Create nova database
+
+    playback-nova --user ubuntu --hosts os02.node --create-nova-db --root-db-pass changeme --nova-db-pass changeme 

@@ -52,6 +52,7 @@ setup(name='playback',
            'playback-haproxy = playback.haproxy:main',
            'playback-rabbitmq = playback.rabbitmq:main',
            'playback-keystone = playback.keystone:main',
+           'playback-glance = playback.glance:main'
            ]
        },
     )
