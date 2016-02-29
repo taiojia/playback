@@ -74,7 +74,7 @@ Create keystone database
 
 Install keystone on os02.node and os03.node
 
-    playback-keystone --user ubuntu --hosts os02.node,os03.node --install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcache_servers 127.0.0.1:11211
+    playback-keystone --user ubuntu --hosts os02.node,os03.node --install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcache_servers os02.node:11211,os03.node:11211
 
 Create the service entity and API endpoints
 
@@ -124,3 +124,20 @@ Install glance on os02.node and os03.node
 Create nova database
 
     playback-nova --user ubuntu --hosts os02.node --create-nova-db --root-db-pass changeme --nova-db-pass changeme 
+
+Create service credentials
+
+    playback-nova --user ubuntu --hosts os02.node --create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --nova-pass changeme --endpoint 'http://CONTROLLER_VIP:8774/v2/%\(tenant_id\)s'
+
+Install nova on os02.node
+
+    playback-nova --user ubuntu --hosts os02.node --install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers os02.node:11211,os03.node:11211 --rabbit-hosts os02.node,os03.node --rabbit-pass changeme --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme --populate
+
+Install nova on os03.node
+
+    playback-nova --user ubuntu --hosts os03.node --install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers os02.node:11211,os03.node:11211 --rabbit-hosts os02.node,os03.node --rabbit-pass changeme --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme
+
+#### Nova Compute
+Add nova computes
+
+    TODO: http://docs.openstack.org/liberty/install-guide-ubuntu/nova-compute-install.html
