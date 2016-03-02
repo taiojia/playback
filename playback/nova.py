@@ -74,7 +74,7 @@ parser.add_argument('--auth-uri',
                     default=None,
                     dest='auth_uri')
 parser.add_argument('--auth-url',
-                    help='keystone admin endpoint e.g. http://controller:35357',
+                    help='keystone admin endpoint e.g. http://CONTROLLER_VIP:35357',
                     action='store',
                     default=None,
                     dest='auth_url')

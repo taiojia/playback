@@ -2,7 +2,9 @@
 Playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed automation with high availability on Ubuntu based operating system.
 
 #### Requirement
-The OpenStack bare metal hosts are in MAAS environment(recommend), and all hosts are two NICs at least(external and internal).
+The OpenStack bare metal hosts are in MAAS environment(recommend), and all hosts are two NICs at least(external and internal). 
+We assume that you have ceph installed, the cinder bachend default using ceph, the running instace default to using ceph as it's local storage.
+About ceph please visit: http://docs.ceph.com/docs/master/rbd/rbd-openstack/
 
 #### Install Playback
 Use pip:
@@ -140,4 +142,34 @@ Install nova on os03.node
 #### Nova Compute
 Add nova computes
 
-    TODO: http://docs.openstack.org/liberty/install-guide-ubuntu/nova-compute-install.html
+    playback-nova-compute --user ubuntu --hosts os06.node --install --my-ip MANAGEMENT_IP --rabbit-hosts os02.node,os03.node --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme
+
+The libvirt defaults to using ceph as shared storage, the ceph pool for running instance is vms. if you do not using ceph as it's bachend, you must remove the following param:
+    
+    images_type = rbd
+    images_rbd_pool = vms
+    images_rbd_ceph_conf = /etc/ceph/ceph.conf
+    rbd_user = cinder
+    rbd_secret_uuid = changeme-changeme-changeme-changeme
+    disk_cachemodes="network=writeback"
+    live_migration_flag="VIR_MIGRATE_UNDEFINE_SOURCE,VIR_MIGRATE_PEER2PEER,VIR_MIGRATE_LIVE,VIR_MIGRATE_PERSIST_DEST,VIR_MIGRATE_TUNNELLED"
+
+
+#### Neutron HA
+Create nova database
+
+    playback-neutron --user ubuntu --hosts os02.node --create-neutron-db --root-db-pass changeme --neutron-db-pass changeme 
+
+Create service credentials
+
+    playback-neutron --user ubuntu --hosts os02.node --create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --neutron-pass changeme --endpoint http://CONTROLLER_VIP:9696
+
+Install Neutron for self-service
+
+    playback-neutron --user ubuntu --hosts os02.node,os03.node --install --connection mysql+pymysql://neutron:NEUTRON_PASS@CONTROLLER_VIP/neutron --rabbit-hosts os02.node,os03.node --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --nova-url http://CONTROLLER_VIP:8774/v2 --nova-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP --nova-metadata-ip CONTROLLER_VIP --metadata-proxy-shared-secret changeme-changeme-changeme-changeme --populate
+
+
+#### Neutron Agent
+todo 
+verify neutron controller configuration and do install neutron compute 
+http://docs.openstack.org/liberty/install-guide-ubuntu/neutron-compute-install.html

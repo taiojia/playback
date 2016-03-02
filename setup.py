@@ -53,7 +53,10 @@ setup(name='playback',
            'playback-rabbitmq = playback.rabbitmq:main',
            'playback-keystone = playback.keystone:main',
            'playback-glance = playback.glance:main',
-           'playback-nova = playback.nova:main'
+           'playback-nova = playback.nova:main',
+           'playback-nova-compute = playback.nova_compute:main',
+           'playback-neutron = playback.neutron:main',
+           'playback-neutron-agent = playback.neutron_agent:main'
            ]
        },
     )

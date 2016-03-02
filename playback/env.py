@@ -2,6 +2,7 @@ import argparse
 import os
 from playback import config
 from fabric.api import *
+from fabric.colors import red
 
 
 parser = argparse.ArgumentParser()
@@ -20,8 +21,11 @@ def main():
     if args.genpass:
         os.system('openssl rand -hex 10')
     if args.prepare:
-        from playback import prepare_host   
-        remote = prepare_host.PrepareHost(user=args.user, hosts=args.hosts.split(','))
+        from playback import prepare_host
+        try:
+            remote = prepare_host.PrepareHost(user=args.user, hosts=args.hosts.split(','))
+        except AttributeError:
+            print red('No hosts found. Please using --hosts param.')
 
         # host networking
         execute(remote.setup_external_interface)
@@ -34,7 +38,10 @@ def main():
 
     if args.cmd:
         from playback import cmd
-        remote = cmd.Cmd(user=args.user, hosts=args.hosts.split(','))
+        try:
+            remote = cmd.Cmd(user=args.user, hosts=args.hosts.split(','))
+        except AttributeError:
+            print red('No hosts found. Please using --hosts param.')
         execute(remote.cmd, args.cmd)
 
 if __name__ == '__main__':
