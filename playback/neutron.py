@@ -49,7 +49,7 @@ parser.add_argument('--os-auth-url',
                     default=None,
                     dest='os_auth_url')
 parser.add_argument('--endpoint',
-                    help='public, internal and admin endpoint for neutron service e.g. http://CONTROLLER_VIP:8774/v2/%\(tenant_id\)s',
+                    help='public, internal and admin endpoint for neutron service e.g. http://CONTROLLER_VIP:8774/v2/%%\(tenant_id\)s',
                     action='store',
                     default=None,
                     dest='endpoint')

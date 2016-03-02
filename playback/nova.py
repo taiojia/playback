@@ -54,7 +54,7 @@ parser.add_argument('--nova-pass',
                     default=None,
                     dest='nova_pass')
 parser.add_argument('--endpoint',
-                    help='public, internal and admin endpoint for nova service e.g. http://CONTROLLER_VIP:8774/v2/%\(tenant_id\)s',
+                    help='public, internal and admin endpoint for nova service e.g. http://CONTROLLER_VIP:8774/v2/%%\(tenant_id\)s',
                     action='store',
                     default=None,
                     dest='endpoint')
