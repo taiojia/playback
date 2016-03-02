@@ -176,4 +176,5 @@ Install neutron agent on compute nodes
 
 
 #### Horizon HA
-Install 
+Install horizon on controller nodes
+    playback-horizon --user ubuntu --hosts os02.node,os03.node --install --openstack-host CONTROLLER_VIP  --memcache CONTROLLER1:11211 --time-zone Asia/Shanghai 

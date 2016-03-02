@@ -56,7 +56,8 @@ setup(name='playback',
            'playback-nova = playback.nova:main',
            'playback-nova-compute = playback.nova_compute:main',
            'playback-neutron = playback.neutron:main',
-           'playback-neutron-agent = playback.neutron_agent:main'
+           'playback-neutron-agent = playback.neutron_agent:main',
+           'playback-horizon = playback.horizon:main'
            ]
        },
     )
