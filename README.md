@@ -170,6 +170,10 @@ Install Neutron for self-service
 
 
 #### Neutron Agent
-todo 
-verify neutron controller configuration and do install neutron compute 
-http://docs.openstack.org/liberty/install-guide-ubuntu/neutron-compute-install.html
+Install neutron agent on compute nodes
+    
+    playback-neutron-agent --user ubuntu --hosts os06.node --install --rabbit-hosts os02.node,os03.node --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP 
+
+
+#### Horizon HA
+Install 
