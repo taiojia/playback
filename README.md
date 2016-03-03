@@ -177,14 +177,21 @@ Install neutron agent on compute nodes
 
 #### Horizon HA
 Install horizon on controller nodes
+
     playback-horizon --user ubuntu --hosts os02.node,os03.node --install --openstack-host CONTROLLER_VIP  --memcache CONTROLLER1:11211 --time-zone Asia/Shanghai 
 
 
 #### Cinder HA
 Create cinder database
+
     playback-cinder --user ubuntu --hosts os02.node --create-cinder-db --root-db-pass changeme --cinder-db-pass changeme 
 
 Create cinder service creadentials
+
     playback-cinder --user ubuntu --hosts os02.node --create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --cinder-pass changeme --endpoint-v1 'http://CONTROLLER_VIP:8776/v1/%\(tenant_id\)s' --endpoint-v2 'http://CONTROLLER_VIP:8776/v2/%\(tenant_id\)s'
+
+Install cinder-api and cinder-volume on controller nodes, the volume backend defaults to ceph (you must have ceph installed)
+    
+    playback-cinder --user ubuntu --hosts os02.node --install --connection mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinder --rabbit-pass changeme --rabbit-hosts os02.node,os03.node --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --cinder-pass changeme --my-ip MANAGEMENT_INTERFACE_IP --glance-host CONTROLLER_VIP --rbd-secret-uuid changeme-changeme-changeme-changeme --populate
 
 
