@@ -58,7 +58,8 @@ setup(name='playback',
            'playback-neutron = playback.neutron:main',
            'playback-neutron-agent = playback.neutron_agent:main',
            'playback-horizon = playback.horizon:main',
-           'playback-cinder = playback.cinder:main'
+           'playback-cinder = playback.cinder:main',
+           'playback-swift = playback.swift:main',
            ]
        },
     )
