@@ -88,6 +88,7 @@ Create projects, users, and roles
 
 (OPTION) you will need to create OpenStack client environment scripts
 admin-openrc.sh
+
     export OS_PROJECT_DOMAIN_ID=default
     export OS_USER_DOMAIN_ID=default
     export OS_PROJECT_NAME=admin
@@ -100,6 +101,7 @@ admin-openrc.sh
     export OS_AUTH_VERSION=3
 
 demo-openrc.sh
+
     export OS_PROJECT_DOMAIN_ID=default
     export OS_USER_DOMAIN_ID=default
     export OS_PROJECT_NAME=demo
@@ -232,17 +234,20 @@ Create object ring on controller node
     playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip STORAGE_MANAGEMENT_IP --device sdb --weight 100
 
  Sync the builder file from proxy node to each storage node and other any proxy node
+
     playback-swift-storage --user ubuntu --host CONTROLLER1 --sync-builder-file --to STORAGE1
 
 Finalize installation on all nodes
+
     playback-swift --user ubuntu --hosts CONTROLLER1,STORAGE1 --finalize-install --swift-hash-path-suffix changeme --swift-hash-path-prefix changeme
 
 
 
 TODO:
-test swift storage
-deploy ceph
-configuare ceph for nova
-enable libvirtd to lisen port for live migration
-nova ssh keys
+
+    test swift storage
+    deploy ceph
+    configuare ceph for nova
+    enable libvirtd to lisen port for live migration
+    nova ssh keys
 
