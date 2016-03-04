@@ -26,7 +26,7 @@ vrrp_instance 50 {
 class HaproxyConfig(object):
     """Configure HAProxy and Keepalived"""
 
-    def __init__(self, user, hosts, parallel=True):
+    def __init__(self, hosts, user='ubuntu', parallel=True):
         self.user = user
         self.hosts = hosts
         self.parallel = parallel

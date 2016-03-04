@@ -40,21 +40,21 @@ Start cluster
 #### HAProxy HA
 Deploy to HAPROXY1
 
-    playback-haproxy --install --user ubuntu --hosts HAPROXY1
+    playback-haproxy --user ubuntu --hosts HAPROXY1 install
 
 Deploy to HAPROXY2
 
-    playback-haproxy --install --user ubuntu --hosts HAPROXY2
+    playback-haproxy --user ubuntu --hosts HAPROXY2 install
 
 Generate the HAProxy configuration and upload to target hosts(Do not forget to edit the generated configuration)
 
-    playback-haproxy --gen-conf 
-    playback-haproxy --config --upload-conf haproxy.cfg --user ubuntu --hosts HAPROXY1,HAPROXY2
+    playback-haproxy gen-conf 
+    playback-haproxy --user ubuntu --hosts HAPROXY1,HAPROXY2 config --upload-conf haproxy.cfg 
 
 Configure Keepalived
 
-    playback-haproxy --config --configure-keepalived --router_id lb1 --priority 150 --state MASTER --interface eth0 --vip CONTROLLER_VIP --user ubuntu --hosts HAPROXY1
-    playback-haproxy --config --configure-keepalived --router_id lb2 --priority 100 --state SLAVE --interface eth0 --vip CONTROLLER_VIP --user ubuntu --hosts HAPROXY2
+    playback-haproxy --user ubuntu --hosts HAPROXY1 config --configure-keepalived --router_id lb1 --priority 150 --state MASTER --interface eth0 --vip CONTROLLER_VIP 
+    playback-haproxy --user ubuntu --hosts HAPROXY2 config --configure-keepalived --router_id lb2 --priority 100 --state SLAVE --interface eth0 --vip CONTROLLER_VIP 
 
 #### RabbitMQ HA
 Deploy to CONTROLLER1 and CONTROLLER2
