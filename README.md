@@ -206,15 +206,15 @@ Create the Identity service credentials
 
 Install swift proxy
 
-    playback-swift --user ubuntu --hosts CONTROLLER1 --install --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --swift-pass changeme --memcache-servers CONTROLLER1:11211,CONTROLLER2:11211 
+    playback-swift --user ubuntu --hosts CONTROLLER1,CONTROLLER2 --install --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --swift-pass changeme --memcache-servers CONTROLLER1:11211,CONTROLLER2:11211 
 
 
 #### Swift storage
-Prepare disks for storage
+Prepare disks on storage node
 
-    playback-swift-storage --user ubuntu --hosts STORAGE1 --prepare-disks sdb,sdc
+    playback-swift-storage --user ubuntu --hosts STORAGE1 --prepare-disks sdb,sdc,sdd,sde
 
-Install swift storage
+Install swift storage on storage node
 
     playback-swift-storage --user ubuntu --hosts STORAGE1 --install --address MANAGEMENT_INTERFACE_IP --bind-ip MANAGEMENT_INTERFACE_IP 
 
@@ -222,30 +222,40 @@ Create account ring on controller node
 
     playback-swift-storage --user ubuntu --hosts CONTROLLER1 --create-account-builder-file --partitions 10 --replicas 3 --moving 1 
     playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip STORAGE_MANAGEMENT_IP --device sdb --weight 100
-
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip STORAGE_MANAGEMENT_IP --device sdc --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip STORAGE_MANAGEMENT_IP --device sdd --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip STORAGE_MANAGEMENT_IP --device sde --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-rebalance
 Create container ring on controller node
     
     playback-swift-storage --user ubuntu --hosts CONTROLLER1 --create-container-builder-file --partitions 10 --replicas 3 --moving 1 
     playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip STORAGE_MANAGEMENT_IP --device sdb --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip STORAGE_MANAGEMENT_IP --device sdc --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip STORAGE_MANAGEMENT_IP --device sdd --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip STORAGE_MANAGEMENT_IP --device sde --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-rebalance
 
 Create object ring on controller node
     
     playback-swift-storage --user ubuntu --hosts CONTROLLER1 --create-object-builder-file --partitions 10 --replicas 3 --moving 1 
     playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip STORAGE_MANAGEMENT_IP --device sdb --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip STORAGE_MANAGEMENT_IP --device sdc --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip STORAGE_MANAGEMENT_IP --device sdd --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip STORAGE_MANAGEMENT_IP --device sde --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-rebalance
 
- Sync the builder file from proxy node to each storage node and other any proxy node
+ Sync the builder file from controller node to each storage node and other any proxy node
 
-    playback-swift-storage --user ubuntu --host CONTROLLER1 --sync-builder-file --to STORAGE1
+    playback-swift-storage --user ubuntu --host CONTROLLER1 --sync-builder-file --to controller2,STORAGE1
 
 Finalize installation on all nodes
 
-    playback-swift --user ubuntu --hosts CONTROLLER1,STORAGE1 --finalize-install --swift-hash-path-suffix changeme --swift-hash-path-prefix changeme
+    playback-swift --user ubuntu --hosts CONTROLLER1,CONTROLLER2,STORAGE1 --finalize-install --swift-hash-path-suffix changeme --swift-hash-path-prefix changeme
 
 
 
 TODO:
 
-    test swift storage
     deploy ceph
     configuare ceph for nova
     enable libvirtd to lisen port for live migration

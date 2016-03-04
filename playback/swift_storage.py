@@ -116,7 +116,22 @@ parser.add_argument('--to',
                     help='the target hosts where the *.ring.gz file to be added', 
                     action='store', 
                     default=None,
-                    dest='device')
+                    dest='to')
+group.add_argument('--account-builder-rebalance',
+                   help='Rebalance the account ring',
+                   action='store_true',
+                   default=False,
+                   dest='account_builder_rebalance')
+group.add_argument('--container-builder-rebalance',
+                   help='Rebalance the container ring',
+                   action='store_true',
+                   default=False,
+                   dest='container_builder_rebalance')
+group.add_argument('--object-builder-rebalance',
+                   help='Rebalance the object ring',
+                   action='store_true',
+                   default=False,
+                   dest='object_builder_rebalance')
 
 args = parser.parse_args()
 
@@ -1040,6 +1055,9 @@ class SwiftStorage(Task):
                                                                                                                                         weight))
             print red(env.host_string + ' | Verify the ring contents')
             sudo('swift-ring-builder account.builder')
+             
+    def _account_builder_rebalance(self):
+        with cd('/etc/swift'):
             print red(env.host_string + ' | Rebalance the ring')
             sudo('swift-ring-builder account.builder rebalance')
 
@@ -1057,9 +1075,11 @@ class SwiftStorage(Task):
                                                                                                                                         weight))
             print red(env.host_string + ' | Verify the ring contents')
             sudo('swift-ring-builder container.builder')
+            
+    def _container_builder_rebalance(self):
+        with cd('/etc/swift'):
             print red(env.host_string + ' | Rebalance the ring')
             sudo('swift-ring-builder container.builder rebalance')
-
 
     def _create_object_builder_file(self, partitions, replicas, moving):
         with cd('/etc/swift'):
@@ -1067,16 +1087,18 @@ class SwiftStorage(Task):
 
     def _object_builder_add(self, region, zone, ip, device, weight):
         with cd('/etc/swift'):
-            sudo('swift-ring-builder object.builder add --region {0} --zone {1} --ip {2} --port 6001 --device {3} --weight {4}'.format(region,
+            sudo('swift-ring-builder object.builder add --region {0} --zone {1} --ip {2} --port 6000 --device {3} --weight {4}'.format(region,
                                                                                                                                         zone,
                                                                                                                                         ip,
                                                                                                                                         device,
                                                                                                                                         weight))
             print red(env.host_string + ' | Verify the ring contents')
             sudo('swift-ring-builder object.builder')
+
+    def _object_builder_rebalance(self):
+        with cd('/etc/swift'):
             print red(env.host_string + ' | Rebalance the ring')
             sudo('swift-ring-builder object.builder rebalance')
-
     
     def _get_builder_file(self):
         get('/etc/swift/account.ring.gz', './account.ring.gz')
@@ -1084,9 +1106,9 @@ class SwiftStorage(Task):
         get('/etc/swift/object.ring.gz', './object.ring.gz')
 
     def _sync_builder_file(self):
-        put('./account.ring.gz', '/etc/swift/account.ring.gz')
-        put('./container.ring.gz', '/etc/swift/container.ring.gz')
-        put('./object.ring.gz', '/etc/swift/object.ring.gz')
+        put('./account.ring.gz', '/etc/swift/account.ring.gz', use_sudo=True)
+        put('./container.ring.gz', '/etc/swift/container.ring.gz', use_sudo=True)
+        put('./object.ring.gz', '/etc/swift/object.ring.gz', use_sudo=True)
         
 
 
@@ -1116,6 +1138,8 @@ def main():
                 args.ip, 
                 args.device, 
                 args.weight)
+    if args.account_builder_rebalance:
+        execute(target._account_builder_rebalance)
     if args.create_container_builder_file:
         execute(target._create_container_builder_file,
                 args.partitions,
@@ -1128,10 +1152,28 @@ def main():
                 args.ip, 
                 args.device, 
                 args.weight)
+    if args.container_builder_rebalance:
+        execute(target._container_builder_rebalance)
+    if args.create_object_builder_file:
+        execute(target._create_object_builder_file,
+                args.partitions,
+                args.replicas,
+                args.moving)
+    if args.object_builder_add:
+        execute(target._object_builder_add,
+                args.region, 
+                args.zone, 
+                args.ip, 
+                args.device, 
+                args.weight)
+    if args.object_builder_rebalance:
+        execute(target._object_builder_rebalance)
     if args.sync_builder_file:
         execute(target._get_builder_file)
         execute(target._sync_builder_file, hosts=args.to.split(','))
-        os.remove('*.gz')
+        os.remove('account.ring.gz')
+        os.remove('container.ring.gz')
+        os.remove('object.ring.gz')
     
 
 if __name__ == '__main__':
