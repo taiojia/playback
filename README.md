@@ -2,27 +2,20 @@
 Playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed automation with high availability on Ubuntu based operating system.
 
 #### Requirement
-The OpenStack bare metal hosts are in MAAS environment(recommend), and all hosts are two NICs at least(external and internal). 
-We assume that you have ceph installed, the cinder bachend default using ceph, the running instace default to using ceph as it's local storage.
-About ceph please visit: http://docs.ceph.com/docs/master/rbd/rbd-openstack/
+* The OpenStack bare metal hosts are in MAAS environment(recommend)
+* all hosts are two NICs at least(external and internal)
+* We assume that you have ceph installed, the cinder bachend default using ceph, the running instace default to using ceph as it's local storage. About ceph please visit: http://docs.ceph.com/docs/master/rbd/rbd-openstack/ or see the (Option)Ceph Guide below.
+* nova user can be login to each compute node via ssh passwordless
 
 #### Install Playback
-Use pip:
 
     pip install playback
 
-Or form source:
-
-    git clone https://github.com/jiasir/playback.git
-    cd playback
-    git checkout liberty
-    sudo python setup.py install
-
 #### Prepare environment
 Prepare the OpenStack environment.
-DO NOT setup eth1 in /etc/network/interfaces
+(NOTE) DO NOT setup eth1 in /etc/network/interfaces
 
-    playback-env --prepare-host --user ubuntu --hosts CONTROLLER1,CONTROLLER2,COMPUTE1,COMPUTE2,SOTRAGE1,STORAGE2,HAPROXY1,HAPROXY2
+    playback-env --prepare-host --user ubuntu --hosts CONTROLLER1,CONTROLLER2,COMPUTE1,COMPUTE2,OBJECT1,OBJECT2,BLOCK1,BLOCK2,HAPROXY1,HAPROXY2
 
 #### MySQL HA
 Deploy to CONTROLLER1
@@ -218,65 +211,169 @@ Install swift proxy
 #### Swift storage
 Prepare disks on storage node
 
-    playback-swift-storage --user ubuntu --hosts STORAGE1,STORAGE2 --prepare-disks sdb,sdc,sdd,sde
+    playback-swift-storage --user ubuntu --hosts OBJECT1,OBJECT2 --prepare-disks sdb,sdc,sdd,sde
 
 Install swift storage on storage node
 
-    playback-swift-storage --user ubuntu --hosts STORAGE1 --install --address MANAGEMENT_INTERFACE_IP --bind-ip MANAGEMENT_INTERFACE_IP 
-    playback-swift-storage --user ubuntu --hosts STORAGE2 --install --address MANAGEMENT_INTERFACE_IP --bind-ip MANAGEMENT_INTERFACE_IP 
+    playback-swift-storage --user ubuntu --hosts OBJECT1 --install --address MANAGEMENT_INTERFACE_IP --bind-ip MANAGEMENT_INTERFACE_IP 
+    playback-swift-storage --user ubuntu --hosts OBJECT2 --install --address MANAGEMENT_INTERFACE_IP --bind-ip MANAGEMENT_INTERFACE_IP 
 
 Create account ring on controller node
 
     playback-swift-storage --user ubuntu --hosts CONTROLLER1 --create-account-builder-file --partitions 10 --replicas 3 --moving 1 
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip STORAGE1_MANAGEMENT_IP --device sdb --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip STORAGE1_MANAGEMENT_IP --device sdc --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip STORAGE1_MANAGEMENT_IP --device sdd --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip STORAGE1_MANAGEMENT_IP --device sde --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip STORAGE2_MANAGEMENT_IP --device sdb --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip STORAGE2_MANAGEMENT_IP --device sdc --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip STORAGE2_MANAGEMENT_IP --device sdd --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip STORAGE2_MANAGEMENT_IP --device sde --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdb --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdc --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdd --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sde --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdb --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdc --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdd --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sde --weight 100
     playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-rebalance
 Create container ring on controller node
     
     playback-swift-storage --user ubuntu --hosts CONTROLLER1 --create-container-builder-file --partitions 10 --replicas 3 --moving 1 
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip STORAGE1_MANAGEMENT_IP --device sdb --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip STORAGE1_MANAGEMENT_IP --device sdc --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip STORAGE1_MANAGEMENT_IP --device sdd --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip STORAGE1_MANAGEMENT_IP --device sde --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip STORAGE2_MANAGEMENT_IP --device sdb --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip STORAGE2_MANAGEMENT_IP --device sdc --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip STORAGE2_MANAGEMENT_IP --device sdd --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip STORAGE2_MANAGEMENT_IP --device sde --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdb --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdc --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdd --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sde --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdb --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdc --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdd --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sde --weight 100
     playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-rebalance
 
 Create object ring on controller node
     
     playback-swift-storage --user ubuntu --hosts CONTROLLER1 --create-object-builder-file --partitions 10 --replicas 3 --moving 1 
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip STORAGE1_MANAGEMENT_IP --device sdb --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip STORAGE1_MANAGEMENT_IP --device sdc --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip STORAGE1_MANAGEMENT_IP --device sdd --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip STORAGE1_MANAGEMENT_IP --device sde --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip STORAGE2_MANAGEMENT_IP --device sdb --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip STORAGE2_MANAGEMENT_IP --device sdc --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip STORAGE2_MANAGEMENT_IP --device sdd --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip STORAGE2_MANAGEMENT_IP --device sde --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdb --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdc --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdd --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sde --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdb --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdc --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdd --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sde --weight 100
     playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-rebalance
 
  Sync the builder file from controller node to each storage node and other any proxy node
 
-    playback-swift-storage --user ubuntu --host CONTROLLER1 --sync-builder-file --to CONTROLLER2,STORAGE1,STORAGE2
+    playback-swift-storage --user ubuntu --host CONTROLLER1 --sync-builder-file --to CONTROLLER2,OBJECT1,OBJECT2
 
 Finalize installation on all nodes
 
-    playback-swift --user ubuntu --hosts CONTROLLER1,CONTROLLER2,STORAGE1,STORAGE2 --finalize-install --swift-hash-path-suffix changeme --swift-hash-path-prefix changeme
+    playback-swift --user ubuntu --hosts CONTROLLER1,CONTROLLER2,OBJECT1,OBJECT2 --finalize-install --swift-hash-path-suffix changeme --swift-hash-path-prefix changeme
 
 
 
 TODO:
-
-    deploy ceph
-    configuare ceph for nova
     nova ssh keys
     esxi backend
     
+####(Option) Ceph Guide
+Create ceph cluster directory
+
+    mkdir ceph-cluster
+    cd ceph-cluster
+
+Create cluster and add initial monitor(s) to the ceph.conf
+
+    playback-ceph-deploy new  CONTROLLER1 CONTROLLER2 COMPUTE1 COMPUTE2 BLOCK1 BLOCK2
+    echo "osd pool default size = 2" | tee -a ceph.conf
+
+Install ceph client
+
+    playback-ceph-deploy install PLAYBACK-NODE CONTROLLER1 CONTROLLER2 COMPUTE1 COMPUTE2 BLOCK1 BLOCK2
+
+Add the initial monitor(s) and gather the keys
+
+    playback-ceph-deploy mon create-initial
+
+If you want to add additional monitors, do that
+    
+    playback-ceph-deploy mon add {additional-monitor}
+
+Add ceph osd(s)
+
+    playback-ceph-deploy osd create --zap-disk --fs-type ext4 BLOCK1:/dev/sdb
+    playback-ceph-deploy osd create --zap-disk --fs-type ext4 BLOCK1:/dev/sdc
+    playback-ceph-deploy osd create --zap-disk --fs-type ext4 BLOCK2:/dev/sdb
+    playback-ceph-deploy osd create --zap-disk --fs-type ext4 BLOCK2:/dev/sdc
+
+Sync admin key
+
+    playback-ceph-deploy admin PLAYBACK-NODE CONTROLLER1 CONTROLLER2 COMPUTE1 COMPUTE2 BLOCK1 BLOCK2
+    ssh {ceph-client-node} sudo chmod +r /etc/ceph/ceph.client.admin.keyring
+
+Create osd pool for cinder and running instance
+
+    ceph osd pool create volumes 512
+    ceph osd pool create vms 512
+
+Setup ceph client authentication
+
+    ceph auth get-or-create client.cinder mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool=volumes, allow rwx pool=vms'
+
+Add the keyrings for `client.cinder` to appropriate nodes and change their ownership
+
+    ceph auth get-or-create client.cinder | ssh {CINDER-VOLUME-NODE} sudo tee /etc/ceph/ceph.client.cinder.keyring
+    ssh {CINDER-VOLUME-NODE} sudo chown cinder:cinder /etc/ceph/ceph.client.cinder.keyring
+
+Nodes running `nova-compute` need the keyring file for the `nova-compute` process
+
+    ceph auth get-or-create client.cinder | ssh {NOVA-COMPUTE-NODE} sudo tee /etc/ceph/ceph.client.cinder.keyring
+
+They also need to store the secret key of the `client.cinder user` in `libvirt`. The libvirt process needs it to access the cluster while attaching a block device from Cinder.
+Create a temporary copy of the secret key on the nodes running `nova-compute`
+
+    ceph auth get-key client.cinder | ssh {COMPUTE-NODE} tee client.cinder.key
+
+Then, on the `compute nodes`, add the secret key to `libvirt` and remove the temporary copy of the key(the uuid is the same as your --rbd-secret-uuid option, you have to save the uuid for later)
+    
+    uuidgen
+    457eb676-33da-42ec-9a8c-9293d545c337
+
+    cat > secret.xml <<EOF
+    <secret ephemeral='no' private='no'>
+      <uuid>457eb676-33da-42ec-9a8c-9293d545c337</uuid>
+      <usage type='ceph'>
+        <name>client.cinder secret</name>
+      </usage>
+    </secret>
+    EOF
+    sudo virsh secret-define --file secret.xml
+    Secret 457eb676-33da-42ec-9a8c-9293d545c337 created
+    sudo virsh secret-set-value --secret 457eb676-33da-42ec-9a8c-9293d545c337 --base64 $(cat client.cinder.key) && rm client.cinder.key secret.xml
+
+Now on every compute nodes edit your Ceph configuration file, add the client section
+
+    [client]
+    rbd cache = true
+    rbd cache writethrough until flush = true
+    rbd concurrent management ops = 20
+
+
+If you want to remove osd 
+
+    ssh {OSD-NODE} sudo stop ceph-mon-all && sudo stop ceph-osd-all
+    ceph osd out {OSD-NUM}
+    ceph osd crush remove osd.{OSD-NUM} 
+    ceph auth del osd.{OSD-NUM} 
+    ceph osd rm {OSD-NUM} 
+    ceph osd crush remove {HOST} 
+
+If you want to remove monitor
+
+    ceph mon remove {MON-ID}
+
+
+#### Library Use
+```
+from playback.api import *
+admin_token = 'changeme'
+connection = 'mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone'
+memcache_servers = 'CONTROLLER1:11211,CONTROLLER2:11211'
+
+keystone = Keystone(user='ubuntu', hosts='controller1,controller2')
+ececute(keystone._install_keystone, admin_token, connection, memcache_servers)
+```
