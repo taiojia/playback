@@ -1054,6 +1054,7 @@ class Swift(Task):
                               use_sudo=True,
                               context={'swift_hash_path_suffix': swift_hash_path_suffix,
                                        'swift_hash_path_prefix': swift_hash_path_prefix})
+        os.remove('tmp_swift_conf_' + env.host_string)
         print red(env.host_string + ' | On all nodes, ensure proper ownership of the configuration directory')
         sudo('chown -R root:swift /etc/swift')
         print red(env.host_string + ' | On the controller node and any other nodes running the proxy service, restart the Object Storage proxy service including its dependencies')
