@@ -82,6 +82,11 @@ parser.add_argument('--swift-store-auth-address',
                     action='store',
                     default=None,
                     dest='swift_store_auth_address')
+parser.add_argument('--populate',
+                    help='populate the glance database',
+                    action='store_true',
+                    default=False,
+                    dest='populate')
 
 args = parser.parse_args()
 
@@ -2977,7 +2982,7 @@ class Glance(Task):
                               use_sudo=True)
         os.remove('tmp_glance_registry_conf_' + env.host_string)
    
-        if env.host_string == self.hosts[0]:
+        if args.populate:
             print red(env.host_string + ' | Populate the Image service database')
             sudo('su -s /bin/sh -c "glance-manage db_sync" glance', shell=False)
 

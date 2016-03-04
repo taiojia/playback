@@ -95,6 +95,11 @@ group.add_argument('--create-projects-users-roles',
                    action='store_true',
                    default=False,
                    dest='create_projects_users_roles')
+parser.add_argument('--populate',
+                    help='populate the keystone database',
+                    action='store_true',
+                    default=False,
+                    dest='populate')
 
 args = parser.parse_args()
 
@@ -2288,7 +2293,7 @@ class Keystone(object):
         os.remove('tmp_keystone_conf')
 
         # Populate the Identity service database
-        if env.host_string == self.hosts[0]:
+        if args.populate:
             sudo('su -s /bin/sh -c "keystone-manage db_sync" keystone', shell=False)
 
         # Configure /etc/apache2/sites-available/wsgi-keystone.conf
