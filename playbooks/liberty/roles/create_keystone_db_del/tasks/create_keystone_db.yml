@@ -1,0 +1,7 @@
+---
+  - name: Create keystone database
+    command: mysql -uroot -p{{ mariadb_root_password }} -e "CREATE DATABASE keystone;"
+  - name: Grant localhost access to the keystone database
+    command: mysql -uroot -p{{ mariadb_root_password }} -e "GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY '{{ keystone_db_password }}';"
+  - name: Grant any access to the keystone database
+    command: mysql -uroot -p{{ mariadb_root_password }} -e "GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY '{{ keystone_db_password }}';"

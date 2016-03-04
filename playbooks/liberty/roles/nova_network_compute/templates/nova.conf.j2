@@ -1,0 +1,52 @@
+[DEFAULT]
+dhcpbridge_flagfile=/etc/nova/nova.conf
+dhcpbridge=/usr/bin/nova-dhcpbridge
+logdir=/var/log/nova
+state_path=/var/lib/nova
+lock_path=/var/lock/nova
+force_dhcp_release=True
+libvirt_use_virtio_for_bridges=True
+verbose=True
+ec2_private_dns_show_ip=True
+api_paste_config=/etc/nova/api-paste.ini
+enabled_apis=ec2,osapi_compute,metadata
+rpc_backend = rabbit
+rabbit_hosts = {{ rabbit_hosts }}
+rabbit_password = {{ rabbitmq_guest_password }}
+rabbit_ha_queues = true
+auth_strategy = keystone
+my_ip = {{ my_ip }}
+vnc_enabled = True
+vncserver_listen = 0.0.0.0
+vncserver_proxyclient_address = {{ my_ip }}
+novncproxy_base_url = {{ novncproxy_base_url }}
+network_api_class = nova.network.api.API
+security_group_api = nova
+firewall_driver = nova.virt.libvirt.firewall.IptablesFirewallDriver
+network_manager = nova.network.manager.FlatDHCPManager
+network_size = {{ network_size }}
+allow_same_net_traffic = False
+multi_host = True
+send_arp_for_ha = True
+share_dhcp_address = True
+flat_network_bridge = {{ flat_network_bridge }}
+flat_interface = {{ flat_interface }}
+public_interface = {{ public_interface }}
+rbd_user = {{ ceph_cinder_user }}
+rbd_secret_uuid = {{ ceph_uuid }}
+libvirt_images_type=rbd
+libvirt_images_rbd_pool={{ ceph_cinder_pool }}
+libvirt_images_rbd_ceph_conf=/etc/ceph/ceph.conf
+libvirt_inject_password=false
+libvirt_inject_key=false
+libvirt_inject_partition=-2
+
+[keystone_authtoken]
+auth_uri = {{ auth_uri }}
+identity_uri = {{ identity_uri }}
+admin_tenant_name = service
+admin_user = {{ openstack_nova_user }}
+admin_password = {{ openstack_nova_pass }}
+
+[glance]
+host = {{ glance_host }}

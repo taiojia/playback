@@ -1,0 +1,17 @@
+---
+- name: install zabbix client for ubuntu
+  hosts: ubuntuservers
+  sudo: true
+  vars:
+    zabbix_server_ip: '{{ zabbix_server_ip }}'
+  tasks:
+    - name: copy repo
+      copy: src=files/zabbix-release_2.4-1+trusty_all.deb dest=/tmp/zabbix-release_2.4-1+trusty_all.deb
+    - name: install repo
+      command: dpkg -i /tmp/zabbix-release_2.4-1+trusty_all.deb
+    - name: install zabbix-agent
+      apt: name=zabbix-agent update_cache=yes
+    - name: copy config file
+      template: src=files/zabbix_agentd.conf.j2 dest=/etc/zabbix/zabbix_agentd.conf
+    - name: restart agent
+      service: name=zabbix-agent state=restarted

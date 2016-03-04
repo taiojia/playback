@@ -1,0 +1,40 @@
+---
+# The MIT License (MIT)
+#
+# Copyright (c) 2015 Taio Jia (jiasir) <jiasir@icloud.com>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+- name: Install packages pdns-server pdns-backend-mysql
+  apt: name={{ item }} update_cache=yes
+  with_items:
+    - pdns-server
+    - pdns-backend-mysql
+- name: Add rabbit user
+  shell: rabbitmqctl add_user designate designate
+- name: Give the user access to the root vhost
+  shell: rabbitmqctl set_permissions -p "/" designate ".*" ".*" ".*"
+- name: Create the database for designate
+  shell: mysql -uroot -p{{ mariadb_root_password }} -e "CREATE DATABASE designate"
+- name: Create the MySQL user for designate
+  shell: mysql -uroot -p{{ mariadb_root_password }} -e "GRANT ALL ON designate.* TO 'designate'@'localhost' IDENTIFIED BY '{{ designate_db_password }}';"
+- name: Create the database for powerdns
+  shell: mysql -uroot -p{{ mariadb_root_password }} -e "CREATE DATABASE powerdns"
+- name: Create the MySQL user for powerdns
+  shell: mysql -uroot -p{{ mariadb_root_password }} -e "GRANT ALL ON powerdns.* TO 'powerdns'@'localhost' IDENTIFIED BY '{{ powerdns_db_password }}';"

@@ -1,0 +1,3 @@
+---
+- include: install_ubuntu_cloud_keyring.yml
+- include: dist_upgrade.yml
