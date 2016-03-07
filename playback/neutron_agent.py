@@ -7,8 +7,6 @@ import os
 import argparse
 
 parser = argparse.ArgumentParser()
-group = parser.add_mutually_exclusive_group()
-
 parser.add_argument('--user', 
                     help='the target user', 
                     action='store', 
@@ -18,42 +16,41 @@ parser.add_argument('--hosts',
                     help='the target address', 
                     action='store', 
                     dest='hosts')
-group.add_argument('--install',
-                   help='install neutron agent',
-                   action='store_true',
-                   default=False,
-                   dest='install')
-parser.add_argument('--rabbit-hosts',
+
+subparsers = parser.add_subparsers(dest='subparser_name')
+install = subparsers.add_parser('install',
+                                help='install neutron agent')
+install.add_argument('--rabbit-hosts',
                     help='rabbit hosts e.g. controller1,controller2',
                     action='store',
                     default=None,
                     dest='rabbit_hosts')
-parser.add_argument('--rabbit-pass',
+install.add_argument('--rabbit-pass',
                     help='the password for rabbit openstack user',
                     action='store',
                     default=None,
                     dest='rabbit_pass')
-parser.add_argument('--auth-uri',
+install.add_argument('--auth-uri',
                     help='keystone internal endpoint e.g. http://CONTROLLER_VIP:5000',
                     action='store',
                     default=None,
                     dest='auth_uri')
-parser.add_argument('--auth-url',
+install.add_argument('--auth-url',
                     help='keystone admin endpoint e.g. http://CONTROLLER_VIP:35357',
                     action='store',
                     default=None,
                     dest='auth_url')
-parser.add_argument('--neutron-pass',
+install.add_argument('--neutron-pass',
                     help='the password for neutron user',
                     action='store',
                     default=None,
                     dest='neutron_pass')
-parser.add_argument('--public-interface',
+install.add_argument('--public-interface',
                     help='public interface e.g. eth1',
                     action='store',
                     default=None,
                     dest='public_interface')
-parser.add_argument('--local-ip',
+install.add_argument('--local-ip',
                     help=' underlying physical network interface that handles overlay networks(uses the management interface IP)',
                     action='store',
                     default=None,
@@ -1226,7 +1223,7 @@ def main():
     except AttributeError:
         print red('No hosts found. Please using --hosts param.')
 
-    if args.install:
+    if args.subparser_name == 'install':
         execute(target._install, 
                 args.rabbit_hosts, 
                 args.rabbit_pass, 
