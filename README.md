@@ -68,20 +68,20 @@ Create cluster
 #### Keystone HA
 Create keystone database
 
-    playback-keystone --user ubuntu --hosts CONTROLLER1 --create-keystone-db --root-db-pass changeme --keystone-db-pass changeme
+    playback-keystone --user ubuntu --hosts CONTROLLER1 create-keystone-db --root-db-pass changeme --keystone-db-pass changeme
 
 Install keystone on CONTROLLER1 and CONTROLLER2
 
-    playback-keystone --user ubuntu --hosts CONTROLLER1 --install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcache_servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
-    playback-keystone --user ubuntu --hosts CONTROLLER2 --install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcache_servers CONTROLLER1:11211,CONTROLLER2:11211
+    playback-keystone --user ubuntu --hosts CONTROLLER1 install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcache_servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
+    playback-keystone --user ubuntu --hosts CONTROLLER2 install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcache_servers CONTROLLER1:11211,CONTROLLER2:11211
 
 Create the service entity and API endpoints
 
-    playback-keystone --user ubuntu --hosts CONTROLLER1 --create-entity-and-endpoint --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --public-endpoint http://CONTROLLER_VIP:5000/v2.0 --internal-endpoint http://CONTROLLER_VIP:5000/v2.0 --admin-endpoint http://CONTROLLER_vip:35357/v2.0
+    playback-keystone --user ubuntu --hosts CONTROLLER1 create-entity-and-endpoint --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --public-endpoint http://CONTROLLER_VIP:5000/v2.0 --internal-endpoint http://CONTROLLER_VIP:5000/v2.0 --admin-endpoint http://CONTROLLER_vip:35357/v2.0
 
 Create projects, users, and roles
 
-    playback-keystone --user ubuntu --hosts CONTROLLER1 --create-projects-users-roles --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --admin-pass changeme --demo-pass changeme
+    playback-keystone --user ubuntu --hosts CONTROLLER1 create-projects-users-roles --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --admin-pass changeme --demo-pass changeme
 
 (OPTION) you will need to create OpenStack client environment scripts
 admin-openrc.sh
