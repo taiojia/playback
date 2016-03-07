@@ -40,7 +40,7 @@ install.add_argument('--connection',
                     default=None,
                     dest='connection')
 install.add_argument('--memcache_servers',
-                    help='memcached servers',
+                    help='memcached servers. e.g. CONTROLLER1:11211,CONTROLLER2:11211',
                     action='store',
                     default=None,
                     dest='memcache_servers')
@@ -58,22 +58,22 @@ create_entity_and_endpoint.add_argument('--os-token',
                                         default=None,
                                         dest='os_token')
 create_entity_and_endpoint.add_argument('--os-url',
-                                        help='keystone endpoint url e.g. http://controller:35357/v3',
+                                        help='keystone endpoint url e.g. http://CONTROLLER_VIP:35357/v3',
                                         action='store',
                                         default=None,
                                         dest='os_url')
 create_entity_and_endpoint.add_argument('--public-endpoint',
-                                        help='the public endpoint e.g. http://controller:5000/v2.0',
+                                        help='the public endpoint e.g. http://CONTROLLER_VIP:5000/v2.0',
                                         action='store',
                                         default=None,
                                         dest='public_endpoint')
 create_entity_and_endpoint.add_argument('--internal-endpoint',
-                                        help='the internal endpoint e.g. http://controller:5000/v2.0',
+                                        help='the internal endpoint e.g. http://CONTROLLER_VIP:5000/v2.0',
                                         action='store',
                                         default=None,
                                         dest='internal_endpoint')
 create_entity_and_endpoint.add_argument('--admin-endpoint',
-                                        help='the admin endpoint e.g. http://controller:35357/v2.0',
+                                        help='the admin endpoint e.g. http://CONTROLLER_VIP:35357/v2.0',
                                         action='store',
                                         default=None,
                                         dest='admin_endpoint')
@@ -86,7 +86,7 @@ create_projects_users_roles.add_argument('--os-token',
                                         default=None,
                                         dest='os_token')
 create_projects_users_roles.add_argument('--os-url',
-                                        help='keystone endpoint url e.g. http://controller:35357/v3',
+                                        help='keystone endpoint url e.g. http://CONTROLLER_VIP:35357/v3',
                                         action='store',
                                         default=None,
                                         dest='os_url')
