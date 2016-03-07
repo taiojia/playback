@@ -190,16 +190,16 @@ Install horizon on controller nodes
 #### Cinder HA
 Create cinder database
 
-    playback-cinder --user ubuntu --hosts CONTROLLER1 --create-cinder-db --root-db-pass changeme --cinder-db-pass changeme 
+    playback-cinder --user ubuntu --hosts CONTROLLER1 create-cinder-db --root-db-pass changeme --cinder-db-pass changeme 
 
 Create cinder service creadentials
 
-    playback-cinder --user ubuntu --hosts CONTROLLER1 --create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --cinder-pass changeme --endpoint-v1 'http://CONTROLLER_VIP:8776/v1/%\(tenant_id\)s' --endpoint-v2 'http://CONTROLLER_VIP:8776/v2/%\(tenant_id\)s'
+    playback-cinder --user ubuntu --hosts CONTROLLER1 create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --cinder-pass changeme --endpoint-v1 'http://CONTROLLER_VIP:8776/v1/%\(tenant_id\)s' --endpoint-v2 'http://CONTROLLER_VIP:8776/v2/%\(tenant_id\)s'
 
 Install cinder-api and cinder-volume on controller nodes, the volume backend defaults to ceph (you must have ceph installed)
     
-    playback-cinder --user ubuntu --hosts CONTROLLER1 --install --connection mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinder --rabbit-pass changeme --rabbit-hosts CONTROLLER1,CONTROLLER2 --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --cinder-pass changeme --my-ip MANAGEMENT_INTERFACE_IP --glance-host CONTROLLER_VIP --rbd-secret-uuid changeme-changeme-changeme-changeme --populate
-    playback-cinder --user ubuntu --hosts CONTROLLER2 --install --connection mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinder --rabbit-pass changeme --rabbit-hosts CONTROLLER1,CONTROLLER2 --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --cinder-pass changeme --my-ip MANAGEMENT_INTERFACE_IP --glance-host CONTROLLER_VIP --rbd-secret-uuid changeme-changeme-changeme-changeme
+    playback-cinder --user ubuntu --hosts CONTROLLER1 install --connection mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinder --rabbit-pass changeme --rabbit-hosts CONTROLLER1,CONTROLLER2 --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --cinder-pass changeme --my-ip MANAGEMENT_INTERFACE_IP --glance-host CONTROLLER_VIP --rbd-secret-uuid changeme-changeme-changeme-changeme --populate
+    playback-cinder --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinder --rabbit-pass changeme --rabbit-hosts CONTROLLER1,CONTROLLER2 --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --cinder-pass changeme --my-ip MANAGEMENT_INTERFACE_IP --glance-host CONTROLLER_VIP --rbd-secret-uuid changeme-changeme-changeme-changeme
 
 #### Swift proxy HA
 Create the Identity service credentials
