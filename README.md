@@ -24,12 +24,12 @@ Prepare the OpenStack environment.
 Deploy to CONTROLLER1
 
     playback-mysql --user ubuntu --hosts CONTROLLER1 install 
-    playback-mysql --user ubuntu --hosts CONTROLLER1 config  --wsrep_cluster_address "gcomm://CONTROLLER1,CONTROLLER2" --wsrep_node_name="galera1" --wsrep_node_address="CONTROLLER1"
+    playback-mysql --user ubuntu --hosts CONTROLLER1 config  --wsrep-cluster-address "gcomm://CONTROLLER1,CONTROLLER2" --wsrep-node-name="galera1" --wsrep-node-address="CONTROLLER1"
 
 Deploy to CONTROLLER2
 
     playback-mysql --user ubuntu --hosts CONTROLLER2 install 
-    playback-mysql --user ubuntu --hosts CONTROLLER2 config  --wsrep_cluster_address "gcomm://CONTROLLER1,CONTROLLER2" --wsrep_node_name="galera2" --wsrep_node_address="CONTROLLER2"
+    playback-mysql --user ubuntu --hosts CONTROLLER2 config  --wsrep-cluster-address "gcomm://CONTROLLER1,CONTROLLER2" --wsrep-node-name="galera2" --wsrep-node-address="CONTROLLER2"
 
 Start cluster
 
