@@ -24,7 +24,7 @@ args = parser.parse_args()
 
 class RabbitMq(object):
     """RabbitMQ HA Installation"""
-    def __init__(self, user, hosts, parallel=True):
+    def __init__(self, hosts, user='ubuntu', parallel=True):
         self.user = user
         self.hosts = hosts
         self.parallel = parallel
