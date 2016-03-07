@@ -70,6 +70,11 @@ install.add_argument('--auth-url',
                     action='store',
                     default=None,
                     dest='auth_url')
+install.add_argument('--nova-pass',
+                    help='passowrd for nova user',
+                    action='store',
+                    default=None,
+                    dest='nova_pass')
 install.add_argument('--my-ip',
                     help='the host management ip',
                     action='store',
