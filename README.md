@@ -128,19 +128,19 @@ Install glance on CONTROLLER1 and CONTROLLER2
 #### Nova HA
 Create nova database
 
-    playback-nova --user ubuntu --hosts CONTROLLER1 --create-nova-db --root-db-pass changeme --nova-db-pass changeme 
+    playback-nova --user ubuntu --hosts CONTROLLER1 create-nova-db --root-db-pass changeme --nova-db-pass changeme 
 
 Create service credentials
 
-    playback-nova --user ubuntu --hosts CONTROLLER1 --create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --nova-pass changeme --endpoint 'http://CONTROLLER_VIP:8774/v2/%\(tenant_id\)s'
+    playback-nova --user ubuntu --hosts CONTROLLER1 create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --nova-pass changeme --endpoint 'http://CONTROLLER_VIP:8774/v2/%\(tenant_id\)s'
 
 Install nova on CONTROLLER1
 
-    playback-nova --user ubuntu --hosts CONTROLLER1 --install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-pass changeme --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme --populate
+    playback-nova --user ubuntu --hosts CONTROLLER1 install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-pass changeme --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme --populate
 
 Install nova on CONTROLLER2
 
-    playback-nova --user ubuntu --hosts CONTROLLER2 --install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-pass changeme --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme
+    playback-nova --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-pass changeme --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme
 
 #### Nova Compute
 Add nova computes
