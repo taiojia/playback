@@ -7,8 +7,6 @@ import os
 import argparse
 
 parser = argparse.ArgumentParser()
-group = parser.add_mutually_exclusive_group()
-
 parser.add_argument('--user', 
                     help='the target user', 
                     action='store', 
@@ -18,107 +16,105 @@ parser.add_argument('--hosts',
                     help='the target address', 
                     action='store', 
                     dest='hosts')
-group.add_argument('--create-neutron-db', 
-                    help='create the neutron database', 
-                    action='store_true', 
-                    default=False, 
-                    dest='create_neutron_db')
-parser.add_argument('--root-db-pass', 
-                    help='the openstack database root passowrd',
-                   action='store', 
-                   default=None, 
-                   dest='root_db_pass')
-parser.add_argument('--neutron-db-pass', 
-                    help='neutron db passowrd',
-                    action='store', 
-                    default=None, 
-                    dest='neutron_db_pass')
-group.add_argument('--create-service-credentials',
-                   help='create the neutron service credentials',
-                   action='store_true',
-                   default=False,
-                   dest='create_service_credentials')
-parser.add_argument('--os-password',
-                    help='the password for admin user',
-                    action='store',
-                    default=None,
-                    dest='os_password')
-parser.add_argument('--os-auth-url',
-                    help='keystone endpoint url e.g. http://controller:35357/v3',
-                    action='store',
-                    default=None,
-                    dest='os_auth_url')
-parser.add_argument('--endpoint',
-                    help='public, internal and admin endpoint for neutron service e.g. http://CONTROLLER_VIP:8774/v2/%%\(tenant_id\)s',
-                    action='store',
-                    default=None,
-                    dest='endpoint')
-group.add_argument('--install',
-                   help='install neutron for self-service',
-                   action='store_true',
-                   default=False,
-                   dest='install')
-parser.add_argument('--connection',
+subpasers = parser.add_subparsers(dest='subparser_name')
+create_neutron_db = subpasers.add_parser('create-neutron-db',
+                                         help='create the neutron database')
+create_neutron_db.add_argument('--root-db-pass', 
+                               help='the openstack database root passowrd',
+                               action='store', 
+                               default=None, 
+                               dest='root_db_pass')
+create_neutron_db.add_argument('--neutron-db-pass', 
+                               help='neutron db passowrd',
+                               action='store', 
+                               default=None, 
+                               dest='neutron_db_pass')
+
+create_service_credentials = subpasers.add_parser('create-service-credentials',
+                                                  help='create the neutron service credentials')
+create_service_credentials.add_argument('--os-password',
+                                        help='the password for admin user',
+                                        action='store',
+                                        default=None,
+                                        dest='os_password')
+create_service_credentials.add_argument('--os-auth-url',
+                                        help='keystone endpoint url e.g. http://CONTROLLER_VIP:35357/v3',
+                                        action='store',
+                                        default=None,
+                                        dest='os_auth_url')
+create_service_credentials.add_argument('--neutron-pass',
+                                        help='the password for neutron user',
+                                        action='store',
+                                        default=None,
+                                        dest='neutron_pass')
+create_service_credentials.add_argument('--endpoint',
+                                        help='public, internal and admin endpoint for neutron service e.g. http://CONTROLLER_VIP:8774/v2/%%\(tenant_id\)s',
+                                        action='store',
+                                        default=None,
+                                        dest='endpoint')
+install = subpasers.add_parser('install', 
+                               help='install neutron for self-service')
+install.add_argument('--connection',
                     help='mysql database connection string e.g. mysql+pymysql://neutron:NEUTRON_PASS@CONTROLLER_VIP/neutron',
                     action='store',
                     default=None,
                     dest='connection')
-parser.add_argument('--auth-uri',
+install.add_argument('--auth-uri',
                     help='keystone internal endpoint e.g. http://CONTROLLER_VIP:5000',
                     action='store',
                     default=None,
                     dest='auth_uri')
-parser.add_argument('--auth-url',
+install.add_argument('--auth-url',
                     help='keystone admin endpoint e.g. http://CONTROLLER_VIP:35357',
                     action='store',
                     default=None,
                     dest='auth_url')
-parser.add_argument('--rabbit-hosts',
+install.add_argument('--rabbit-hosts',
                     help='rabbit hosts e.g. controller1,controller2',
                     action='store',
                     default=None,
                     dest='rabbit_hosts')
-parser.add_argument('--rabbit-pass',
+install.add_argument('--rabbit-pass',
                     help='the password for rabbit openstack user',
                     action='store',
                     default=None,
                     dest='rabbit_pass')
-parser.add_argument('--neutron-pass',
+install.add_argument('--neutron-pass',
                     help='the password for neutron user',
                     action='store',
                     default=None,
                     dest='neutron_pass')
-parser.add_argument('--nova-url',
+install.add_argument('--nova-url',
                     help='URL for connection to nova (Only supports one nova region currently)',
                     action='store',
                     default=None,
                     dest='nova_url')
-parser.add_argument('--nova-pass',
+install.add_argument('--nova-pass',
                     help='passowrd for nova user',
                     action='store',
                     default=None,
                     dest='nova_pass')
-parser.add_argument('--public-interface',
+install.add_argument('--public-interface',
                     help='public interface e.g. eth1',
                     action='store',
                     default=None,
                     dest='public_interface')
-parser.add_argument('--local-ip',
+install.add_argument('--local-ip',
                     help=' underlying physical network interface that handles overlay networks(uses the management interface IP)',
                     action='store',
                     default=None,
                     dest='local_ip')
-parser.add_argument('--nova-metadata-ip',
+install.add_argument('--nova-metadata-ip',
                     help='IP address used by Nova metadata server e.g. CONTROLLER_VIP',
                     action='store',
                     default=None,
                     dest='nova_metadata_ip')
-parser.add_argument('--metadata-proxy-shared-secret',
+install.add_argument('--metadata-proxy-shared-secret',
                     help='metadata proxy shared secret',
                     action='store',
                     default=None,
                     dest='metadata_proxy_shared_secret')
-parser.add_argument('--populate',
+install.add_argument('--populate',
                     help='Populate the neutron database',
                     action='store_true',
                     default=False,
@@ -1835,17 +1831,17 @@ def main():
     except AttributeError:
         print red('No hosts found. Please using --hosts param.')
 
-    if args.create_neutron_db:
+    if args.subparser_name == 'create-neutron-db':
         execute(target._create_neutron_db,
                 args.root_db_pass,
                 args.neutron_db_pass)
-    if args.create_service_credentials:
+    if args.subparser_name == 'create-service-credentials':
         execute(target._create_service_credentials,
                 args.os_password,
                 args.os_auth_url,
                 args.neutron_pass,
                 args.endpoint)
-    if args.install:
+    if args.subparser_name == 'install':
         execute(target._install_self_service,
                 args.connection, 
                 args.rabbit_hosts, 
