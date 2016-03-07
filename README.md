@@ -184,7 +184,7 @@ Install neutron agent on compute nodes
 #### Horizon HA
 Install horizon on controller nodes
 
-    playback-horizon --user ubuntu --hosts CONTROLLER1,CONTROLLER2 --install --openstack-host CONTROLLER_VIP  --memcache CONTROLLER1:11211 --time-zone Asia/Shanghai 
+    playback-horizon --user ubuntu --hosts CONTROLLER1,CONTROLLER2 install --openstack-host CONTROLLER_VIP  --memcache CONTROLLER1:11211 --time-zone Asia/Shanghai 
 
 
 #### Cinder HA
