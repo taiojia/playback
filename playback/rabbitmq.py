@@ -16,7 +16,7 @@ install.add_argument('--rabbit-user', help='set rabbit user name',
 install.add_argument('--rabbit-pass', help='set rabbit password',
                     action='store', default=None, dest='rabbit_pass')
 join_cluster = subparsers.add_parser('join-cluster', help='join the rabbit cluster')
-join_cluster.add_argument('--name', help='the joined name',
+join_cluster.add_argument('--name', help='the joined name, e.g. rabbit@CONTROLLER1',
                    action='store', default=None, dest='name')
 
 args = parser.parse_args()

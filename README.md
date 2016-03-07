@@ -59,11 +59,11 @@ Configure Keepalived
 #### RabbitMQ HA
 Deploy to CONTROLLER1 and CONTROLLER2
 
-    playback-rabbitmq --install --user ubuntu --hosts CONTROLLER1,CONTROLLER2 --erlang-cookie changemechangeme --rabbit-user openstack --rabbit-pass changeme
+    playback-rabbitmq --user ubuntu --hosts CONTROLLER1,CONTROLLER2 install --erlang-cookie changemechangeme --rabbit-user openstack --rabbit-pass changeme
     
 Create cluster
 
-    playback-rabbitmq --user ubuntu --hosts CONTROLLER2 --join-cluster rabbit@CONTROLLER1
+    playback-rabbitmq --user ubuntu --hosts CONTROLLER2 join-cluster --name rabbit@CONTROLLER1
 
 #### Keystone HA
 Create keystone database
