@@ -204,68 +204,68 @@ Install cinder-api and cinder-volume on controller nodes, the volume backend def
 #### Swift proxy HA
 Create the Identity service credentials
 
-    playback-swift --user ubuntu --hosts CONTROLLER1 --create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --swift-pass changeme --public-internal-endpoint 'http://CONTROLLER_VIP:8080/v1/AUTH_%\(tenant_id\)s' --admin-endpoint http://CONTROLLER_VIP:8080/v1 
+    playback-swift --user ubuntu --hosts CONTROLLER1 create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --swift-pass changeme --public-internal-endpoint 'http://CONTROLLER_VIP:8080/v1/AUTH_%\(tenant_id\)s' --admin-endpoint http://CONTROLLER_VIP:8080/v1 
 
 Install swift proxy
 
-    playback-swift --user ubuntu --hosts CONTROLLER1,CONTROLLER2 --install --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --swift-pass changeme --memcache-servers CONTROLLER1:11211,CONTROLLER2:11211 
+    playback-swift --user ubuntu --hosts CONTROLLER1,CONTROLLER2 install --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --swift-pass changeme --memcache-servers CONTROLLER1:11211,CONTROLLER2:11211 
 
 
 #### Swift storage
 Prepare disks on storage node
 
-    playback-swift-storage --user ubuntu --hosts OBJECT1,OBJECT2 --prepare-disks sdb,sdc,sdd,sde
+    playback-swift-storage --user ubuntu --hosts OBJECT1,OBJECT2 prepare-disks --name sdb,sdc,sdd,sde
 
 Install swift storage on storage node
 
-    playback-swift-storage --user ubuntu --hosts OBJECT1 --install --address MANAGEMENT_INTERFACE_IP --bind-ip MANAGEMENT_INTERFACE_IP 
-    playback-swift-storage --user ubuntu --hosts OBJECT2 --install --address MANAGEMENT_INTERFACE_IP --bind-ip MANAGEMENT_INTERFACE_IP 
+    playback-swift-storage --user ubuntu --hosts OBJECT1 install --address MANAGEMENT_INTERFACE_IP --bind-ip MANAGEMENT_INTERFACE_IP 
+    playback-swift-storage --user ubuntu --hosts OBJECT2 install --address MANAGEMENT_INTERFACE_IP --bind-ip MANAGEMENT_INTERFACE_IP 
 
 Create account ring on controller node
 
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --create-account-builder-file --partitions 10 --replicas 3 --moving 1 
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdb --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdc --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdd --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sde --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdb --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdc --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdd --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sde --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --account-builder-rebalance
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 create-account-builder-file --partitions 10 --replicas 3 --moving 1 
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 account-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdb --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 account-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdc --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 account-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdd --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 account-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sde --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 account-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdb --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 account-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdc --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 account-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdd --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 account-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sde --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 account-builder-rebalance
 Create container ring on controller node
     
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --create-container-builder-file --partitions 10 --replicas 3 --moving 1 
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdb --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdc --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdd --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sde --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdb --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdc --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdd --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sde --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --container-builder-rebalance
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 create-container-builder-file --partitions 10 --replicas 3 --moving 1 
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 container-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdb --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 container-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdc --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 container-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdd --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 container-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sde --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 container-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdb --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 container-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdc --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 container-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdd --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 container-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sde --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 container-builder-rebalance
 
 Create object ring on controller node
     
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --create-object-builder-file --partitions 10 --replicas 3 --moving 1 
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdb --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdc --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdd --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sde --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdb --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdc --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdd --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sde --weight 100
-    playback-swift-storage --user ubuntu --hosts CONTROLLER1 --object-builder-rebalance
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 create-object-builder-file --partitions 10 --replicas 3 --moving 1 
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 object-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdb --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 object-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdc --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 object-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdd --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 object-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sde --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 object-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdb --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 object-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdc --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 object-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdd --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 object-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sde --weight 100
+    playback-swift-storage --user ubuntu --hosts CONTROLLER1 object-builder-rebalance
 
  Sync the builder file from controller node to each storage node and other any proxy node
 
-    playback-swift-storage --user ubuntu --host CONTROLLER1 --sync-builder-file --to CONTROLLER2,OBJECT1,OBJECT2
+    playback-swift-storage --user ubuntu --host CONTROLLER1 sync-builder-file --to CONTROLLER2,OBJECT1,OBJECT2
 
 Finalize installation on all nodes
 
-    playback-swift --user ubuntu --hosts CONTROLLER1,CONTROLLER2,OBJECT1,OBJECT2 --finalize-install --swift-hash-path-suffix changeme --swift-hash-path-prefix changeme
+    playback-swift --user ubuntu --hosts CONTROLLER1,CONTROLLER2,OBJECT1,OBJECT2 finalize-install --swift-hash-path-suffix changeme --swift-hash-path-prefix changeme
 
 
 
