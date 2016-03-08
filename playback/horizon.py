@@ -7,8 +7,6 @@ import os
 import argparse
 
 parser = argparse.ArgumentParser()
-group = parser.add_mutually_exclusive_group()
-
 parser.add_argument('--user', 
                     help='the target user', 
                     action='store', 
@@ -18,22 +16,20 @@ parser.add_argument('--hosts',
                     help='the target address', 
                     action='store', 
                     dest='hosts')
-group.add_argument('--install',
-                   help='install horizon',
-                   action='store_true',
-                   default=False,
-                   dest='install')
-parser.add_argument('--openstack-host',
+subparsers = parser.add_subparsers(dest='subparser_name')
+install = subparsers.add_parser('install',
+                                help='install horizon')
+install.add_argument('--openstack-host',
                     help='configure the dashboard to use OpenStack services on the controller node e.g. CONTROLLER_VIP',
                     action='store',
                     default=None,
                     dest='openstack_host')
-parser.add_argument('--memcache',
+install.add_argument('--memcache',
                     help='django memcache e.g. CONTROLLER1:11211',
                     action='store',
                     default=None,
                     dest='memcache')
-parser.add_argument('--time-zone',
+install.add_argument('--time-zone',
                     help='the timezone of the server. This should correspond with the timezone of your entire OpenStack installation e.g. Asia/Shanghai',
                     action='store',
                     default=None,
@@ -766,7 +762,7 @@ def main():
     except AttributeError:
         print red('No hosts found. Please using --hosts param.')
 
-    if args.install:
+    if args.subparser_name == 'install':
         execute(target._install, 
                 args.openstack_host, 
                 args.memcache, 

@@ -4,7 +4,7 @@ from fabric.api import *
 class MysqlManage(object):
     """Manage Galera Cluster for MySQL"""
 
-    def __init__(self, user, hosts, parallel=True):
+    def __init__(self, hosts, user='ubuntu', parallel=True):
         self.user = user
         self.hosts = hosts
         self.parallel = parallel

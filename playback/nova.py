@@ -7,8 +7,6 @@ import os
 import argparse
 
 parser = argparse.ArgumentParser()
-group = parser.add_mutually_exclusive_group()
-
 parser.add_argument('--user', 
                     help='the target user', 
                     action='store', 
@@ -18,107 +16,106 @@ parser.add_argument('--hosts',
                     help='the target address', 
                     action='store', 
                     dest='hosts')
-group.add_argument('--create-nova-db', 
-                    help='create the nova database', 
-                    action='store_true', 
-                    default=False, 
-                    dest='create_nova_db')
-parser.add_argument('--root-db-pass', 
-                    help='the openstack database root passowrd',
-                   action='store', 
-                   default=None, 
-                   dest='root_db_pass')
-parser.add_argument('--nova-db-pass', 
-                    help='nova db passowrd',
-                    action='store', 
-                    default=None, 
-                    dest='nova_db_pass')
-group.add_argument('--create-service-credentials',
-                   help='create the nova service credentials',
-                   action='store_true',
-                   default=False,
-                   dest='create_service_credentials')
-parser.add_argument('--os-password',
-                    help='the password for admin user',
-                    action='store',
-                    default=None,
-                    dest='os_password')
-parser.add_argument('--os-auth-url',
-                    help='keystone endpoint url e.g. http://controller:35357/v3',
-                    action='store',
-                    default=None,
-                    dest='os_auth_url')
-parser.add_argument('--nova-pass',
-                    help='passowrd for nova user',
-                    action='store',
-                    default=None,
-                    dest='nova_pass')
-parser.add_argument('--endpoint',
-                    help='public, internal and admin endpoint for nova service e.g. http://CONTROLLER_VIP:8774/v2/%%\(tenant_id\)s',
-                    action='store',
-                    default=None,
-                    dest='endpoint')
-group.add_argument('--install',
-                   help='install nova',
-                   action='store_true',
-                   default=False,
-                   dest='install')
-parser.add_argument('--connection',
+subparsers = parser.add_subparsers(dest="subparser_name")
+create_nova_db = subparsers.add_parser('create-nova-db',
+                                       help='create the nova database')
+create_nova_db.add_argument('--root-db-pass', 
+                           help='the openstack database root passowrd',
+                           action='store', 
+                           default=None, 
+                           dest='root_db_pass')
+create_nova_db.add_argument('--nova-db-pass', 
+                            help='nova db passowrd',
+                            action='store', 
+                            default=None, 
+                            dest='nova_db_pass')
+
+create_service_credentials = subparsers.add_parser('create-service-credentials',
+                                                   help='create the nova service credentials',)
+create_service_credentials.add_argument('--os-password',
+                                        help='the password for admin user',
+                                        action='store',
+                                        default=None,
+                                        dest='os_password')
+create_service_credentials.add_argument('--os-auth-url',
+                                        help='keystone endpoint url e.g. http://CONTROLLER_VIP:35357/v3',
+                                        action='store',
+                                        default=None,
+                                        dest='os_auth_url')
+create_service_credentials.add_argument('--nova-pass',
+                                        help='passowrd for nova user',
+                                        action='store',
+                                        default=None,
+                                        dest='nova_pass')
+create_service_credentials.add_argument('--endpoint',
+                                        help='public, internal and admin endpoint for nova service e.g. http://CONTROLLER_VIP:8774/v2/%%\(tenant_id\)s',
+                                        action='store',
+                                        default=None,
+                                        dest='endpoint')
+
+install = subparsers.add_parser('install',
+                                help='install nova')
+install.add_argument('--connection',
                     help='mysql database connection string e.g. mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova',
                     action='store',
                     default=None,
                     dest='connection')
-parser.add_argument('--auth-uri',
+install.add_argument('--auth-uri',
                     help='keystone internal endpoint e.g. http://CONTROLLER_VIP:5000',
                     action='store',
                     default=None,
                     dest='auth_uri')
-parser.add_argument('--auth-url',
+install.add_argument('--auth-url',
                     help='keystone admin endpoint e.g. http://CONTROLLER_VIP:35357',
                     action='store',
                     default=None,
                     dest='auth_url')
-parser.add_argument('--my-ip',
+install.add_argument('--nova-pass',
+                    help='passowrd for nova user',
+                    action='store',
+                    default=None,
+                    dest='nova_pass')
+install.add_argument('--my-ip',
                     help='the host management ip',
                     action='store',
                     default=None,
                     dest='my_ip')
-parser.add_argument('--memcached-servers',
-                    help='memcached servers e.g. controller1:11211,controller2:11211',
+install.add_argument('--memcached-servers',
+                    help='memcached servers e.g. CONTROLLER1:11211,CONTROLLER2:11211',
                     action='store',
                     default=None,
                     dest='memcached_servers')
-parser.add_argument('--rabbit-hosts',
-                    help='rabbit hosts e.g. controller1,controller2',
+install.add_argument('--rabbit-hosts',
+                    help='rabbit hosts e.g. CONTROLLER1,CONTROLLER2',
                     action='store',
                     default=None,
                     dest='rabbit_hosts')
-parser.add_argument('--rabbit-pass',
+install.add_argument('--rabbit-pass',
                     help='the password for rabbit openstack user',
                     action='store',
                     default=None,
                     dest='rabbit_pass')
-parser.add_argument('--glance-host',
+install.add_argument('--glance-host',
                     help='glance host e.g. CONTROLLER_VIP',
                     action='store',
                     default=None,
                     dest='glance_host')
-parser.add_argument('--neutron-endpoint',
+install.add_argument('--neutron-endpoint',
                     help='neutron endpoint e.g. http://CONTROLLER_VIP:9696',
                     action='store',
                     default=None,
                     dest='neutron_endpoint')
-parser.add_argument('--neutron-pass',
+install.add_argument('--neutron-pass',
                     help='the password for neutron user',
                     action='store',
                     default=None,
                     dest='neutron_pass')
-parser.add_argument('--metadata-proxy-shared-secret',
+install.add_argument('--metadata-proxy-shared-secret',
                     help='metadata proxy shared secret',
                     action='store',
                     default=None,
                     dest='metadata_proxy_shared_secret')
-parser.add_argument('--populate',
+install.add_argument('--populate',
                     help='Populate the nova database',
                     action='store_true',
                     default=False,
@@ -280,17 +277,17 @@ class Nova(Task):
 
 def main():
     target = Nova(user=args.user, hosts=args.hosts.split(','))
-    if args.create_nova_db:
+    if args.subparser_name == 'create-nova-db':
         execute(target._create_nova_db, 
                 args.root_db_pass, 
                 args.nova_db_pass)
-    if args.create_service_credentials:
+    if args.subparser_name == 'create-service-credentials':
         execute(target._create_service_credentials, 
                 args.os_password, 
                 args.os_auth_url, 
                 args.nova_pass, 
                 args.endpoint,)
-    if args.install:
+    if args.subparser_name == 'install':
         execute(target._install_nova,
                 args.connection,
                 args.auth_uri,

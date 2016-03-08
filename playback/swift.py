@@ -7,8 +7,6 @@ import os
 import argparse
 
 parser = argparse.ArgumentParser()
-group = parser.add_mutually_exclusive_group()
-
 parser.add_argument('--user', 
                     help='the target user', 
                     action='store', 
@@ -18,72 +16,68 @@ parser.add_argument('--hosts',
                     help='the target address', 
                     action='store', 
                     dest='hosts')
-group.add_argument('--create-service-credentials',
-                   help='create the swift service credentials',
-                   action='store_true',
-                   default=False,
-                   dest='create_service_credentials')
-parser.add_argument('--os-password',
-                    help='the password for admin user',
-                    action='store',
-                    default=None,
-                    dest='os_password')
-parser.add_argument('--os-auth-url',
-                    help='keystone endpoint url e.g. http://CONTROLLER_VIP:35357/v3',
-                    action='store',
-                    default=None,
-                    dest='os_auth_url')
-parser.add_argument('--swift-pass',
-                    help='password for swift user',
-                    action='store',
-                    default=None,
-                    dest='swift_pass')
-parser.add_argument('--public-internal-endpoint',
-                    help='public and internal endpoint for swift service e.g. http://CONTROLLER_VIP:8080/v1/AUTH_%%\(tenant_id\)s',
-                    action='store',
-                    default=None,
-                    dest='public_internal_endpoint')
-parser.add_argument('--admin-endpoint',
-                    help='admin endpoint for swift service e.g. http://CONTROLLER_VIP:8080/v1',
-                    action='store',
-                    default=None,
-                    dest='admin_endpoint')
-group.add_argument('--install',
-                   help='install swift proxy',
-                   action='store_true',
-                   default=False,
-                   dest='install')
-parser.add_argument('--auth-uri',
+subparsers = parser.add_subparsers(dest='subparser_name')
+create_service_credentials = subparsers.add_parser('create-service-credentials',
+                                                   help='create the swift service credentials')
+create_service_credentials.add_argument('--os-password',
+                                        help='the password for admin user',
+                                        action='store',
+                                        default=None,
+                                        dest='os_password')
+create_service_credentials.add_argument('--os-auth-url',
+                                        help='keystone endpoint url e.g. http://CONTROLLER_VIP:35357/v3',
+                                        action='store',
+                                        default=None,
+                                        dest='os_auth_url')
+create_service_credentials.add_argument('--swift-pass',
+                                        help='password for swift user',
+                                        action='store',
+                                        default=None,
+                                        dest='swift_pass')
+create_service_credentials.add_argument('--public-internal-endpoint',
+                                        help='public and internal endpoint for swift service e.g. http://CONTROLLER_VIP:8080/v1/AUTH_%%\(tenant_id\)s',
+                                        action='store',
+                                        default=None,
+                                        dest='public_internal_endpoint')
+create_service_credentials.add_argument('--admin-endpoint',
+                                        help='admin endpoint for swift service e.g. http://CONTROLLER_VIP:8080/v1',
+                                        action='store',
+                                        default=None,
+                                        dest='admin_endpoint')
+install = subparsers.add_parser('install',
+                                help='install swift proxy')
+install.add_argument('--auth-uri',
                     help='keystone internal endpoint e.g. http://CONTROLLER_VIP:5000',
                     action='store',
                     default=None,
                     dest='auth_uri')
-parser.add_argument('--auth-url',
+install.add_argument('--auth-url',
                     help='keystone admin endpoint e.g. http://CONTROLLER_VIP:35357',
                     action='store',
                     default=None,
                     dest='auth_url')
-parser.add_argument('--memcache-servers',
+install.add_argument('--swift-pass',
+                    help='password for swift user',
+                    action='store',
+                    default=None,
+                    dest='swift_pass')
+install.add_argument('--memcache-servers',
                     help='memcache servers e.g. CONTROLLER1:11211,CONTROLLER2:11211',
                     action='store',
                     default=None,
                     dest='memcache_servers')
-group.add_argument('--finalize-install',
-                   help='finalize swift installation',
-                   action='store_true',
-                   default=False,
-                   dest='finalize_install')
-parser.add_argument('--swift-hash-path-suffix',
-                    help='swift_hash_path_suffix and swift_hash_path_prefix are used as part of the hashing algorithm when determining data placement in the cluster. These values should remain secret and MUST NOT change once a cluster has been deployed',
-                    action='store',
-                    default=None,
-                    dest='swift_hash_path_suffix')
-parser.add_argument('--swift-hash-path-prefix',
-                    help='swift_hash_path_suffix and swift_hash_path_prefix are used as part of the hashing algorithm when determining data placement in the cluster. These values should remain secret and MUST NOT change once a cluster has been deployed',
-                    action='store',
-                    default=None,
-                    dest='swift_hash_path_prefix')
-
+finalize_install = subparsers.add_parser('finalize-install',
+                                         help='finalize swift installation')
+finalize_install.add_argument('--swift-hash-path-suffix',
+                              help='swift_hash_path_suffix and swift_hash_path_prefix are used as part of the hashing algorithm when determining data placement in the cluster. These values should remain secret and MUST NOT change once a cluster has been deployed',
+                              action='store',
+                              default=None,
+                              dest='swift_hash_path_suffix')
+finalize_install.add_argument('--swift-hash-path-prefix',
+                              help='swift_hash_path_suffix and swift_hash_path_prefix are used as part of the hashing algorithm when determining data placement in the cluster. These values should remain secret and MUST NOT change once a cluster has been deployed',
+                              action='store',
+                              default=None,
+                              dest='swift_hash_path_prefix')
 args = parser.parse_args()
 
 conf_proxy_server_conf = """[DEFAULT]
@@ -1071,20 +1065,20 @@ def main():
     except AttributeError:
         print red('No hosts found. Please using --hosts param.')
 
-    if args.create_service_credentials:
+    if args.subparser_name == 'create-service-credentials':
         execute(target._create_service_credentials,
                 args.os_password, 
                 args.os_auth_url, 
                 args.swift_pass, 
                 args.public_internal_endpoint, 
                 args.admin_endpoint)
-    if args.install:
+    if args.subparser_name == 'install':
         execute(target._install,
                 args.auth_uri, 
                 args.auth_url, 
                 args.swift_pass, 
                 args.memcache_servers)
-    if args.finalize_install:
+    if args.subparser_name == 'finalize-install':
         execute(target._finalize_install,
                 args.swift_hash_path_suffix, 
                 args.swift_hash_path_prefix)

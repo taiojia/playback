@@ -7,8 +7,6 @@ import os
 import argparse
 
 parser = argparse.ArgumentParser()
-group = parser.add_mutually_exclusive_group()
-
 parser.add_argument('--user', 
                     help='the target user', 
                     action='store', 
@@ -18,62 +16,61 @@ parser.add_argument('--hosts',
                     help='the target address', 
                     action='store', 
                     dest='hosts')
-group.add_argument('--install',
-                   help='install nova compute',
-                   action='store_true',
-                   default=False,
-                   dest='install')
-parser.add_argument('--my-ip',
+
+subparsers = parser.add_subparsers(dest='subparser_name')
+install = subparsers.add_parser('install',
+                                help='install nova compute')
+install.add_argument('--my-ip',
                     help='the host management ip',
                     action='store',
                     default=None,
                     dest='my_ip')
-parser.add_argument('--rabbit-hosts',
-                    help='rabbit hosts e.g. controller1,controller2',
+install.add_argument('--rabbit-hosts',
+                    help='rabbit hosts e.g. CONTROLLER1,CONTROLLER2',
                     action='store',
                     default=None,
                     dest='rabbit_hosts')
-parser.add_argument('--rabbit-pass',
+install.add_argument('--rabbit-pass',
                     help='the password for rabbit openstack user',
                     action='store',
                     default=None,
                     dest='rabbit_pass')
-parser.add_argument('--auth-uri',
+install.add_argument('--auth-uri',
                     help='keystone internal endpoint e.g. http://CONTROLLER_VIP:5000',
                     action='store',
                     default=None,
                     dest='auth_uri')
-parser.add_argument('--auth-url',
+install.add_argument('--auth-url',
                     help='keystone admin endpoint e.g. http://CONTROLLER_VIP:35357',
                     action='store',
                     default=None,
                     dest='auth_url')
-parser.add_argument('--nova-pass',
+install.add_argument('--nova-pass',
                     help='passowrd for nova user',
                     action='store',
                     default=None,
                     dest='nova_pass')
-parser.add_argument('--novncproxy-base-url',
+install.add_argument('--novncproxy-base-url',
                     help='nova vnc proxy base url e.g. http://CONTROLLER_VIP:6080/vnc_auto.html',
                     action='store',
                     default=None,
                     dest='novncproxy_base_url')
-parser.add_argument('--glance-host',
+install.add_argument('--glance-host',
                     help='glance host e.g. CONTROLLER_VIP',
                     action='store',
                     default=None,
                     dest='glance_host')
-parser.add_argument('--neutron-endpoint',
+install.add_argument('--neutron-endpoint',
                     help='neutron endpoint e.g. http://CONTROLLER_VIP:9696',
                     action='store',
                     default=None,
                     dest='neutron_endpoint')
-parser.add_argument('--neutron-pass',
+install.add_argument('--neutron-pass',
                     help='the password for neutron user',
                     action='store',
                     default=None,
                     dest='neutron_pass')
-parser.add_argument('--rbd-secret-uuid',
+install.add_argument('--rbd-secret-uuid',
                     help='ceph rbd secret for nova libvirt',
                     action='store',
                     default=None,
@@ -671,7 +668,7 @@ def main():
     except AttributeError:
         print red('No hosts found. Please using --hosts param.')
 
-    if args.install:
+    if args.subparser_name == 'install':
         execute(target._install,
                 args.my_ip,
                 args.rabbit_hosts,

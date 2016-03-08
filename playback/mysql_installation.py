@@ -7,7 +7,7 @@ deb http://releases.galeracluster.com/ubuntu trusty main"""
 class MysqlInstallation(object):
     """Install Galera Cluster for MySQL"""
 
-    def __init__(self, user, hosts, parallel=True):
+    def __init__(self, hosts, user='ubuntu', parallel=True):
         self.user = user
         self.hosts = hosts
         self.parallel = parallel

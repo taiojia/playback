@@ -3,29 +3,28 @@ from fabric.api import *
 from fabric.contrib import files
 
 parser = argparse.ArgumentParser()
-group = parser.add_mutually_exclusive_group()
-
 parser.add_argument('--user', help='the target user', 
                     action='store', default='ubuntu', dest='user')
 parser.add_argument('--hosts', help='the target address', 
                     action='store', dest='hosts')
-group.add_argument('--install', help='install RabbitMQ HA', 
-                   action='store_true', default=False, dest='install')
-parser.add_argument('--erlang-cookie', help='setup elang cookie',
-                    action='store', default=False, dest='erlang_cookie')
-parser.add_argument('--rabbit-user', help='set rabbit user name',
-                    action='store', default=False, dest='rabbit_user')
-parser.add_argument('--rabbit-pass', help='set rabbit password',
-                    action='store', default=False, dest='rabbit_pass')
-group.add_argument('--join-cluster', help='join the rabbit cluster',
-                   action='store', default=False, dest='join_cluster')
+subparsers = parser.add_subparsers(dest="subparser_name") 
+install = subparsers.add_parser('install', help='install RabbitMQ HA')
+install.add_argument('--erlang-cookie', help='setup elang cookie',
+                    action='store', default=None, dest='erlang_cookie')
+install.add_argument('--rabbit-user', help='set rabbit user name',
+                    action='store', default=None, dest='rabbit_user')
+install.add_argument('--rabbit-pass', help='set rabbit password',
+                    action='store', default=None, dest='rabbit_pass')
+join_cluster = subparsers.add_parser('join-cluster', help='join the rabbit cluster')
+join_cluster.add_argument('--name', help='the joined name, e.g. rabbit@CONTROLLER1',
+                   action='store', default=None, dest='name')
 
 args = parser.parse_args()
 
 
 class RabbitMq(object):
     """RabbitMQ HA Installation"""
-    def __init__(self, user, hosts, parallel=True):
+    def __init__(self, hosts, user='ubuntu', parallel=True):
         self.user = user
         self.hosts = hosts
         self.parallel = parallel
@@ -44,9 +43,9 @@ class RabbitMq(object):
         sudo('rabbitmqctl set_permissions openstack ".*" ".*" ".*"')
         sudo('service rabbitmq-server restart')
 
-    def _join_cluster(self, join_cluster):
+    def _join_cluster(self, name):
         sudo('rabbitmqctl stop_app')
-        sudo('rabbitmqctl join_cluster %s' % join_cluster)
+        sudo('rabbitmqctl join_cluster %s' % name)
         sudo('rabbitmqctl start_app')
         sudo('rabbitmqctl set_policy ha-all \'^(?!amq\.).*\' \'{"ha-mode": "all"}\'')
 
@@ -54,11 +53,11 @@ class RabbitMq(object):
 def main():
     target = RabbitMq(user=args.user, hosts=args.hosts.split(','))
 
-    if args.install:
+    if args.subparser_name == 'install':
         execute(target._install, args.erlang_cookie, args.rabbit_user, args.rabbit_pass)
     
-    if args.join_cluster:
-        execute(target._join_cluster, args.join_cluster)
+    if args.subparser_name == 'join-cluster':
+        execute(target._join_cluster, args.name)
 
 if __name__ == '__main__':
     main()

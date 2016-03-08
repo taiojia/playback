@@ -8,8 +8,6 @@ import argparse
 from tqdm import *
 
 parser = argparse.ArgumentParser()
-group = parser.add_mutually_exclusive_group()
-
 parser.add_argument('--user', 
                     help='the target user', 
                     action='store', 
@@ -19,119 +17,175 @@ parser.add_argument('--hosts',
                     help='the target address', 
                     action='store', 
                     dest='hosts')
-group.add_argument('--install',
-                   help='install swift storage',
-                   action='store_true',
-                   default=False,
-                   dest='install')
-group.add_argument('--prepare-disks',
-                   help='prepare the disks for storage e.g. sdb,sdc',
-                   action='store',
-                   default=None,
-                   dest='prepare_disks')
-parser.add_argument('--address', 
+subparsers = parser.add_subparsers(dest='subparser_name')
+prepare_disks = subparsers.add_parser('prepare-disks',
+                                      help='prepare the disks for storage')
+prepare_disks.add_argument('--name',
+                           help='the device name, e.g. sdb,sdc',
+                           action='store',
+                           default=None,
+                           dest='name')
+
+install = subparsers.add_parser('install',
+                                help='install swift storage')
+install.add_argument('--address', 
                     help='the management interface ip for rsync', 
                     action='store', 
                     dest='address')
-parser.add_argument('--bind-ip', 
+install.add_argument('--bind-ip', 
                     help='the management interface ip for swift storage binding', 
                     action='store', 
                     dest='bind_ip')
-group.add_argument('--create-account-builder-file',
-                   help='create account ring',
-                   action='store_true',
-                   default=False,
-                   dest='create_account_builder_file')
-parser.add_argument('--partitions', 
-                    help='2^10 (1024) maximum partitions e.g. 10', 
-                    action='store', 
-                    default=None,
-                    dest='partitions')
-parser.add_argument('--replicas', 
-                    help='3 replicas of each object e.g. 3', 
-                    action='store', 
-                    default=None,
-                    dest='replicas')
-parser.add_argument('--moving', 
-                    help='1 hour minimum time between moving a partition more than once e.g. 1', 
-                    action='store',
-                    default=None, 
-                    dest='moving')
-group.add_argument('--account-builder-add',
-                   help='Add each storage node to the account ring',
-                   action='store_true',
-                   default=False,
-                   dest='account_builder_add')
-parser.add_argument('--region', 
-                    help='swift storage region e.g. 1', 
-                    action='store', 
-                    default=None,
-                    dest='region')
-parser.add_argument('--zone', 
-                    help='swift storage zone e.g. 1', 
-                    action='store', 
-                    default=None,
-                    dest='zone')
-parser.add_argument('--ip', 
-                    help='the IP address of the management network on the storage node e.g. STORAGE_NODE_IP', 
-                    action='store', 
-                    default=None,
-                    dest='ip')
-parser.add_argument('--device', 
-                    help='a storage device name on the same storage node e.g. SDB', 
-                    action='store', 
-                    default=None,
-                    dest='device')
-parser.add_argument('--weight',
-                    help='the storage device weight e.g. 100',
-                    action='store',
-                    default=None,
-                    dest='weight')
-group.add_argument('--create-container-builder-file',
-                   help='create container ring',
-                   action='store_true',
-                   default=False,
-                   dest='create_container_builder_file')
-group.add_argument('--container-builder-add',
-                   help='Add each storage node to the container ring',
-                   action='store_true',
-                   default=False,
-                   dest='container_builder_add')
-group.add_argument('--create-object-builder-file',
-                   help='create object ring',
-                   action='store_true',
-                   default=False,
-                   dest='create_object_builder_file')
-group.add_argument('--object-builder-add',
-                   help='Add each storage node to the object ring',
-                   action='store_true',
-                   default=False,
-                   dest='object_builder_add')
-group.add_argument('--sync-builder-file',
-                   help='copy the account.ring.gz, container.ring.gz, and object.ring.gz files to the /etc/swift directory on each storage node and any additional nodes running the proxy service',
-                   action='store_true',
-                   default=False,
-                   dest='sync_builder_file')
-parser.add_argument('--to', 
-                    help='the target hosts where the *.ring.gz file to be added', 
-                    action='store', 
-                    default=None,
-                    dest='to')
-group.add_argument('--account-builder-rebalance',
-                   help='Rebalance the account ring',
-                   action='store_true',
-                   default=False,
-                   dest='account_builder_rebalance')
-group.add_argument('--container-builder-rebalance',
-                   help='Rebalance the container ring',
-                   action='store_true',
-                   default=False,
-                   dest='container_builder_rebalance')
-group.add_argument('--object-builder-rebalance',
-                   help='Rebalance the object ring',
-                   action='store_true',
-                   default=False,
-                   dest='object_builder_rebalance')
+
+create_account_builder_file = subparsers.add_parser('create-account-builder-file',
+                                                    help='create account ring')
+create_account_builder_file.add_argument('--partitions', 
+                                        help='2^10 (1024) maximum partitions e.g. 10', 
+                                        action='store', 
+                                        default=None,
+                                        dest='partitions')
+create_account_builder_file.add_argument('--replicas', 
+                                        help='3 replicas of each object e.g. 3', 
+                                        action='store', 
+                                        default=None,
+                                        dest='replicas')
+create_account_builder_file.add_argument('--moving', 
+                                        help='1 hour minimum time between moving a partition more than once e.g. 1', 
+                                        action='store',
+                                        default=None, 
+                                        dest='moving')
+account_builder_add = subparsers.add_parser('account-builder-add',
+                                            help='Add each storage node to the account ring')
+account_builder_add.add_argument('--region', 
+                                help='swift storage region e.g. 1', 
+                                action='store', 
+                                default=None,
+                                dest='region')
+account_builder_add.add_argument('--zone', 
+                                help='swift storage zone e.g. 1', 
+                                action='store', 
+                                default=None,
+                                dest='zone')
+account_builder_add.add_argument('--ip', 
+                                help='the IP address of the management network on the storage node e.g. STORAGE_NODE_IP', 
+                                action='store', 
+                                default=None,
+                                dest='ip')
+account_builder_add.add_argument('--device', 
+                                help='a storage device name on the same storage node e.g. sdb', 
+                                action='store', 
+                                default=None,
+                                dest='device')
+account_builder_add.add_argument('--weight',
+                                help='the storage device weight e.g. 100',
+                                action='store',
+                                default=None,
+                                dest='weight')
+
+create_container_builder_file = subparsers.add_parser('create-container-builder-file',
+                                                      help='create container ring')
+create_container_builder_file.add_argument('--partitions', 
+                                           help='2^10 (1024) maximum partitions e.g. 10', 
+                                           action='store', 
+                                           default=None,
+                                           dest='partitions')
+create_container_builder_file.add_argument('--replicas', 
+                                           help='3 replicas of each object e.g. 3', 
+                                           action='store', 
+                                           default=None,
+                                           dest='replicas')
+create_container_builder_file.add_argument('--moving', 
+                                           help='1 hour minimum time between moving a partition more than once e.g. 1', 
+                                           action='store',
+                                           default=None, 
+                                           dest='moving')
+
+container_builder_add = subparsers.add_parser('container-builder-add',
+                                              help='Add each storage node to the container ring')
+container_builder_add.add_argument('--region', 
+                                help='swift storage region e.g. 1', 
+                                action='store', 
+                                default=None,
+                                dest='region')
+container_builder_add.add_argument('--zone', 
+                                help='swift storage zone e.g. 1', 
+                                action='store', 
+                                default=None,
+                                dest='zone')
+container_builder_add.add_argument('--ip', 
+                                help='the IP address of the management network on the storage node e.g. STORAGE_NODE_IP', 
+                                action='store', 
+                                default=None,
+                                dest='ip')
+container_builder_add.add_argument('--device', 
+                                help='a storage device name on the same storage node e.g. sdb', 
+                                action='store', 
+                                default=None,
+                                dest='device')
+container_builder_add.add_argument('--weight',
+                                help='the storage device weight e.g. 100',
+                                action='store',
+                                default=None,
+                                dest='weight')
+
+create_object_builder_file = subparsers.add_parser('create-object-builder-file',
+                                                   help='create object ring')
+create_object_builder_file.add_argument('--partitions', 
+                                        help='2^10 (1024) maximum partitions e.g. 10', 
+                                        action='store', 
+                                        default=None,
+                                        dest='partitions')
+create_object_builder_file.add_argument('--replicas', 
+                                        help='3 replicas of each object e.g. 3', 
+                                        action='store', 
+                                        default=None,
+                                        dest='replicas')
+create_object_builder_file.add_argument('--moving', 
+                                        help='1 hour minimum time between moving a partition more than once e.g. 1', 
+                                        action='store',
+                                        default=None, 
+                                        dest='moving')
+
+object_builder_add = subparsers.add_parser('object-builder-add',
+                                           help='Add each storage node to the object ring')
+object_builder_add.add_argument('--region', 
+                                help='swift storage region e.g. 1', 
+                                action='store', 
+                                default=None,
+                                dest='region')
+object_builder_add.add_argument('--zone', 
+                                help='swift storage zone e.g. 1', 
+                                action='store', 
+                                default=None,
+                                dest='zone')
+object_builder_add.add_argument('--ip', 
+                                help='the IP address of the management network on the storage node e.g. STORAGE_NODE_IP', 
+                                action='store', 
+                                default=None,
+                                dest='ip')
+object_builder_add.add_argument('--device', 
+                                help='a storage device name on the same storage node e.g. sdb', 
+                                action='store', 
+                                default=None,
+                                dest='device')
+object_builder_add.add_argument('--weight',
+                                help='the storage device weight e.g. 100',
+                                action='store',
+                                default=None,
+                                dest='weight')
+sync_builder_file = subparsers.add_parser('sync-builder-file',
+                                          help='copy the account.ring.gz, container.ring.gz, and object.ring.gz files to the /etc/swift directory on each storage node and any additional nodes running the proxy service')
+sync_builder_file.add_argument('--to', 
+                               help='the target hosts where the *.ring.gz file to be added', 
+                               action='store', 
+                               default=None,
+                               dest='to')
+account_builder_rebalance = subparsers.add_parser('account-builder-rebalance',
+                                                  help='Rebalance the account ring')
+container_builder_rebalance = subparsers.add_parser('container-builder-rebalance',
+                                                    help='Rebalance the container ring')
+object_builder_rebalance = subparsers.add_parser('object-builder-rebalance',
+                                                 help='Rebalance the object ring')
 
 args = parser.parse_args()
 
@@ -1119,56 +1173,56 @@ def main():
     except AttributeError:
         print red('No hosts found. Please using --hosts param.')
 
-    if args.prepare_disks:
+    if args.subparser_name == 'prepare-disks':
         execute(target._prepare_disks, 
-                args.prepare_disks)
-    if args.install:
+                args.name)
+    if args.subparser_name == 'install':
         execute(target._install,
                 args.address, 
                 args.bind_ip)
-    if args.create_account_builder_file:
+    if args.subparser_name == 'create-account-builder-file':
         execute(target._create_account_builder_file,
                 args.partitions, 
                 args.replicas, 
                 args.moving)
-    if args.account_builder_add:
+    if args.subparser_name == 'account-builder-add':
         execute(target._account_builder_add,
                 args.region, 
                 args.zone, 
                 args.ip, 
                 args.device, 
                 args.weight)
-    if args.account_builder_rebalance:
+    if args.subparser_name == 'account-builder-rebalance':
         execute(target._account_builder_rebalance)
-    if args.create_container_builder_file:
+    if args.subparser_name == 'create-container-builder-file':
         execute(target._create_container_builder_file,
                 args.partitions,
                 args.replicas,
                 args.moving)
-    if args.container_builder_add:
+    if args.subparser_name == 'container-builder-add':
         execute(target._container_builder_add,
                 args.region, 
                 args.zone, 
                 args.ip, 
                 args.device, 
                 args.weight)
-    if args.container_builder_rebalance:
+    if args.subparser_name == 'container-builder-rebalance':
         execute(target._container_builder_rebalance)
-    if args.create_object_builder_file:
+    if args.subparser_name == 'create-object-builder-file':
         execute(target._create_object_builder_file,
                 args.partitions,
                 args.replicas,
                 args.moving)
-    if args.object_builder_add:
+    if args.subparser_name == 'object-builder-add':
         execute(target._object_builder_add,
                 args.region, 
                 args.zone, 
                 args.ip, 
                 args.device, 
                 args.weight)
-    if args.object_builder_rebalance:
+    if args.subparser_name == 'object-builder-rebalance':
         execute(target._object_builder_rebalance)
-    if args.sync_builder_file:
+    if args.subparser_name == 'sync-builder-file':
         execute(target._get_builder_file)
         execute(target._sync_builder_file, hosts=args.to.split(','))
         os.remove('account.ring.gz')

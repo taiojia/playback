@@ -2,32 +2,31 @@ import argparse
 from fabric.api import *
 
 parser = argparse.ArgumentParser()
-group = parser.add_mutually_exclusive_group()
-
 parser.add_argument('--user', help='the target user', 
                     action='store', default='ubuntu', dest='user')
 parser.add_argument('--hosts', help='the target address', 
                     action='store', dest='hosts')
-group.add_argument('--install', help='install HAProxy', 
-                   action='store_true', default=False, dest='install')
-group.add_argument('--config', help='configure HAProxy',
-                   action='store_true', default=False, dest='config')
-parser.add_argument('--upload-conf', help='upload configuration file to the target host',
+
+subparsers = parser.add_subparsers(dest="subparser_name") 
+
+install = subparsers.add_parser('install', help='install HAProxy')
+
+config = subparsers.add_parser('config', help='configure HAProxy')
+config.add_argument('--upload-conf', help='upload configuration file to the target host',
                     action='store', default=False, dest='upload_conf')
-parser.add_argument('--gen-conf', help='generate the example configuration',
-                    action='store_true', default=False, dest='gen_conf')
-parser.add_argument('--configure-keepalived', help='configure keepalived',
+config.add_argument('--configure-keepalived', help='configure keepalived',
                     action='store_true', default=False, dest='configure_keepalived')
-parser.add_argument('--router_id', help='Keepalived router id',
+config.add_argument('--router_id', help='Keepalived router id e.g. lb1',
                     action='store', default=False, dest='router_id')
-parser.add_argument('--priority', help='Keepalived priority',
+config.add_argument('--priority', help='Keepalived priority e.g. 150',
                     action='store', default=False, dest='priority')
-parser.add_argument('--state', help='Keepalived state',
+config.add_argument('--state', help='Keepalived state e.g. MASTER',
                     action='store', default=False, dest='state')
-parser.add_argument('--interface', help='Keepalived binding interface',
+config.add_argument('--interface', help='Keepalived binding interface e.g. eth0',
                     action='store', default=False, dest='interface')
-parser.add_argument('--vip', help='Keepalived virtual ip',
+config.add_argument('--vip', help='Keepalived virtual ip e.g. CONTROLLER_VIP',
                     action='store', default=False, dest='vip')
+gen_conf = subparsers.add_parser('gen-conf', help='generate the example configuration to the current location')
 
 args = parser.parse_args()
 
@@ -158,11 +157,11 @@ listen swift_proxy_cluster
 """
 
 def main():
-    if args.install:
+    if args.subparser_name == 'install':
         from playback import haproxy_install
         target = haproxy_install.HaproxyInstall(user=args.user, hosts=args.hosts.split(','))
         execute(target._install)
-    if args.config:
+    if args.subparser_name == 'config':
         from playback import haproxy_config
         target = haproxy_config.HaproxyConfig(user=args.user, hosts=args.hosts.split(','))
         if args.upload_conf:
@@ -170,7 +169,7 @@ def main():
         if args.configure_keepalived:
             execute(target._configure_keepalived, args.router_id, args.priority, 
                     args.state, args.interface, args.vip)
-    if args.gen_conf:
+    if args.subparser_name == 'gen-conf':
         with open('haproxy.cfg', 'w') as f:
             f.write(conf_haproxy_cfg)
 
