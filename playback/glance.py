@@ -5,8 +5,10 @@ from fabric.network import disconnect_all
 from fabric.colors import red
 import os
 import argparse
+import sys
+from playback.cli import cli_description
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description=cli_description+'this command used for provision Glance')
 parser.add_argument('--user', 
                     help='the target user', 
                     action='store', 
@@ -2993,7 +2995,13 @@ class Glance(Task):
         sudo('rm -f /var/lib/glance/glance.sqlite')
 
 def main():
-    target = Glance(user=args.user, hosts=args.hosts.split(','))
+    try:
+        target = Glance(user=args.user, hosts=args.hosts.split(','))
+    except AttributeError:
+        print red('No hosts found. Please using --hosts param.')
+        parser.print_help()
+        sys.exit(1)
+
     if args.subparser_name == 'create-glance-db':
         execute(target._create_glance_db, 
                 args.root_db_pass, 

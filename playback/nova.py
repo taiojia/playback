@@ -5,8 +5,10 @@ from fabric.network import disconnect_all
 from fabric.colors import red
 import os
 import argparse
+import sys
+from playback.cli import cli_description
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description=cli_description+'this command used for provision Nova')
 parser.add_argument('--user', 
                     help='the target user', 
                     action='store', 
@@ -276,7 +278,12 @@ class Nova(Task):
         sudo('rm -f /var/lib/nova/nova.sqlite')
 
 def main():
-    target = Nova(user=args.user, hosts=args.hosts.split(','))
+    try:
+        target = Nova(user=args.user, hosts=args.hosts.split(','))
+    except AttributeError:
+        parser.print_help()
+        sys.exit(1)
+
     if args.subparser_name == 'create-nova-db':
         execute(target._create_nova_db, 
                 args.root_db_pass, 

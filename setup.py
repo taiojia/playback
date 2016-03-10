@@ -34,7 +34,10 @@ from playback import __version__, __author__
 
 def read(fname):
     path = os.path.join(os.path.dirname(__file__), fname)
-    f = open(path)
+    try:
+        f = open(path)
+    except IOError:
+        return None
     return f.read()
 
 setup(name='playback',

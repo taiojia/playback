@@ -4,9 +4,10 @@ from playback import config
 from fabric.api import *
 from fabric.colors import red
 import sys
+from playback.cli import cli_description
 
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description=cli_description+'this command used for provision OpenStack basic environment')
 parser.add_argument('--user', help='the target user', action='store', dest='user')
 parser.add_argument('--hosts', help='the target address', action='store', dest='hosts')
 subparsers = parser.add_subparsers(dest="subparser_name") 
@@ -31,6 +32,7 @@ def main():
             remote = prepare_host.PrepareHost(user=args.user, hosts=args.hosts.split(','))
         except AttributeError:
             print red('No hosts found. Please using --hosts param.')
+            parser.print_help()
             sys.exit(1)
 
         # host networking
@@ -48,6 +50,7 @@ def main():
             remote = cmd.Cmd(user=args.user, hosts=args.hosts.split(','))
         except AttributeError:
             print red('No hosts found. Please using --hosts param.')
+            parser.print_help()
             sys.exit(1)
         execute(remote.cmd, args.run)
 

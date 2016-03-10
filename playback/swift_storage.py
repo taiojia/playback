@@ -6,8 +6,10 @@ from fabric.colors import red
 import os
 import argparse
 from tqdm import *
+import sys
+from playback.cli import cli_description
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description=cli_description+'this command used for provision Swift Storage')
 parser.add_argument('--user', 
                     help='the target user', 
                     action='store', 
@@ -1172,6 +1174,8 @@ def main():
         target = SwiftStorage(user=args.user, hosts=args.hosts.split(','))
     except AttributeError:
         print red('No hosts found. Please using --hosts param.')
+        parser.print_help()
+        sys.exit(1)
 
     if args.subparser_name == 'prepare-disks':
         execute(target._prepare_disks, 
