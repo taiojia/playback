@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import sys
+import sys, os
 
 try:
     from setuptools import setup, find_packages
@@ -32,10 +32,18 @@ except ImportError:
 
 from playback import __version__, __author__
 
+def read(fname):
+    path = os.path.join(os.path.dirname(__file__), fname)
+    try:
+        f = open(path)
+    except IOError:
+        return None
+    return f.read()
 
 setup(name='playback',
     version=__version__,
     description='OpenStack orchestration tool',
+    long_description=read('README.md'),
     author=__author__,
     author_email='taio@outlook.com',
     url='https://github.com/jiasir/playback/',

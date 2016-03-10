@@ -1,7 +1,9 @@
 import argparse
 from fabric.api import *
+import sys
+from playback.cli import cli_description
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description=cli_description+'this command used for provision Galera Cluster for MySQL')
 parser.add_argument('--user', help='the target user', 
                     action='store', default='ubuntu', dest='user')
 parser.add_argument('--hosts', help='the target address', 
@@ -33,19 +35,31 @@ args = parser.parse_args()
 def main():
     if args.subparser_name == 'install':
         from playback import mysql_installation
-        target = mysql_installation.MysqlInstallation(user=args.user, hosts=args.hosts.split(','))
+        try:
+            target = mysql_installation.MysqlInstallation(user=args.user, hosts=args.hosts.split(','))
+        except AttributeError:
+            parser.print_help()
+            sys.exit(1)
         execute(target._enable_repo)
         execute(target._install)
 
     if args.subparser_name == 'config':
         from playback import mysql_config
-        target = mysql_config.MysqlConfig(user=args.user, hosts=args.hosts.split(','))
+        try:
+            target = mysql_config.MysqlConfig(user=args.user, hosts=args.hosts.split(','))
+        except AttributeError:
+            parser.print_help()
+            sys.exit(1)
         execute(target._update_mysql_config, args.wsrep_cluster_address, 
                 args.wsrep_node_name, args.wsrep_node_address)
 
     if args.subparser_name == 'manage':
         from playback import mysql_manage
-        target = mysql_manage.MysqlManage(user=args.user, hosts=args.hosts.split(','))
+        try:
+            target = mysql_manage.MysqlManage(user=args.user, hosts=args.hosts.split(','))
+        except AttributeError:
+            parser.print_help()
+            sys.exit(1)
         if args.wsrep_new_cluster:
             execute(target._start_wsrep_new_cluster)
         if args.start:

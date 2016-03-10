@@ -4,9 +4,11 @@ from fabric.tasks import Task
 from fabric.network import disconnect_all
 from fabric.colors import red
 import os
+import sys
 import argparse
+from playback.cli import cli_description
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description=cli_description+'this command used for privision Cinder')
 parser.add_argument('--user', 
                     help='the target user', 
                     action='store', 
@@ -249,6 +251,8 @@ def main():
         target = Cinder(user=args.user, hosts=args.hosts.split(','))
     except AttributeError:
         print red('No hosts found. Please using --hosts param.')
+        parser.print_help()
+        sys.exit(1)
 
     if args.subparser_name == 'create-cinder-db':
         execute(target._create_cinder_db,

@@ -2,8 +2,10 @@ from fabric.api import *
 from fabric.contrib import files
 import os
 import argparse
+import sys
+from playback.cli import cli_description
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description=cli_description+'this command used for provision Keystone')
 parser.add_argument('--user', 
                     help='the target user', 
                     action='store', 
@@ -2371,7 +2373,12 @@ class Keystone(object):
 
 
 def main():
-    target = Keystone(user=args.user, hosts=args.hosts.split(','))
+    try:
+        target = Keystone(user=args.user, hosts=args.hosts.split(','))
+    except AttributeError:
+        parser.print_help()
+        sys.exit(1)
+
     if args.subparser_name == 'create-keystone-db':
         execute(target._create_keystone_db, 
                 args.root_db_pass, 

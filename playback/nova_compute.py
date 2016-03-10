@@ -5,8 +5,10 @@ from fabric.network import disconnect_all
 from fabric.colors import red
 import os
 import argparse
+import sys
+from playback.cli import cli_description
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description=cli_description+'this command used for provision Nova Compute')
 parser.add_argument('--user', 
                     help='the target user', 
                     action='store', 
@@ -667,6 +669,8 @@ def main():
         target = NovaCompute(user=args.user, hosts=args.hosts.split(','))
     except AttributeError:
         print red('No hosts found. Please using --hosts param.')
+        parser.print_help()
+        sys.exit(1)
 
     if args.subparser_name == 'install':
         execute(target._install,

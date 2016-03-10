@@ -1,7 +1,9 @@
 import argparse
 from fabric.api import *
+import sys
+from playback.cli import cli_description
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description=cli_description+'this command used for provision HAProxy')
 parser.add_argument('--user', help='the target user', 
                     action='store', default='ubuntu', dest='user')
 parser.add_argument('--hosts', help='the target address', 
@@ -159,11 +161,19 @@ listen swift_proxy_cluster
 def main():
     if args.subparser_name == 'install':
         from playback import haproxy_install
-        target = haproxy_install.HaproxyInstall(user=args.user, hosts=args.hosts.split(','))
+        try:
+            target = haproxy_install.HaproxyInstall(user=args.user, hosts=args.hosts.split(','))
+        except AttributeError:
+            parser.print_help()
+            sys.exit(1)
         execute(target._install)
     if args.subparser_name == 'config':
         from playback import haproxy_config
-        target = haproxy_config.HaproxyConfig(user=args.user, hosts=args.hosts.split(','))
+        try:
+            target = haproxy_config.HaproxyConfig(user=args.user, hosts=args.hosts.split(','))
+        except AttributeError:
+            parser.print_help()
+            sys.exit(1)
         if args.upload_conf:
             execute(target._upload_conf, args.upload_conf)
         if args.configure_keepalived:

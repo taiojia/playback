@@ -1,8 +1,10 @@
 import argparse
 from fabric.api import *
 from fabric.contrib import files
+import sys
+from playback.cli import cli_description
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description=cli_description+'this command used for provision RabbitMQ')
 parser.add_argument('--user', help='the target user', 
                     action='store', default='ubuntu', dest='user')
 parser.add_argument('--hosts', help='the target address', 
@@ -51,7 +53,11 @@ class RabbitMq(object):
 
 
 def main():
-    target = RabbitMq(user=args.user, hosts=args.hosts.split(','))
+    try:
+        target = RabbitMq(user=args.user, hosts=args.hosts.split(','))
+    except AttributeError:
+        parser.print_help()
+        sys.exit(1)
 
     if args.subparser_name == 'install':
         execute(target._install, args.erlang_cookie, args.rabbit_user, args.rabbit_pass)
