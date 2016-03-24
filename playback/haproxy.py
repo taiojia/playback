@@ -63,7 +63,7 @@ listen galera_cluster
   balance  source
   mode tcp
   option tcpka
-  option mysql-check user haproxy
+  # option mysql-check user haproxy
   server controller1 controller1:3306 check inter 2000 rise 2 fall 5
   server controller2 controller2:3306 backup check inter 2000 rise 2 fall 5
 
