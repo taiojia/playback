@@ -324,7 +324,7 @@ Add the keyrings for `client.cinder` to appropriate nodes and change their owner
 
 Nodes running `nova-compute` need the keyring file for the `nova-compute` process
 
-    ceph auth get-or-create client.cinder | ssh {NOVA-COMPUTE-NODE} sudo tee /etc/ceph/ceph.client.cinder.keyring
+    ceph auth get-or-create client.cinder | ssh {COMPUTE-NODE} sudo tee /etc/ceph/ceph.client.cinder.keyring
 
 They also need to store the secret key of the `client.cinder user` in `libvirt`. The libvirt process needs it to access the cluster while attaching a block device from Cinder.
 Create a temporary copy of the secret key on the nodes running `nova-compute`
