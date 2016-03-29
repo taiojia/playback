@@ -7,8 +7,12 @@ import os
 import argparse
 import sys
 from playback.cli import cli_description
+from playback import __version__
 
 parser = argparse.ArgumentParser(description=cli_description+'this command used for provision Glance')
+parser.add_argument('-v', '--version',
+                   action='version',
+                   version=__version__)
 parser.add_argument('--user', 
                     help='the target user', 
                     action='store', 

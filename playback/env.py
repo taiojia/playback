@@ -5,9 +5,13 @@ from fabric.api import *
 from fabric.colors import red
 import sys
 from playback.cli import cli_description
+from playback import __version__
 
 
 parser = argparse.ArgumentParser(description=cli_description+'this command used for provision OpenStack basic environment')
+parser.add_argument('-v', '--version',
+                   action='version',
+                   version=__version__)
 parser.add_argument('--user', help='the target user', action='store', dest='user')
 parser.add_argument('--hosts', help='the target address', action='store', dest='hosts')
 subparsers = parser.add_subparsers(dest="subparser_name") 

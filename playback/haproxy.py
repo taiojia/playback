@@ -2,8 +2,12 @@ import argparse
 from fabric.api import *
 import sys
 from playback.cli import cli_description
+from playback import __version__
 
 parser = argparse.ArgumentParser(description=cli_description+'this command used for provision HAProxy')
+parser.add_argument('-v', '--version',
+                   action='version',
+                   version=__version__)
 parser.add_argument('--user', help='the target user', 
                     action='store', default='ubuntu', dest='user')
 parser.add_argument('--hosts', help='the target address', 
@@ -63,7 +67,7 @@ listen galera_cluster
   balance  source
   mode tcp
   option tcpka
-  option mysql-check user haproxy
+  # option mysql-check user haproxy
   server controller1 controller1:3306 check inter 2000 rise 2 fall 5
   server controller2 controller2:3306 backup check inter 2000 rise 2 fall 5
 
