@@ -8,8 +8,12 @@ import argparse
 from tqdm import *
 import sys
 from playback.cli import cli_description
+from playback import __version__
 
 parser = argparse.ArgumentParser(description=cli_description+'this command used for provision Swift Storage')
+parser.add_argument('-v', '--version',
+                   action='version',
+                   version=__version__)
 parser.add_argument('--user', 
                     help='the target user', 
                     action='store', 
