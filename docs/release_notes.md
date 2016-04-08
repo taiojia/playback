@@ -14,3 +14,8 @@
   * The new command-line
   * Ansible backend was deprecated
   * Support library use
+
+* v0.3.0
+  * Support provisions OpenStack Mitaka with High Availability
+  * Detailed command-line help
+  * Refactor command-line arguments
