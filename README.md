@@ -18,38 +18,64 @@ Install playback on PLAYBACK-NODE
 Prepare the OpenStack environment.
 (NOTE) DO NOT setup eth1 in /etc/network/interfaces
 
-    playback-env --user ubuntu --hosts CONTROLLER1,CONTROLLER2,COMPUTE1,COMPUTE2,OBJECT1,OBJECT2,BLOCK1,BLOCK2,HAPROXY1,HAPROXY2 prepare-host
+    playback-env --user ubuntu --hosts \
+    haproxy1.maas,\
+    haproxy2.maas,\
+    controller1.maas,\
+    controller2.maas,\
+    controller3.maas,\
+    compute1.maas,\
+    compute2.maas,\
+    compute3.maas,\
+    compute4.maas,\
+    compute5.maas,\
+    compute6.maas,\
+    compute7.maas,\
+    compute8.maas,\
+    compute9.maas,\
+    compute10.maas \
+    prepare-host
+
+[see detailed docs about environment](./docs/environment.md)
 
 #### MySQL HA
-Deploy to CONTROLLER1
+Deploy to controller1.maas
 
-    playback-mysql --user ubuntu --hosts CONTROLLER1 install 
-    playback-mysql --user ubuntu --hosts CONTROLLER1 config  --wsrep-cluster-address "gcomm://CONTROLLER1,CONTROLLER2" --wsrep-node-name="galera1" --wsrep-node-address="CONTROLLER1"
+    playback-mysql --user ubuntu --hosts controller1.maas install 
+    playback-mysql --user ubuntu --hosts controller1.maas config  --wsrep-cluster-address "gcomm://controller1.maas,controller2.maas,controller3.maas" --wsrep-node-name="galera1" --wsrep-node-address="controller1.maas"
 
-Deploy to CONTROLLER2
+Deploy to controller2.maas
 
-    playback-mysql --user ubuntu --hosts CONTROLLER2 install 
-    playback-mysql --user ubuntu --hosts CONTROLLER2 config  --wsrep-cluster-address "gcomm://CONTROLLER1,CONTROLLER2" --wsrep-node-name="galera2" --wsrep-node-address="CONTROLLER2"
+    playback-mysql --user ubuntu --hosts controller2.maas install 
+    playback-mysql --user ubuntu --hosts controller2.maas config  --wsrep-cluster-address "gcomm://controller1.maas,controller2.maas,controller3.maas" --wsrep-node-name="galera2" --wsrep-node-address="controller2.maas"
 
-Start cluster
+Deploy to controller3.maas
 
-    playback-mysql --user ubuntu --hosts CONTROLLER1 manage --wsrep-new-cluster
-    playback-mysql --user ubuntu --hosts CONTROLLER2 manage --start
-    playback-mysql --user ubuntu --hosts CONTROLLER1 manage --change-root-password changeme
+    playback-mysql --user ubuntu --hosts controller3.maas install 
+    playback-mysql --user ubuntu --hosts controller3.maas config  --wsrep-cluster-address "gcomm://controller1.maas,controller2.maas,controller3.maas" --wsrep-node-name="galera3" --wsrep-node-address="controller3.maas"
+
+Start the cluster
+
+    playback-mysql --user ubuntu --hosts controller1.maas manage --wsrep-new-cluster
+    playback-mysql --user ubuntu --hosts controller2.maas manage --start
+    playback-mysql --user ubuntu --hosts controller3.maas manage --start
+    playback-mysql --user ubuntu --hosts controller1.maas manage --change-root-password changeme
+
+[see detailed docs about MySQL HA](./docs/mysql.md)
 
 #### HAProxy HA
 Deploy to HAPROXY1
 
-    playback-haproxy --user ubuntu --hosts HAPROXY1 install
+    playback-haproxy --user ubuntu --hosts haproxy1.maas install
 
 Deploy to HAPROXY2
 
-    playback-haproxy --user ubuntu --hosts HAPROXY2 install
+    playback-haproxy --user ubuntu --hosts haproxy2.maas install
 
 Generate the HAProxy configuration and upload to target hosts(Do not forget to edit the generated configuration)
 
     playback-haproxy gen-conf 
-    playback-haproxy --user ubuntu --hosts HAPROXY1,HAPROXY2 config --upload-conf haproxy.cfg 
+    playback-haproxy --user ubuntu --hosts haproxy1.maas,haproxy2.maas config --upload-conf haproxy.cfg 
 
 Configure Keepalived
 

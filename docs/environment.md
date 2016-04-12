@@ -6,3 +6,69 @@
 * The playback node is the same as ceph-deploy node where can be login to each openstack node passwordless
 * The playback node default using ~/.ssh/id_rsa ssh private key to logon remote server
 
+#### Define environment
+We define an envirionment with 10 nodes which three controllers and two computes, all storage components on the compute nodes. We assume that you have installed maas and ceph on that servers.
+
+| Roles         | IP/FQDN           | Components                                                                                    |
+| ------------- | ----------------- | --------------------------------------------------------------------------------------------- |
+| deploy node   | playback.maas     | playback maas                                                                                 |
+| haproxy       | haproxy1.maas     | haproxy keepalived                                                                            |
+| haproxy       | haproxy2.maas     | haproxy keepalived                                                                            |
+| controller    | controller1.maas  | db rabbitmq keystone glance nova-api neutron-api horizon cinder-api cinder-volume swift-proxy |
+| controller    | controller2.maas  | db rabbitmq keystone glance nova-api neutron-api horizon cinder-api cinder-volume swift-proxy |
+| controller    | controller3.maas  | db rabbitmq keystone glance nova-api neutron-api horizon cinder-api cinder-volume swift-proxy |
+| compute       | compute1.maas     | nova-compute ceph-osd ceph-mon                                                                |
+| compute       | compute2.maas     | nova-compute ceph-osd ceph-mon                                                                |
+| compute       | compute3.maas     | nova-compute ceph-osd ceph-mon                                                                |
+| compute       | compute4.maas     | nova-compute ceph-osd ceph-mon                                                                |
+| compute       | compute5.maas     | nova-compute ceph-osd ceph-mon                                                                |
+| compute       | compute6.maas     | nova-compute swift-storage                                                                    |
+| compute       | compute7.maas     | nova-compute swift-storage                                                                    |
+| compute       | compute8.maas     | nova-compute swift-storage                                                                    |
+| compute       | compute9.maas     | nova-compute swift-storage                                                                    |
+| compute       | compute10.maas    | nova-compute swift-storage                                                                    |
+
+#### Install playback
+The playback.maas is that deployment node, we can install playback on it or using your bash on ubuntu on windows.
+```bash
+ssh ubuntu@playback.maas
+sudo apt-get update
+sudo apt-get python-pip python-dev
+sudo pip install playback
+```
+
+If you are using bash on ubuntu on windows, do the following steps.
+```bash
+bash
+sudo apt-get update
+sudo apt-get python-pip python-dev
+sudo pip install playback
+```
+
+#### Prepare environment
+Prepare the OpenStack environment.
+
+(NOTE) DO NOT setup `eth1` in `/etc/network/interfaces`, Playback will appends `eth1` configurations to `/etc/network/interfaces`.
+
+The following command will help you to prepare the OpenStack environment and all hosts will be rebooted no confirmed.
+```bash
+playback-env --user ubuntu --hosts \
+haproxy1.maas,\
+haproxy2.maas,\
+controller1.maas,\
+controller2.maas,\
+controller3.maas,\
+compute1.maas,\
+compute2.maas,\
+compute3.maas,\
+compute4.maas,\
+compute5.maas,\
+compute6.maas,\
+compute7.maas,\
+compute8.maas,\
+compute9.maas,\
+compute10.maas \
+prepare-host
+```
+
+Using `playback-env --help` to see details.
