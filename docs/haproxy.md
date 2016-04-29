@@ -21,3 +21,5 @@ Configure Keepalived, `haproxy1.maas` as master node and `haproxy2.maas` as slav
 
     playback-haproxy --user ubuntu --hosts haproxy1.maas config --configure-keepalived --router_id lb1 --priority 150 --state MASTER --interface eth0 --vip CONTROLLER_VIP
     playback-haproxy --user ubuntu --hosts haproxy2.maas config --configure-keepalived --router_id lb2 --priority 100 --state SLAVE --interface eth0 --vip CONTROLLER_VIP
+
+Using `playback-haproxy --help` to see the details.

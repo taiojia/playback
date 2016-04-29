@@ -37,4 +37,4 @@ Start the cluster.
     playback-mysql --user ubuntu --hosts controller3.maas manage --start
     playback-mysql --user ubuntu --hosts controller1.maas manage --change-root-password changeme
 
-Using `playback-haproxy --help` to see the details.
+Using `playback-mysql --help` to see the details.
