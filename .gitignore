@@ -169,3 +169,5 @@ kubernetes/
 *.suo
 /env1
 >>>>>>> liberty
+.vs
+.vscode
