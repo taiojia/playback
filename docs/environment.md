@@ -36,21 +36,17 @@ We define an environment with 10 nodes which three controllers and two computes,
 
 The playback.maas is that deployment node, we can install playback on it or using your bash on ubuntu on windows.
 
-```bash
-ssh ubuntu@playback.maas
-sudo apt-get update
-sudo apt-get python-pip python-dev
-sudo pip install playback
-```
+    ssh ubuntu@playback.maas
+    sudo apt-get update
+    sudo apt-get python-pip python-dev
+    sudo pip install playback
 
 If you are using bash on ubuntu on windows, do the following steps.
 
-```bash
-bash
-sudo apt-get update
-sudo apt-get python-pip python-dev
-sudo pip install playback
-```
+    bash
+    sudo apt-get update
+    sudo apt-get python-pip python-dev
+    sudo pip install playback
 
 ## Prepare environment
 
@@ -60,24 +56,22 @@ Prepare the OpenStack environment.
 
 The following command will help you to prepare the OpenStack environment and all hosts will be rebooted no confirmed.
 
-```bash
-playback-env --user ubuntu --hosts \
-haproxy1.maas,\
-haproxy2.maas,\
-controller1.maas,\
-controller2.maas,\
-controller3.maas,\
-compute1.maas,\
-compute2.maas,\
-compute3.maas,\
-compute4.maas,\
-compute5.maas,\
-compute6.maas,\
-compute7.maas,\
-compute8.maas,\
-compute9.maas,\
-compute10.maas \
-prepare-host
-```
+    playback-env --user ubuntu --hosts \
+    haproxy1.maas,\
+    haproxy2.maas,\
+    controller1.maas,\
+    controller2.maas,\
+    controller3.maas,\
+    compute1.maas,\
+    compute2.maas,\
+    compute3.maas,\
+    compute4.maas,\
+    compute5.maas,\
+    compute6.maas,\
+    compute7.maas,\
+    compute8.maas,\
+    compute9.maas,\
+    compute10.maas \
+    prepare-host
 
 Using `playback-env --help` to see details.

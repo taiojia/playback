@@ -1,7 +1,9 @@
 # Playback
+
 Playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed automation with high availability on Ubuntu based operating system.
 
-#### Requirements
+## Requirements
+
 * The OpenStack bare metal hosts are in MAAS environment(recommend)
 * All hosts are two NICs at least(external and internal)
 * We assume that you have ceph installed, the cinder bachend default using ceph, the running instace default to using ceph as it's local storage. About ceph please visit: http://docs.ceph.com/docs/master/rbd/rbd-openstack/ or see the (Option)Ceph Guide below.
@@ -9,12 +11,14 @@ Playback is an OpenStack provisioning DevOps tool that all of the OpenStack comp
 * The playback node is the same as ceph-deploy node where can be login to each openstack node passwordless
 * The playback node default using ~/.ssh/id_rsa ssh private key to logon remote server
 
-#### Install Playback
+## Install Playback
+
 Install playback on PLAYBACK-NODE
 
     pip install playback
 
-#### Prepare environment
+## Prepare environment
+
 Prepare the OpenStack environment.
 (NOTE) DO NOT setup eth1 in /etc/network/interfaces
 
@@ -38,20 +42,21 @@ Prepare the OpenStack environment.
 
 [see detailed docs about environment](./docs/environment.md)
 
-#### MySQL HA
+## MySQL HA
+
 Deploy to controller1.maas
 
-    playback-mysql --user ubuntu --hosts controller1.maas install 
+    playback-mysql --user ubuntu --hosts controller1.maas install
     playback-mysql --user ubuntu --hosts controller1.maas config  --wsrep-cluster-address "gcomm://controller1.maas,controller2.maas,controller3.maas" --wsrep-node-name="galera1" --wsrep-node-address="controller1.maas"
 
 Deploy to controller2.maas
 
-    playback-mysql --user ubuntu --hosts controller2.maas install 
+    playback-mysql --user ubuntu --hosts controller2.maas install
     playback-mysql --user ubuntu --hosts controller2.maas config  --wsrep-cluster-address "gcomm://controller1.maas,controller2.maas,controller3.maas" --wsrep-node-name="galera2" --wsrep-node-address="controller2.maas"
 
 Deploy to controller3.maas
 
-    playback-mysql --user ubuntu --hosts controller3.maas install 
+    playback-mysql --user ubuntu --hosts controller3.maas install
     playback-mysql --user ubuntu --hosts controller3.maas config  --wsrep-cluster-address "gcomm://controller1.maas,controller2.maas,controller3.maas" --wsrep-node-name="galera3" --wsrep-node-address="controller3.maas"
 
 Start the cluster
@@ -74,7 +79,7 @@ Deploy to HAPROXY2
 
 Generate the HAProxy configuration and upload to target hosts(Do not forget to edit the generated configuration)
 
-    playback-haproxy gen-conf 
+    playback-haproxy gen-conf
     playback-haproxy --user ubuntu --hosts haproxy1.maas,haproxy2.maas config --upload-conf haproxy.cfg 
 
 Configure Keepalived
