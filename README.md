@@ -83,18 +83,20 @@ Configure Keepalived
 
 [see detailed docs about HAProxy HA](./docs/haproxy.md)
 
-#### RabbitMQ HA
+## RabbitMQ HA
+
 Deploy to CONTROLLER1 and CONTROLLER2
 
     playback-rabbitmq --user ubuntu --hosts CONTROLLER1,CONTROLLER2 install --erlang-cookie changemechangeme --rabbit-user openstack --rabbit-pass changeme
-    
+
 Create cluster
 
     playback-rabbitmq --user ubuntu --hosts CONTROLLER2 join-cluster --name rabbit@CONTROLLER1
 
 [see detailed docs about RabbitMQ HA](./docs/rabbitmq.md)
 
-#### Keystone HA
+## Keystone HA
+
 Create keystone database
 
     playback-keystone --user ubuntu --hosts CONTROLLER1 create-keystone-db --root-db-pass changeme --keystone-db-pass changeme
@@ -138,6 +140,8 @@ demo-openrc.sh
     export OS_IDENTITY_API_VERSION=3
     export OS_IMAGE_API_VERSION=2
     export OS_AUTH_VERSION=3
+
+[see detailed docs about Keystone HA](./docs/keystone.md)
 
 #### Glance HA
 Create glance database
