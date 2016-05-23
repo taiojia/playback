@@ -143,7 +143,8 @@ demo-openrc.sh
 
 [see detailed docs about Keystone HA](./docs/keystone.md)
 
-#### Glance HA
+## Glance HA
+
 Create glance database
 
     playback-glance --user ubuntu --hosts CONTROLLER1 create-glance-db --root-db-pass changeme --glance-db-pass changeme
@@ -157,6 +158,7 @@ Install glance on CONTROLLER1 and CONTROLLER2
     playback-glance --user ubuntu --hosts CONTROLLER1 install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme  --swift-store-auth-address http://CONTROLLER_VIP:5000/v2.0/ --populate
     playback-glance --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme  --swift-store-auth-address http://CONTROLLER_VIP:5000/v2.0/ 
 
+[see detailed docs about Glance HA](./docs/glance.md)
 
 #### Nova HA
 Create nova database
