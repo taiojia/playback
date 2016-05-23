@@ -92,6 +92,8 @@ Create cluster
 
     playback-rabbitmq --user ubuntu --hosts CONTROLLER2 join-cluster --name rabbit@CONTROLLER1
 
+[see detailed docs about RabbitMQ HA](./docs/rabbitmq.md)
+
 #### Keystone HA
 Create keystone database
 
