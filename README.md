@@ -160,7 +160,8 @@ Install glance on CONTROLLER1 and CONTROLLER2
 
 [see detailed docs about Glance HA](./docs/glance.md)
 
-#### Nova HA
+## Nova HA
+
 Create nova database
 
     playback-nova --user ubuntu --hosts CONTROLLER1 create-nova-db --root-db-pass changeme --nova-db-pass changeme 
@@ -176,6 +177,8 @@ Install nova on CONTROLLER1
 Install nova on CONTROLLER2
 
     playback-nova --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-pass changeme --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme
+
+[see detailed docs about Nova HA](./docs/nova.md)
 
 #### Nova Compute
 Add nova computes
