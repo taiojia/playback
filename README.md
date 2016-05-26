@@ -39,8 +39,6 @@ Prepare the OpenStack environment.
     COMPUTE10 \
     prepare-host
 
-[see detailed docs about environment with 3 controller nodes](./docs/environment.md)
-
 ## MySQL HA
 
 Deploy to CONTROLLER1
@@ -58,8 +56,6 @@ Start the cluster
     playback-mysql --user ubuntu --hosts CONTROLLER1 manage --wsrep-new-cluster
     playback-mysql --user ubuntu --hosts CONTROLLER2 manage --start
     playback-mysql --user ubuntu --hosts CONTROLLER1 manage --change-root-password changeme
-
-[see detailed docs about MySQL HA](./docs/mysql.md)
 
 ## HAProxy HA
 
@@ -81,8 +77,6 @@ Configure Keepalived
     playback-haproxy --user ubuntu --hosts HAPROXY1 config --configure-keepalived --router_id lb1 --priority 150 --state MASTER --interface eth0 --vip CONTROLLER_VIP
     playback-haproxy --user ubuntu --hosts HAPROXY2 config --configure-keepalived --router_id lb2 --priority 100 --state SLAVE --interface eth0 --vip CONTROLLER_VIP
 
-[see detailed docs about HAProxy HA](./docs/haproxy.md)
-
 ## RabbitMQ HA
 
 Deploy to CONTROLLER1 and CONTROLLER2
@@ -92,8 +86,6 @@ Deploy to CONTROLLER1 and CONTROLLER2
 Create cluster
 
     playback-rabbitmq --user ubuntu --hosts CONTROLLER2 join-cluster --name rabbit@CONTROLLER1
-
-[see detailed docs about RabbitMQ HA](./docs/rabbitmq.md)
 
 ## Keystone HA
 
@@ -141,8 +133,6 @@ demo-openrc.sh
     export OS_IMAGE_API_VERSION=2
     export OS_AUTH_VERSION=3
 
-[see detailed docs about Keystone HA](./docs/keystone.md)
-
 ## Glance HA
 
 Create glance database
@@ -157,8 +147,6 @@ Install glance on CONTROLLER1 and CONTROLLER2
 
     playback-glance --user ubuntu --hosts CONTROLLER1 install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme  --swift-store-auth-address http://CONTROLLER_VIP:5000/v2.0/ --populate
     playback-glance --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme  --swift-store-auth-address http://CONTROLLER_VIP:5000/v2.0/ 
-
-[see detailed docs about Glance HA](./docs/glance.md)
 
 ## Nova HA
 
@@ -178,8 +166,6 @@ Install nova on CONTROLLER2
 
     playback-nova --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-pass changeme --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme
 
-[see detailed docs about Nova HA](./docs/nova.md)
-
 ## Nova Compute
 
 Add nova computes
@@ -197,7 +183,6 @@ The libvirt defaults to using ceph as shared storage, the ceph pool for running 
     disk_cachemodes="network=writeback"
     live_migration_flag="VIR_MIGRATE_UNDEFINE_SOURCE,VIR_MIGRATE_PEER2PEER,VIR_MIGRATE_LIVE,VIR_MIGRATE_PERSIST_DEST,VIR_MIGRATE_TUNNELLED"
 
-[see detailed docs about Nova Compute](./docs/nova-compute.md)
 
 #### Neutron HA
 Create nova database
