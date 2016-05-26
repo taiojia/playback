@@ -1,0 +1,34 @@
+# OpenStack Nova Compute
+
+## Deploy Nova on compute nodes
+
+Add nova computes
+
+    playback-nova-compute --user ubuntu --hosts compute1.maas install --my-ip MANAGEMENT_IP --rabbit-hosts controller1.maas,controller2.maas,controller3.maas --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme
+    playback-nova-compute --user ubuntu --hosts compute2.maas install --my-ip MANAGEMENT_IP --rabbit-hosts controller1.maas,controller2.maas,controller3.maas --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme
+    playback-nova-compute --user ubuntu --hosts compute3.maas install --my-ip MANAGEMENT_IP --rabbit-hosts controller1.maas,controller2.maas,controller3.maas --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme
+    playback-nova-compute --user ubuntu --hosts compute4.maas install --my-ip MANAGEMENT_IP --rabbit-hosts controller1.maas,controller2.maas,controller3.maas --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme
+    playback-nova-compute --user ubuntu --hosts compute5.maas install --my-ip MANAGEMENT_IP --rabbit-hosts controller1.maas,controller2.maas,controller3.maas --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme
+    playback-nova-compute --user ubuntu --hosts compute6.maas install --my-ip MANAGEMENT_IP --rabbit-hosts controller1.maas,controller2.maas,controller3.maas --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme
+    playback-nova-compute --user ubuntu --hosts compute7.maas install --my-ip MANAGEMENT_IP --rabbit-hosts controller1.maas,controller2.maas,controller3.maas --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme
+    playback-nova-compute --user ubuntu --hosts compute8.maas install --my-ip MANAGEMENT_IP --rabbit-hosts controller1.maas,controller2.maas,controller3.maas --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme
+    playback-nova-compute --user ubuntu --hosts compute9.maas install --my-ip MANAGEMENT_IP --rabbit-hosts controller1.maas,controller2.maas,controller3.maas --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme
+    playback-nova-compute --user ubuntu --hosts compute10.maas install --my-ip MANAGEMENT_IP --rabbit-hosts controller1.maas,controller2.maas,controller3.maas --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme
+
+### Note
+
+The libvirt defaults to using ceph as shared storage, the ceph pool for running instance is vms. if you do not using ceph as it's bachend, you must remove the following param:
+
+    images_type = rbd
+    images_rbd_pool = vms
+    images_rbd_ceph_conf = /etc/ceph/ceph.conf
+    rbd_user = cinder
+    rbd_secret_uuid = changeme-changeme-changeme-changeme
+    disk_cachemodes="network=writeback"
+    live_migration_flag="VIR_MIGRATE_UNDEFINE_SOURCE,VIR_MIGRATE_PEER2PEER,VIR_MIGRATE_LIVE,VIR_MIGRATE_PERSIST_DEST,VIR_MIGRATE_TUNNELLED"
+
+### Arguments
+
+* --my-ip: the management interface ip of the current nova compute node
+
+Using `playback-nova-compute --help` to see the details.

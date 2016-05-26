@@ -180,14 +180,15 @@ Install nova on CONTROLLER2
 
 [see detailed docs about Nova HA](./docs/nova.md)
 
-#### Nova Compute
+## Nova Compute
+
 Add nova computes
 
     playback-nova-compute --user ubuntu --hosts COMPUTE1 install --my-ip MANAGEMENT_IP --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme
     playback-nova-compute --user ubuntu --hosts COMPUTE2 install --my-ip MANAGEMENT_IP --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme
 
 The libvirt defaults to using ceph as shared storage, the ceph pool for running instance is vms. if you do not using ceph as it's bachend, you must remove the following param:
-    
+
     images_type = rbd
     images_rbd_pool = vms
     images_rbd_ceph_conf = /etc/ceph/ceph.conf
@@ -196,6 +197,7 @@ The libvirt defaults to using ceph as shared storage, the ceph pool for running 
     disk_cachemodes="network=writeback"
     live_migration_flag="VIR_MIGRATE_UNDEFINE_SOURCE,VIR_MIGRATE_PEER2PEER,VIR_MIGRATE_LIVE,VIR_MIGRATE_PERSIST_DEST,VIR_MIGRATE_TUNNELLED"
 
+[see detailed docs about Nova Compute](./docs/nova-compute.md)
 
 #### Neutron HA
 Create nova database
