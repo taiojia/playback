@@ -1,10 +1,10 @@
 # Getting stated with 3 controllers and 10 computes deployment
 
-* (./docs/environment.md)
-* (./docs/mysql.md)
-* (./docs/haproxy.md)
-* (./docs/rabbitmq.md)
-* (./docs/keystone.md)
-* (./docs/glance.md)
-* (./docs/nova.md)
-* (./docs/nova-compute.md)
+* [Environment](./docs/environment.md)
+* [MySQK](./docs/mysql.md)
+* [HAProxy](./docs/haproxy.md)
+* [RabbitMQ](./docs/rabbitmq.md)
+* [Keystone](./docs/keystone.md)
+* [Glance](./docs/glance.md)
+* [Nova](./docs/nova.md)
+* [Nova Compute](./docs/nova-compute.md)

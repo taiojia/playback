@@ -2,6 +2,10 @@
 
 Playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed automation with high availability on Ubuntu based operating system.
 
+## Getting statarted
+
+[Getting stated with 3 controllers and 10 computes deployment](./docs/guide.md)
+
 ## Requirements
 
 * The OpenStack bare metal hosts are in MAAS environment(recommend)
