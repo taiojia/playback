@@ -123,7 +123,7 @@ def install(user, hosts, connection, rabbit_hosts, rabbit_pass, auth_uri, auth_u
             populate)
             
 def parser():
-    p = argparse.ArgumentParser(description=cli_description+'this command used for privision Cinder')
+    p = argparse.ArgumentParser(prog='playback-cinder',description=cli_description+'this command used for privision Cinder')
     p.add_argument('-v', '--version', action='version', version=__version__)
     p.add_argument('--user', help='the target user', action='store', default='ubuntu', dest='user')
     p.add_argument('--hosts', help='the target address', action='store', dest='hosts')
