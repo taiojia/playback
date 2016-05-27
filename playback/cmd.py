@@ -11,5 +11,6 @@ class Cmd(object):
         env.hosts = self.hosts
         env.parallel = self.parallel
 
+    @runs_once
     def cmd(self, command_line):
         sudo(command_line, warn_only=True)
