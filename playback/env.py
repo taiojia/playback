@@ -6,7 +6,7 @@ from fabric.colors import red
 import sys
 from playback.cli import cli_description
 from playback import __version__
-from playback import main
+from playback.main import main
 
 
 
