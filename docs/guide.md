@@ -13,3 +13,4 @@
 * [Horizon](./horizon.md)
 * [Cinder](./cinder.md)
 * [Swift](./swift.md)
+* [Swift Storage](./swift-storage.md)
