@@ -8,55 +8,75 @@ from playback.cli import cli_description
 from playback import __version__
 
 
-parser = argparse.ArgumentParser(description=cli_description+'this command used for provision OpenStack basic environment')
-parser.add_argument('-v', '--version',
-                   action='version',
-                   version=__version__)
-parser.add_argument('--user', help='the target user', action='store', dest='user')
-parser.add_argument('--hosts', help='the target address', action='store', dest='hosts')
-subparsers = parser.add_subparsers(dest="subparser_name") 
-prepare_host = subparsers.add_parser('prepare-host', help='prepare the OpenStack environment')
-gen_pass = subparsers.add_parser('gen-pass', help='generate the password')
-cmd = subparsers.add_parser('cmd', help='run command line on the target host')
-cmd.add_argument('--run', help='the command running on the remote node',
-                 action='store',
-                 default=None,
-                 dest='run')
+def prepare_host(user, hosts):
+    from playback import prepare_host
+    try:
+        remote = prepare_host.PrepareHost(user, hosts)
+    except AttributeError:
+        print red('No hosts found. Please using --hosts param.')
+        parser.print_help()
+        sys.exit(1)
 
-args = parser.parse_args()
+    # host networking
+    execute(remote.setup_external_interface)
 
+    # ntp
+    execute(remote.setup_ntp)
 
+    # openstack packages
+    execute(remote.set_openstack_repository)
+
+def gen_pass():
+    os.system('openssl rand -hex 10')
+    
+def cmd(user, hosts, run):
+    from playback import cmd
+    try:
+        remote = cmd.Cmd(user, hosts)
+    except AttributeError:
+        print red('No hosts found. Please using --hosts param.')
+        sys.exit(1)
+    execute(remote.cmd, run)
+     
+def parser():
+    p = argparse.ArgumentParser(description=cli_description+'this command used for provision OpenStack basic environments')
+    p.add_argument('-v', '--version', action='version', version=__version__)
+    p.add_argument('--user', help='the target user', action='store', dest='user')
+    p.add_argument('--hosts', help='the target address', action='store', dest='hosts')
+    
+    s = p.add_subparsers(dest="subparser_name", help="commands")
+    
+    def prepare_host_f(args):
+        prepare_host(args.user, args.hosts.split(','))
+    prepare_host_parser = s.add_parser('prepare-host', help='prepare the OpenStack environment')
+    prepare_host_parser.set_defaults(func=prepare_host_f)
+    
+    def gen_pass_f(args):
+        gen_pass()
+    gen_pass_parser = s.add_parser('gen-pass', help='generate the password')
+    gen_pass_parser.set_defaults(func=gen_pass_f)
+    
+    def cmd_f(args):
+        cmd(args.user, args.hosts.split(','), args.run)
+    cmd_parser = s.add_parser('cmd', help='run command line on the target host')
+    cmd_parser.add_argument('--run', help='the command running on the remote node', action='store', default=None, dest='run')
+    cmd_parser.set_defaults(func=cmd_f)
+    
+    return p
 
 def main():
-    if args.subparser_name == 'gen-pass':
-        os.system('openssl rand -hex 10')
-    if args.subparser_name == 'prepare-host':
-        from playback import prepare_host
+    p = parser()
+    args = p.parse_args()
+    if not hasattr(args, 'func'):
+        p.print_help()
+    else:
+        # XXX on Python 3.3 we get 'args has no func' rather than short help.
         try:
-            remote = prepare_host.PrepareHost(user=args.user, hosts=args.hosts.split(','))
-        except AttributeError:
-            print red('No hosts found. Please using --hosts param.')
-            parser.print_help()
-            sys.exit(1)
-
-        # host networking
-        execute(remote.setup_external_interface)
-
-        # ntp
-        execute(remote.setup_ntp)
-
-        # openstack packages
-        execute(remote.set_openstack_repository)
-
-    if args.subparser_name == 'cmd':
-        from playback import cmd
-        try:
-            remote = cmd.Cmd(user=args.user, hosts=args.hosts.split(','))
-        except AttributeError:
-            print red('No hosts found. Please using --hosts param.')
-            parser.print_help()
-            sys.exit(1)
-        execute(remote.cmd, args.run)
+            args.func(args)
+            return 0
+        except WheelError as e:
+            sys.stderr.write(e.message + "\n")
+    return 1
 
 if __name__ == '__main__':
     main()
