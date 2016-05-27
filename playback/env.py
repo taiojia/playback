@@ -73,9 +73,10 @@ def main():
         try:
             args.func(args)
             return 0
-        except Exception:
+        except Exception as e:
+            sys.stderr.write(e.message)
             sys.exit(1)
     return 1
-
+    
 if __name__ == '__main__':
     main()
