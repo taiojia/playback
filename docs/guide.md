@@ -12,3 +12,4 @@
 * [Neutron Agent](./neutron-agent.md)
 * [Horizon](./horizon.md)
 * [Cinder](./cinder.md)
+* [Swift](./swift.md)
