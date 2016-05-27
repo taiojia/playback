@@ -212,10 +212,11 @@ Install neutron agent on compute nodes
     playback-neutron-agent --user ubuntu --hosts COMPUTE2 install --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP 
 
 
-#### Horizon HA
+## Horizon HA
+
 Install horizon on controller nodes
 
-    playback-horizon --user ubuntu --hosts CONTROLLER1,CONTROLLER2 install --openstack-host CONTROLLER_VIP  --memcache CONTROLLER1:11211 --time-zone Asia/Shanghai 
+    playback-horizon --user ubuntu --hosts CONTROLLER1,CONTROLLER2 install --openstack-host CONTROLLER_VIP  --memcache CONTROLLER1:11211 --time-zone Asia/Shanghai
 
 
 #### Cinder HA
