@@ -308,8 +308,9 @@ Finalize installation on all nodes
 TODO:
     nova ssh keys
     esxi backend
-    
-####(Option) Ceph Guide
+
+## (Option) Ceph Guide
+
 Create ceph cluster directory
 
     mkdir ceph-cluster
@@ -329,7 +330,7 @@ Add the initial monitor(s) and gather the keys
     playback-ceph-deploy mon create-initial
 
 If you want to add additional monitors, do that
-    
+
     playback-ceph-deploy mon add {additional-monitor}
 
 Add ceph osd(s)
@@ -368,7 +369,7 @@ Create a temporary copy of the secret key on the nodes running `nova-compute`
     ceph auth get-key client.cinder | ssh {COMPUTE-NODE} tee client.cinder.key
 
 Then, on the `compute nodes`, add the secret key to `libvirt` and remove the temporary copy of the key(the uuid is the same as your --rbd-secret-uuid option, you have to save the uuid for later)
-    
+
     uuidgen
     457eb676-33da-42ec-9a8c-9293d545c337
 
@@ -392,22 +393,23 @@ Now on every compute nodes edit your Ceph configuration file, add the client sec
     rbd concurrent management ops = 20
 
 
-If you want to remove osd 
+If you want to remove osd
 
     ssh {OSD-NODE} sudo stop ceph-mon-all && sudo stop ceph-osd-all
     ceph osd out {OSD-NUM}
-    ceph osd crush remove osd.{OSD-NUM} 
-    ceph auth del osd.{OSD-NUM} 
-    ceph osd rm {OSD-NUM} 
-    ceph osd crush remove {HOST} 
+    ceph osd crush remove osd.{OSD-NUM}
+    ceph auth del osd.{OSD-NUM}
+    ceph osd rm {OSD-NUM}
+    ceph osd crush remove {HOST}
 
 If you want to remove monitor
 
     ceph mon remove {MON-ID}
 
 
-#### Library Use
-```
+## Library Use
+
+```Python
 from playback.api import *
 admin_token = 'changeme'
 connection = 'mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone'
