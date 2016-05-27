@@ -204,9 +204,10 @@ Install Neutron for self-service
     playback-neutron --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://neutron:NEUTRON_PASS@CONTROLLER_VIP/neutron --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --nova-url http://CONTROLLER_VIP:8774/v2 --nova-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP --nova-metadata-ip CONTROLLER_VIP --metadata-proxy-shared-secret changeme-changeme-changeme-changeme 
 
 
-#### Neutron Agent
+## Neutron Agent
+
 Install neutron agent on compute nodes
-    
+
     playback-neutron-agent --user ubuntu --hosts COMPUTE1 install --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP 
     playback-neutron-agent --user ubuntu --hosts COMPUTE2 install --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP 
 
