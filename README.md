@@ -188,10 +188,11 @@ The libvirt defaults to using ceph as shared storage, the ceph pool for running 
     live_migration_flag="VIR_MIGRATE_UNDEFINE_SOURCE,VIR_MIGRATE_PEER2PEER,VIR_MIGRATE_LIVE,VIR_MIGRATE_PERSIST_DEST,VIR_MIGRATE_TUNNELLED"
 
 
-#### Neutron HA
+## Neutron HA
+
 Create nova database
 
-    playback-neutron --user ubuntu --hosts CONTROLLER1 create-neutron-db --root-db-pass changeme --neutron-db-pass changeme 
+    playback-neutron --user ubuntu --hosts CONTROLLER1 create-neutron-db --root-db-pass changeme --neutron-db-pass changeme
 
 Create service credentials
 
