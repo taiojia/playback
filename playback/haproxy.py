@@ -1,192 +1,92 @@
 import argparse
 from fabric.api import *
+from fabric.network import disconnect_all
 import sys
 from playback.cli import cli_description
 from playback import __version__
+from playback.haproxy_conf import conf_haproxy_cfg
 
-parser = argparse.ArgumentParser(description=cli_description+'this command used for provision HAProxy')
-parser.add_argument('-v', '--version',
-                   action='version',
-                   version=__version__)
-parser.add_argument('--user', help='the target user', 
-                    action='store', default='ubuntu', dest='user')
-parser.add_argument('--hosts', help='the target address', 
-                    action='store', dest='hosts')
+def install(args):
+    from playback import haproxy_install
+    try:
+        target = haproxy_install.HaproxyInstall(user=args.user, hosts=args.hosts.split(','))
+    except AttributeError as e:
+        sys.stderr.write(e.message)
+        sys.exit(1)
+    execute(target._install)
 
-subparsers = parser.add_subparsers(dest="subparser_name") 
+def config(args):
+    from playback import haproxy_config
+    try:
+        target = haproxy_config.HaproxyConfig(user=args.user, hosts=args.hosts.split(','))
+    except AttributeError:
+        parser.print_help()
+        sys.exit(1)
+    if args.upload_conf:
+        execute(target._upload_conf, args.upload_conf)
+    if args.configure_keepalived:
+        execute(target._configure_keepalived, args.router_id, args.priority, 
+                args.state, args.interface, args.vip)
 
-install = subparsers.add_parser('install', help='install HAProxy')
+def gen_conf():
+    with open('haproxy.cfg', 'w') as f:
+        f.write(conf_haproxy_cfg)
 
-config = subparsers.add_parser('config', help='configure HAProxy')
-config.add_argument('--upload-conf', help='upload configuration file to the target host',
-                    action='store', default=False, dest='upload_conf')
-config.add_argument('--configure-keepalived', help='configure keepalived',
-                    action='store_true', default=False, dest='configure_keepalived')
-config.add_argument('--router_id', help='Keepalived router id e.g. lb1',
-                    action='store', default=False, dest='router_id')
-config.add_argument('--priority', help='Keepalived priority e.g. 150',
-                    action='store', default=False, dest='priority')
-config.add_argument('--state', help='Keepalived state e.g. MASTER',
-                    action='store', default=False, dest='state')
-config.add_argument('--interface', help='Keepalived binding interface e.g. eth0',
-                    action='store', default=False, dest='interface')
-config.add_argument('--vip', help='Keepalived virtual ip e.g. CONTROLLER_VIP',
-                    action='store', default=False, dest='vip')
-gen_conf = subparsers.add_parser('gen-conf', help='generate the example configuration to the current location')
+def parser():
+    p = argparse.ArgumentParser(prog='playback-haproxy', description=cli_description+'this command used for provision HAProxy')
+    p.add_argument('-v', '--version', action='version', version=__version__)
+    p.add_argument('--user', help='the target user', action='store', default='ubuntu', dest='user')
+    p.add_argument('--hosts', help='the target address', action='store', dest='hosts')
 
-args = parser.parse_args()
+    s = p.add_subparsers(dest="subparser_name") 
 
-conf_haproxy_cfg = """global
-  daemon
+    def install_f(args):
+        install(args)
+    install_parser = s.add_parser('install', help='install HAProxy')
+    install_parser.set_defaults(func=install_f)
 
-defaults
-  mode http
-  maxconn 10000
-  timeout connect 10s
-  timeout client 10s
-  timeout server 10s
+    def config_f(args):
+        config(args)
+    config_parser = s.add_parser('config', help='configure HAProxy')
+    config_parser.add_argument('--upload-conf', help='upload configuration file to the target host', 
+                               action='store', default=False, dest='upload_conf')
+    config_parser.add_argument('--configure-keepalived', help='configure keepalived', 
+                               action='store_true', default=False, dest='configure_keepalived')
+    config_parser.add_argument('--router_id', help='Keepalived router id e.g. lb1', 
+                               action='store', default=False, dest='router_id')
+    config_parser.add_argument('--priority', help='Keepalived priority e.g. 150', 
+                               action='store', default=False, dest='priority')
+    config_parser.add_argument('--state', help='Keepalived state e.g. MASTER', 
+                               action='store', default=False, dest='state')
+    config_parser.add_argument('--interface', help='Keepalived binding interface e.g. eth0', 
+                               action='store', default=False, dest='interface')
+    config_parser.add_argument('--vip', help='Keepalived virtual ip e.g. CONTROLLER_VIP', 
+                               action='store', default=False, dest='vip')
+    config_parser.set_defaults(func=config_f)
 
-listen stats
-  bind 0.0.0.0:9999
-  mode http
-  stats enable
-  stats uri /stats
-  stats realm HAProxy\ Statistics
-  stats auth admin:admin
+    def gen_conf_f(args):
+        gen_conf()
+    gen_conf = s.add_parser('gen-conf', 
+                                     help='generate the example configuration to the current location')
+    gen_conf.set_defaults(func=gen_conf_f)
 
-listen dashboard_cluster
-  bind 0.0.0.0:80
-  balance  source
-  option  tcpka
-  option  httpchk
-  server controller1 controller1:80 check inter 2000 rise 2 fall 5
-  server controller2 controller2:80 check inter 2000 rise 2 fall 5
-
-listen galera_cluster
-  bind 0.0.0.0:3306
-  balance  source
-  mode tcp
-  option tcpka
-  # option mysql-check user haproxy
-  server controller1 controller1:3306 check inter 2000 rise 2 fall 5
-  server controller2 controller2:3306 backup check inter 2000 rise 2 fall 5
-
-listen glance_api_cluster
-  bind 0.0.0.0:9292
-  balance  source
-  option  tcpka
-  option  httpchk
-  server controller1 controller1:9292 check inter 2000 rise 2 fall 5
-  server controller2 controller2:9292 check inter 2000 rise 2 fall 5
-
-listen glance_registry_cluster
-  bind 0.0.0.0:9191
-  balance  source
-  option  tcpka
-  server controller1 controller1:9191 check inter 2000 rise 2 fall 5
-  server controller2 controller2:9191 check inter 2000 rise 2 fall 5
-
-listen keystone_admin_cluster
-  bind 0.0.0.0:35357
-  balance  source
-  option  tcpka
-  option  httpchk
-  server controller1 controller1:35357 check inter 2000 rise 2 fall 5
-  server controller2 controller2:35357 backup inter 2000 rise 2 fall 5
-
-listen keystone_public_internal_cluster
-  bind 0.0.0.0:5000
-  balance  source
-  option  tcpka
-  option  httpchk
-  server controller1 controller1:5000 check inter 2000 rise 2 fall 5
-  server controller2 controller2:5000 backup inter 2000 rise 2 fall 5
-
-listen nova_ec2_api_cluster
-  bind 0.0.0.0:8773
-  balance  source
-  option  tcpka
-  server controller1 controller1:8773 check inter 2000 rise 2 fall 5
-  server controller2 controller2:8773 check inter 2000 rise 2 fall 5
-
-listen nova_compute_api_cluster
-  bind 0.0.0.0:8774
-  balance  source
-  option  tcpka
-  option  httpchk
-  server controller1 controller1:8774 check inter 2000 rise 2 fall 5
-  server controller2 controller2:8774 check inter 2000 rise 2 fall 5
-
-listen nova_metadata_api_cluster
-  bind 0.0.0.0:8775
-  balance  source
-  option  tcpka
-  server controller1 controller1:8775 check inter 2000 rise 2 fall 5
-  server controller2 controller2:8775 check inter 2000 rise 2 fall 5
-
-listen cinder_api_cluster
-  bind 0.0.0.0:8776
-  balance  source
-  option  tcpka
-  option  httpchk
-  server controller1 controller1:8776 check inter 2000 rise 2 fall 5
-  server controller2 controller2:8776 check inter 2000 rise 2 fall 5
-
-listen ceilometer_api_cluster
-  bind 0.0.0.0:8777
-  balance  source
-  option  tcpka
-  server controller1 controller1:8777 check inter 2000 rise 2 fall 5
-  server controller2 controller2:8777 check inter 2000 rise 2 fall 5
-
-listen nova_vncproxy_cluster
-  bind 0.0.0.0:6080
-  balance  source
-  option  tcpka
-  server controller1 controller1:6080 check inter 2000 rise 2 fall 5
-  server controller2 controller2:6080 check inter 2000 rise 2 fall 5
-
-listen neutron_api_cluster
-  bind 0.0.0.0:9696
-  balance  source
-  option  tcpka
-  option  httpchk
-  server controller1 controller1:9696 check inter 2000 rise 2 fall 5
-  server controller2 controller2:9696 check inter 2000 rise 2 fall 5
-
-listen swift_proxy_cluster
-  bind 0.0.0.0:8080
-  balance  source
-  option  tcpka
-  server controller1 controller1:8080 check inter 2000 rise 2 fall 5
-  server controller2 controller2:8080 check inter 2000 rise 2 fall 5
-"""
+    return p
 
 def main():
-    if args.subparser_name == 'install':
-        from playback import haproxy_install
+    p = parser()
+    args = p.parse_args()
+    if not hasattr(args, 'func'):
+        p.print_help()
+    else:
+        # XXX on Python 3.3 we get 'args has no func' rather than short help.
         try:
-            target = haproxy_install.HaproxyInstall(user=args.user, hosts=args.hosts.split(','))
-        except AttributeError:
-            parser.print_help()
+            args.func(args)
+            disconnect_all()
+            return 0
+        except Exception as e:
+            sys.stderr.write(e.message)
             sys.exit(1)
-        execute(target._install)
-    if args.subparser_name == 'config':
-        from playback import haproxy_config
-        try:
-            target = haproxy_config.HaproxyConfig(user=args.user, hosts=args.hosts.split(','))
-        except AttributeError:
-            parser.print_help()
-            sys.exit(1)
-        if args.upload_conf:
-            execute(target._upload_conf, args.upload_conf)
-        if args.configure_keepalived:
-            execute(target._configure_keepalived, args.router_id, args.priority, 
-                    args.state, args.interface, args.vip)
-    if args.subparser_name == 'gen-conf':
-        with open('haproxy.cfg', 'w') as f:
-            f.write(conf_haproxy_cfg)
-
+    return 1
 
 if __name__ == '__main__':
     main()
