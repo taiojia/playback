@@ -95,8 +95,6 @@ install.add_argument('--populate',
 
 args = parser.parse_args()
 
-
-
 class Glance(Task):
     def __init__(self, user, hosts=None, parallel=True, *args, **kwargs):
         super(Glance, self).__init__(*args, **kwargs)
@@ -136,7 +134,7 @@ class Glance(Task):
             sudo('openstack endpoint create --region RegionOne image internal {0}'.format(endpoint))
             sudo('openstack endpoint create --region RegionOne image admin {0}'.format(endpoint))
 
-
+    @runs_once
     def _install_glance(self, connection, auth_uri, auth_url, glance_pass, swift_store_auth_address):
         print red(env.host_string + ' | Install glance python-glanceclient')
         sudo('apt-get update')
