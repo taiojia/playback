@@ -15,6 +15,7 @@ class MysqlInstallation(object):
         env.hosts = self.hosts
         env.parallel = self.parallel
 
+    @runs_once
     def _enable_repo(self):
         sudo('apt-key adv --recv-keys --keyserver keyserver.ubuntu.com BC19DDBA')
         with cd('/etc/apt/sources.list.d/'):
@@ -22,5 +23,6 @@ class MysqlInstallation(object):
         sudo('apt-get update')
         # TODO: Purge old galera.list
     
+    @runs_once
     def _install(self):
         sudo('DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes galera-3 mysql-wsrep-5.6')
