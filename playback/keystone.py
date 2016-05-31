@@ -118,6 +118,7 @@ class Keystone(object):
         env.hosts = self.hosts
         env.parallel = self.parallel
 
+    @runs_once
     @serial
     def _create_keystone_db(self, root_db_pass, keystone_db_pass):
         sudo("mysql -uroot -p{root_db_pass} -e \"CREATE DATABASE keystone;\"".format(root_db_pass=root_db_pass), shell=False)
@@ -125,6 +126,7 @@ class Keystone(object):
                                                                                                                                                             keystone_db_pass=keystone_db_pass), shell=False)
         sudo("mysql -uroot -p{root_db_pass} -e \"GRANT ALL PRIVILEGES ON keystone.* TO 'keystone\'@\'%\' IDENTIFIED BY \'{keystone_db_pass}';\"".format(root_db_pass=root_db_pass, 
                                                                                                                                                         keystone_db_pass=keystone_db_pass), shell=False)
+    @runs_once
     def _install_keystone(self, admin_token, connection, memcache_servers):
         # Disable the keystone service from starting automatically after installation
         sudo('echo "manual" > /etc/init/keystone.override')
@@ -168,6 +170,7 @@ class Keystone(object):
         sudo('rm -f /var/lib/keystone/keystone.db')
 
     # Create the service entity and API endpoints
+    @runs_once
     def _create_entity_and_endpoint(self, os_token, os_url, public_endpoint, internal_endpoint, admin_endpoint):
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} service create --name keystone --description "OpenStack Identity" identity'.format(os_token=os_token, 
                                                                                                                                                    os_url=os_url))
@@ -183,6 +186,7 @@ class Keystone(object):
                                                                                                                        admin_endpoint=admin_endpoint))
 
     # Create projects, users, and roles
+    @runs_once
     def _create_projects_users_roles(self, os_token, os_url, admin_pass, demo_pass):
         # For admin
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} project create --domain default --description "Admin Project" admin'.format(os_token=os_token,
@@ -208,7 +212,7 @@ class Keystone(object):
                                                                                                                      os_url=os_url))
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} role add --project demo --user demo user'.format(os_token=os_token,
                                                                                                                                              os_url=os_url))
-
+    @runs_once
     def _update_keystone_paste_ini(self):
         """remove admin_token_auth from the [pipeline:public_api], 
         [pipeline:admin_api], and [pipeline:api_v3] sections"""
@@ -218,7 +222,6 @@ class Keystone(object):
                               destination='/etc/keystone/keystone-paste.ini',
                               use_sudo=True)
         os.remove('tmp_keystone_paste_ini')
-
 
 def main():
     try:
