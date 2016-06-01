@@ -2,6 +2,14 @@
 
 Playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed automation with high availability on Ubuntu based operating system.
 
+## Platform
+
+Playback command-line tool supporting the following platform:
+
+* Mac OS X
+* Linux
+* Windows (needs [Git Bash](https://git-scm.com/download/win) or [Bash on Ubuntu on Windows](https://msdn.microsoft.com/en-us/commandline/wsl/about))
+
 ## Getting statarted
 
 [Getting stated with 3 controllers and 10 computes deployment](./docs/guide.md)
