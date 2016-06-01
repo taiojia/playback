@@ -172,3 +172,4 @@ kubernetes/
 .vs
 .vscode
 /tmp_my_cnf
+venv/
