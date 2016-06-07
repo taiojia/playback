@@ -146,6 +146,7 @@ class Neutron(Task):
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'localhost' IDENTIFIED BY '{1}';\"".format(root_db_pass, neutron_db_pass), shell=False)
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, neutron_db_pass), shell=False)
 
+    @runs_once
     def _create_service_credentials(self, os_password, os_auth_url, neutron_pass, endpoint):
         with shell_env(OS_PROJECT_DOMAIN_ID='default',
                        OS_USER_DOMAIN_ID='default',
@@ -166,7 +167,8 @@ class Neutron(Task):
             sudo('openstack endpoint create --region RegionOne network public {0}'.format(endpoint))
             sudo('openstack endpoint create --region RegionOne network internal {0}'.format(endpoint))
             sudo('openstack endpoint create --region RegionOne network admin {0}'.format(endpoint))
-
+    
+    @runs_once
     def _install_self_service(self, connection, rabbit_hosts, rabbit_pass, auth_uri, auth_url, neutron_pass, nova_url, nova_pass, public_interface, local_ip, nova_metadata_ip, metadata_proxy_shared_secret):
         print red(env.host_string + ' | Install the components')
         sudo('apt-get update')
