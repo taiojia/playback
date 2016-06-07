@@ -10,60 +10,6 @@ from playback.cli import cli_description
 from playback.neutron_agent_conf import conf_neutron_conf, conf_linuxbridge_agent_ini
 from playback import __version__
 
-parser = argparse.ArgumentParser(description=cli_description+'this command used for provision Neutron Agent')
-parser.add_argument('-v', '--version',
-                   action='version',
-                   version=__version__)
-parser.add_argument('--user', 
-                    help='the target user', 
-                    action='store', 
-                    default='ubuntu', 
-                    dest='user')
-parser.add_argument('--hosts', 
-                    help='the target address', 
-                    action='store', 
-                    dest='hosts')
-
-subparsers = parser.add_subparsers(dest='subparser_name')
-install = subparsers.add_parser('install',
-                                help='install neutron agent')
-install.add_argument('--rabbit-hosts',
-                    help='rabbit hosts e.g. controller1,controller2',
-                    action='store',
-                    default=None,
-                    dest='rabbit_hosts')
-install.add_argument('--rabbit-pass',
-                    help='the password for rabbit openstack user',
-                    action='store',
-                    default=None,
-                    dest='rabbit_pass')
-install.add_argument('--auth-uri',
-                    help='keystone internal endpoint e.g. http://CONTROLLER_VIP:5000',
-                    action='store',
-                    default=None,
-                    dest='auth_uri')
-install.add_argument('--auth-url',
-                    help='keystone admin endpoint e.g. http://CONTROLLER_VIP:35357',
-                    action='store',
-                    default=None,
-                    dest='auth_url')
-install.add_argument('--neutron-pass',
-                    help='the password for neutron user',
-                    action='store',
-                    default=None,
-                    dest='neutron_pass')
-install.add_argument('--public-interface',
-                    help='public interface e.g. eth1',
-                    action='store',
-                    default=None,
-                    dest='public_interface')
-install.add_argument('--local-ip',
-                    help=' underlying physical network interface that handles overlay networks(uses the management interface IP)',
-                    action='store',
-                    default=None,
-                    dest='local_ip')
-
-
 class NeutronAgent(Task):
     def __init__(self, user, hosts=None, parallel=True, *args, **kwargs):
         super(NeutronAgent, self).__init__(*args, **kwargs)
@@ -109,26 +55,100 @@ class NeutronAgent(Task):
         sudo('service nova-compute restart')
         sudo('service neutron-plugin-linuxbridge-agent restart')
 
+def install_subparser(s):
+    install_parser = s.add_parser('install', help='install neutron agent')
+    install_parser.add_argument('--rabbit-hosts',
+                                help='rabbit hosts e.g. controller1,controller2',
+                                action='store',
+                                default=None,
+                                dest='rabbit_hosts')
+    install_parser.add_argument('--rabbit-pass',
+                                help='the password for rabbit openstack user',
+                                action='store',
+                                default=None,
+                                dest='rabbit_pass')
+    install_parser.add_argument('--auth-uri',
+                                help='keystone internal endpoint e.g. http://CONTROLLER_VIP:5000',
+                                action='store',
+                                default=None,
+                                dest='auth_uri')
+    install_parser.add_argument('--auth-url',
+                                help='keystone admin endpoint e.g. http://CONTROLLER_VIP:35357',
+                                action='store',
+                                default=None,
+                                dest='auth_url')
+    install_parser.add_argument('--neutron-pass',
+                                help='the password for neutron user',
+                                action='store',
+                                default=None,
+                                dest='neutron_pass')
+    install_parser.add_argument('--public-interface',
+                                help='public interface e.g. eth1',
+                                action='store',
+                                default=None,
+                                dest='public_interface')
+    install_parser.add_argument('--local-ip',
+                                help=' underlying physical network interface that handles overlay networks(uses the management interface IP)',
+                                action='store',
+                                default=None,
+                                dest='local_ip')
+    return install_parser
 
-
-
-def main():
+def make_target(args):
     try:
         target = NeutronAgent(user=args.user, hosts=args.hosts.split(','))
     except AttributeError:
-        print red('No hosts found. Please using --hosts param.')
-        parser.print_help()
+        sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
+    return target
+    
+def install(args):
+    target = make_target(args)
+    execute(target._install, 
+            args.rabbit_hosts, 
+            args.rabbit_pass, 
+            args.auth_uri, 
+            args.auth_url, 
+            args.neutron_pass, 
+            args.public_interface, 
+            args.local_ip)
+            
+def parser():
+    p = argparse.ArgumentParser(description=cli_description+'this command used for provision Neutron Agent')
+    p.add_argument('-v', '--version', action='version', version=__version__)
+    p.add_argument('--user', 
+                    help='the target user', 
+                    action='store', 
+                    default='ubuntu', 
+                    dest='user')
+    p.add_argument('--hosts', 
+                    help='the target address', 
+                    action='store', 
+                    dest='hosts')
 
-    if args.subparser_name == 'install':
-        execute(target._install, 
-                args.rabbit_hosts, 
-                args.rabbit_pass, 
-                args.auth_uri, 
-                args.auth_url, 
-                args.neutron_pass, 
-                args.public_interface, 
-                args.local_ip)
+    s = p.add_subparsers(dest='subparser_name')
+    
+    def install_f(args):
+        install(args)
+    install_parser = install_subparser(s)
+    install_parser.set_defaults(func=install_f)
+    
+    return p
+
+def main():
+    p = parser()
+    args = p.parse_args()
+    if not hasattr(args, 'func'):
+        p.print_help()
+    else:
+        # XXX on Python 3.3 we get 'args has no func' rather than short help.
+        try:
+            args.func(args)
+            disconnect_all()
+            return 0
+        except Exception as e:
+            sys.stderr.write(e.message)
+    return 1
 
 if __name__ == '__main__':
     main()
