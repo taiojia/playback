@@ -238,6 +238,7 @@ class Nova(Task):
             sudo('openstack endpoint create --region RegionOne compute internal {0}'.format(endpoint))
             sudo('openstack endpoint create --region RegionOne compute admin {0}'.format(endpoint))
 
+    @runs_once
     def _install_nova(self, connection, auth_uri, auth_url, nova_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_pass, glance_host, neutron_endpoint, neutron_pass, metadata_proxy_shared_secret):
         print red(env.host_string + ' | Install nova-api nova-cert nova-conductor nova-consoleauth nova-novncproxy nova-scheduler python-novaclient')
         sudo('apt-get update')
