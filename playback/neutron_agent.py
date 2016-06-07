@@ -74,6 +74,7 @@ class NeutronAgent(Task):
         env.hosts = self.hosts
         env.parallel = self.parallel
 
+    @runs_once
     def _install(self, rabbit_hosts, rabbit_pass, auth_uri, auth_url, neutron_pass, public_interface, local_ip):
         print red(env.host_string + ' | Install the components')
         sudo('apt-get update')
