@@ -20,6 +20,7 @@ class NovaCompute(Task):
         env.hosts = self.hosts
         env.parallel = self.parallel
 
+    @runs_once
     def _install(self, my_ip, rabbit_hosts, rabbit_pass, auth_uri, auth_url, nova_pass, novncproxy_base_url, glance_host, neutron_endpoint, neutron_pass, rbd_secret_uuid):
         print red(env.host_string + ' | Install nova-compute sysfsutils')
         sudo('apt-get update')
