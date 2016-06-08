@@ -10,11 +10,6 @@ from playback.cli import cli_description
 from playback.swift_conf import conf_proxy_server_conf, conf_swift_conf
 from playback import __version__
 
-
-
-
-
-
 class Swift(Task):
     def __init__(self, user, hosts=None, parallel=True, *args, **kwargs):
         super(Swift, self).__init__(*args, **kwargs)
@@ -25,6 +20,7 @@ class Swift(Task):
         env.hosts = self.hosts
         env.parallel = self.parallel
 
+    @runs_once
     def _create_service_credentials(self, os_password, os_auth_url, swift_pass, public_internal_endpoint, admin_endpoint):
         with shell_env(OS_PROJECT_DOMAIN_ID='default',
                        OS_USER_DOMAIN_ID='default',
@@ -47,6 +43,7 @@ class Swift(Task):
             sudo('openstack endpoint create --region RegionOne object-store internal {0}'.format(public_internal_endpoint))
             sudo('openstack endpoint create --region RegionOne object-store admin {0}'.format(admin_endpoint))
 
+    @runs_once
     def _install(self, auth_uri, auth_url, swift_pass, memcache_servers):
         print red(env.host_string + ' | Install swift proxy')
         sudo('apt-get update')
@@ -66,6 +63,7 @@ class Swift(Task):
                                        'memcache_servers': memcache_servers})
         os.remove('tmp_proxy_server_conf_' + env.host_string)
 
+    @runs_once
     def _finalize_install(self, swift_hash_path_suffix, swift_hash_path_prefix):
         print red(env.host_string + ' | Update /etc/swift/swift.conf')
         with open('tmp_swift_conf_' + env.host_string, 'w') as f:
