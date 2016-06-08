@@ -1,32 +1,11 @@
 import argparse
 from fabric.api import *
 from fabric.contrib import files
+from fabric.network import disconnect_all
+from fabric.colors import red
 import sys
 from playback.cli import cli_description
 from playback import __version__
-
-parser = argparse.ArgumentParser(description=cli_description+'this command used for provision RabbitMQ')
-parser.add_argument('-v', '--version',
-                   action='version',
-                   version=__version__)
-parser.add_argument('--user', help='the target user', 
-                    action='store', default='ubuntu', dest='user')
-parser.add_argument('--hosts', help='the target address', 
-                    action='store', dest='hosts')
-subparsers = parser.add_subparsers(dest="subparser_name") 
-install = subparsers.add_parser('install', help='install RabbitMQ HA')
-install.add_argument('--erlang-cookie', help='setup elang cookie',
-                    action='store', default=None, dest='erlang_cookie')
-install.add_argument('--rabbit-user', help='set rabbit user name',
-                    action='store', default=None, dest='rabbit_user')
-install.add_argument('--rabbit-pass', help='set rabbit password',
-                    action='store', default=None, dest='rabbit_pass')
-join_cluster = subparsers.add_parser('join-cluster', help='join the rabbit cluster')
-join_cluster.add_argument('--name', help='the joined name, e.g. rabbit@CONTROLLER1',
-                   action='store', default=None, dest='name')
-
-args = parser.parse_args()
-
 
 class RabbitMq(object):
     """RabbitMQ HA Installation"""
@@ -57,19 +36,75 @@ class RabbitMq(object):
         sudo('rabbitmqctl start_app')
         sudo('rabbitmqctl set_policy ha-all \'^(?!amq\.).*\' \'{"ha-mode": "all"}\'')
 
+def install_subparser(s):
+    install_parser = s.add_parser('install', help='install RabbitMQ HA')
+    install_parser.add_argument('--erlang-cookie', help='setup elang cookie',
+                                action='store', default=None, dest='erlang_cookie')
+    install_parser.add_argument('--rabbit-user', help='set rabbit user name',
+                                action='store', default=None, dest='rabbit_user')
+    install_parser.add_argument('--rabbit-pass', help='set rabbit password',
+                                action='store', default=None, dest='rabbit_pass')
+    return install_parser
 
-def main():
+def join_cluster_subparser(s):
+    join_cluster_parser = s.add_parser('join-cluster', help='join the rabbit cluster')
+    join_cluster_parser.add_argument('--name', help='the joined name, e.g. rabbit@CONTROLLER1',
+                                    action='store', default=None, dest='name')
+    return join_cluster_parser
+
+def make_target(args):
     try:
         target = RabbitMq(user=args.user, hosts=args.hosts.split(','))
     except AttributeError:
-        parser.print_help()
+        sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
+    return target
 
-    if args.subparser_name == 'install':
-        execute(target._install, args.erlang_cookie, args.rabbit_user, args.rabbit_pass)
-    
-    if args.subparser_name == 'join-cluster':
-        execute(target._join_cluster, args.name)
+def install(args):
+    target = make_target(args)
+    execute(target._install, args.erlang_cookie, args.rabbit_user, args.rabbit_pass)
+
+def join_cluster(args):
+    target = make_target(args)
+    execute(target._join_cluster, args.name)
+
+def parser():
+    p = argparse.ArgumentParser(description=cli_description+'this command used for provision RabbitMQ')
+    p.add_argument('-v', '--version',
+                    action='version',
+                    version=__version__)
+    p.add_argument('--user', help='the target user', 
+                    action='store', default='ubuntu', dest='user')
+    p.add_argument('--hosts', help='the target address', 
+                    action='store', dest='hosts')
+    s = p.add_subparsers(dest="subparser_name")
+
+    def install_f(args):
+        install(args)
+    install_parser = install_subparser(s)
+    install_parser.set_defaults(func=install_f)
+
+    def join_cluster_f(args):
+        join_cluster(args)
+    join_cluster_parser = join_cluster_subparser(s)
+    join_cluster_parser.set_defaults(func=join_cluster_f)
+
+    return p
+
+def main():
+    p = parser()
+    args = p.parse_args()
+    if not hasattr(args, 'func'):
+        p.print_help()
+    else:
+        # XXX on Python 3.3 we get 'args has no func' rather than short help.
+        try:
+            args.func(args)
+            disconnect_all()
+            return 0
+        except Exception as e:
+            sys.stderr.write(e.message)
+    return 1
 
 if __name__ == '__main__':
     main()
