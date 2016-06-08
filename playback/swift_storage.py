@@ -209,6 +209,7 @@ class SwiftStorage(Task):
         env.hosts = self.hosts
         env.parallel = self.parallel
 
+    @runs_once
     def _prepare_disks(self, prepare_disks):
         """format disks to xfs and mount it"""
         fstab = '/etc/fstab'
@@ -222,7 +223,7 @@ class SwiftStorage(Task):
             files.append(fstab, '/dev/{0} /srv/node/{1} xfs noatime,nodiratime,nobarrier,logbufs=8 0 2'.format(disk,disk), use_sudo=True)
             sudo('mount /srv/node/{0}'.format(disk))
 
-
+    @runs_once
     def _install(self, address, bind_ip):
         print red(env.host_string + ' | Install the supporting utility packages')
         sudo('apt-get update')
@@ -291,11 +292,12 @@ class SwiftStorage(Task):
         sudo('mkdir -p /var/cache/swift')
         sudo('chown -R root:swift /var/cache/swift')
 
+    @runs_once
     def _create_account_builder_file(self, partitions, replicas, moving):
         with cd('/etc/swift'):
             sudo('swift-ring-builder account.builder create {0} {1} {2}'.format(partitions, replicas, moving))
 
-
+    @runs_once
     def _account_builder_add(self, region, zone, ip, device, weight):
         with cd('/etc/swift'):
             sudo('swift-ring-builder account.builder add --region {0} --zone {1} --ip {2} --port 6002 --device {3} --weight {4}'.format(region,
@@ -306,16 +308,19 @@ class SwiftStorage(Task):
             print red(env.host_string + ' | Verify the ring contents')
             sudo('swift-ring-builder account.builder')
              
+    @runs_once
     def _account_builder_rebalance(self):
         with cd('/etc/swift'):
             print red(env.host_string + ' | Rebalance the ring')
             sudo('swift-ring-builder account.builder rebalance')
 
 
+    @runs_once
     def _create_container_builder_file(self, partitions, replicas, moving):
         with cd('/etc/swift'):
             sudo('swift-ring-builder container.builder create {0} {1} {2}'.format(partitions, replicas, moving))
 
+    @runs_once
     def _container_builder_add(self, region, zone, ip, device, weight):
         with cd('/etc/swift'):
             sudo('swift-ring-builder container.builder add --region {0} --zone {1} --ip {2} --port 6001 --device {3} --weight {4}'.format(region,
@@ -326,15 +331,18 @@ class SwiftStorage(Task):
             print red(env.host_string + ' | Verify the ring contents')
             sudo('swift-ring-builder container.builder')
             
+    @runs_once
     def _container_builder_rebalance(self):
         with cd('/etc/swift'):
             print red(env.host_string + ' | Rebalance the ring')
             sudo('swift-ring-builder container.builder rebalance')
 
+    @runs_once
     def _create_object_builder_file(self, partitions, replicas, moving):
         with cd('/etc/swift'):
             sudo('swift-ring-builder object.builder create {0} {1} {2}'.format(partitions, replicas, moving))
 
+    @runs_once
     def _object_builder_add(self, region, zone, ip, device, weight):
         with cd('/etc/swift'):
             sudo('swift-ring-builder object.builder add --region {0} --zone {1} --ip {2} --port 6000 --device {3} --weight {4}'.format(region,
@@ -345,16 +353,19 @@ class SwiftStorage(Task):
             print red(env.host_string + ' | Verify the ring contents')
             sudo('swift-ring-builder object.builder')
 
+    @runs_once
     def _object_builder_rebalance(self):
         with cd('/etc/swift'):
             print red(env.host_string + ' | Rebalance the ring')
             sudo('swift-ring-builder object.builder rebalance')
     
+    @runs_once
     def _get_builder_file(self):
         get('/etc/swift/account.ring.gz', './account.ring.gz')
         get('/etc/swift/container.ring.gz', './container.ring.gz')
         get('/etc/swift/object.ring.gz', './object.ring.gz')
 
+    @runs_once
     def _sync_builder_file(self):
         put('./account.ring.gz', '/etc/swift/account.ring.gz', use_sudo=True)
         put('./container.ring.gz', '/etc/swift/container.ring.gz', use_sudo=True)
