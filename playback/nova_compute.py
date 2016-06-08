@@ -10,86 +10,6 @@ from playback.cli import cli_description
 from playback.nova_compute_conf import conf_nova_conf, conf_nova_compute_conf, conf_libvirt_bin, conf_libvirtd_conf
 from playback import __version__
 
-parser = argparse.ArgumentParser(description=cli_description+'this command used for provision Nova Compute')
-parser.add_argument('-v', '--version',
-                   action='version',
-                   version=__version__)
-parser.add_argument('--user', 
-                    help='the target user', 
-                    action='store', 
-                    default='ubuntu', 
-                    dest='user')
-parser.add_argument('--hosts', 
-                    help='the target address', 
-                    action='store', 
-                    dest='hosts')
-
-subparsers = parser.add_subparsers(dest='subparser_name')
-install = subparsers.add_parser('install',
-                                help='install nova compute')
-install.add_argument('--my-ip',
-                    help='the host management ip',
-                    action='store',
-                    default=None,
-                    dest='my_ip')
-install.add_argument('--rabbit-hosts',
-                    help='rabbit hosts e.g. CONTROLLER1,CONTROLLER2',
-                    action='store',
-                    default=None,
-                    dest='rabbit_hosts')
-install.add_argument('--rabbit-pass',
-                    help='the password for rabbit openstack user',
-                    action='store',
-                    default=None,
-                    dest='rabbit_pass')
-install.add_argument('--auth-uri',
-                    help='keystone internal endpoint e.g. http://CONTROLLER_VIP:5000',
-                    action='store',
-                    default=None,
-                    dest='auth_uri')
-install.add_argument('--auth-url',
-                    help='keystone admin endpoint e.g. http://CONTROLLER_VIP:35357',
-                    action='store',
-                    default=None,
-                    dest='auth_url')
-install.add_argument('--nova-pass',
-                    help='passowrd for nova user',
-                    action='store',
-                    default=None,
-                    dest='nova_pass')
-install.add_argument('--novncproxy-base-url',
-                    help='nova vnc proxy base url e.g. http://CONTROLLER_VIP:6080/vnc_auto.html',
-                    action='store',
-                    default=None,
-                    dest='novncproxy_base_url')
-install.add_argument('--glance-host',
-                    help='glance host e.g. CONTROLLER_VIP',
-                    action='store',
-                    default=None,
-                    dest='glance_host')
-install.add_argument('--neutron-endpoint',
-                    help='neutron endpoint e.g. http://CONTROLLER_VIP:9696',
-                    action='store',
-                    default=None,
-                    dest='neutron_endpoint')
-install.add_argument('--neutron-pass',
-                    help='the password for neutron user',
-                    action='store',
-                    default=None,
-                    dest='neutron_pass')
-install.add_argument('--rbd-secret-uuid',
-                    help='ceph rbd secret for nova libvirt',
-                    action='store',
-                    default=None,
-                    dest='rbd_secret_uuid')
-
-args = parser.parse_args()
-
-
-
-
-
-
 class NovaCompute(Task):
     def __init__(self, user, hosts=None, parallel=True, *args, **kwargs):
         super(NovaCompute, self).__init__(*args, **kwargs)
@@ -159,29 +79,117 @@ class NovaCompute(Task):
         os.remove('tmp_libvirtd_conf_' + env.host_string)
         sudo('restart libvirt-bin')
 
+def install_subparser(s):
+    install_parser = s.add_parser('install', help='install nova compute')
+    install_parser.add_argument('--my-ip',
+                                help='the host management ip',
+                                action='store',
+                                default=None,
+                                dest='my_ip')
+    install_parser.add_argument('--rabbit-hosts',
+                                help='rabbit hosts e.g. CONTROLLER1,CONTROLLER2',
+                                action='store',
+                                default=None,
+                                dest='rabbit_hosts')
+    install_parser.add_argument('--rabbit-pass',
+                                help='the password for rabbit openstack user',
+                                action='store',
+                                default=None,
+                                dest='rabbit_pass')
+    install_parser.add_argument('--auth-uri',
+                                help='keystone internal endpoint e.g. http://CONTROLLER_VIP:5000',
+                                action='store',
+                                default=None,
+                                dest='auth_uri')
+    install_parser.add_argument('--auth-url',
+                                help='keystone admin endpoint e.g. http://CONTROLLER_VIP:35357',
+                                action='store',
+                                default=None,
+                                dest='auth_url')
+    install_parser.add_argument('--nova-pass',
+                                help='passowrd for nova user',
+                                action='store',
+                                default=None,
+                                dest='nova_pass')
+    install_parser.add_argument('--novncproxy-base-url',
+                                help='nova vnc proxy base url e.g. http://CONTROLLER_VIP:6080/vnc_auto.html',
+                                action='store',
+                                default=None,
+                                dest='novncproxy_base_url')
+    install_parser.add_argument('--glance-host',
+                                help='glance host e.g. CONTROLLER_VIP',
+                                action='store',
+                                default=None,
+                                dest='glance_host')
+    install_parser.add_argument('--neutron-endpoint',
+                                help='neutron endpoint e.g. http://CONTROLLER_VIP:9696',
+                                action='store',
+                                default=None,
+                                dest='neutron_endpoint')
+    install_parser.add_argument('--neutron-pass',
+                                help='the password for neutron user',
+                                action='store',
+                                default=None,
+                                dest='neutron_pass')
+    install_parser.add_argument('--rbd-secret-uuid',
+                                help='ceph rbd secret for nova libvirt',
+                                action='store',
+                                default=None,
+                                dest='rbd_secret_uuid')
+    return install_parser
 
-def main():
+def make_target(args):
     try:
         target = NovaCompute(user=args.user, hosts=args.hosts.split(','))
     except AttributeError:
-        print red('No hosts found. Please using --hosts param.')
-        parser.print_help()
+        sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
-
-    if args.subparser_name == 'install':
-        execute(target._install,
-                args.my_ip,
-                args.rabbit_hosts,
-                args.rabbit_pass,
-                args.auth_uri,
-                args.auth_url,
-                args.nova_pass,
-                args.novncproxy_base_url,
-                args.glance_host,
-                args.neutron_endpoint,
-                args.neutron_pass,
-                args.rbd_secret_uuid)
+    return target
         
+def install(args):
+    target = make_target(args)
+    execute(target._install, args.my_ip, args.rabbit_hosts, args.rabbit_pass,
+            args.auth_uri, args.auth_url, args.nova_pass, args.novncproxy_base_url,
+            args.glance_host, args.neutron_endpoint, args.neutron_pass, args.rbd_secret_uuid)
+    
+def parser():
+    p = argparse.ArgumentParser(description=cli_description+'this command used for provision Nova Compute')
+    p.add_argument('-v', '--version',
+                    action='version',
+                    version=__version__)
+    p.add_argument('--user', 
+                    help='the target user', 
+                    action='store', 
+                    default='ubuntu', 
+                    dest='user')
+    p.add_argument('--hosts', 
+                    help='the target address', 
+                    action='store', 
+                    dest='hosts')
+
+    s = p.add_subparsers(dest='subparser_name')
+    
+    def install_f(args):
+        install(args)
+    install_parser = install_subparser(s)
+    install_parser.set_defaults(func=install_f)
+    
+    return p
+
+def main():
+    p = parser()
+    args = p.parse_args()
+    if not hasattr(args, 'func'):
+        p.print_help()
+    else:
+        # XXX on Python 3.3 we get 'args has no func' rather than short help.
+        try:
+            args.func(args)
+            disconnect_all()
+            return 0
+        except Exception as e:
+            sys.stderr.write(e.message)
+    return 1
 
 if __name__ == '__main__':
     main()
