@@ -426,3 +426,8 @@ memcache_servers = 'CONTROLLER1:11211,CONTROLLER2:11211'
 keystone = Keystone(user='ubuntu', hosts='controller1,controller2')
 ececute(keystone._install_keystone, admin_token, connection, memcache_servers)
 ```
+
+## version 0.2.3 issues
+
+memcached must be listen on 0.0.0.0
+all computes need to restart libvirt-bin service
