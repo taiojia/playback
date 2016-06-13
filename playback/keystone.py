@@ -7,7 +7,7 @@ import argparse
 import sys
 from playback.cli import cli_description
 from playback import __version__
-from playback.keystone_conf import conf_keystone_conf, conf_wsgi_keystone_conf, conf_keystone_paste_ini
+from playback.keystone_conf import conf_keystone_conf, conf_wsgi_keystone_conf, conf_keystone_paste_ini, conf_memcached_conf
 
 class Keystone(object):
     def __init__(self, user, hosts=None, parallel=True):
@@ -45,6 +45,15 @@ class Keystone(object):
                               use_jinja=True,
                               use_sudo=True)
         os.remove('tmp_keystone_conf')
+
+        # Configure /etc/memcached.conf to listen 0.0.0.0
+        with open('tmp_memcached_conf', 'w') as f:
+            f.write(conf_memcached_conf)
+        files.upload_template(filename='tmp_memcached_conf',
+                                destination='/etc/memcached.conf',
+                                use_sudo=True)
+        os.remove('tmp_memcached_conf')
+        sudo('service memcached restart')
 
         # Populate the Identity service database
         if args.populate:
