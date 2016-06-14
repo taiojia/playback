@@ -35,8 +35,8 @@ class Neutron(Task):
 
     @runs_once
     def _create_service_credentials(self, os_password, os_auth_url, neutron_pass, endpoint):
-        with shell_env(OS_PROJECT_DOMAIN_ID='default',
-                       OS_USER_DOMAIN_ID='default',
+        with shell_env(OS_PROJECT_DOMAIN_NAME='default',
+                       OS_USER_DOMAIN_NAME='default',
                        OS_PROJECT_NAME='admin',
                        OS_TENANT_NAME='admin',
                        OS_USERNAME='admin',
@@ -56,10 +56,12 @@ class Neutron(Task):
             sudo('openstack endpoint create --region RegionOne network admin {0}'.format(endpoint))
     
     @runs_once
-    def _install_self_service(self, connection, rabbit_hosts, rabbit_pass, auth_uri, auth_url, neutron_pass, nova_url, nova_pass, public_interface, local_ip, nova_metadata_ip, metadata_proxy_shared_secret):
+    def _install_self_service(self, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, neutron_pass, nova_url, nova_pass, public_interface, local_ip, nova_metadata_ip, metadata_proxy_shared_secret, memcached_servers):
         print red(env.host_string + ' | Install the components')
         sudo('apt-get update')
-        sudo('apt-get -y install neutron-server neutron-plugin-ml2 neutron-plugin-linuxbridge-agent neutron-l3-agent neutron-dhcp-agent neutron-metadata-agent python-neutronclient conntrack')
+        # Remove neutron-plugin-linuxbridge-agent and conntrack
+        #sudo('apt-get -y install neutron-server neutron-plugin-ml2 neutron-plugin-linuxbridge-agent neutron-l3-agent neutron-dhcp-agent neutron-metadata-agent python-neutronclient conntrack')
+        sudo('apt-get -y install neutron-server neutron-plugin-ml2 neutron-linuxbridge-agent neutron-l3-agent neutron-dhcp-agent neutron-metadata-agent python-neutronclient')
 
         print red(env.host_string + ' | Update /etc/neutron/neutron.conf')
         with open('tmp_neutron_conf_'+env.host_string, 'w') as f:
@@ -70,12 +72,14 @@ class Neutron(Task):
                               use_sudo=True,
                               context={'connection': connection,
                                        'rabbit_hosts': rabbit_hosts,
+                                       'rabbit_user': rabbit_user, 
                                        'rabbit_password': rabbit_pass,
                                        'auth_uri': auth_uri,
                                        'auth_url': auth_url,
                                        'neutron_password': neutron_pass,
                                        'nova_url': nova_url,
-                                       'password': nova_pass})
+                                       'password': nova_pass,
+                                       'memcached_servers': memcached_servers})
         os.remove('tmp_neutron_conf_'+env.host_string)
 
         print red(env.host_string + ' | Update /etc/neutron/plugins/ml2/ml2_conf.ini')
@@ -142,15 +146,13 @@ class Neutron(Task):
         print red(env.host_string + ' | Restart services')
         sudo('service nova-api restart', warn_only=True)
         sudo('service neutron-server restart')
-        sudo('service neutron-plugin-linuxbridge-agent restart')
+        sudo('service neutron-linuxbridge-agent restart')
         sudo('service neutron-dhcp-agent restart')
         sudo('service neutron-metadata-agent restart')
         sudo('service neutron-l3-agent restart')
         print red(env.host_string + ' | Remove the SQLite database file')
-        sudo('rm -f /var/lib/neutron/neutron.sqlite')
+        sudo('rm -f /var/lib/neutron/neutron.sqlite', warn_only=True)
 
-
-    
 def create_neutron_db_subparser(s):
     create_neutron_db_parser = s.add_parser('create-neutron-db',
                                             help='create the neutron database')
@@ -213,6 +215,11 @@ def install_subparser(s):
                         action='store',
                         default=None,
                         dest='rabbit_hosts')
+    install_parser.add_argument('--rabbit-user',
+                        help='the user for rabbit, default openstack',
+                        action='store',
+                        default='openstack',
+                        dest='rabbit_user')
     install_parser.add_argument('--rabbit-pass',
                         help='the password for rabbit openstack user',
                         action='store',
@@ -253,6 +260,11 @@ def install_subparser(s):
                         action='store',
                         default=None,
                         dest='metadata_proxy_shared_secret')
+    install_parser.add_argument('--memcached-servers',
+                        help='memcached servers e.g. CONTROLLER1:11211,CONTROLLER2:11211',
+                        action='store',
+                        default=None,
+                        dest='memcached_servers')
     install_parser.add_argument('--populate',
                         help='Populate the neutron database',
                         action='store_true',
@@ -285,6 +297,7 @@ def install(args):
     execute(target._install_self_service,
             args.connection, 
             args.rabbit_hosts, 
+            args.rabbit_user, 
             args.rabbit_pass, 
             args.auth_uri, 
             args.auth_url, 
@@ -294,7 +307,8 @@ def install(args):
             args.public_interface, 
             args.local_ip, 
             args.nova_metadata_ip, 
-            args.metadata_proxy_shared_secret)
+            args.metadata_proxy_shared_secret, 
+            args.memcached_servers)
             
 def parser():
     p = argparse.ArgumentParser(description=cli_description+'this command used for provision Neutron')

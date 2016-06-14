@@ -720,9 +720,10 @@ root_helper = sudo /usr/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
 [keystone_authtoken]
 auth_uri = {{ auth_uri }}
 auth_url = {{ auth_url }}
-auth_plugin = password
-project_domain_id = default
-user_domain_id = default
+memcached_servers = {{ memcached_servers }}
+auth_type = password
+project_domain_name = default
+user_domain_name = default
 project_name = service
 username = neutron
 password = {{ neutron_password }}
@@ -777,10 +778,10 @@ connection = {{ connection }}
 # pool_timeout = 10
 
 [nova]
-auth_url = {{auth_url}}
-auth_plugin = password
-project_domain_id = default
-user_domain_id = default
+auth_url = {{ auth_url }}
+auth_type = password
+project_domain_name = default
+user_domain_name = default
 region_name = RegionOne
 project_name = service
 username = nova
@@ -995,7 +996,7 @@ lock_path = $state_path/lock
 
 # The RabbitMQ broker address where a single node is used. (string value)
 # Deprecated group/name - [DEFAULT]/rabbit_host
-rabbit_hosts = {{rabbit_hosts}}
+rabbit_hosts = {{ rabbit_hosts }}
 
 # The RabbitMQ broker port where a single node is used. (integer value)
 # Deprecated group/name - [DEFAULT]/rabbit_port
@@ -1011,7 +1012,7 @@ rabbit_hosts = {{rabbit_hosts}}
 
 # The RabbitMQ userid. (string value)
 # Deprecated group/name - [DEFAULT]/rabbit_userid
-rabbit_userid = openstack
+rabbit_userid = {{ rabbit_user }}
 
 # The RabbitMQ password. (string value)
 # Deprecated group/name - [DEFAULT]/rabbit_password

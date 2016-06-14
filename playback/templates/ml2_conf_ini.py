@@ -2,7 +2,8 @@ conf_ml2_conf_ini = """[ml2]
 # (ListOpt) List of network type driver entrypoints to be loaded from
 # the neutron.ml2.type_drivers namespace.
 #
-type_drivers = local,flat,vlan,gre,vxlan,geneve
+type_drivers = flat,vlan,vxlan
+#type_drivers = local,flat,vlan,gre,vxlan,geneve
 # Example: type_drivers = flat,vlan,gre,vxlan,geneve
 
 # (ListOpt) Ordered list of network_types to allocate as tenant
@@ -64,7 +65,8 @@ extension_drivers = port_security
 # can be created. Use * to allow flat networks with arbitrary
 # physical_network names.
 #
-flat_networks = public
+flat_networks = provider
+#flat_networks = public
 # Example:flat_networks = physnet1,physnet2
 # Example:flat_networks = *
 

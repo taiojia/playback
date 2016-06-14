@@ -59,9 +59,9 @@ lock_path = /var/lib/nova/tmp
 [neutron]
 url = {{ url }}
 auth_url = {{ auth_url }}
-auth_plugin = password
-project_domain_id = default
-user_domain_id = default
+auth_type = password
+project_domain_name = default
+user_domain_name = default
 region_name = RegionOne
 project_name = service
 username = neutron

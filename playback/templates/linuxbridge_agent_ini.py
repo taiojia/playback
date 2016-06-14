@@ -6,7 +6,7 @@ conf_linuxbridge_agent_ini = """[linux_bridge]
 # networks listed in network_vlan_ranges on the server should have
 # mappings to appropriate interfaces on each agent.
 #
-physical_interface_mappings = public:{{ public_interface }}
+physical_interface_mappings = provider:{{ public_interface }}
 
 # Example: physical_interface_mappings = physnet1:eth1
 
