@@ -7,7 +7,13 @@ import os
 import argparse
 import sys
 from playback.cli import cli_description
-from playback.neutron_conf import conf_neutron_conf, conf_ml2_conf_ini, conf_linuxbridge_agent_ini, conf_l3_agent_ini, conf_dhcp_agent_ini, conf_dnsmasq_neutron_conf, conf_metadata_agent_ini
+from playback.templates.neutron_conf import conf_neutron_conf
+from playback.templates.ml2_conf_ini import conf_ml2_conf_ini
+from playback.templates.linuxbridge_agent_ini import conf_linuxbridge_agent_ini
+from playback.templates.l3_agent_ini import conf_l3_agent_ini
+from playback.templates.dhcp_agent_ini import conf_dhcp_agent_ini
+from playback.templates.dnsmasq_neutron_conf import conf_dnsmasq_neutron_conf
+from playback.templates.metadata_agent_ini import conf_metadata_agent_ini
 from playback import __version__
 
 class Neutron(Task):
