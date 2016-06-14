@@ -67,7 +67,7 @@ class Nova(Task):
         files.upload_template(filename='tmp_nova_conf_'+env.host_string,
                               destination='/etc/nova/nova.conf',
                               context={'connection': connection,
-                                        'api_connection': api_connection,
+                                       'api_connection': api_connection,
                                        'auth_uri': auth_uri,
                                        'auth_url': auth_url,
                                        'password': nova_pass,
