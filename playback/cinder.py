@@ -94,7 +94,7 @@ def make_target(user, hosts):
     try:
         target = Cinder(user, hosts)
     except AttributeError:
-        print red('No hosts found. Please using --hosts param.')
+        sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
     
     return target
