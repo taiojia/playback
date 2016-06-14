@@ -33,8 +33,8 @@ class Nova(Task):
 
     @runs_once
     def _create_service_credentials(self, os_password, os_auth_url, nova_pass, endpoint):
-        with shell_env(OS_PROJECT_DOMAIN_ID='default',
-                       OS_USER_DOMAIN_ID='default',
+        with shell_env(OS_PROJECT_DOMAIN_NAME='default',
+                       OS_USER_DOMAIN_NAME='default',
                        OS_PROJECT_NAME='admin',
                        OS_TENANT_NAME='admin',
                        OS_USERNAME='admin',

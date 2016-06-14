@@ -18,7 +18,6 @@ network_api_class = nova.network.neutronv2.api.API
 security_group_api = neutron
 linuxnet_interface_driver = nova.network.linux_net.NeutronLinuxBridgeInterfaceDriver
 firewall_driver = nova.virt.firewall.NoopFirewallDriver
-enabled_apis=osapi_compute,metadata
 memcached_servers = {{ memcached_servers }}
 
 [database]
