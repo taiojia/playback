@@ -7,7 +7,8 @@ import os
 import argparse
 import sys
 from playback.cli import cli_description
-from playback.neutron_agent_conf import conf_neutron_conf, conf_linuxbridge_agent_ini
+from playback.templates.neutron_conf_for_agent import conf_neutron_conf
+from playback.templates.linuxbridge_agent_ini_for_agent import conf_linuxbridge_agent_ini
 from playback import __version__
 
 class NeutronAgent(Task):
