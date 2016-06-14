@@ -1910,7 +1910,7 @@ driver = sql
 # Controls the token construction, validation, and revocation operations.
 # Entrypoint in the keystone.token.provider namespace. Core providers are
 # [fernet|pkiz|pki|uuid]. (string value)
-provider = uuid
+provider = fernet
 
 # Entrypoint for the token persistence backend driver in the
 # keystone.token.persistence namespace. Supplied drivers are kvs, memcache,

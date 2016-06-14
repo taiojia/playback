@@ -58,6 +58,10 @@ class Keystone(object):
         # Populate the Identity service database
         if args.populate:
             sudo('su -s /bin/sh -c "keystone-manage db_sync" keystone', shell=False)
+            # Initialize Fernet Keys
+            sudo('keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone', shell=False)
+        
+
 
         # Configure /etc/apache2/sites-available/wsgi-keystone.conf
         with open('tmp_wsgi_keystone_conf', 'w') as f:
