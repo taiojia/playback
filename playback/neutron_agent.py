@@ -22,10 +22,12 @@ class NeutronAgent(Task):
         env.parallel = self.parallel
 
     @runs_once
-    def _install(self, rabbit_hosts, rabbit_pass, auth_uri, auth_url, neutron_pass, public_interface, local_ip):
+    def _install(self, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, neutron_pass, public_interface, local_ip, memcached_servers):
         print red(env.host_string + ' | Install the components')
         sudo('apt-get update')
-        sudo('apt-get -y install neutron-plugin-linuxbridge-agent conntrack')
+        # conntrack deprecated in mitaka
+        #sudo('apt-get -y install neutron-plugin-linuxbridge-agent conntrack')
+        sudo('apt-get -y install neutron-linuxbridge-agent')
 
         print red(env.host_string + ' | Update /etc/neutron/neutron.conf')
         with open('tmp_neutron_conf_' + env.host_string, 'w')as f:
@@ -35,10 +37,12 @@ class NeutronAgent(Task):
                               use_jinja=True,
                               use_sudo=True,
                               context={'rabbit_hosts': rabbit_hosts,
+                                       'rabbit_user': rabbit_user, 
                                        'rabbit_password': rabbit_pass,
                                        'auth_uri': auth_uri,
                                        'auth_url': auth_url,
-                                       'neutron_pass': neutron_pass})
+                                       'neutron_pass': neutron_pass, 
+                                       'memcached_servers': memcached_servers})
         os.remove('tmp_neutron_conf_' + env.host_string)
 
         print red(env.host_string + ' | Update /etc/neutron/plugins/ml2/linuxbridge_agent.ini')
@@ -54,7 +58,7 @@ class NeutronAgent(Task):
 
         print red(env.host_string + ' | Restart Services')
         sudo('service nova-compute restart')
-        sudo('service neutron-plugin-linuxbridge-agent restart')
+        sudo('service neutron-linuxbridge-agent restart')
 
 def install_subparser(s):
     install_parser = s.add_parser('install', help='install neutron agent')
@@ -63,6 +67,11 @@ def install_subparser(s):
                                 action='store',
                                 default=None,
                                 dest='rabbit_hosts')
+    install_parser.add_argument('--rabbit-user',
+                                help='the user for rabbit, default openstack',
+                                action='store',
+                                default='openstack',
+                                dest='rabbit_user')
     install_parser.add_argument('--rabbit-pass',
                                 help='the password for rabbit openstack user',
                                 action='store',
@@ -93,6 +102,11 @@ def install_subparser(s):
                                 action='store',
                                 default=None,
                                 dest='local_ip')
+    install_parser.add_argument('--memcached-servers',
+                                help='memcached servers e.g. CONTROLLER1:11211,CONTROLLER2:11211',
+                                action='store',
+                                default=None,
+                                dest='memcached_servers')
     return install_parser
 
 def make_target(args):
@@ -106,13 +120,15 @@ def make_target(args):
 def install(args):
     target = make_target(args)
     execute(target._install, 
-            args.rabbit_hosts, 
+            args.rabbit_hosts,
+            args.rabbit_user,  
             args.rabbit_pass, 
             args.auth_uri, 
             args.auth_url, 
             args.neutron_pass, 
             args.public_interface, 
-            args.local_ip)
+            args.local_ip, 
+            args.memcached_servers)
             
 def parser():
     p = argparse.ArgumentParser(description=cli_description+'this command used for provision Neutron Agent')

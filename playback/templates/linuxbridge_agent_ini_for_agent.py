@@ -8,7 +8,7 @@ conf_linuxbridge_agent_ini = """[linux_bridge]
 #
 # physical_interface_mappings =
 # Example: physical_interface_mappings = physnet1:eth1
-physical_interface_mappings = public:{{ public_interface }}
+physical_interface_mappings = provider:{{ public_interface }}
 
 [vxlan]
 # (BoolOpt) enable VXLAN on the agent

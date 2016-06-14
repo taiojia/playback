@@ -720,9 +720,10 @@ root_helper = sudo /usr/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
 [keystone_authtoken]
 auth_uri = {{ auth_uri }}
 auth_url = {{ auth_url }}
-auth_plugin = password
-project_domain_id = default
-user_domain_id = default
+memcached_servers = {{ memcached_servers }}
+auth_type = password
+project_domain_name = default
+user_domain_name = default
 project_name = service
 username = neutron
 password = {{ neutron_pass }}
@@ -947,7 +948,7 @@ lock_path = $state_path/lock
 [oslo_messaging_rabbit]
 
 rabbit_hosts = {{ rabbit_hosts }}
-rabbit_userid = openstack
+rabbit_userid = {{ rabbit_user }}
 rabbit_password = {{ rabbit_password }}
 #
 # From oslo.messaging
