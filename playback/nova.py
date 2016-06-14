@@ -54,7 +54,7 @@ class Nova(Task):
             sudo('openstack endpoint create --region RegionOne compute admin {0}'.format(endpoint))
 
     @runs_once
-    def _install_nova(self, connection, auth_uri, auth_url, nova_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_pass, glance_host, neutron_endpoint, neutron_pass, metadata_proxy_shared_secret):
+    def _install_nova(self, connection, api_connection, auth_uri, auth_url, nova_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_pass, glance_host, neutron_endpoint, neutron_pass, metadata_proxy_shared_secret):
         print red(env.host_string + ' | Install nova-api nova-cert nova-conductor nova-consoleauth nova-novncproxy nova-scheduler python-novaclient')
         sudo('apt-get update')
         # nova-cert deprecated in mitaka
@@ -67,6 +67,7 @@ class Nova(Task):
         files.upload_template(filename='tmp_nova_conf_'+env.host_string,
                               destination='/etc/nova/nova.conf',
                               context={'connection': connection,
+                                        'api_connection': api_connection,
                                        'auth_uri': auth_uri,
                                        'auth_url': auth_url,
                                        'password': nova_pass,
@@ -140,10 +141,15 @@ def create_service_credentials_subparser(s):
 def install_subparser(s):
     install_parser = s.add_parser('install',help='install nova')
     install_parser.add_argument('--connection',
-                                help='mysql database connection string e.g. mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova',
+                                help='mysql nova database connection string e.g. mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova',
                                 action='store',
                                 default=None,
                                 dest='connection')
+    install_parser.add_argument('--api-connection',
+                                help='mysql nova_api database connection string e.g. mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova_api',
+                                action='store',
+                                default=None,
+                                dest='api_connection')
     install_parser.add_argument('--auth-uri',
                                 help='keystone internal endpoint e.g. http://CONTROLLER_VIP:5000',
                                 action='store',
@@ -225,7 +231,7 @@ def create_service_credentials(args):
 
 def install(args):
     target = make_target(args)
-    execute(target._install_nova, args.connection, args.auth_uri, args.auth_url,
+    execute(target._install_nova, args.connection, args.api_connection, args.auth_uri, args.auth_url,
             args.nova_pass, args.my_ip, args.memcached_servers, args.rabbit_hosts,
             args.rabbit_pass, args.glance_host, args.neutron_endpoint, args.neutron_pass,
             args.metadata_proxy_shared_secret)

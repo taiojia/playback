@@ -20,6 +20,9 @@ linuxnet_interface_driver = nova.network.linux_net.NeutronLinuxBridgeInterfaceDr
 firewall_driver = nova.virt.firewall.NoopFirewallDriver
 memcached_servers = {{ memcached_servers }}
 
+[api_database]
+connection = {{ api_connection }}
+
 [database]
 connection = {{ connection }}
 
