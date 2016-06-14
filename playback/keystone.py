@@ -86,43 +86,51 @@ class Keystone(object):
     @runs_once
     def _create_entity_and_endpoint(self, os_token, os_url, public_endpoint, internal_endpoint, admin_endpoint):
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} service create --name keystone --description "OpenStack Identity" identity'.format(os_token=os_token, 
-                                                                                                                                                   os_url=os_url))
+                                                                                                                                                                            os_url=os_url))
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} endpoint create --region RegionOne identity public {public_endpoint}'.format(os_token=os_token, 
-                                                                                                                             os_url=os_url, 
-                                                                                                                             public_endpoint=public_endpoint))
+                                                                                                                                                                            os_url=os_url, 
+                                                                                                                                                                            public_endpoint=public_endpoint))
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} endpoint create --region RegionOne identity internal {internal_endpoint}'.format(os_token=os_token, 
-                                                                                                                                 os_url=os_url, 
-                                                                                                                                 internal_endpoint=internal_endpoint))
+                                                                                                                                                                            os_url=os_url, 
+                                                                                                                                                                            internal_endpoint=internal_endpoint))
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} endpoint create --region RegionOne identity admin {admin_endpoint}'.format(os_token=os_token, 
-                                                                                                                           os_url=os_url, 
-        
-                                                                                                                       admin_endpoint=admin_endpoint))
+                                                                                                                                                                            os_url=os_url, 
+                                                                                                                                                                            admin_endpoint=admin_endpoint))
 
     # Create projects, users, and roles
     @runs_once
     def _create_projects_users_roles(self, os_token, os_url, admin_pass, demo_pass):
-        # For admin
+        # Create the default domain
+        sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} domain create --description "Default Domain" default'.format(os_token=os_token,
+                                                                                                                                                        os_url=os_url))
+        # Create the admin project
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} project create --domain default --description "Admin Project" admin'.format(os_token=os_token,
-                                                                                                    os_url=os_url))
+                                                                                                                                                                        os_url=os_url))
+        # Create the admin user
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} user create --domain default --password {admin_pass} admin'.format(os_token=os_token,
-                                                                                                    os_url=os_url,
-                                                                                                    admin_pass=admin_pass))
+                                                                                                                                                                os_url=os_url,
+                                                                                                                                                                admin_pass=admin_pass))
+        # Create the admin role
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} role create admin'.format(os_token=os_token,
                                                                                                                       os_url=os_url))
+        # Add the admin role to the admin project and user
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} role add --project admin --user admin admin'.format(os_token=os_token,
                                                                                                                                                 os_url=os_url))
 
-        # For service
+        # Create the service project
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} project create --domain default --description "Service Project" service'.format(os_token=os_token,
                                                                                                                                                                             os_url=os_url))
-        # For demo
+        # Create the demo project
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} project create --domain default --description "Demo Project" demo'.format(os_token=os_token,
                                                                                                                                                                       os_url=os_url))
+        # Create the demo user
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} user create --domain default --password {demo_pass} demo'.format(os_token=os_token,
                                                                                                                                                              os_url=os_url,
                                                                                                                                                              demo_pass=demo_pass))
+        # Create the user role
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} role create user'.format(os_token=os_token,
                                                                                                                      os_url=os_url))
+        # Add the user role to the demo project and user
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} role add --project demo --user demo user'.format(os_token=os_token,
                                                                                                                                              os_url=os_url))
     @runs_once

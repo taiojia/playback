@@ -121,8 +121,8 @@ Create projects, users, and roles
 (OPTION) you will need to create OpenStack client environment scripts
 admin-openrc.sh
 
-    export OS_PROJECT_DOMAIN_ID=default
-    export OS_USER_DOMAIN_ID=default
+    export OS_PROJECT_DOMAIN_NAME=default
+    export OS_USER_DOMAIN_NAME=default
     export OS_PROJECT_NAME=admin
     export OS_TENANT_NAME=admin
     export OS_USERNAME=admin
@@ -134,8 +134,8 @@ admin-openrc.sh
 
 demo-openrc.sh
 
-    export OS_PROJECT_DOMAIN_ID=default
-    export OS_USER_DOMAIN_ID=default
+    export OS_PROJECT_DOMAIN_NAME=default
+    export OS_USER_DOMAIN_NAME=default
     export OS_PROJECT_NAME=demo
     export OS_TENANT_NAME=demo
     export OS_USERNAME=demo
