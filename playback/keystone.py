@@ -7,7 +7,10 @@ import argparse
 import sys
 from playback.cli import cli_description
 from playback import __version__
-from playback.keystone_conf import conf_keystone_conf, conf_wsgi_keystone_conf, conf_keystone_paste_ini, conf_memcached_conf
+from playback.templates.keystone_conf import conf_keystone_conf
+from playback.templates.wsgi_keystone_conf import conf_wsgi_keystone_conf
+from playback.templates.keystone_paste_ini import conf_keystone_paste_ini
+from playback.templates.memcached_conf import conf_memcached_conf
 
 class Keystone(object):
     def __init__(self, user, hosts=None, parallel=True):
