@@ -16,19 +16,21 @@ my_ip = {{ my_ip }}
 network_api_class = nova.network.neutronv2.api.API
 security_group_api = neutron
 linuxnet_interface_driver = nova.network.linux_net.NeutronLinuxBridgeInterfaceDriver
+use_neutron = True
 firewall_driver = nova.virt.firewall.NoopFirewallDriver
 
 [oslo_messaging_rabbit]
 rabbit_hosts = {{ rabbit_hosts }}
-rabbit_userid = openstack
+rabbit_userid = {{ rabbit_user }}
 rabbit_password = {{ rabbit_password }}
 
 [keystone_authtoken]
 auth_uri = {{ auth_uri }}
 auth_url = {{ auth_url }}
-auth_plugin = password
-project_domain_id = default
-user_domain_id = default
+memcached_servers = {{ memcached_servers }}
+auth_type = password
+project_domain_name = default
+user_domain_name = default
 project_name = service
 username = nova
 password = {{ password }}
@@ -40,7 +42,9 @@ vncserver_proxyclient_address = $my_ip
 novncproxy_base_url = {{ novncproxy_base_url }}
 
 [glance]
-host = {{ host }}
+# host deprecacted in mitaka instead of api_servers
+#host = {{ host }}
+api_servers = {{ api_servers }}
 
 [oslo_concurrency]
 lock_path = /var/lib/nova/tmp

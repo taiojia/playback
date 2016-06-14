@@ -25,7 +25,7 @@ class NovaCompute(Task):
         env.parallel = self.parallel
 
     @runs_once
-    def _install(self, my_ip, rabbit_hosts, rabbit_pass, auth_uri, auth_url, nova_pass, novncproxy_base_url, glance_host, neutron_endpoint, neutron_pass, rbd_secret_uuid):
+    def _install(self, my_ip, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, nova_pass, novncproxy_base_url, api_servers, neutron_endpoint, neutron_pass, rbd_secret_uuid, memcached_servers):
         print red(env.host_string + ' | Install nova-compute sysfsutils')
         sudo('apt-get update')
         sudo('apt-get -y install nova-compute sysfsutils')
@@ -40,14 +40,16 @@ class NovaCompute(Task):
                               use_sudo=True,
                               context={'my_ip': my_ip,
                                        'rabbit_hosts': rabbit_hosts,
+                                       'rabbit_user': rabbit_user, 
                                        'rabbit_password': rabbit_pass,
                                        'auth_uri': auth_uri,
                                        'auth_url': auth_url,
                                        'password': nova_pass,
                                        'novncproxy_base_url': novncproxy_base_url,
-                                       'host': glance_host,
+                                       'api_servers': api_servers,
                                        'url': neutron_endpoint,
-                                       'neutron_password': neutron_pass})
+                                       'neutron_password': neutron_pass,
+                                       'memcached_servers': memcached_servers})
         os.remove('tmp_nova_conf_' + env.host_string)
 
         print red(env.host_string + ' | Update /etc/nova/nova-compute.conf')
@@ -96,6 +98,11 @@ def install_subparser(s):
                                 action='store',
                                 default=None,
                                 dest='rabbit_hosts')
+    install_parser.add_argument('--rabbit-user',
+                                help='the user for rabbit, default openstack',
+                                action='store',
+                                default='openstack',
+                                dest='rabbit_user')
     install_parser.add_argument('--rabbit-pass',
                                 help='the password for rabbit openstack user',
                                 action='store',
@@ -121,11 +128,11 @@ def install_subparser(s):
                                 action='store',
                                 default=None,
                                 dest='novncproxy_base_url')
-    install_parser.add_argument('--glance-host',
-                                help='glance host e.g. CONTROLLER_VIP',
+    install_parser.add_argument('--api-servers',
+                                help='glance host e.g. http://CONTROLLER_VIP:9292',
                                 action='store',
                                 default=None,
-                                dest='glance_host')
+                                dest='api_servers')
     install_parser.add_argument('--neutron-endpoint',
                                 help='neutron endpoint e.g. http://CONTROLLER_VIP:9696',
                                 action='store',
@@ -141,6 +148,11 @@ def install_subparser(s):
                                 action='store',
                                 default=None,
                                 dest='rbd_secret_uuid')
+    install_parser.add_argument('--memcached-servers',
+                                help='memcached servers e.g. CONTROLLER1:11211,CONTROLLER2:11211',
+                                action='store',
+                                default=None,
+                                dest='memcached_servers')
     return install_parser
 
 def make_target(args):
@@ -153,9 +165,9 @@ def make_target(args):
         
 def install(args):
     target = make_target(args)
-    execute(target._install, args.my_ip, args.rabbit_hosts, args.rabbit_pass,
+    execute(target._install, args.my_ip, args.rabbit_hosts, args.rabbit_user, args.rabbit_pass,
             args.auth_uri, args.auth_url, args.nova_pass, args.novncproxy_base_url,
-            args.glance_host, args.neutron_endpoint, args.neutron_pass, args.rbd_secret_uuid)
+            args.api_servers, args.neutron_endpoint, args.neutron_pass, args.rbd_secret_uuid, args.memcached_servers)
     
 def parser():
     p = argparse.ArgumentParser(description=cli_description+'this command used for provision Nova Compute')
