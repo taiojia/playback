@@ -42,7 +42,7 @@ def install(args):
     try:
         target = Horizon(user=args.user, hosts=args.hosts.split(','))
     except AttributeError:
-        print red('No hosts found. Please using --hosts param.')
+        sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
 
     execute(target._install, 

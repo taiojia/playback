@@ -1,6 +1,7 @@
 import argparse
 from fabric.api import *
 from fabric.network import disconnect_all
+from fabric.colors import red
 import sys
 from playback.cli import cli_description
 from playback import __version__
@@ -20,7 +21,7 @@ def config(args):
     try:
         target = haproxy_config.HaproxyConfig(user=args.user, hosts=args.hosts.split(','))
     except AttributeError:
-        parser.print_help()
+        sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
     if args.upload_conf:
         execute(target._upload_conf, args.upload_conf)
