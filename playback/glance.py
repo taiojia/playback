@@ -8,7 +8,8 @@ import argparse
 import sys
 from playback.cli import cli_description
 from playback import __version__
-from playback.glance_conf import conf_glance_api_conf, conf_glance_registry_conf
+from playback.templates.glance_api_conf import conf_glance_api_conf
+from playback.templates.glance_registry_conf import conf_glance_registry_conf
 
 class Glance(Task):
     def __init__(self, user, hosts=None, parallel=True, *args, **kwargs):
@@ -22,6 +23,7 @@ class Glance(Task):
 
     @runs_once
     def _create_glance_db(self, root_db_pass, glance_db_pass):
+        """Create the glance database"""
         print red(env.host_string + ' | Create glance database')
         sudo("mysql -uroot -p{0} -e \"CREATE DATABASE glance;\"".format(root_db_pass), shell=False)
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'localhost' IDENTIFIED BY '{1}';\"".format(root_db_pass, glance_db_pass), shell=False)
@@ -29,8 +31,8 @@ class Glance(Task):
 
     @runs_once
     def _create_service_credentials(self, os_password, os_auth_url, glance_pass, endpoint):
-        with shell_env(OS_PROJECT_DOMAIN_ID='default',
-                       OS_USER_DOMAIN_ID='default',
+        with shell_env(OS_PROJECT_DOMAIN_NAME='default',
+                       OS_USER_DOMAIN_NAME='default',
                        OS_PROJECT_NAME='admin',
                        OS_TENANT_NAME='admin',
                        OS_USERNAME='admin',
@@ -50,7 +52,7 @@ class Glance(Task):
             sudo('openstack endpoint create --region RegionOne image admin {0}'.format(endpoint))
 
     @runs_once
-    def _install_glance(self, connection, auth_uri, auth_url, glance_pass, swift_store_auth_address):
+    def _install_glance(self, connection, auth_uri, auth_url, glance_pass, swift_store_auth_address, memcached_servers):
         print red(env.host_string + ' | Install glance python-glanceclient')
         sudo('apt-get update')
         sudo('apt-get -y install glance python-glanceclient')
@@ -66,7 +68,8 @@ class Glance(Task):
                                        'auth_url': auth_url,
                                        'password': glance_pass,
                                        'swift_store_auth_address': swift_store_auth_address,
-                                       'swift_store_key': glance_pass},
+                                       'swift_store_key': glance_pass,
+                                       'memcached_servers': memcached_servers},
                               use_jinja=True,
                               use_sudo=True)
         os.remove('tmp_glance_api_conf_' + env.host_string)
@@ -80,7 +83,8 @@ class Glance(Task):
                               context={'connection': connection,
                                        'auth_uri': auth_uri,
                                        'auth_url': auth_url,
-                                       'password': glance_pass},
+                                       'password': glance_pass,
+                                       'memcached_servers': memcached_servers},
                               use_jinja=True,
                               use_sudo=True)
         os.remove('tmp_glance_registry_conf_' + env.host_string)
@@ -133,7 +137,9 @@ def install(args):
             args.auth_uri, 
             args.auth_url, 
             args.glance_pass,
-            args.swift_store_auth_address)
+            args.swift_store_auth_address,
+            args.memcached_servers)
+
 def parser():
     p = argparse.ArgumentParser(prog='playback-glance', description=cli_description+'this command used for provision Glance')
     p.add_argument('-v', '--version', action='version', version=__version__)
@@ -211,6 +217,11 @@ def parser():
                         action='store',
                         default=None,
                         dest='swift_store_auth_address')
+    install_parser.add_argument('--memcached-servers',
+                        help='memcached servers e.g. CONTROLLER1:11211,CONTROLLER2:11211',
+                        action='store',
+                        default=None,
+                        dest='memcached_servers')                        
     install_parser.add_argument('--populate',
                         help='populate the glance database',
                         action='store_true',
