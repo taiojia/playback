@@ -172,11 +172,11 @@ Create service credentials
 
 Install nova on CONTROLLER1
 
-    playback-nova --user ubuntu --hosts CONTROLLER1 install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --api-connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova_api --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-pass changeme --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme --populate
+    playback-nova --user ubuntu --hosts CONTROLLER1 install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --api-connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova_api --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme --populate
 
 Install nova on CONTROLLER2
 
-    playback-nova --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --api-connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova_api --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-pass changeme --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme
+    playback-nova --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --api-connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova_api --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --glance-host CONTROLLER_VIP --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme
 
 ## Nova Compute
 

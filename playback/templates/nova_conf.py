@@ -28,7 +28,7 @@ connection = {{ connection }}
 
 [oslo_messaging_rabbit]
 rabbit_hosts = {{ rabbit_hosts }}
-rabbit_userid = openstack
+rabbit_userid = {{ rabbit_user }}
 rabbit_password = {{ rabbit_password }}
 
 [keystone_authtoken]

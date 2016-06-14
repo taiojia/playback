@@ -54,7 +54,7 @@ class Nova(Task):
             sudo('openstack endpoint create --region RegionOne compute admin {0}'.format(endpoint))
 
     @runs_once
-    def _install_nova(self, connection, api_connection, auth_uri, auth_url, nova_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_pass, glance_host, neutron_endpoint, neutron_pass, metadata_proxy_shared_secret):
+    def _install_nova(self, connection, api_connection, auth_uri, auth_url, nova_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_user, rabbit_pass, glance_host, neutron_endpoint, neutron_pass, metadata_proxy_shared_secret):
         print red(env.host_string + ' | Install nova-api nova-cert nova-conductor nova-consoleauth nova-novncproxy nova-scheduler python-novaclient')
         sudo('apt-get update')
         # nova-cert deprecated in mitaka
@@ -74,6 +74,7 @@ class Nova(Task):
                                        'my_ip': my_ip,
                                        'memcached_servers': memcached_servers,
                                        'rabbit_hosts': rabbit_hosts,
+                                       'rabbit_user': rabbit_user,
                                        'rabbit_password': rabbit_pass,
                                        'host': glance_host,
                                        'url': neutron_endpoint,
@@ -180,6 +181,11 @@ def install_subparser(s):
                                 action='store',
                                 default=None,
                                 dest='rabbit_hosts')
+    install_parser.add_argument('--rabbit-user',
+                                help='the user for rabbit openstack user, default openstack',
+                                action='store',
+                                default='openstack',
+                                dest='rabbit_user')
     install_parser.add_argument('--rabbit-pass',
                                 help='the password for rabbit openstack user',
                                 action='store',
@@ -232,7 +238,7 @@ def create_service_credentials(args):
 def install(args):
     target = make_target(args)
     execute(target._install_nova, args.connection, args.api_connection, args.auth_uri, args.auth_url,
-            args.nova_pass, args.my_ip, args.memcached_servers, args.rabbit_hosts,
+            args.nova_pass, args.my_ip, args.memcached_servers, args.rabbit_hosts, args.rabbit_user, 
             args.rabbit_pass, args.glance_host, args.neutron_endpoint, args.neutron_pass,
             args.metadata_proxy_shared_secret)
         
