@@ -7,7 +7,7 @@ import os
 import argparse
 import sys
 from playback.cli import cli_description
-from playback.templates.nova_conf_compute import conf_nova_conf
+from playback.templates.nova_conf_for_compute import conf_nova_conf
 from playback.templates.nova_compute_conf import conf_nova_compute_conf
 from playback.templates.libvirt_bin import conf_libvirt_bin
 from playback.templates.libvirtd_conf import conf_libvirtd_conf
