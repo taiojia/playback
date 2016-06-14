@@ -7,7 +7,7 @@ import os
 import argparse
 import sys
 from playback.cli import cli_description
-from playback.nova_conf import conf_nova_conf
+from playback.templates.nova_conf import conf_nova_conf
 from playback import __version__
 
 class Nova(Task):
