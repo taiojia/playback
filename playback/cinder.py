@@ -173,6 +173,7 @@ def main():
         # XXX on Python 3.3 we get 'args has no func' rather than short help.
         try:
             args.func(args)
+            disconnect_all()
             return 0
         except Exception as e:
             sys.stderr.write(e.message)
