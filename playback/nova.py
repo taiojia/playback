@@ -54,7 +54,7 @@ class Nova(Task):
             sudo('openstack endpoint create --region RegionOne compute admin {0}'.format(endpoint))
 
     @runs_once
-    def _install_nova(self, connection, api_connection, auth_uri, auth_url, nova_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_user, rabbit_pass, glance_host, neutron_endpoint, neutron_pass, metadata_proxy_shared_secret):
+    def _install_nova(self, connection, api_connection, auth_uri, auth_url, nova_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_user, rabbit_pass, api_servers, neutron_endpoint, neutron_pass, metadata_proxy_shared_secret):
         print red(env.host_string + ' | Install nova-api nova-cert nova-conductor nova-consoleauth nova-novncproxy nova-scheduler python-novaclient')
         sudo('apt-get update')
         # nova-cert deprecated in mitaka
@@ -76,7 +76,7 @@ class Nova(Task):
                                        'rabbit_hosts': rabbit_hosts,
                                        'rabbit_user': rabbit_user,
                                        'rabbit_password': rabbit_pass,
-                                       'host': glance_host,
+                                       'api_servers': api_servers,
                                        'url': neutron_endpoint,
                                        'neutron_pass': neutron_pass,
                                        'metadata_proxy_shared_secret': metadata_proxy_shared_secret
@@ -86,12 +86,15 @@ class Nova(Task):
         os.remove('tmp_nova_conf_' + env.host_string)
 
         if args.populate and env.host_string == self.hosts[0]:
-            print red(env.host_string + ' | Populate the Nova database:')
+            print red(env.host_string + ' | Populate the nova_api database:')
+            sudo('su -s /bin/sh -c "nova-manage api_db sync" nova', shell=False)
+            print red(env.host_string + ' | Populate the nova database:')
             sudo('su -s /bin/sh -c "nova-manage db sync" nova', shell=False)
 
         print red(env.host_string + ' | Restart the Nova services')
         sudo('service nova-api restart')
-        sudo('service nova-cert restart')
+        # nova-cert deprecated in mitaka
+        #sudo('service nova-cert restart')
         sudo('service nova-consoleauth restart')
         sudo('service nova-scheduler restart')
         sudo('service nova-conductor restart')
@@ -102,14 +105,14 @@ class Nova(Task):
 
 def create_nova_db_subparser(s):
     create_nova_db_parser = s.add_parser('create-nova-db',
-                                        help='create the nova database')
+                                        help='create the nova and nova_api database')
     create_nova_db_parser.add_argument('--root-db-pass', 
-                                        help='the openstack database root passowrd',
+                                        help='the MySQL database root passowrd',
                                         action='store', 
                                         default=None, 
                                         dest='root_db_pass')
     create_nova_db_parser.add_argument('--nova-db-pass', 
-                                        help='nova db passowrd',
+                                        help='nova and nova_api database passowrd',
                                         action='store', 
                                         default=None, 
                                         dest='nova_db_pass')
@@ -191,11 +194,11 @@ def install_subparser(s):
                                 action='store',
                                 default=None,
                                 dest='rabbit_pass')
-    install_parser.add_argument('--glance-host',
-                                help='glance host e.g. CONTROLLER_VIP',
+    install_parser.add_argument('--api-servers',
+                                help='glance host e.g. http://CONTROLLER_VIP:9292',
                                 action='store',
                                 default=None,
-                                dest='glance_host')
+                                dest='api_servers')
     install_parser.add_argument('--neutron-endpoint',
                                 help='neutron endpoint e.g. http://CONTROLLER_VIP:9696',
                                 action='store',
@@ -239,7 +242,7 @@ def install(args):
     target = make_target(args)
     execute(target._install_nova, args.connection, args.api_connection, args.auth_uri, args.auth_url,
             args.nova_pass, args.my_ip, args.memcached_servers, args.rabbit_hosts, args.rabbit_user, 
-            args.rabbit_pass, args.glance_host, args.neutron_endpoint, args.neutron_pass,
+            args.rabbit_pass, args.api_servers, args.neutron_endpoint, args.neutron_pass,
             args.metadata_proxy_shared_secret)
         
 def parser():
