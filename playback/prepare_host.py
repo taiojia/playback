@@ -40,7 +40,7 @@ class PrepareHost(object):
         """openstack packages"""
         sudo('apt-get update')
         sudo('apt-get install software-properties-common -y')
-        sudo('add-apt-repository cloud-archive:liberty -y')
+        sudo('add-apt-repository cloud-archive:mitaka -y')
         with prefix('sudo apt-get update'):
             sudo('DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade')
         
