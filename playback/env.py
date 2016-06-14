@@ -12,8 +12,7 @@ def prepare_host(user, hosts):
     try:
         remote = prepare_host.PrepareHost(user, hosts)
     except AttributeError:
-        print red('No hosts found. Please using --hosts param.')
-        parser.print_help()
+        sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
 
     # host networking
@@ -33,7 +32,7 @@ def cmd(user, hosts, run):
     try:
         remote = cmd.Cmd(user, hosts)
     except AttributeError:
-        print red('No hosts found. Please using --hosts param.')
+        sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
     execute(remote.cmd, run)
      
