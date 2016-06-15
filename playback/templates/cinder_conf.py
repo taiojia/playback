@@ -5,14 +5,13 @@ iscsi_helper = tgtadm
 volume_name_template = volume-%s
 volume_group = cinder-volumes
 verbose = True
-auth_strategy = keystone
 state_path = /var/lib/cinder
 lock_path = /var/lock/cinder
 volumes_dir = /var/lib/cinder/volumes
 rpc_backend = rabbit
 auth_strategy = keystone
 my_ip = {{ my_ip }}
-glance_host = {{ glance_host }}
+glance_api_servers = {{ glance_api_servers }}
 
 volume_driver = cinder.volume.drivers.rbd.RBDDriver
 rbd_pool = volumes
@@ -31,15 +30,16 @@ connection = {{ connection }}
 
 [oslo_messaging_rabbit]
 rabbit_hosts = {{ rabbit_hosts }}
-rabbit_userid = openstack
+rabbit_userid = {{ rabbit_user }}
 rabbit_password = {{ rabbit_password }}
 
 [keystone_authtoken]
 auth_uri = {{ auth_uri }}
 auth_url = {{ auth_url }}
-auth_plugin = password
-project_domain_id = default
-user_domain_id = default
+memcached_servers = {{ memcached_servers }}
+auth_type = password
+project_domain_name = default
+user_domain_name = default
 project_name = service
 username = cinder
 password = {{ cinder_pass }}

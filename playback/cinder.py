@@ -29,8 +29,8 @@ class Cinder(Task):
 
     @runs_once
     def _create_service_credentials(self, os_password, os_auth_url, cinder_pass, endpoint_v1, endpoint_v2):
-        with shell_env(OS_PROJECT_DOMAIN_ID='default',
-                       OS_USER_DOMAIN_ID='default',
+        with shell_env(OS_PROJECT_DOMAIN_NAME='default',
+                       OS_USER_DOMAIN_NAME='default',
                        OS_PROJECT_NAME='admin',
                        OS_TENANT_NAME='admin',
                        OS_USERNAME='admin',
@@ -54,7 +54,7 @@ class Cinder(Task):
             sudo('openstack endpoint create --region RegionOne volumev2 admin {0}'.format(endpoint_v2))
 
     @runs_once
-    def _install(self, connection, rabbit_hosts, rabbit_pass, auth_uri, auth_url, cinder_pass, my_ip, glance_host, rbd_secret_uuid, populate=False):
+    def _install(self, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, cinder_pass, my_ip, glance_api_servers, rbd_secret_uuid, memcached_servers, populate=False):
         print red(env.host_string + ' | Install the cinder-api and cinder-volume')
         sudo('apt-get update')
         sudo('apt-get -y install cinder-api cinder-scheduler python-cinderclient cinder-volume python-mysqldb')
@@ -68,13 +68,15 @@ class Cinder(Task):
                               use_sudo=True,
                               context={'connection': connection,
                                        'rabbit_hosts': rabbit_hosts,
+                                       'rabbit_user': rabbit_user,
                                        'rabbit_password': rabbit_pass,
                                        'auth_uri': auth_uri,
                                        'auth_url': auth_url,
                                        'cinder_pass': cinder_pass,
                                        'my_ip': my_ip,
-                                       'glance_host': glance_host,
-                                       'rbd_secret_uuid': rbd_secret_uuid})
+                                       'glance_api_servers': glance_api_servers,
+                                       'rbd_secret_uuid': rbd_secret_uuid,
+                                       'memcached_servers': memcached_servers})
         os.remove('tmp_cinder_conf_' + env.host_string)
 
         if populate:
@@ -108,18 +110,20 @@ def create_service_credentials(user ,hosts, os_password, os_auth_url, cinder_pas
     execute(target._create_service_credentials, os_password, 
             os_auth_url, cinder_pass, endpoint_v1, endpoint_v2)
 
-def install(user, hosts, connection, rabbit_hosts, rabbit_pass, auth_uri, auth_url, cinder_pass, my_ip, glance_host, rbd_secret_uuid, populate):
+def install(user, hosts, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, cinder_pass, my_ip, glance_api_servers, rbd_secret_uuid, memcached_servers, populate):
     target = make_target(user, hosts)
     execute(target._install,
             connection,
             rabbit_hosts,
+            rabbit_user,
             rabbit_pass, 
             auth_uri, 
             auth_url, 
             cinder_pass, 
             my_ip, 
-            glance_host, 
-            rbd_secret_uuid, 
+            glance_api_servers, 
+            rbd_secret_uuid,
+            memcached_servers, 
             populate)
             
 def parser():
@@ -148,17 +152,19 @@ def parser():
     create_service_credentials_parser.set_defaults(func=create_service_credentials_f)
     
     def install_f(args):
-        install(args.user, args.hosts.split(','), args.connection, args.rabbit_hosts, args.rabbit_pass, args.auth_uri, args.auth_url, args.cinder_pass, args.my_ip, args.glance_host, args.rbd_secret_uuid, args.populate)
+        install(args.user, args.hosts.split(','), args.connection, args.rabbit_hosts, args.rabbit_user, args.rabbit_pass, args.auth_uri, args.auth_url, args.cinder_pass, args.my_ip, args.glance_api_servers, args.rbd_secret_uuid, args.memcached_servers, args.populate)
     install_parser = s.add_parser('install', help='install cinder api and volume')
     install_parser.add_argument('--connection', help='mysql database connection string e.g. mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinder', action='store', default=None, dest='connection')
     install_parser.add_argument('--rabbit-hosts', help='rabbit hosts e.g. CONTROLLER1,CONTROLLER2', action='store', default=None, dest='rabbit_hosts')
+    install_parser.add_argument('--rabbit-user', help='the user for rabbit, default openstack', action='store', default='openstack', dest='rabbit_user')
     install_parser.add_argument('--rabbit-pass', help='the password for rabbit openstack user', action='store', default=None, dest='rabbit_pass')
     install_parser.add_argument('--auth-uri', help='keystone internal endpoint e.g. http://CONTROLLER_VIP:5000', action='store', default=None, dest='auth_uri')
     install_parser.add_argument('--auth-url', help='keystone admin endpoint e.g. http://CONTROLLER_VIP:35357', action='store', default=None, dest='auth_url')
     install_parser.add_argument('--cinder-pass', help='password for cinder user', action='store', default=None, dest='cinder_pass')
     install_parser.add_argument('--my-ip', help='the host management ip', action='store', default=None, dest='my_ip')
-    install_parser.add_argument('--glance-host', help='glance host e.g. CONTROLLER_VIP', action='store', default=None, dest='glance_host')
+    install_parser.add_argument('--glance-host', help='glance host e.g. http://CONTROLLER_VIP:9292', action='store', default=None, dest='glance_api_servers')
     install_parser.add_argument('--rbd-secret-uuid', help='ceph rbd secret uuid', action='store', default=None, dest='rbd_secret_uuid')
+    install_parser.add_argument('--memcached-servers', help='memcached servers e.g. CONTROLLER1:11211,CONTROLLER2:11211', action='store', default=None, dest='memcached_servers')
     install_parser.add_argument('--populate', help='Populate the cinder database', action='store_true', default=False, dest='populate')
     install_parser.set_defaults(func=install_f)
     
