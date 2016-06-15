@@ -7,8 +7,8 @@ import os
 import argparse
 import sys
 from playback.cli import cli_description
+from playback.templates.local_settings_py import conf_local_settings_py
 from playback import __version__
-from playback.horizon_conf import conf_local_settings_py
 
 class Horizon(Task):
     def __init__(self, user, hosts=None, parallel=True, *args, **kwargs):
