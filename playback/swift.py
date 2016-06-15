@@ -7,7 +7,8 @@ import os
 import argparse
 import sys
 from playback.cli import cli_description
-from playback.swift_conf import conf_proxy_server_conf, conf_swift_conf
+from playback.templates.proxy_server_conf import conf_proxy_server_conf
+from playback.templates.swift_conf import conf_swift_conf
 from playback import __version__
 
 class Swift(Task):
