@@ -26,7 +26,7 @@ class RabbitMq(object):
         sudo('service rabbitmq-server start')
         sudo('rabbitmqctl add_user %s %s' % (rabbit_user, rabbit_pass))
         sudo('echo "[{rabbit, [{loopback_users, []}]}]." > /etc/rabbitmq/rabbitmq.config')
-        sudo('rabbitmqctl set_permissions openstack ".*" ".*" ".*"')
+        sudo('rabbitmqctl set_permissions %s ".*" ".*" ".*"' % rabbit_user)
         sudo('service rabbitmq-server restart')
 
     @runs_once
