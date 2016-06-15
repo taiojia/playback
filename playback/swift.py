@@ -45,10 +45,23 @@ class Swift(Task):
             sudo('openstack endpoint create --region RegionOne object-store admin {0}'.format(admin_endpoint))
 
     @runs_once
-    def _install(self, auth_uri, auth_url, swift_pass, memcache_servers):
+    def _install(self, auth_uri, auth_url, swift_pass, memcached_servers, with_memcached):
         print red(env.host_string + ' | Install swift proxy')
         sudo('apt-get update')
-        sudo('apt-get -y install swift swift-proxy python-swiftclient python-keystoneclient python-keystonemiddleware memcached')
+        sudo('apt-get -y install swift swift-proxy python-swiftclient python-keystoneclient python-keystonemiddleware')
+        # Install memcached
+        if with_memcached:
+            sudo('apt-get -y install memcached')
+            # Configure /etc/memcached.conf to listen 0.0.0.0
+            with open('tmp_memcached_conf_'+env.host_string, 'w') as f:
+                f.write(conf_memcached_conf)
+            files.upload_template(filename='tmp_memcached_conf_'+env.host_string,
+                                    destination='/etc/memcached.conf',
+                                    use_sudo=True,
+                                    backup=True)
+            os.remove('tmp_memcached_conf_'+env.host_string)
+            sudo('service memcached restart')
+
         sudo('mkdir /etc/swift')
 
         print red(env.host_string + ' | Update /etc/swift/proxy-server.conf')
@@ -62,8 +75,10 @@ class Swift(Task):
                               context={'auth_uri': auth_uri,
                                        'auth_url': auth_url,
                                        'swift_pass': swift_pass,
-                                       'memcache_servers': memcache_servers})
+                                       'memcached_servers': memcached_servers})
         os.remove('tmp_proxy_server_conf_' + env.host_string)
+
+
 
     @runs_once
     def _finalize_install(self, swift_hash_path_suffix, swift_hash_path_prefix):
@@ -137,11 +152,16 @@ def install_subparser(s):
                                 action='store',
                                 default=None,
                                 dest='swift_pass')
-    install_parser.add_argument('--memcache-servers',
+    install_parser.add_argument('--memcached-servers',
                                 help='memcache servers e.g. CONTROLLER1:11211,CONTROLLER2:11211',
                                 action='store',
                                 default=None,
-                                dest='memcache_servers')
+                                dest='memcached_servers')
+    install_parser.add_argument('--with-memcached',
+                                help='install memcached on remote server, if you have other memcached on the controller node, you can use --memcached-sersers',
+                                action='store_true',
+                                default=False,
+                                dest='with_memcached')
     return install_parser
 
 def finalize_install_subparser(s):
@@ -182,7 +202,8 @@ def install(args):
             args.auth_uri, 
             args.auth_url, 
             args.swift_pass, 
-            args.memcache_servers)
+            args.memcached_servers,
+            args.with_memcached)
 
 def finalize_install(args):
     target = make_target(args)

@@ -149,7 +149,7 @@ class Keystone(object):
                               destination='/etc/keystone/keystone-paste.ini',
                               use_sudo=True,
                               backup=True)
-        os.remove('tmp_keystone_paste_ini_+env.host_string')
+        os.remove('tmp_keystone_paste_ini_'+env.host_string)
 
 def make_target(args):
     try:

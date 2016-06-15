@@ -41,9 +41,9 @@ class HaproxyConfig(object):
 
     @runs_once
     def _configure_keepalived(self, router_id, priority, state, interface, vip):
-        with open('tmp_keepalived_conf', 'w') as f:
+        with open('tmp_keepalived_conf_'+env.host_string, 'w') as f:
             f.write(conf_keepalived_conf)
-        files.upload_template(filename='tmp_keepalived_conf', 
+        files.upload_template(filename='tmp_keepalived_conf_'+env.host_string, 
                               destination='/etc/keepalived/keepalived.conf',
                               context={'router_id': router_id,
                                        'priority': priority,
@@ -51,5 +51,5 @@ class HaproxyConfig(object):
                                        'interface': interface,
                                        'vip': vip},
                                use_jinja=True, use_sudo=True, backup=True)
-        os.remove('tmp_keepalived_conf')
+        os.remove('tmp_keepalived_conf_'+env.host_string)
         sudo('service keepalived restart')

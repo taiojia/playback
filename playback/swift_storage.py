@@ -22,10 +22,10 @@ class SwiftStorage(Task):
         env.parallel = self.parallel
 
     @runs_once
-    def _prepare_disks(self, prepare_disks):
+    def _prepare_disks(self, disks_name):
         """format disks to xfs and mount it"""
         fstab = '/etc/fstab'
-        for disk in tqdm(prepare_disks.split(',')):
+        for disk in tqdm(disks_name.split(',')):
             sudo('umount /dev/{0}'.format(disk), warn_only=True)
             if sudo('mkfs.xfs -f /dev/{0}'.format(disk), warn_only=True).failed:
                 sudo('apt-get update')
@@ -108,6 +108,7 @@ class SwiftStorage(Task):
         print red(env.host_string + ' | Create the recon directory and ensure proper ownership of it')
         sudo('mkdir -p /var/cache/swift')
         sudo('chown -R root:swift /var/cache/swift')
+        sudo('chmod -R 755 /var/cache/swift')
 
     @runs_once
     def _create_account_builder_file(self, partitions, replicas, moving):

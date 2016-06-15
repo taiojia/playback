@@ -17,15 +17,15 @@ class MysqlConfig(object):
     @runs_once
     @serial
     def _update_mysql_config(self, wsrep_cluster_address, wsrep_node_name, wsrep_node_address):
-        with open('tmp_my_cnf', 'w') as f:
+        with open('tmp_my_cnf_'+env.host_string, 'w') as f:
             f.write(conf_my_cnf)
-        files.upload_template(filename='tmp_my_cnf', 
+        files.upload_template(filename='tmp_my_cnf_'+env.host_string, 
                               destination='/etc/mysql/my.cnf', 
                               context={'wsrep_cluster_address': wsrep_cluster_address, 
                                        'wsrep_node_name': wsrep_node_name, 
                                        'wsrep_node_address': wsrep_node_address}, 
                               use_jinja=True, use_sudo=True, backup=True)
         try:
-            os.remove('tmp_my_cnf')
+            os.remove('tmp_my_cnf_'+env.host_string)
         except Exception:
             pass

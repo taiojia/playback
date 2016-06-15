@@ -1,10 +1,10 @@
 conf_proxy_server_conf = """[DEFAULT]
 # bind_ip = 0.0.0.0
 bind_port = 8080
+user = swift
+swift_dir = /etc/swift
 # bind_timeout = 30
 # backlog = 4096
-swift_dir = /etc/swift
-user = swift
 
 # Enables exposing configuration settings via HTTP GET /info.
 # expose_info = true
@@ -286,9 +286,10 @@ user_test5_tester5 = testing5 service
 paste.filter_factory = keystonemiddleware.auth_token:filter_factory
 auth_uri = {{ auth_uri }}
 auth_url = {{ auth_url }}
-auth_plugin = password
-project_domain_id = default
-user_domain_id = default
+memcached_servers = {{ memcached_servers }}
+auth_type = password
+project_domain_name = default
+user_domain_name = default
 project_name = service
 username = swift
 password = {{ swift_pass }}
@@ -394,7 +395,7 @@ use = egg:swift#memcache
 # memcache.conf (see memcache.conf-sample) or lacking that file, it will
 # default to the value below. You can specify multiple servers separated with
 # commas, as in: 10.1.2.3:11211,10.1.2.4:11211
-memcache_servers = {{ memcache_servers }}
+memcache_servers = {{ memcached_servers }}
 #
 # Sets how memcache values are serialized and deserialized:
 # 0 = older, insecure pickle serialization
