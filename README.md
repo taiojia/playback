@@ -41,3 +41,4 @@ Playback command-line tool supporting the following platform:
   * Fix Horizon memcached server single point
   * Split the templates to a single module
   * User can define the rabbit user
+  * JSON RPC API has been deprecated in mitaka
