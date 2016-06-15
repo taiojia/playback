@@ -18,7 +18,6 @@ class PrepareHost(object):
         env.hosts = self.hosts
         env.parallel = self.parallel
         
-    @runs_once
     def setup_external_interface(self):
         """host networking"""
         with cd('/etc/network'):
@@ -27,7 +26,6 @@ class PrepareHost(object):
         sudo('ifup eth1', warn_only=True)
         # TODO: purge old eth1 configuration
         
-    @runs_once
     def setup_ntp(self):
         """network time protocal (ntp)"""
         sudo('echo \'Asia/Shanghai\' > /etc/timezone')
@@ -35,7 +33,6 @@ class PrepareHost(object):
         sudo('apt-get install chrony -y')
         # TODO: setup ntp server and ntp client, current all are clients
 
-    @runs_once
     def set_openstack_repository(self):
         """openstack packages"""
         sudo('apt-get update')
