@@ -21,7 +21,7 @@ class Horizon(Task):
         env.parallel = self.parallel
 
     @runs_once
-    def _install(self, openstack_host, memcache, time_zone):
+    def _install(self, openstack_host, memcached_servers, time_zone):
         print red(env.host_string + ' | Install the packages')
         sudo('apt-get update')
         sudo('apt-get -y install openstack-dashboard')
@@ -34,7 +34,7 @@ class Horizon(Task):
                               use_jinja=True,
                               use_sudo=True,
                               context={'openstack_host': openstack_host,
-                                       'memcache': memcache,
+                                       'memcached_servers': memcached_servers,
                                        'time_zone': time_zone})
         os.remove('tmp_local_settings_py_' + env.host_string)
 
@@ -47,7 +47,7 @@ def install(args):
 
     execute(target._install, 
             args.openstack_host, 
-            args.memcache, 
+            args.memcached_servers, 
             args.time_zone)
 
 def parser():
@@ -74,11 +74,11 @@ def parser():
                                 action='store',
                                 default=None,
                                 dest='openstack_host')
-    install_parser.add_argument('--memcache',
-                                help='django memcache e.g. CONTROLLER1:11211',
+    install_parser.add_argument('--memcached-servers',
+                                help='django memcache e.g. CONTROLLER1:11211,CONTROLLER2:11211',
                                 action='store',
                                 default=None,
-                                dest='memcache')
+                                dest='memcached_servers')
     install_parser.add_argument('--time-zone',
                                 help='the timezone of the server. This should correspond with the timezone of your entire OpenStack installation e.g. Asia/Shanghai',
                                 action='store',
