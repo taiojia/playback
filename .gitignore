@@ -174,3 +174,4 @@ kubernetes/
 /tmp_my_cnf
 venv/
 example_argparse.py
+.DS_Store
