@@ -3,6 +3,7 @@ import os
 from playback import config
 from fabric.api import *
 from fabric.colors import red
+from fabric.network import disconnect_all
 import sys
 from playback.cli import cli_description
 from playback import __version__
