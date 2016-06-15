@@ -22,9 +22,9 @@ class Swift(Task):
         env.parallel = self.parallel
 
     @runs_once
-    def _create_service_credentials(self, os_password, os_auth_url, swift_pass, public_internal_endpoint, admin_endpoint):
-        with shell_env(OS_PROJECT_DOMAIN_ID='default',
-                       OS_USER_DOMAIN_ID='default',
+    def _create_service_credentials(self, os_password, os_auth_url, swift_pass, public_endpoint, internal_endpoint, admin_endpoint):
+        with shell_env(OS_PROJECT_DOMAIN_NAME='default',
+                       OS_USER_DOMAIN_NAME='default',
                        OS_PROJECT_NAME='admin',
                        OS_TENANT_NAME='admin',
                        OS_USERNAME='admin',
@@ -40,8 +40,8 @@ class Swift(Task):
             print red(env.host_string + ' | Create the swift service entity')
             sudo('openstack service create --name swift --description "OpenStack Object Storage" object-store')
             print red(env.host_string + ' | Create the Object Storage service API endpoints')
-            sudo('openstack endpoint create --region RegionOne object-store public {0}'.format(public_internal_endpoint))
-            sudo('openstack endpoint create --region RegionOne object-store internal {0}'.format(public_internal_endpoint))
+            sudo('openstack endpoint create --region RegionOne object-store public {0}'.format(public_endpoint))
+            sudo('openstack endpoint create --region RegionOne object-store internal {0}'.format(internal_endpoint))
             sudo('openstack endpoint create --region RegionOne object-store admin {0}'.format(admin_endpoint))
 
     @runs_once
@@ -103,11 +103,16 @@ def create_service_credentials_subparser(s):
                                                     action='store',
                                                     default=None,
                                                     dest='swift_pass')
-    create_service_credentials_parser.add_argument('--public-internal-endpoint',
-                                                    help='public and internal endpoint for swift service e.g. http://CONTROLLER_VIP:8080/v1/AUTH_%%\(tenant_id\)s',
+    create_service_credentials_parser.add_argument('--public-endpoint',
+                                                    help='public endpoint for swift service e.g. http://CONTROLLER_VIP:8080/v1/AUTH_%%\(tenant_id\)s',
                                                     action='store',
                                                     default=None,
-                                                    dest='public_internal_endpoint')
+                                                    dest='public_endpoint')
+    create_service_credentials_parser.add_argument('--internal-endpoint',
+                                                    help='internal endpoint for swift service e.g. http://CONTROLLER_VIP:8080/v1/AUTH_%%\(tenant_id\)s',
+                                                    action='store',
+                                                    default=None,
+                                                    dest='internal_endpoint')
     create_service_credentials_parser.add_argument('--admin-endpoint',
                                                     help='admin endpoint for swift service e.g. http://CONTROLLER_VIP:8080/v1',
                                                     action='store',
@@ -167,7 +172,8 @@ def create_service_credentials(args):
             args.os_password, 
             args.os_auth_url, 
             args.swift_pass, 
-            args.public_internal_endpoint, 
+            args.public_endpoint,
+            args.internal_endpoint,
             args.admin_endpoint)
 
 def install(args):
