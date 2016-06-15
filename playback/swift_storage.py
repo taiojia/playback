@@ -48,6 +48,7 @@ class SwiftStorage(Task):
                               destination='/etc/rsyncd.conf',
                               use_jinja=True,
                               use_sudo=True,
+                              backup=True,
                               context={'address': address})
         os.remove('tmp_rsyncd_conf_' + env.host_string)
 
@@ -57,7 +58,8 @@ class SwiftStorage(Task):
         files.upload_template(filename='tmp_rsync_' + env.host_string,
                               destination='/etc/default/rsync',
                               use_jinja=True,
-                              use_sudo=True,)
+                              use_sudo=True,
+                              backup=True)
         os.remove('tmp_rsync_' + env.host_string)
 
         print red(env.host_string + ' | Start the rsync service')
@@ -74,6 +76,7 @@ class SwiftStorage(Task):
                               destination='/etc/swift/account-server.conf',
                               use_jinja=True,
                               use_sudo=True,
+                              backup=True,
                               context={'bind_ip': bind_ip})
         os.remove('tmp_account_server_conf_' + env.host_string)
 
@@ -84,6 +87,7 @@ class SwiftStorage(Task):
                               destination='/etc/swift/container-server.conf',
                               use_jinja=True,
                               use_sudo=True,
+                              backup=True,
                               context={'bind_ip': bind_ip})
         os.remove('tmp_container_server_conf_' + env.host_string)
 
@@ -94,6 +98,7 @@ class SwiftStorage(Task):
                               destination='/etc/swift/object-server.conf',
                               use_jinja=True,
                               use_sudo=True,
+                              backup=True,
                               context={'bind_ip': bind_ip})
         os.remove('tmp_object_server_conf_' + env.host_string)
 

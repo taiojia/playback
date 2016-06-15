@@ -70,6 +70,7 @@ class Neutron(Task):
                               destination='/etc/neutron/neutron.conf',
                               use_jinja=True,
                               use_sudo=True,
+                              backup=True,
                               context={'connection': connection,
                                        'rabbit_hosts': rabbit_hosts,
                                        'rabbit_user': rabbit_user, 
@@ -87,7 +88,7 @@ class Neutron(Task):
             f.write(conf_ml2_conf_ini)
         files.upload_template(filename='ml2_conf_ini_'+env.host_string,
                               destination='/etc/neutron/plugins/ml2/ml2_conf.ini',
-                              use_sudo=True)    
+                              use_sudo=True, backup=True)    
         os.remove('ml2_conf_ini_' + env.host_string)
 
         print red(env.host_string + ' | Update /etc/neutron/plugins/ml2/linuxbridge_agent.ini')
@@ -97,6 +98,7 @@ class Neutron(Task):
                               destination='/etc/neutron/plugins/ml2/linuxbridge_agent.ini',
                               use_jinja=True,
                               use_sudo=True,
+                              backup=True,
                               context={'public_interface': public_interface,
                                        'local_ip': local_ip})
         os.remove('tmp_linuxbridge_agent_ini_'+env.host_string)
@@ -106,6 +108,7 @@ class Neutron(Task):
             f.write(conf_l3_agent_ini)
         files.upload_template(filename='tmp_l3_agent_ini_' + env.host_string,
                               destination='/etc/neutron/l3_agent.ini',
+                              backup=True,
                               use_sudo=True)
         os.remove('tmp_l3_agent_ini_' + env.host_string)
 
@@ -114,6 +117,7 @@ class Neutron(Task):
             f.write(conf_dhcp_agent_ini)
         files.upload_template(filename='tmp_dhcp_agent_ini_' + env.host_string,
                               destination='/etc/neutron/dhcp_agent.ini',
+                              backup=True,
                               use_sudo=True)
         os.remove('tmp_dhcp_agent_ini_' + env.host_string)
 
@@ -122,6 +126,7 @@ class Neutron(Task):
             f.write(conf_dnsmasq_neutron_conf)
         files.upload_template(filename='tmp_dnsmasq_neutron_conf_' + env.host_string,
                               destination='/etc/neutron/dnsmasq-neutron.conf',
+                              backup=True,
                               use_sudo=True)
         os.remove('tmp_dnsmasq_neutron_conf_' + env.host_string)
 
@@ -132,6 +137,7 @@ class Neutron(Task):
                               destination='/etc/neutron/metadata_agent.ini',
                               use_jinja=True,
                               use_sudo=True,
+                              backup=True,
                               context={'auth_uri': auth_uri,
                                        'auth_url': auth_url,
                                        'password': neutron_pass,

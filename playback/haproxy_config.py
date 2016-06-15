@@ -50,6 +50,6 @@ class HaproxyConfig(object):
                                        'state': state,
                                        'interface': interface,
                                        'vip': vip},
-                               use_jinja=True, use_sudo=True)
+                               use_jinja=True, use_sudo=True, backup=True)
         os.remove('tmp_keepalived_conf')
         sudo('service keepalived restart')

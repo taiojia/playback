@@ -36,6 +36,7 @@ class NeutronAgent(Task):
                               destination='/etc/neutron/neutron.conf',
                               use_jinja=True,
                               use_sudo=True,
+                              backup=True,
                               context={'rabbit_hosts': rabbit_hosts,
                                        'rabbit_user': rabbit_user, 
                                        'rabbit_password': rabbit_pass,
@@ -52,6 +53,7 @@ class NeutronAgent(Task):
                               destination='/etc/neutron/plugins/ml2/linuxbridge_agent.ini',
                               use_jinja=True,
                               use_sudo=True,
+                              backup=True,
                               context={'public_interface': public_interface,
                                        'local_ip': local_ip})
         os.remove('tmp_linuxbridge_agent_ini_' + env.host_string)

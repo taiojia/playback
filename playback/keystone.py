@@ -46,7 +46,8 @@ class Keystone(object):
                               'connection': connection,
                               'memcache_servers': memcache_servers,},
                               use_jinja=True,
-                              use_sudo=True)
+                              use_sudo=True,
+                              backup=True)
         os.remove('tmp_keystone_conf')
 
         # Configure /etc/memcached.conf to listen 0.0.0.0
@@ -54,7 +55,8 @@ class Keystone(object):
             f.write(conf_memcached_conf)
         files.upload_template(filename='tmp_memcached_conf',
                                 destination='/etc/memcached.conf',
-                                use_sudo=True)
+                                use_sudo=True,
+                                backup=True)
         os.remove('tmp_memcached_conf')
         sudo('service memcached restart')
 
@@ -71,7 +73,8 @@ class Keystone(object):
             f.write(conf_wsgi_keystone_conf)
         files.upload_template(filename='tmp_wsgi_keystone_conf',
                               destination='/etc/apache2/sites-available/wsgi-keystone.conf',
-                              use_sudo=True)
+                              use_sudo=True,
+                              backup=True)
         os.remove('tmp_wsgi_keystone_conf')
 
         # Enable the Identity service virtual hosts
@@ -144,7 +147,8 @@ class Keystone(object):
             f.write(conf_keystone_paste_ini)
         files.upload_template(filename='tmp_keystone_paste_ini',
                               destination='/etc/keystone/keystone-paste.ini',
-                              use_sudo=True)
+                              use_sudo=True,
+                              backup=True)
         os.remove('tmp_keystone_paste_ini')
 
 def make_target(args):

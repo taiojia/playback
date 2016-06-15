@@ -57,6 +57,7 @@ class Swift(Task):
                               destination='/etc/swift/proxy-server.conf',
                               use_sudo=True,
                               use_jinja=True,
+                              backup=True,
                               context={'auth_uri': auth_uri,
                                        'auth_url': auth_url,
                                        'swift_pass': swift_pass,
@@ -72,6 +73,7 @@ class Swift(Task):
                               destination='/etc/swift/swift.conf',
                               use_jinja=True,
                               use_sudo=True,
+                              backup=True,
                               context={'swift_hash_path_suffix': swift_hash_path_suffix,
                                        'swift_hash_path_prefix': swift_hash_path_prefix})
         os.remove('tmp_swift_conf_' + env.host_string)

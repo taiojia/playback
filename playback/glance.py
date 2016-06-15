@@ -71,7 +71,8 @@ class Glance(Task):
                                        'swift_store_key': glance_pass,
                                        'memcached_servers': memcached_servers},
                               use_jinja=True,
-                              use_sudo=True)
+                              use_sudo=True,
+                              backup=True)
         os.remove('tmp_glance_api_conf_' + env.host_string)
 
         print red(env.host_string + ' | Update configuration for /etc/glance/glance-registry.conf')
@@ -86,7 +87,8 @@ class Glance(Task):
                                        'password': glance_pass,
                                        'memcached_servers': memcached_servers},
                               use_jinja=True,
-                              use_sudo=True)
+                              use_sudo=True,
+                              backup=True)
         os.remove('tmp_glance_registry_conf_' + env.host_string)
    
         if args.populate:

@@ -33,6 +33,7 @@ class Horizon(Task):
                               destination='/etc/openstack-dashboard/local_settings.py',
                               use_jinja=True,
                               use_sudo=True,
+                              backup=True,
                               context={'openstack_host': openstack_host,
                                        'memcached_servers': memcached_servers,
                                        'time_zone': time_zone})

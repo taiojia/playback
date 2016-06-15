@@ -82,7 +82,8 @@ class Nova(Task):
                                        'metadata_proxy_shared_secret': metadata_proxy_shared_secret
                                        },
                               use_jinja=True,
-                              use_sudo=True)
+                              use_sudo=True,
+                              backup=True)
         os.remove('tmp_nova_conf_' + env.host_string)
 
         if args.populate and env.host_string == self.hosts[0]:

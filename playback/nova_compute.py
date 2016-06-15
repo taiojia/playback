@@ -38,6 +38,7 @@ class NovaCompute(Task):
                               destination='/etc/nova/nova.conf',
                               use_jinja=True,
                               use_sudo=True,
+                              backup=True,
                               context={'my_ip': my_ip,
                                        'rabbit_hosts': rabbit_hosts,
                                        'rabbit_user': rabbit_user, 
@@ -60,6 +61,7 @@ class NovaCompute(Task):
                               destination='/etc/nova/nova-compute.conf',
                               use_jinja=True,
                               use_sudo=True,
+                              backup=True,
                               context={'rbd_secret_uuid': rbd_secret_uuid})
 
         os.remove('tmp_nova_compute_conf_' + env.host_string)
@@ -75,14 +77,16 @@ class NovaCompute(Task):
             f.write(conf_libvirt_bin)
         files.upload_template(filename='tmp_libvirt_bin_' + env.host_string,
                               destination='/etc/default/libvirt-bin',
-                              use_sudo=True)
+                              use_sudo=True,
+                              backup=True)
         os.remove('tmp_libvirt_bin_' + env.host_string)
         print red(env.host_string + ' | Update /etc/libvirt/libvirtd.conf')
         with open('tmp_libvirtd_conf_' + env.host_string, 'w') as f:
             f.write(conf_libvirtd_conf)
         files.upload_template(filename='tmp_libvirtd_conf_' + env.host_string,
                               destination='/etc/libvirt/libvirtd.conf',
-                              use_sudo=True)
+                              use_sudo=True,
+                              backup=True)
         os.remove('tmp_libvirtd_conf_' + env.host_string)
         sudo('restart libvirt-bin')
 

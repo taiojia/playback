@@ -66,6 +66,7 @@ class Cinder(Task):
                               destination='/etc/cinder/cinder.conf',
                               use_jinja=True,
                               use_sudo=True,
+                              backup=True,
                               context={'connection': connection,
                                        'rabbit_hosts': rabbit_hosts,
                                        'rabbit_user': rabbit_user,
