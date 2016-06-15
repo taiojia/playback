@@ -22,14 +22,12 @@ class Keystone(object):
         env.parallel = self.parallel
 
     @runs_once
-    @serial
     def _create_keystone_db(self, root_db_pass, keystone_db_pass):
         sudo("mysql -uroot -p{root_db_pass} -e \"CREATE DATABASE keystone;\"".format(root_db_pass=root_db_pass), shell=False)
         sudo("mysql -uroot -p{root_db_pass} -e \"GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY '{keystone_db_pass}';\"".format(root_db_pass=root_db_pass, 
                                                                                                                                                             keystone_db_pass=keystone_db_pass), shell=False)
         sudo("mysql -uroot -p{root_db_pass} -e \"GRANT ALL PRIVILEGES ON keystone.* TO 'keystone\'@\'%\' IDENTIFIED BY \'{keystone_db_pass}';\"".format(root_db_pass=root_db_pass, 
                                                                                                                                                         keystone_db_pass=keystone_db_pass), shell=False)
-    @runs_once
     def _install_keystone(self, admin_token, connection, memcache_servers):
         # Disable the keystone service from starting automatically after installation
         sudo('echo "manual" > /etc/init/keystone.override')
@@ -139,7 +137,6 @@ class Keystone(object):
         # Add the user role to the demo project and user
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} role add --project demo --user demo user'.format(os_token=os_token,
                                                                                                                                              os_url=os_url))
-    @runs_once
     def _update_keystone_paste_ini(self):
         """remove admin_token_auth from the [pipeline:public_api], 
         [pipeline:admin_api], and [pipeline:api_v3] sections"""

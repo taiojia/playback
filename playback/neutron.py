@@ -55,7 +55,6 @@ class Neutron(Task):
             sudo('openstack endpoint create --region RegionOne network internal {0}'.format(endpoint))
             sudo('openstack endpoint create --region RegionOne network admin {0}'.format(endpoint))
     
-    @runs_once
     def _install_self_service(self, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, neutron_pass, nova_url, nova_pass, public_interface, local_ip, nova_metadata_ip, metadata_proxy_shared_secret, memcached_servers):
         print red(env.host_string + ' | Install the components')
         sudo('apt-get update')

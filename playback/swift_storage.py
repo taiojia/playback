@@ -21,7 +21,6 @@ class SwiftStorage(Task):
         env.hosts = self.hosts
         env.parallel = self.parallel
 
-    @runs_once
     def _prepare_disks(self, disks_name):
         """format disks to xfs and mount it"""
         fstab = '/etc/fstab'
@@ -35,7 +34,6 @@ class SwiftStorage(Task):
             files.append(fstab, '/dev/{0} /srv/node/{1} xfs noatime,nodiratime,nobarrier,logbufs=8 0 2'.format(disk,disk), use_sudo=True)
             sudo('mount /srv/node/{0}'.format(disk))
 
-    @runs_once
     def _install(self, address, bind_ip):
         print red(env.host_string + ' | Install the supporting utility packages')
         sudo('apt-get update')
@@ -177,13 +175,11 @@ class SwiftStorage(Task):
             print red(env.host_string + ' | Rebalance the ring')
             sudo('swift-ring-builder object.builder rebalance')
     
-    @runs_once
     def _get_builder_file(self):
         get('/etc/swift/account.ring.gz', './account.ring.gz')
         get('/etc/swift/container.ring.gz', './container.ring.gz')
         get('/etc/swift/object.ring.gz', './object.ring.gz')
 
-    @runs_once
     def _sync_builder_file(self):
         put('./account.ring.gz', '/etc/swift/account.ring.gz', use_sudo=True)
         put('./container.ring.gz', '/etc/swift/container.ring.gz', use_sudo=True)

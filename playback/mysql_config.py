@@ -14,8 +14,6 @@ class MysqlConfig(object):
         env.hosts = self.hosts
         env.parallel = self.parallel
 
-    @runs_once
-    @serial
     def _update_mysql_config(self, wsrep_cluster_address, wsrep_node_name, wsrep_node_address):
         with open('tmp_my_cnf_'+env.host_string, 'w') as f:
             f.write(conf_my_cnf)

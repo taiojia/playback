@@ -20,7 +20,6 @@ class Horizon(Task):
         env.hosts = self.hosts
         env.parallel = self.parallel
 
-    @runs_once
     def _install(self, openstack_host, memcached_servers, time_zone):
         print red(env.host_string + ' | Install the packages')
         sudo('apt-get update')

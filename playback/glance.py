@@ -51,7 +51,6 @@ class Glance(Task):
             sudo('openstack endpoint create --region RegionOne image internal {0}'.format(endpoint))
             sudo('openstack endpoint create --region RegionOne image admin {0}'.format(endpoint))
 
-    @runs_once
     def _install_glance(self, connection, auth_uri, auth_url, glance_pass, swift_store_auth_address, memcached_servers):
         print red(env.host_string + ' | Install glance python-glanceclient')
         sudo('apt-get update')

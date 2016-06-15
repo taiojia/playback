@@ -17,7 +17,6 @@ class RabbitMq(object):
         env.hosts = self.hosts
         env.parallel = self.parallel
 
-    @runs_once
     def _install(self, erlang_cookie, rabbit_user, rabbit_pass):
         sudo('apt-get update')
         sudo('apt-get install -y rabbitmq-server')
@@ -29,7 +28,6 @@ class RabbitMq(object):
         sudo('rabbitmqctl set_permissions %s ".*" ".*" ".*"' % rabbit_user)
         sudo('service rabbitmq-server restart')
 
-    @runs_once
     def _join_cluster(self, name):
         sudo('rabbitmqctl stop_app')
         sudo('rabbitmqctl join_cluster %s' % name)

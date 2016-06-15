@@ -11,7 +11,6 @@ class HaproxyInstall(object):
         env.hosts = self.hosts
         env.parallel = self.parallel
 
-    @runs_once
     def _install(self):
         sudo('apt-get update')
         sudo('apt-get install -y haproxy keepalived mysql-client')

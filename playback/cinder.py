@@ -53,7 +53,6 @@ class Cinder(Task):
             sudo('openstack endpoint create --region RegionOne volumev2 internal {0}'.format(endpoint_v2))
             sudo('openstack endpoint create --region RegionOne volumev2 admin {0}'.format(endpoint_v2))
 
-    @runs_once
     def _install(self, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, cinder_pass, my_ip, glance_api_servers, rbd_secret_uuid, memcached_servers, populate=False):
         print red(env.host_string + ' | Install the cinder-api and cinder-volume')
         sudo('apt-get update')

@@ -44,7 +44,6 @@ class Swift(Task):
             sudo('openstack endpoint create --region RegionOne object-store internal {0}'.format(internal_endpoint))
             sudo('openstack endpoint create --region RegionOne object-store admin {0}'.format(admin_endpoint))
 
-    @runs_once
     def _install(self, auth_uri, auth_url, swift_pass, memcached_servers, with_memcached):
         print red(env.host_string + ' | Install swift proxy')
         sudo('apt-get update')
@@ -80,7 +79,6 @@ class Swift(Task):
 
 
 
-    @runs_once
     def _finalize_install(self, swift_hash_path_suffix, swift_hash_path_prefix):
         print red(env.host_string + ' | Update /etc/swift/swift.conf')
         with open('tmp_swift_conf_' + env.host_string, 'w') as f:

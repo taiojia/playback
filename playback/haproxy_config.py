@@ -34,12 +34,10 @@ class HaproxyConfig(object):
         env.hosts = self.hosts
         env.parallel = self.parallel
 
-    @runs_once
     def _upload_conf(self, file):
         put(file, '/etc/haproxy/haproxy.cfg', use_sudo=True)
         sudo('service haproxy reload')
 
-    @runs_once
     def _configure_keepalived(self, router_id, priority, state, interface, vip):
         with open('tmp_keepalived_conf_'+env.host_string, 'w') as f:
             f.write(conf_keepalived_conf)
