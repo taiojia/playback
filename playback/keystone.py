@@ -38,9 +38,9 @@ class Keystone(object):
         sudo("apt-get install keystone apache2 libapache2-mod-wsgi memcached python-memcache -y")
 
         # Configure /etc/keysone/keystone.conf
-        with open('tmp_keystone_conf','w') as f:
+        with open('tmp_keystone_conf_'+env.host_string,'w') as f:
             f.write(conf_keystone_conf)
-        files.upload_template(filename='tmp_keystone_conf',
+        files.upload_template(filename='tmp_keystone_conf_'+env.host_string,
                               destination='/etc/keystone/keystone.conf',
                               context={'admin_token': admin_token,
                               'connection': connection,
@@ -48,16 +48,16 @@ class Keystone(object):
                               use_jinja=True,
                               use_sudo=True,
                               backup=True)
-        os.remove('tmp_keystone_conf')
+        os.remove('tmp_keystone_conf_'+env.host_string)
 
         # Configure /etc/memcached.conf to listen 0.0.0.0
-        with open('tmp_memcached_conf', 'w') as f:
+        with open('tmp_memcached_conf_'+env.host_string, 'w') as f:
             f.write(conf_memcached_conf)
-        files.upload_template(filename='tmp_memcached_conf',
+        files.upload_template(filename='tmp_memcached_conf_'+env.host_string,
                                 destination='/etc/memcached.conf',
                                 use_sudo=True,
                                 backup=True)
-        os.remove('tmp_memcached_conf')
+        os.remove('tmp_memcached_conf_'+env.host_string)
         sudo('service memcached restart')
 
         # Populate the Identity service database
@@ -69,13 +69,13 @@ class Keystone(object):
 
 
         # Configure /etc/apache2/sites-available/wsgi-keystone.conf
-        with open('tmp_wsgi_keystone_conf', 'w') as f:
+        with open('tmp_wsgi_keystone_conf_'+env.host_string, 'w') as f:
             f.write(conf_wsgi_keystone_conf)
-        files.upload_template(filename='tmp_wsgi_keystone_conf',
+        files.upload_template(filename='tmp_wsgi_keystone_conf_'+env.host_string,
                               destination='/etc/apache2/sites-available/wsgi-keystone.conf',
                               use_sudo=True,
                               backup=True)
-        os.remove('tmp_wsgi_keystone_conf')
+        os.remove('tmp_wsgi_keystone_conf_'+env.host_string)
 
         # Enable the Identity service virtual hosts
         sudo('ln -s /etc/apache2/sites-available/wsgi-keystone.conf /etc/apache2/sites-enabled')
@@ -143,13 +143,13 @@ class Keystone(object):
     def _update_keystone_paste_ini(self):
         """remove admin_token_auth from the [pipeline:public_api], 
         [pipeline:admin_api], and [pipeline:api_v3] sections"""
-        with open('tmp_keystone_paste_ini', 'w') as f:
+        with open('tmp_keystone_paste_ini_'+env.host_string, 'w') as f:
             f.write(conf_keystone_paste_ini)
-        files.upload_template(filename='tmp_keystone_paste_ini',
+        files.upload_template(filename='tmp_keystone_paste_ini_'+env.host_string,
                               destination='/etc/keystone/keystone-paste.ini',
                               use_sudo=True,
                               backup=True)
-        os.remove('tmp_keystone_paste_ini')
+        os.remove('tmp_keystone_paste_ini_+env.host_string')
 
 def make_target(args):
     try:
