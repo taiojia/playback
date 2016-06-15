@@ -13,6 +13,7 @@ Playback command-line tool supporting the following platform:
 ## Getting statarted
 
 [Quickstart Guide](./docs/quickstart.md)
+
 [Getting stated with 3 controllers and 10 computes deployment](./docs/guide.md)
 
 ## Release Notes
