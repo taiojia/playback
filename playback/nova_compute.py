@@ -88,7 +88,7 @@ class NovaCompute(Task):
                               use_sudo=True,
                               backup=True)
         os.remove('tmp_libvirtd_conf_' + env.host_string)
-        sudo('restart libvirt-bin')
+        sudo('service libvirt-bin restart')
 
 def install_subparser(s):
     install_parser = s.add_parser('install', help='install nova compute')
