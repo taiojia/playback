@@ -42,6 +42,6 @@ class PrepareHost(object):
             sudo('DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade')
         
         print "[Playback] waiting for reboot\n"
-        reboot(wait=300)
+        reboot(wait=600)
         with prefix('sudo apt-get update'):
             sudo('apt-get install python-openstackclient -y')
