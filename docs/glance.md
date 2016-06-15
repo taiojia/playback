@@ -12,8 +12,8 @@ Create service credentials
 
 Install glance on controller1.maas, controller2.maas and controller3.maas
 
-    playback-glance --user ubuntu --hosts controller1.maas install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme  --swift-store-auth-address http://CONTROLLER_VIP:5000/v2.0/ --populate
-    playback-glance --user ubuntu --hosts controller2.maas install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme  --swift-store-auth-address http://CONTROLLER_VIP:5000/v2.0/
-    playback-glance --user ubuntu --hosts controller3.maas install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme  --swift-store-auth-address http://CONTROLLER_VIP:5000/v2.0/
+    playback-glance --user ubuntu --hosts controller1.maas install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme  --swift-store-auth-address http://CONTROLLER_VIP:5000/v2.0/ --memcached-servers controller1.maas:11211,controller2.maas:11211,controller3.maas:11211 --populate
+    playback-glance --user ubuntu --hosts controller2.maas install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme  --swift-store-auth-address http://CONTROLLER_VIP:5000/v2.0/ --memcached-servers controller1.maas:11211,controller2.maas:11211,controller3.maas:11211
+    playback-glance --user ubuntu --hosts controller3.maas install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme  --swift-store-auth-address http://CONTROLLER_VIP:5000/v2.0/ --memcached-servers controller1.maas:11211,controller2.maas:11211,controller3.maas:11211
 
 Using `playback-glance --help` to see the details.
