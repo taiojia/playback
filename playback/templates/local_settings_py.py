@@ -52,6 +52,7 @@ WEBROOT = '/'
 OPENSTACK_API_VERSIONS = {
 #    "data-processing": 1.1,
     "identity": 3,
+    "image": 2,
     "volume": 2,
 }
 
@@ -61,7 +62,7 @@ OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT = True
 
 # Overrides the default domain used when running on single-domain model
 # with Keystone V3. All entities will be created in the default domain.
-#OPENSTACK_KEYSTONE_DEFAULT_DOMAIN = 'Default'
+OPENSTACK_KEYSTONE_DEFAULT_DOMAIN = 'Default'
 
 # Set Console type:
 # valid options are "AUTO"(default), "VNC", "SPICE", "RDP", "SERIAL" or None
@@ -106,6 +107,9 @@ SECRET_KEY = secret_key.generate_or_read_from_file('/var/lib/openstack-dashboard
 # We recommend you use memcached for development; otherwise after every reload
 # of the django development server, you will have to login again. To use
 # memcached set CACHES to something like
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
@@ -137,7 +141,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #]
 
 OPENSTACK_HOST = "{{ openstack_host }}"
-OPENSTACK_KEYSTONE_URL = "http://%s:5000/v2.0" % OPENSTACK_HOST
+OPENSTACK_KEYSTONE_URL = "http://%s:5000/v3" % OPENSTACK_HOST
 #OPENSTACK_KEYSTONE_DEFAULT_ROLE = "_member_"
 OPENSTACK_KEYSTONE_DEFAULT_ROLE = "user"
 
@@ -674,7 +678,7 @@ WEBROOT='/horizon/'
 # By default, validation of the HTTP Host header is disabled.  Production
 # installations should have this set accordingly.  For more information
 # see https://docs.djangoproject.com/en/dev/ref/settings/.
-ALLOWED_HOSTS = '*'
+ALLOWED_HOSTS = ['*', ]
 
 # Compress all assets offline as part of packaging installation
 COMPRESS_OFFLINE = True
