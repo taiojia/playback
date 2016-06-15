@@ -1,3 +1,0 @@
----
-  - include: create_keystone_db.yml
-  
