@@ -67,9 +67,8 @@ def parser():
 
     def gen_conf_f(args):
         gen_conf()
-    gen_conf = s.add_parser('gen-conf', 
-                                     help='generate the example configuration to the current location')
-    gen_conf.set_defaults(func=gen_conf_f)
+    gen_conf_parser = s.add_parser('gen-conf', help='generate the example configuration to the current location')
+    gen_conf_parser.set_defaults(func=gen_conf_f)
 
     return p
 
