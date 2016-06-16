@@ -162,7 +162,7 @@ def parser():
     install_parser.add_argument('--auth-url', help='keystone admin endpoint e.g. http://CONTROLLER_VIP:35357', action='store', default=None, dest='auth_url')
     install_parser.add_argument('--cinder-pass', help='password for cinder user', action='store', default=None, dest='cinder_pass')
     install_parser.add_argument('--my-ip', help='the host management ip', action='store', default=None, dest='my_ip')
-    install_parser.add_argument('--glance-host', help='glance host e.g. http://CONTROLLER_VIP:9292', action='store', default=None, dest='glance_api_servers')
+    install_parser.add_argument('--glance-api-servers', help='glance host e.g. http://CONTROLLER_VIP:9292', action='store', default=None, dest='glance_api_servers')
     install_parser.add_argument('--rbd-secret-uuid', help='ceph rbd secret uuid', action='store', default=None, dest='rbd_secret_uuid')
     install_parser.add_argument('--memcached-servers', help='memcached servers e.g. CONTROLLER1:11211,CONTROLLER2:11211', action='store', default=None, dest='memcached_servers')
     install_parser.add_argument('--populate', help='Populate the cinder database', action='store_true', default=False, dest='populate')
