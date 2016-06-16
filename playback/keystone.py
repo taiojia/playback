@@ -169,7 +169,7 @@ def install(args):
     execute(target._install_keystone, 
             args.admin_token, 
             args.connection, 
-            args.memcache_servers
+            args.memcache_servers,
             args.populate)
 
 def create_entity_and_endpoint(args):
