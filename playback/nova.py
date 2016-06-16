@@ -53,7 +53,7 @@ class Nova(Task):
             sudo('openstack endpoint create --region RegionOne compute internal {0}'.format(endpoint))
             sudo('openstack endpoint create --region RegionOne compute admin {0}'.format(endpoint))
 
-    def _install_nova(self, connection, api_connection, auth_uri, auth_url, nova_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_user, rabbit_pass, api_servers, neutron_endpoint, neutron_pass, metadata_proxy_shared_secret):
+    def _install_nova(self, connection, api_connection, auth_uri, auth_url, nova_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_user, rabbit_pass, api_servers, neutron_endpoint, neutron_pass, metadata_proxy_shared_secret, populate):
         print red(env.host_string + ' | Install nova-api nova-cert nova-conductor nova-consoleauth nova-novncproxy nova-scheduler python-novaclient')
         sudo('apt-get update')
         # nova-cert deprecated in mitaka
@@ -85,7 +85,7 @@ class Nova(Task):
                               backup=True)
         os.remove('tmp_nova_conf_' + env.host_string)
 
-        if args.populate and env.host_string == self.hosts[0]:
+        if populate and env.host_string == self.hosts[0]:
             print red(env.host_string + ' | Populate the nova_api database:')
             sudo('su -s /bin/sh -c "nova-manage api_db sync" nova', shell=False)
             print red(env.host_string + ' | Populate the nova database:')
@@ -243,7 +243,7 @@ def install(args):
     execute(target._install_nova, args.connection, args.api_connection, args.auth_uri, args.auth_url,
             args.nova_pass, args.my_ip, args.memcached_servers, args.rabbit_hosts, args.rabbit_user, 
             args.rabbit_pass, args.api_servers, args.neutron_endpoint, args.neutron_pass,
-            args.metadata_proxy_shared_secret)
+            args.metadata_proxy_shared_secret, args.populate)
         
 def parser():
     p = argparse.ArgumentParser(description=cli_description+'this command used for provision Nova')
