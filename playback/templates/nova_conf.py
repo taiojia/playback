@@ -2,7 +2,8 @@ conf_nova_conf = """
 [DEFAULT]
 dhcpbridge_flagfile=/etc/nova/nova.conf
 dhcpbridge=/usr/bin/nova-dhcpbridge
-logdir=/var/log/nova
+#logdir=/var/log/nova
+log-dir=/var/log/nova
 state_path=/var/lib/nova
 lock_path=/var/lock/nova
 force_dhcp_release=True
