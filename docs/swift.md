@@ -8,6 +8,6 @@ Create the Identity service credentials
 
 Install swift proxy
 
-    playback-swift --user ubuntu --hosts controller1.maas,controller2.maas,controller3.maas install --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --swift-pass changeme --memcache-servers controller1.maas:11211,controller2.maas:11211,controller3.maas:11211
+    playback-swift --user ubuntu --hosts controller1.maas,controller2.maas,controller3.maas install --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --swift-pass changeme --memcached-servers controller1.maas:11211,controller2.maas:11211,controller3.maas:11211
 
 Using `playback-swift --help` to see the details.

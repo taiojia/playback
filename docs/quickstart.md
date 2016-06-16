@@ -236,7 +236,7 @@ Create the Identity service credentials
 
 Install swift proxy
 
-    playback-swift --user ubuntu --hosts CONTROLLER1,CONTROLLER2 install --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --swift-pass changeme --memcache-servers CONTROLLER1:11211,CONTROLLER2:11211
+    playback-swift --user ubuntu --hosts CONTROLLER1,CONTROLLER2 install --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --swift-pass changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
 
 
 ## Swift storage
