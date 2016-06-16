@@ -51,7 +51,7 @@ class Glance(Task):
             sudo('openstack endpoint create --region RegionOne image internal {0}'.format(endpoint))
             sudo('openstack endpoint create --region RegionOne image admin {0}'.format(endpoint))
 
-    def _install_glance(self, connection, auth_uri, auth_url, glance_pass, swift_store_auth_address, memcached_servers):
+    def _install_glance(self, connection, auth_uri, auth_url, glance_pass, swift_store_auth_address, memcached_servers, populate):
         print red(env.host_string + ' | Install glance python-glanceclient')
         sudo('apt-get update')
         sudo('apt-get -y install glance python-glanceclient')
@@ -90,7 +90,7 @@ class Glance(Task):
                               backup=True)
         os.remove('tmp_glance_registry_conf_' + env.host_string)
    
-        if args.populate:
+        if populate:
             print red(env.host_string + ' | Populate the Image service database')
             sudo('su -s /bin/sh -c "glance-manage db_sync" glance', shell=False)
 
@@ -139,7 +139,8 @@ def install(args):
             args.auth_url, 
             args.glance_pass,
             args.swift_store_auth_address,
-            args.memcached_servers)
+            args.memcached_servers,
+            args.populate)
 
 def parser():
     p = argparse.ArgumentParser(prog='playback-glance', description=cli_description+'this command used for provision Glance')
