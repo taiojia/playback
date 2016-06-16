@@ -28,7 +28,7 @@ class Keystone(object):
                                                                                                                                                             keystone_db_pass=keystone_db_pass), shell=False)
         sudo("mysql -uroot -p{root_db_pass} -e \"GRANT ALL PRIVILEGES ON keystone.* TO 'keystone\'@\'%\' IDENTIFIED BY \'{keystone_db_pass}';\"".format(root_db_pass=root_db_pass, 
                                                                                                                                                         keystone_db_pass=keystone_db_pass), shell=False)
-    def _install_keystone(self, admin_token, connection, memcache_servers):
+    def _install_keystone(self, admin_token, connection, memcache_servers, populate):
         # Disable the keystone service from starting automatically after installation
         sudo('echo "manual" > /etc/init/keystone.override')
         
@@ -59,7 +59,7 @@ class Keystone(object):
         sudo('service memcached restart')
 
         # Populate the Identity service database
-        if args.populate:
+        if populate:
             sudo('su -s /bin/sh -c "keystone-manage db_sync" keystone', shell=False)
             # Initialize Fernet Keys
             sudo('keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone', shell=False)
@@ -169,7 +169,8 @@ def install(args):
     execute(target._install_keystone, 
             args.admin_token, 
             args.connection, 
-            args.memcache_servers)
+            args.memcache_servers
+            args.populate)
 
 def create_entity_and_endpoint(args):
     target = make_target(args)
