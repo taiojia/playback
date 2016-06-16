@@ -202,8 +202,8 @@ Install Neutron for self-service
 
 Install neutron agent on compute nodes
 
-    playback-neutron-agent --user ubuntu --hosts COMPUTE1 install --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP -memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
-    playback-neutron-agent --user ubuntu --hosts COMPUTE2 install --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP -memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    playback-neutron-agent --user ubuntu --hosts COMPUTE1 install --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    playback-neutron-agent --user ubuntu --hosts COMPUTE2 install --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
 
 
 ## Horizon HA
