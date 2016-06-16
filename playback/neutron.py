@@ -55,7 +55,7 @@ class Neutron(Task):
             sudo('openstack endpoint create --region RegionOne network internal {0}'.format(endpoint))
             sudo('openstack endpoint create --region RegionOne network admin {0}'.format(endpoint))
     
-    def _install_self_service(self, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, neutron_pass, nova_url, nova_pass, public_interface, local_ip, nova_metadata_ip, metadata_proxy_shared_secret, memcached_servers):
+    def _install_self_service(self, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, neutron_pass, nova_url, nova_pass, public_interface, local_ip, nova_metadata_ip, metadata_proxy_shared_secret, memcached_servers, populate):
         print red(env.host_string + ' | Install the components')
         sudo('apt-get update')
         # Remove neutron-plugin-linuxbridge-agent and conntrack
@@ -144,7 +144,7 @@ class Neutron(Task):
                                        'metadata_proxy_shared_secret': metadata_proxy_shared_secret})
         os.remove('tmp_metadata_agent_ini_' + env.host_string)
 
-        if args.populate:
+        if populate:
             print red(env.host_string + ' | Populate the database')
             sudo('su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron', shell=False)
 
@@ -313,7 +313,8 @@ def install(args):
             args.local_ip, 
             args.nova_metadata_ip, 
             args.metadata_proxy_shared_secret, 
-            args.memcached_servers)
+            args.memcached_servers,
+            args.populate)
             
 def parser():
     p = argparse.ArgumentParser(description=cli_description+'this command used for provision Neutron')
