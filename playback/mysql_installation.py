@@ -1,6 +1,6 @@
 from fabric.api import *
 from fabric.contrib import files
-from playback.mysql_conf import conf_galera_list
+from playback.templates.galera_list import conf_galera_list
 
 class MysqlInstallation(object):
     """Install Galera Cluster for MySQL"""

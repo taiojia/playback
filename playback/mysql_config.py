@@ -1,7 +1,7 @@
 from fabric.api import *
 from fabric.contrib import files
 import os
-from playback.mysql_conf import conf_my_cnf
+from playback.templates.my_cnf import conf_my_cnf
 
 class MysqlConfig(object):
     """Setup Galera Cluster for MySQL"""

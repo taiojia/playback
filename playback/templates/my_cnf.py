@@ -141,6 +141,3 @@ key_buffer              = 16M
 !includedir /etc/mysql/conf.d/
 
 """
-
-conf_galera_list = """# Galera Cluster for MySQL
-deb http://releases.galeracluster.com/ubuntu trusty main"""

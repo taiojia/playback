@@ -5,7 +5,7 @@ from fabric.colors import red
 import sys
 from playback.cli import cli_description
 from playback import __version__
-from playback.haproxy_conf import conf_haproxy_cfg
+from playback.templates.haproxy_cfg import conf_haproxy_cfg
 
 def install(args):
     from playback import haproxy_install
