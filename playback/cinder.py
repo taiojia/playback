@@ -8,7 +8,7 @@ import sys
 import argparse
 from playback.cli import cli_description
 from playback import __version__
-from playback.cinder_conf import conf_cinder_conf
+from playback.templates.cinder_conf import conf_cinder_conf
 
 class Cinder(Task):
     def __init__(self, user, hosts=None, parallel=True, *args, **kwargs):
