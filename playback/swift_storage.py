@@ -8,7 +8,11 @@ import argparse
 from tqdm import *
 import sys
 from playback.cli import cli_description
-from playback.swift_storage_conf import conf_rsyncd_conf, conf_rsync, conf_account_server_conf, conf_container_server_conf, conf_object_server_conf
+from playback.templates.rsyncd_conf import conf_rsyncd_conf
+from playback.templates.rsync import conf_rsync
+from playback.templates.account_server_conf import conf_account_server_conf
+from playback.templates.container_server_conf import conf_container_server_conf
+from playback.templates.object_server_conf import conf_object_server_conf
 from playback import __version__
 
 class SwiftStorage(Task):
