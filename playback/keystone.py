@@ -28,7 +28,7 @@ class Keystone(object):
                                                                                                                                                             keystone_db_pass=keystone_db_pass), shell=False)
         sudo("mysql -uroot -p{root_db_pass} -e \"GRANT ALL PRIVILEGES ON keystone.* TO 'keystone\'@\'%\' IDENTIFIED BY \'{keystone_db_pass}';\"".format(root_db_pass=root_db_pass, 
                                                                                                                                                         keystone_db_pass=keystone_db_pass), shell=False)
-    def _install_keystone(self, admin_token, connection, memcache_servers, populate):
+    def _install_keystone(self, admin_token, connection, memcached_servers, populate):
         # Disable the keystone service from starting automatically after installation
         sudo('echo "manual" > /etc/init/keystone.override')
         
@@ -42,7 +42,7 @@ class Keystone(object):
                               destination='/etc/keystone/keystone.conf',
                               context={'admin_token': admin_token,
                               'connection': connection,
-                              'memcache_servers': memcache_servers,},
+                              'memcached_servers': memcached_servers,},
                               use_jinja=True,
                               use_sudo=True,
                               backup=True)
@@ -169,7 +169,7 @@ def install(args):
     execute(target._install_keystone, 
             args.admin_token, 
             args.connection, 
-            args.memcache_servers,
+            args.memcached_servers,
             args.populate)
 
 def create_entity_and_endpoint(args):
@@ -216,11 +216,11 @@ def install_subparser(s):
                                 action='store',
                                 default=None,
                                 dest='connection')
-    install_parser.add_argument('--memcache_servers',
+    install_parser.add_argument('--memcached-servers',
                                 help='memcached servers. e.g. CONTROLLER1:11211,CONTROLLER2:11211',
                                 action='store',
                                 default=None,
-                                dest='memcache_servers')
+                                dest='memcached_servers')
     install_parser.add_argument('--populate',
                                 help='populate the keystone database',
                                 action='store_true',

@@ -93,8 +93,8 @@ Create keystone database
 
 Install keystone on CONTROLLER1 and CONTROLLER2
 
-    playback-keystone --user ubuntu --hosts CONTROLLER1 install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcache_servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
-    playback-keystone --user ubuntu --hosts CONTROLLER2 install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcache_servers CONTROLLER1:11211,CONTROLLER2:11211
+    playback-keystone --user ubuntu --hosts CONTROLLER1 install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
+    playback-keystone --user ubuntu --hosts CONTROLLER2 install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
 
 Create the service entity and API endpoints
 

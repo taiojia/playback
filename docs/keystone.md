@@ -8,9 +8,9 @@ Create keystone database
 
 Install keystone on controller1.maas, controller2.maas and controller3.maas. Note that you must specify the `CONTROLLER_VIP` for three controllers Virtual IP
 
-    playback-keystone --user ubuntu --hosts controller1.maas install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcache_servers controller1.maas:11211,controller2.maas:11211,controller3.maas --populate
-    playback-keystone --user ubuntu --hosts controller2.maas install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcache_servers controller1.maas:11211,controller2.maas:11211,controller3.maas
-    playback-keystone --user ubuntu --hosts controller3.maas install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcache_servers controller1.maas:11211,controller2.maas:11211,controller3.maas
+    playback-keystone --user ubuntu --hosts controller1.maas install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcached-servers controller1.maas:11211,controller2.maas:11211,controller3.maas --populate
+    playback-keystone --user ubuntu --hosts controller2.maas install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcached-servers controller1.maas:11211,controller2.maas:11211,controller3.maas
+    playback-keystone --user ubuntu --hosts controller3.maas install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcached-servers controller1.maas:11211,controller2.maas:11211,controller3.maas
 
 Create the service entity and API endpoints
 
