@@ -55,14 +55,15 @@ WEBROOT = '/'
 # use of the decimal point, so valid options would be 2.0 or 3.
 #OPENSTACK_API_VERSIONS = {
 #    "data-processing": 1.1,
-#    "identity": 3,
-#    "volume": 2,
+     "identity": 3,
+     "image": 2,
+     "volume": 2,
 #    "compute": 2,
 #}
 
 # Set this to True if running on multi-domain model. When this is enabled, it
 # will require user to enter the Domain name in addition to username for login.
-#OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT = False
+OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT = True
 
 # Overrides the default domain used when running on single-domain model
 # with Keystone V3. All entities will be created in the default domain.
@@ -70,7 +71,7 @@ WEBROOT = '/'
 # Also, you will most likely have a value in the keystone policy file like this
 #    "cloud_admin": "rule:admin_required and domain_id:<your domain id>"
 # This value must match the domain id specified there.
-#OPENSTACK_KEYSTONE_DEFAULT_DOMAIN = 'default'
+OPENSTACK_KEYSTONE_DEFAULT_DOMAIN = "default"
 
 # Set this to True to enable panels that provide the ability for users to
 # manage Identity Providers (IdPs) and establish a set of rules to map
@@ -127,6 +128,8 @@ SECRET_KEY = secret_key.generate_or_read_from_file('/var/lib/openstack-dashboard
 # of the django development server, you will have to login again. To use
 # memcached set CACHES to something like
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
@@ -158,8 +161,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #]
 
 OPENSTACK_HOST = "{{ openstack_host }}"
-OPENSTACK_KEYSTONE_URL = "http://%s:5000/v2.0" % OPENSTACK_HOST
-OPENSTACK_KEYSTONE_DEFAULT_ROLE = "_member_"
+OPENSTACK_KEYSTONE_URL = "http://%s:5000/v3" % OPENSTACK_HOST
+#OPENSTACK_KEYSTONE_DEFAULT_ROLE = "_member_"
+OPENSTACK_KEYSTONE_DEFAULT_ROLE = "user"
 
 # Enables keystone web single-sign-on if set to True.
 #WEBSSO_ENABLED = False
@@ -730,7 +734,7 @@ WEBROOT='/horizon/'
 # By default, validation of the HTTP Host header is disabled.  Production
 # installations should have this set accordingly.  For more information
 # see https://docs.djangoproject.com/en/dev/ref/settings/.
-ALLOWED_HOSTS = '*'
+ALLOWED_HOSTS = ['*', ]
 
 # Compress all assets offline as part of packaging installation
 COMPRESS_OFFLINE = True
