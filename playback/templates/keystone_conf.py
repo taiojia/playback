@@ -570,8 +570,16 @@ connection = {{ connection }}
 # raised. Set to -1 to specify an infinite retry count. (integer value)
 #db_max_retries = 20
 
+[ec2]
+#
+# Options defined in keystone
+#
 
-[domain_config]
+# Keystone EC2Credential backend driver. (string value)
+#driver=keystone.contrib.ec2.backends.kvs.Ec2
+
+# [domain_config] deprecated in mitaka
+#[domain_config]
 
 #
 # From keystone
