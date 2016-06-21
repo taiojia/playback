@@ -1028,6 +1028,7 @@ swift_store_key = {{ swift_store_key }}
 # Supported values for the 'disk_format' image attribute (list value)
 # Deprecated group/name - [DEFAULT]/disk_formats
 #disk_formats = ami,ari,aki,vhd,vmdk,raw,qcow2,vdi,iso
+disk_formats = ami,ari,aki,vhd,vmdk,raw,qcow2,vdi,iso,root-tar
 
 
 [keystone_authtoken]
