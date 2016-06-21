@@ -1310,6 +1310,29 @@ password = {{ password }}
 #allow_insecure_clients = false
 
 
+[oslo_messaging_notifications]
+
+#
+# From oslo.messaging
+#
+
+# The Drivers(s) to handle sending notifications. Possible values are
+# messaging, messagingv2, routing, log, test, noop (multi valued)
+# Deprecated group/name - [DEFAULT]/notification_driver
+#driver =
+
+# A URL representing the messaging driver to use for notifications. If
+# not set, we fall back to the same configuration used for RPC.
+# (string value)
+# Deprecated group/name - [DEFAULT]/notification_transport_url
+#transport_url = <None>
+
+# AMQP topic used for OpenStack notifications. (list value)
+# Deprecated group/name - [rpc_notifier2]/topics
+# Deprecated group/name - [DEFAULT]/notification_topics
+#topics = notifications
+
+
 [oslo_messaging_qpid]
 
 #
@@ -1535,6 +1558,22 @@ password = {{ password }}
 
 
 [paste_deploy]
+
+#
+# From glance.api
+#
+
+# Partial name of a pipeline in your paste configuration file with the
+# service name removed. For example, if your paste section name is
+# [pipeline:glance-api-keystone] use the value "keystone" (string
+# value)
+#flavor = <None>
+
+# Name of the paste configuration file. (string value)
+#config_file = <None>
+
+
+[profiler]
 
 #
 # From glance.api
