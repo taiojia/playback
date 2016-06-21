@@ -28,6 +28,7 @@ swift_hash_path_prefix = {{ swift_hash_path_prefix }}
 [storage-policy:0]
 name = Policy-0
 default = yes
+aliases = yellow, orange
 #policy_type = replication
 
 # the following section would declare a policy called 'silver', the number of
