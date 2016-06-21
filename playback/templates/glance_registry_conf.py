@@ -1282,4 +1282,20 @@ flavor = keystone
 
 # Name of the paste configuration file. (string value)
 #config_file = <None>
+
+[profiler]
+
+#
+# From glance.registry
+#
+
+# If False fully disable profiling feature. (boolean value)
+#enabled = false
+
+# If False doesn't trace SQL requests. (boolean value)
+#trace_sqlalchemy = false
+
+# Secret key to use to sign Glance API and Glance Registry services
+# tracing messages. (string value)
+#hmac_keys = SECRET_KEY
 """
