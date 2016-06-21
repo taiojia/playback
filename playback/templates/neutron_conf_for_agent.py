@@ -1125,4 +1125,32 @@ rabbit_password = {{ rabbit_password }}
 [qos]
 # Drivers list to use to send the update notification
 # notification_drivers = message_queue
+
+
+[ssl]
+
+#
+# From oslo.service.sslutils
+#
+
+# CA certificate file to use to verify connecting clients. (string value)
+# Deprecated group/name - [DEFAULT]/ssl_ca_file
+#ca_file = <None>
+
+# Certificate file to use when starting the server securely. (string value)
+# Deprecated group/name - [DEFAULT]/ssl_cert_file
+#cert_file = <None>
+
+# Private key file to use when starting the server securely. (string value)
+# Deprecated group/name - [DEFAULT]/ssl_key_file
+#key_file = <None>
+
+# SSL version to use (valid only if SSL enabled). Valid values are TLSv1 and
+# SSLv23. SSLv2, SSLv3, TLSv1_1, and TLSv1_2 may be available on some
+# distributions. (string value)
+#version = <None>
+
+# Sets the list of available ciphers. value should be a string in the OpenSSL
+# cipher list format. (string value)
+#ciphers = <None>
 """
