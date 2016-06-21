@@ -351,7 +351,7 @@ log_dir = /var/log/keystone
 
 # Memcache servers in the format of "host:port". (dogpile.cache.memcache and
 # keystone.cache.memcache_pool backends only). (list value)
-memcache_servers = {{ memcached_servers }}
+#memcache_servers = {{ memcached_servers }}
 
 # Number of seconds memcached server is considered dead before it is tried
 # again. (dogpile.cache.memcache and keystone.cache.memcache_pool backends
@@ -1320,7 +1320,7 @@ connection = {{ connection }}
 #
 
 # Memcache servers in the format of "host:port". (list value)
-#servers = localhost:11211
+servers = {{ memcached_servers }}
 
 # Number of seconds memcached server is considered dead before it is tried
 # again. This is used by the key value store system (e.g. token pooled
