@@ -541,6 +541,35 @@ notification_driver = noop
 #allow_headers = Content-MD5,X-Image-Meta-Checksum,X-Storage-Token,Accept-Encoding,X-Auth-Token,X-Identity-Status,X-Roles,X-Service-Catalog,X-User-Id,X-Tenant-Id,X-OpenStack-Request-ID
 
 
+[cors.subdomain]
+
+#
+# From oslo.middleware.cors
+#
+
+# Indicate whether this resource may be shared with the domain
+# received in the requests "origin" header. (list value)
+#allowed_origin = <None>
+
+# Indicate that the actual request can include user credentials
+# (boolean value)
+#allow_credentials = true
+
+# Indicate which headers are safe to expose to the API. Defaults to
+# HTTP Simple Headers. (list value)
+#expose_headers = X-Image-Meta-Checksum,X-Auth-Token,X-Subject-Token,X-Service-Token,X-OpenStack-Request-ID
+
+# Maximum cache age of CORS preflight requests. (integer value)
+#max_age = 3600
+
+# Indicate which methods can be used during the actual request. (list
+# value)
+#allow_methods = GET,PUT,POST,DELETE,PATCH
+
+# Indicate which header field names may be used during the actual
+# request. (list value)
+#allow_headers = Content-MD5,X-Image-Meta-Checksum,X-Storage-Token,Accept-Encoding,X-Auth-Token,X-Identity-Status,X-Roles,X-Service-Catalog,X-User-Id,X-Tenant-Id,X-OpenStack-Request-ID
+
 
 [database]
 
