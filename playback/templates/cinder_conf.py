@@ -12,7 +12,9 @@ rpc_backend = rabbit
 auth_strategy = keystone
 my_ip = {{ my_ip }}
 glance_api_servers = {{ glance_api_servers }}
+enabled_backends = ceph
 
+[ceph]
 volume_driver = cinder.volume.drivers.rbd.RBDDriver
 rbd_pool = volumes
 rbd_ceph_conf = /etc/ceph/ceph.conf
