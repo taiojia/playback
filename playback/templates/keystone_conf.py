@@ -1896,6 +1896,15 @@ driver = sql
 #cert_subject = /C=US/ST=Unset/L=Unset/O=Unset/CN=localhost
 
 
+[stats]
+
+#
+# Options defined in keystone
+#
+
+# Keystone stats backend driver. (string value)
+#driver=keystone.contrib.stats.backends.kvs.Stats
+
 [token]
 
 #
