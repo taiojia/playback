@@ -578,8 +578,8 @@ connection = {{ connection }}
 # Keystone EC2Credential backend driver. (string value)
 #driver=keystone.contrib.ec2.backends.kvs.Ec2
 
-# [domain_config] deprecated in mitaka
-#[domain_config]
+
+[domain_config]
 
 #
 # From keystone
@@ -1427,6 +1427,28 @@ servers = {{ memcached_servers }}
 #allow_insecure_clients = false
 
 
+[oslo_messaging_notifications]
+
+#
+# From oslo.messaging
+#
+
+# The Drivers(s) to handle sending notifications. Possible values are
+# messaging, messagingv2, routing, log, test, noop (multi valued)
+# Deprecated group/name - [DEFAULT]/notification_driver
+#driver =
+
+# A URL representing the messaging driver to use for notifications. If not set,
+# we fall back to the same configuration used for RPC. (string value)
+# Deprecated group/name - [DEFAULT]/notification_transport_url
+#transport_url = <None>
+
+# AMQP topic used for OpenStack notifications. (list value)
+# Deprecated group/name - [rpc_notifier2]/topics
+# Deprecated group/name - [DEFAULT]/notification_topics
+#topics = notifications
+
+
 [oslo_messaging_qpid]
 
 #
@@ -1839,6 +1861,17 @@ driver = sql
 # The prefix to use for the RelayState SAML attribute, used when generating ECP
 # wrapped assertions. (string value)
 #relay_state_prefix = ss:mem:
+
+
+[shadow_users]
+
+#
+# From keystone
+#
+
+# Entrypoint for the shadow users backend driver in the
+# keystone.identity.shadow_users namespace. (string value)
+#driver = sql
 
 
 [signing]
