@@ -87,7 +87,6 @@ Now on every compute nodes edit your Ceph configuration file, add the client sec
     rbd cache writethrough until flush = true
     rbd concurrent management ops = 20
 
-
 If you want to remove osd
 
     ssh {OSD-NODE} sudo stop ceph-mon-all && sudo stop ceph-osd-all
