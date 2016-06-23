@@ -10,7 +10,7 @@ Create cluster and add initial monitor(s) to the ceph.conf
     playback-ceph-deploy new compute1.maas compute2.maas compute3.maas compute4.maas compute5.maas
     echo "osd pool default size = 2" | tee -a ceph.conf
 
-Install ceph client
+Install ceph client(Optionaly you can use `--release jewel` to install jewel version)
 
     playback-ceph-deploy install playback.maas controller1.maas controller2.maas controller3.maas compute1.maas compute2.maas compute3.maas compute4.maas compute5.maas compue6.maas comupte7.maas compute8.maas compute9.maas compute10.maas
 
