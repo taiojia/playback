@@ -1567,7 +1567,7 @@ password = {{ password }}
 # service name removed. For example, if your paste section name is
 # [pipeline:glance-api-keystone] use the value "keystone" (string
 # value)
-#flavor = <None>
+flavor = keystone
 
 # Name of the paste configuration file. (string value)
 #config_file = <None>
@@ -1579,14 +1579,15 @@ password = {{ password }}
 # From glance.api
 #
 
-# Partial name of a pipeline in your paste configuration file with the
-# service name removed. For example, if your paste section name is
-# [pipeline:glance-api-keystone] use the value "keystone" (string
-# value)
-flavor = keystone
+# If False fully disable profiling feature. (boolean value)
+#enabled = false
 
-# Name of the paste configuration file. (string value)
-#config_file = <None>
+# If False doesn't trace SQL requests. (boolean value)
+#trace_sqlalchemy = false
+
+# Secret key to use to sign Glance API and Glance Registry services
+# tracing messages. (string value)
+#hmac_keys = SECRET_KEY
 
 
 [store_type_location_strategy]
