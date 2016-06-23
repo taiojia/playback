@@ -53,13 +53,13 @@ WEBROOT = '/'
 # NOTE: The version should be formatted as it appears in the URL for the
 # service API. For example, The identity service APIs have inconsistent
 # use of the decimal point, so valid options would be 2.0 or 3.
-#OPENSTACK_API_VERSIONS = {
+OPENSTACK_API_VERSIONS = {
 #    "data-processing": 1.1,
      "identity": 3,
      "image": 2,
      "volume": 2,
 #    "compute": 2,
-#}
+}
 
 # Set this to True if running on multi-domain model. When this is enabled, it
 # will require user to enter the Domain name in addition to username for login.
