@@ -349,10 +349,13 @@ Setup ceph client authentication
     ceph auth get-or-create client.cinder mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool=volumes, allow rwx pool=vms, allow rx pool=images'
     ceph auth get-or-create client.glance mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool=images'
 
-Add the keyrings for `client.cinder` and `client.glance`to appropriate nodes and change their ownership
+Add the keyrings for `client.cinder` and `client.glance` to appropriate nodes and change their ownership
 
     ceph auth get-or-create client.cinder | ssh {CINDER-VOLUME-NODE} sudo tee /etc/ceph/ceph.client.cinder.keyring
     ssh {CINDER-VOLUME-NODE} sudo chown cinder:cinder /etc/ceph/ceph.client.cinder.keyring
+
+    ceph auth get-or-create client.glance | ssh {GLANCE-API-NODE} sudo tee /etc/ceph/ceph.client.glance.keyring
+    ssh {GLANCE-API-NODE} sudo chown glance:glance /etc/ceph/ceph.client.glance.keyring
 
 Nodes running `nova-compute` need the keyring file for the `nova-compute` process
 
