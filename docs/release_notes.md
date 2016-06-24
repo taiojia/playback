@@ -35,3 +35,4 @@
 * v0.3.3 (Ris)
   * Change command-line to *-deploy
   * Pre-release, fix noteable bugs
+  * Update endpoint version
