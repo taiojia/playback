@@ -114,3 +114,5 @@ If you want to remove osd
 If you want to remove monitor
 
     ceph mon remove {MON-ID}
+
+Notes: you need to restart the `nova-compute`, `cinder-volume` and `glance-api` services.
