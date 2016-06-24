@@ -329,10 +329,10 @@ If you want to add additional monitors, do that
 
 Add ceph osd(s)
 
-    ceph-deploy osd create --zap-disk --fs-type ext4 BLOCK1:/dev/sdb
-    ceph-deploy osd create --zap-disk --fs-type ext4 BLOCK1:/dev/sdc
-    ceph-deploy osd create --zap-disk --fs-type ext4 BLOCK2:/dev/sdb
-    ceph-deploy osd create --zap-disk --fs-type ext4 BLOCK2:/dev/sdc
+    ceph-deploy osd create --zap-disk BLOCK1:/dev/sdb
+    ceph-deploy osd create --zap-disk BLOCK1:/dev/sdc
+    ceph-deploy osd create --zap-disk BLOCK2:/dev/sdb
+    ceph-deploy osd create --zap-disk BLOCK2:/dev/sdc
 
 Sync admin key
 

@@ -24,16 +24,16 @@ If you want to add additional monitors, do that
 
 Add ceph osd(s)
 
-    ceph-deploy osd create --zap-disk --fs-type ext4 compute1.maas:/dev/sdb
-    ceph-deploy osd create --zap-disk --fs-type ext4 compute1.maas:/dev/sdc
-    ceph-deploy osd create --zap-disk --fs-type ext4 compute2.maas:/dev/sdb
-    ceph-deploy osd create --zap-disk --fs-type ext4 compute2.maas:/dev/sdc
-    ceph-deploy osd create --zap-disk --fs-type ext4 compute3.maas:/dev/sdb
-    ceph-deploy osd create --zap-disk --fs-type ext4 compute3.maas:/dev/sdc
-    ceph-deploy osd create --zap-disk --fs-type ext4 compute4.maas:/dev/sdb
-    ceph-deploy osd create --zap-disk --fs-type ext4 compute4.maas:/dev/sdc
-    ceph-deploy osd create --zap-disk --fs-type ext4 compute5.maas:/dev/sdb
-    ceph-deploy osd create --zap-disk --fs-type ext4 compute5.maas:/dev/sdc
+    ceph-deploy osd create --zap-disk compute1.maas:/dev/sdb
+    ceph-deploy osd create --zap-disk compute1.maas:/dev/sdc
+    ceph-deploy osd create --zap-disk compute2.maas:/dev/sdb
+    ceph-deploy osd create --zap-disk compute2.maas:/dev/sdc
+    ceph-deploy osd create --zap-disk compute3.maas:/dev/sdb
+    ceph-deploy osd create --zap-disk compute3.maas:/dev/sdc
+    ceph-deploy osd create --zap-disk compute4.maas:/dev/sdb
+    ceph-deploy osd create --zap-disk compute4.maas:/dev/sdc
+    ceph-deploy osd create --zap-disk compute5.maas:/dev/sdb
+    ceph-deploy osd create --zap-disk compute5.maas:/dev/sdc
 
 Sync admin key
 
