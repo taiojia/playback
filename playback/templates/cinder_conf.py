@@ -15,17 +15,17 @@ glance_api_servers = {{ glance_api_servers }}
 enabled_backends = ceph
 
 [ceph]
-volume_driver = cinder.volume.drivers.rbd.RBDDriver
-rbd_pool = volumes
 rbd_ceph_conf = /etc/ceph/ceph.conf
-rbd_flatten_volume_from_snapshot = False
-rbd_max_clone_depth = 5
-rbd_store_chunk_size = 4
 rados_connect_timeout = -1
-rbd_user = cinder
-rbd_secret_uuid = {{ rbd_secret_uuid }}
 glance_api_version = 2
-
+rbd_max_clone_depth = 5
+rbd_flatten_volume_from_snapshot = False
+rbd_uuid = {{ rbd_uuid }}
+rbd_user = cinder
+rbd_pool = volumes
+volume_driver = cinder.volume.drivers.rbd.RBDDriver
+volume_backend_name = ceph
+report_discard_supported = true
 
 [database]
 connection = {{ connection }}

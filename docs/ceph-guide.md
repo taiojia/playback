@@ -65,7 +65,7 @@ Create a temporary copy of the secret key on the nodes running `nova-compute`
 
     ceph auth get-key client.cinder | ssh {COMPUTE-NODE} tee client.cinder.key
 
-Then, on the `compute nodes`, add the secret key to `libvirt` and remove the temporary copy of the key(the uuid is the same as your --rbd-secret-uuid option, you have to save the uuid for later)
+Then, on the `compute nodes`, add the secret key to `libvirt` and remove the temporary copy of the key(the uuid is the same as your --rbd-uuid option, you have to save the uuid for later)
 
     uuidgen
     457eb676-33da-42ec-9a8c-9293d545c337

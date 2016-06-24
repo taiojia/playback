@@ -166,10 +166,10 @@ Install nova on CONTROLLER2
 
 ## Nova Compute
 
-Add nova computes
+Add nova computes(use `uuidgen` to generate the ceph uuid)
 
-    nova-compute-deploy --user ubuntu --hosts COMPUTE1 install --my-ip MANAGEMENT_IP --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
-    nova-compute-deploy --user ubuntu --hosts COMPUTE2 install --my-ip MANAGEMENT_IP --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    nova-compute-deploy --user ubuntu --hosts COMPUTE1 install --my-ip MANAGEMENT_IP --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    nova-compute-deploy --user ubuntu --hosts COMPUTE2 install --my-ip MANAGEMENT_IP --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
 
 The libvirt defaults to using ceph as shared storage, the ceph pool for running instance is vms. if you do not using ceph as it's bachend, you must remove the following param:
 
@@ -225,8 +225,8 @@ Create cinder service creadentials
 
 Install cinder-api and cinder-volume on controller nodes, the volume backend defaults to ceph (you must have ceph installed)
 
-    cinder-deploy --user ubuntu --hosts CONTROLLER1 install --connection mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinder --rabbit-user openstack --rabbit-pass changeme --rabbit-hosts CONTROLLER1,CONTROLLER2 --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --cinder-pass changeme --my-ip MANAGEMENT_INTERFACE_IP --glance-api-servers http://CONTROLLER_VIP:9292 --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
-    cinder-deploy --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinder --rabbit-user openstack --rabbit-pass changeme --rabbit-hosts CONTROLLER1,CONTROLLER2 --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --cinder-pass changeme --my-ip MANAGEMENT_INTERFACE_IP --glance-api-servers http://CONTROLLER_VIP:9292 --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    cinder-deploy --user ubuntu --hosts CONTROLLER1 install --connection mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinder --rabbit-user openstack --rabbit-pass changeme --rabbit-hosts CONTROLLER1,CONTROLLER2 --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --cinder-pass changeme --my-ip MANAGEMENT_INTERFACE_IP --glance-api-servers http://CONTROLLER_VIP:9292 --rbd-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
+    cinder-deploy --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinder --rabbit-user openstack --rabbit-pass changeme --rabbit-hosts CONTROLLER1,CONTROLLER2 --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --cinder-pass changeme --my-ip MANAGEMENT_INTERFACE_IP --glance-api-servers http://CONTROLLER_VIP:9292 --rbd-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
 
 ## Swift proxy HA
 
@@ -364,7 +364,7 @@ Create a temporary copy of the secret key on the nodes running `nova-compute`
 
     ceph auth get-key client.cinder | ssh {COMPUTE-NODE} tee client.cinder.key
 
-Then, on the `compute nodes`, add the secret key to `libvirt` and remove the temporary copy of the key(the uuid is the same as your --rbd-secret-uuid option, you have to save the uuid for later)
+Then, on the `compute nodes`, add the secret key to `libvirt` and remove the temporary copy of the key(the uuid is the same as your --rbd-uuid option, you have to save the uuid for later)
 
     uuidgen
     457eb676-33da-42ec-9a8c-9293d545c337
