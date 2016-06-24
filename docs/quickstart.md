@@ -297,12 +297,6 @@ Finalize installation on all nodes
 
     swift-deploy --user ubuntu --hosts CONTROLLER1,CONTROLLER2,OBJECT1,OBJECT2 finalize-install --swift-hash-path-suffix changeme --swift-hash-path-prefix changeme
 
-
-
-TODO:
-    nova ssh keys
-    esxi backend
-
 ## (Option) Ceph Guide
 
 For more information about ceph backend visit:
