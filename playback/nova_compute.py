@@ -24,7 +24,7 @@ class NovaCompute(Task):
         env.hosts = self.hosts
         env.parallel = self.parallel
 
-    def _install(self, my_ip, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, nova_pass, novncproxy_base_url, glance_api_servers, neutron_endpoint, neutron_pass, rbd_uuid, memcached_servers):
+    def _install(self, my_ip, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, nova_pass, novncproxy_base_url, glance_api_servers, neutron_endpoint, neutron_pass, rbd_secret_uuid, memcached_servers):
         print red(env.host_string + ' | Install nova-compute')
         sudo('apt-get update')
         sudo('apt-get -y install nova-compute')
@@ -61,7 +61,7 @@ class NovaCompute(Task):
                               use_jinja=True,
                               use_sudo=True,
                               backup=True,
-                              context={'rbd_uuid': rbd_uuid})
+                              context={'rbd_secret_uuid': rbd_secret_uuid})
 
         os.remove('tmp_nova_compute_conf_' + env.host_string)
 
@@ -146,11 +146,11 @@ def install_subparser(s):
                                 action='store',
                                 default=None,
                                 dest='neutron_pass')
-    install_parser.add_argument('--rbd-uuid',
+    install_parser.add_argument('--rbd-secret-uuid',
                                 help='ceph rbd secret for nova libvirt',
                                 action='store',
                                 default=None,
-                                dest='rbd_uuid')
+                                dest='rbd_secret_uuid')
     install_parser.add_argument('--memcached-servers',
                                 help='memcached servers e.g. CONTROLLER1:11211,CONTROLLER2:11211',
                                 action='store',
@@ -170,7 +170,7 @@ def install(args):
     target = make_target(args)
     execute(target._install, args.my_ip, args.rabbit_hosts, args.rabbit_user, args.rabbit_pass,
             args.auth_uri, args.auth_url, args.nova_pass, args.novncproxy_base_url,
-            args.glance_api_servers, args.neutron_endpoint, args.neutron_pass, args.rbd_uuid, args.memcached_servers)
+            args.glance_api_servers, args.neutron_endpoint, args.neutron_pass, args.rbd_secret_uuid, args.memcached_servers)
     
 def parser():
     p = argparse.ArgumentParser(prog='nova-compute-deploy', description=cli_description+'this command used for provision Nova Compute')
