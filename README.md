@@ -53,3 +53,4 @@ Playback command-line tool supporting the following platform:
 * v0.3.3 (Ris)
   * Change command-line to *-deploy
   * Pre-release, fix noteable bugs
+  * Update endpoint version
