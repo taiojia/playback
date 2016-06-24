@@ -14,7 +14,7 @@ Install keystone on controller1.maas, controller2.maas and controller3.maas. Not
 
 Create the service entity and API endpoints
 
-    keystone-deploy --user ubuntu --hosts controller1.maas create-entity-and-endpoint --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --public-endpoint http://CONTROLLER_VIP:5000/v2.0 --internal-endpoint http://CONTROLLER_VIP:5000/v2.0 --admin-endpoint http://CONTROLLER_vip:35357/v2.0
+    keystone-deploy --user ubuntu --hosts controller1.maas create-entity-and-endpoint --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --public-endpoint http://CONTROLLER_VIP:5000/v3 --internal-endpoint http://CONTROLLER_VIP:5000/v3 --admin-endpoint http://CONTROLLER_vip:35357/v3
 
 Create projects, users, and roles
 
