@@ -305,7 +305,10 @@ TODO:
 
 ## (Option) Ceph Guide
 
-Install [ceph-deploy](http://docs.ceph.com/docs/jewel/start/quick-start-preflight/)
+For more information about ceph backend visit:
+
+[preflight](http://docs.ceph.com/docs/jewel/start/quick-start-preflight/)
+[Cinder and Glance driver](http://docs.ceph.com/docs/jewel/rbd/rbd-openstack/)
 
 Create ceph cluster directory
 
@@ -345,12 +348,14 @@ Create osd pool for cinder and running instance
 
     ceph osd pool create volumes 512
     ceph osd pool create vms 512
+    ceph osd pool create images 512
 
 Setup ceph client authentication
 
-    ceph auth get-or-create client.cinder mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool=volumes, allow rwx pool=vms'
+    ceph auth get-or-create client.cinder mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool=volumes, allow rwx pool=vms, allow rx pool=images'
+    ceph auth get-or-create client.glance mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool=images'
 
-Add the keyrings for `client.cinder` to appropriate nodes and change their ownership
+Add the keyrings for `client.cinder` and `client.glance`to appropriate nodes and change their ownership
 
     ceph auth get-or-create client.cinder | ssh {CINDER-VOLUME-NODE} sudo tee /etc/ceph/ceph.client.cinder.keyring
     ssh {CINDER-VOLUME-NODE} sudo chown cinder:cinder /etc/ceph/ceph.client.cinder.keyring
@@ -388,6 +393,10 @@ Now on every compute nodes edit your Ceph configuration file, add the client sec
     rbd cache writethrough until flush = true
     rbd concurrent management ops = 20
 
+On every glance-api nodes edit your Ceph configuration file, add the client section
+
+    [client.glance]
+    keyring= /etc/ceph/client.glance.keyring
 
 If you want to remove osd
 

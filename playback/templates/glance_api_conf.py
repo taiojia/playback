@@ -693,13 +693,13 @@ connection = {{ connection }}
 #
 
 # List of stores enabled (list value)
-stores = file,http,swift
+stores = file,http,swift,rbd
 
 # Default scheme to use to store image data. The scheme must be
 # registered by one of the stores defined by the 'stores' config
 # option. (string value)
 #default_store = file
-default_store = swift
+default_store = rbd
 
 # Minimum interval seconds to execute updating dynamic storage
 # capabilities based on backend status then. It's not a periodic
@@ -1652,4 +1652,13 @@ flavor = keystone
 # 'parallel'. (integer value)
 # Deprecated group/name - [task]/eventlet_executor_pool_size
 #max_workers = 10
+
+[glance_store]
+stores = glance.store.rbd.Store,glance.store.http.Store
+default_store = rbd
+rbd_store_pool = images
+rbd_store_user = glance
+rbd_store_ceph_conf = /etc/ceph/ceph.conf
+rbd_store_chunk_size = 8
+
 """
