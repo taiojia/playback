@@ -206,7 +206,7 @@ def create_keystone_db_subparser(s):
 
 def install_subparser(s):
     install_parser = s.add_parser('install', help='install keystone')
-    install_parser.add_argument('--admin_token',
+    install_parser.add_argument('--admin-token',
                                 help='define the value of the initial administration token',
                                 action='store',
                                 default=None,
