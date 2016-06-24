@@ -52,5 +52,11 @@ Playback command-line tool supporting the following platform:
 
 * v0.3.3 (Ris)
   * Change command-line to *-deploy
-  * Pre-release, fix noteable bugs
   * Update endpoint version
+  * Update package requirements
+  * Fix glance auth error
+  * Remove ceph-deploy instead of apt repository of 1.5.34
+  * The ceph version upgrade to jewel
+  * Using xfs as ceph osd type
+  * Fix cannot create cinder volume when using the ceph as backend
+  * Remove swift backend for glance instead of ceph
