@@ -305,6 +305,8 @@ TODO:
 
 ## (Option) Ceph Guide
 
+Install [ceph-deploy](http://docs.ceph.com/docs/jewel/start/quick-start-preflight/)
+
 Create ceph cluster directory
 
     mkdir ceph-cluster
