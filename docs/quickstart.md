@@ -315,7 +315,7 @@ Create cluster and add initial monitor(s) to the ceph.conf
     playback-ceph-deploy new  CONTROLLER1 CONTROLLER2 COMPUTE1 COMPUTE2 BLOCK1 BLOCK2
     echo "osd pool default size = 2" | tee -a ceph.conf
 
-Install ceph client
+Install ceph client(Optionaly you can use `--release jewel` to install jewel version)
 
     playback-ceph-deploy install PLAYBACK-NODE CONTROLLER1 CONTROLLER2 COMPUTE1 COMPUTE2 BLOCK1 BLOCK2
 
