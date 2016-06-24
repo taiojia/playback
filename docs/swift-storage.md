@@ -39,7 +39,6 @@ Create account ring on controller node
     swift-storage-deploy --user ubuntu --hosts controller1.maas.maas account-builder-add --region 1 --zone 1 --ip compute10.maas --device sde --weight 100
     swift-storage-deploy --user ubuntu --hosts controller1.maas.maas account-builder-rebalance
 
-
 Create container ring on controller node
 
     swift-storage-deploy --user ubuntu --hosts controller1.maas create-container-builder-file --partitions 10 --replicas 3 --moving 1

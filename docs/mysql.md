@@ -13,7 +13,6 @@ Deploy to controller1.maas.
     --wsrep-node-name="galera1" \
     --wsrep-node-address="controller1.maas"
 
-
 Deploy to controller2.maas.
 
     mysql-deploy --user ubuntu --hosts controller2.maas install
