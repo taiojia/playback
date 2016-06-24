@@ -48,7 +48,7 @@ setup(name='playback',
     author_email='jiasir@icloud.com',
     url='https://github.com/jiasir/playback/',
     license='MIT',
-    install_requires=['fabric == 1.10.2', 'ecdsa == 0.13', 'markupsafe == 0.23', 'paramiko == 1.16.0', 'jinja2 == 2.8', 'PyYAML == 3.11', 'setuptools == 19.6.2', 'pycrypto == 2.6.1', 'tqdm == 3.8.0', 'ceph-deploy == 1.5.34'],
+    install_requires=['fabric == 1.10.2', 'ecdsa == 0.13', 'markupsafe == 0.23', 'paramiko == 1.16.0', 'jinja2 == 2.8', 'PyYAML == 3.11', 'setuptools == 19.6.2', 'pycrypto == 2.6.1', 'tqdm == 3.8.0'],
     packages=find_packages(),
     entry_points={ 
        'console_scripts': [

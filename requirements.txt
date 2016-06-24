@@ -7,4 +7,4 @@ PyYAML==3.11
 setuptools==19.6.2
 pycrypto==2.6.1
 tqdm==3.8.0
-ceph-deploy==1.5.34
+#ceph-deploy==1.5.34
