@@ -28,7 +28,7 @@ class Cinder(Task):
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, cinder_db_pass), shell=False)
 
     @runs_once
-    def _create_service_credentials(self, os_password, os_auth_url, cinder_pass, endpoint_v1, endpoint_v2):
+    def _create_service_credentials(self, os_password, os_auth_url, cinder_pass, public_endpoint_v1, internal_endpoint_v1, admin_endpoint_v1, public_endpoint_v2, internal_endpoint_v2, admin_endpoint_v2):
         with shell_env(OS_PROJECT_DOMAIN_NAME='default',
                        OS_USER_DOMAIN_NAME='default',
                        OS_PROJECT_NAME='admin',
@@ -46,12 +46,12 @@ class Cinder(Task):
             sudo('openstack service create --name cinder --description "OpenStack Block Storage" volume')
             sudo('openstack service create --name cinderv2 --description "OpenStack Block Storage" volumev2')
             print red(env.host_string + ' | Create the Block Storage service API endpoints')
-            sudo('openstack endpoint create --region RegionOne volume public {0}'.format(endpoint_v1))
-            sudo('openstack endpoint create --region RegionOne volume internal {0}'.format(endpoint_v1))
-            sudo('openstack endpoint create --region RegionOne volume admin {0}'.format(endpoint_v1))
-            sudo('openstack endpoint create --region RegionOne volumev2 public {0}'.format(endpoint_v2))
-            sudo('openstack endpoint create --region RegionOne volumev2 internal {0}'.format(endpoint_v2))
-            sudo('openstack endpoint create --region RegionOne volumev2 admin {0}'.format(endpoint_v2))
+            sudo('openstack endpoint create --region RegionOne volume public {0}'.format(public_endpoint_v1))
+            sudo('openstack endpoint create --region RegionOne volume internal {0}'.format(internal_endpoint_v1))
+            sudo('openstack endpoint create --region RegionOne volume admin {0}'.format(admin_endpoint_v1))
+            sudo('openstack endpoint create --region RegionOne volumev2 public {0}'.format(public_endpoint_v2))
+            sudo('openstack endpoint create --region RegionOne volumev2 internal {0}'.format(internal_endpoint_v2))
+            sudo('openstack endpoint create --region RegionOne volumev2 admin {0}'.format(admin_endpoint_v2))
 
     def _install(self, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, cinder_pass, my_ip, glance_api_servers, rbd_secret_uuid, memcached_servers, populate=False):
         print red(env.host_string + ' | Install the cinder-api and cinder-volume')
@@ -105,10 +105,10 @@ def create_cinder_db(user, hosts, root_db_pass, cinder_db_pass):
     target = make_target(user, hosts)
     execute(target._create_cinder_db, root_db_pass, cinder_db_pass)
 
-def create_service_credentials(user ,hosts, os_password, os_auth_url, cinder_pass, endpoint_v1, endpoint_v2):
+def create_service_credentials(user ,hosts, os_password, os_auth_url, cinder_pass, public_endpoint_v1, internal_endpoint_v1, admin_endpoint_v1, public_endpoint_v2, internal_endpoint_v2, admin_endpoint_v2):
     target =make_target(user, hosts)
     execute(target._create_service_credentials, os_password, 
-            os_auth_url, cinder_pass, endpoint_v1, endpoint_v2)
+            os_auth_url, cinder_pass, public_endpoint_v1, internal_endpoint_v1, admin_endpoint_v1, public_endpoint_v2, internal_endpoint_v2, admin_endpoint_v2)
 
 def install(user, hosts, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, cinder_pass, my_ip, glance_api_servers, rbd_secret_uuid, memcached_servers, populate):
     target = make_target(user, hosts)
@@ -142,13 +142,18 @@ def parser():
     create_cinder_db_parser.set_defaults(func=create_cinder_db_f)
     
     def create_service_credentials_f(args):
-        create_service_credentials(args.user, args.hosts.split(','), args.os_password, args.os_auth_url, args.cinder_pass, args.endpoint_v1, args.endpoint_v2)
+        create_service_credentials(args.user, args.hosts.split(','), args.os_password, args.os_auth_url, args.cinder_pass, args.public_endpoint_v1, args.internal_endpoint_v1, args.admin_endpoint_v1, args.public_endpoint_v2, args.internal_endpoint_v2, args.admin_endpoint_v2)
     create_service_credentials_parser = s.add_parser('create-service-credentials',help='create the cinder service credentials')
     create_service_credentials_parser.add_argument('--os-password', help='the password for admin user', action='store', default=None, dest='os_password')
     create_service_credentials_parser.add_argument('--os-auth-url', help='keystone endpoint url e.g. http://CONTROLLER_VIP:35357/v3', action='store', default=None, dest='os_auth_url')
     create_service_credentials_parser.add_argument('--cinder-pass', help='password for cinder user', action='store', default=None, dest='cinder_pass')
-    create_service_credentials_parser.add_argument('--endpoint-v1', help='public, internal and admin endpoint for volume service e.g. http://CONTROLLER_VIP:8776/v1/%%\(tenant_id\)s', action='store', default=None, dest='endpoint_v1')
-    create_service_credentials_parser.add_argument('--endpoint-v2', help='public, internal and admin endpoint v2 for volumev2 service e.g. http://CONTROLLER_VIP:8776/v2/%%\(tenant_id\)s', action='store', default=None, dest='endpoint_v2')
+    create_service_credentials_parser.add_argument('--public-endpoint-v1', help='public endpoint for volume service e.g. http://CONTROLLER_VIP:8776/v1/%%\(tenant_id\)s', action='store', default=None, dest='public_endpoint_v1')
+    create_service_credentials_parser.add_argument('--internal-endpoint-v1', help='internal endpoint for volume service e.g. http://CONTROLLER_VIP:8776/v1/%%\(tenant_id\)s', action='store', default=None, dest='internal_endpoint_v1')
+    create_service_credentials_parser.add_argument('--admin-endpoint-v1', help='admin endpoint for volume service e.g. http://CONTROLLER_VIP:8776/v1/%%\(tenant_id\)s', action='store', default=None, dest='admin_endpoint_v1')
+    create_service_credentials_parser.add_argument('--public-endpoint-v2', help='public endpoint v2 for volumev2 service e.g. http://CONTROLLER_VIP:8776/v2/%%\(tenant_id\)s', action='store', default=None, dest='public_endpoint_v2')
+    create_service_credentials_parser.add_argument('--internal-endpoint-v2', help='internal endpoint v2 for volumev2 service e.g. http://CONTROLLER_VIP:8776/v2/%%\(tenant_id\)s', action='store', default=None, dest='internal_endpoint_v2')
+    create_service_credentials_parser.add_argument('--admin-endpoint-v2', help='admin endpoint v2 for volumev2 service e.g. http://CONTROLLER_VIP:8776/v2/%%\(tenant_id\)s', action='store', default=None, dest='admin_endpoint_v2')
+
     create_service_credentials_parser.set_defaults(func=create_service_credentials_f)
     
     def install_f(args):

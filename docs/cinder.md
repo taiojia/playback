@@ -8,7 +8,7 @@ Create cinder database
 
 Create cinder service creadentials
 
-    cinder-deploy --user ubuntu --hosts controller1.maas create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --cinder-pass changeme --endpoint-v1 'http://CONTROLLER_VIP:8776/v1/%\(tenant_id\)s' --endpoint-v2 'http://CONTROLLER_VIP:8776/v2/%\(tenant_id\)s'
+    cinder-deploy --user ubuntu --hosts controller1.maas create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --cinder-pass changeme --public-endpoint-v1 'http://CONTROLLER_VIP:8776/v1/%\(tenant_id\)s' --internal-endpoint-v1 'http://CONTROLLER_VIP:8776/v1/%\(tenant_id\)s' --admin-endpoint-v1 'http://CONTROLLER_VIP:8776/v1/%\(tenant_id\)s' --public-endpoint-v2 'http://CONTROLLER_VIP:8776/v2/%\(tenant_id\)s' --internal-endpoint-v2 'http://CONTROLLER_VIP:8776/v2/%\(tenant_id\)s' --admin-endpoint-v2 'http://CONTROLLER_VIP:8776/v2/%\(tenant_id\)s'
 
 Install cinder-api and cinder-volume on controller nodes, the volume backend defaults to ceph (you must have ceph installed)
 

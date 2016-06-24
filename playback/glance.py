@@ -30,7 +30,7 @@ class Glance(Task):
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, glance_db_pass), shell=False)
 
     @runs_once
-    def _create_service_credentials(self, os_password, os_auth_url, glance_pass, endpoint):
+    def _create_service_credentials(self, os_password, os_auth_url, glance_pass, public_endpoint, internal_endpoint, admin_endpoint):
         with shell_env(OS_PROJECT_DOMAIN_NAME='default',
                        OS_USER_DOMAIN_NAME='default',
                        OS_PROJECT_NAME='admin',
@@ -47,9 +47,9 @@ class Glance(Task):
             print red(env.host_string + ' | Create the glance service entity')
             sudo('openstack service create --name glance --description "OpenStack Image service" image')
             print red(env.host_string + ' | Create the Image service API endpoints')
-            sudo('openstack endpoint create --region RegionOne image public {0}'.format(endpoint))
-            sudo('openstack endpoint create --region RegionOne image internal {0}'.format(endpoint))
-            sudo('openstack endpoint create --region RegionOne image admin {0}'.format(endpoint))
+            sudo('openstack endpoint create --region RegionOne image public {0}'.format(public_endpoint))
+            sudo('openstack endpoint create --region RegionOne image internal {0}'.format(internal_endpoint))
+            sudo('openstack endpoint create --region RegionOne image admin {0}'.format(admin_endpoint))
 
     def _install_glance(self, connection, auth_uri, auth_url, glance_pass, swift_store_auth_address, memcached_servers, populate):
         print red(env.host_string + ' | Install glance python-glanceclient')
@@ -129,7 +129,9 @@ def create_service_credentials(args):
             args.os_password, 
             args.os_auth_url, 
             args.glance_pass, 
-            args.endpoint)
+            args.public_endpoint,
+            args.internal_endpoint,
+            args.admin_endpoint)
 
 def install(args):
     target = make_target(args.user, args.hosts.split(','))
@@ -184,11 +186,21 @@ def parser():
                                                     action='store',
                                                     default=None,
                                                     dest='glance_pass')
-    create_service_credentials_parser.add_argument('--endpoint',
-                                                    help='public, internal and admin endpoint for glance service e.g. http://CONTROLLER_VIP:9292',
+    create_service_credentials_parser.add_argument('--public-endpoint',
+                                                    help='public endpoint for glance service e.g. http://CONTROLLER_VIP:9292',
                                                     action='store',
                                                     default=None,
-                                                    dest='endpoint')
+                                                    dest='public_endpoint')
+    create_service_credentials_parser.add_argument('--internal-endpoint',
+                                                    help='internal endpoint for glance service e.g. http://CONTROLLER_VIP:9292',
+                                                    action='store',
+                                                    default=None,
+                                                    dest='internal_endpoint')
+    create_service_credentials_parser.add_argument('--admin-endpoint',
+                                                    help='admin endpoint for glance service e.g. http://CONTROLLER_VIP:9292',
+                                                    action='store',
+                                                    default=None,
+                                                    dest='admin_endpoint')
     create_service_credentials_parser.set_defaults(func=create_service_credentials)
 
     def install_f(args):
@@ -215,7 +227,7 @@ def parser():
                         default=None,
                         dest='glance_pass')
     install_parser.add_argument('--swift-store-auth-address',
-                        help='the address where the Swift authentication service is listening e.g. http://CONTROLLER_VIP:5000/v2.0/',
+                        help='the address where the Swift authentication service is listening e.g. http://CONTROLLER_VIP:5000/v3/',
                         action='store',
                         default=None,
                         dest='swift_store_auth_address')

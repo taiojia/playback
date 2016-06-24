@@ -242,17 +242,17 @@ def create_entity_and_endpoint_subparser(s):
                                                     default=None,
                                                     dest='os_url')
     create_entity_and_endpoint_parser.add_argument('--public-endpoint',
-                                                    help='the public endpoint e.g. http://CONTROLLER_VIP:5000/v2.0',
+                                                    help='the public endpoint e.g. http://CONTROLLER_VIP:5000/v3',
                                                     action='store',
                                                     default=None,
                                                     dest='public_endpoint')
     create_entity_and_endpoint_parser.add_argument('--internal-endpoint',
-                                                    help='the internal endpoint e.g. http://CONTROLLER_VIP:5000/v2.0',
+                                                    help='the internal endpoint e.g. http://CONTROLLER_VIP:5000/v3',
                                                     action='store',
                                                     default=None,
                                                     dest='internal_endpoint')
     create_entity_and_endpoint_parser.add_argument('--admin-endpoint',
-                                                    help='the admin endpoint e.g. http://CONTROLLER_VIP:35357/v2.0',
+                                                    help='the admin endpoint e.g. http://CONTROLLER_VIP:35357/v3',
                                                     action='store',
                                                     default=None,
                                                     dest='admin_endpoint')

@@ -117,12 +117,12 @@ def create_service_credentials_subparser(s):
                                                     default=None,
                                                     dest='swift_pass')
     create_service_credentials_parser.add_argument('--public-endpoint',
-                                                    help='public endpoint for swift service e.g. http://CONTROLLER_VIP:8080/v1/AUTH_%%\(tenant_id\)s',
+                                                    help='public endpoint for swift service e.g. http://CONTROLLER_VIP:8080/v1/AUTH_%\(tenant_id\)s',
                                                     action='store',
                                                     default=None,
                                                     dest='public_endpoint')
     create_service_credentials_parser.add_argument('--internal-endpoint',
-                                                    help='internal endpoint for swift service e.g. http://CONTROLLER_VIP:8080/v1/AUTH_%%\(tenant_id\)s',
+                                                    help='internal endpoint for swift service e.g. http://CONTROLLER_VIP:8080/v1/AUTH_%\(tenant_id\)s',
                                                     action='store',
                                                     default=None,
                                                     dest='internal_endpoint')

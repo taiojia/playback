@@ -139,37 +139,37 @@ Create glance database
 
 Create service credentials
 
-    glance-deploy --user ubuntu --hosts CONTROLLER1 create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --glance-pass changeme --endpoint http://CONTROLLER_VIP:9292
+    glance-deploy --user ubuntu --hosts CONTROLLER1 create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --glance-pass changeme --public-endpoint http://CONTROLLER_VIP:9292 --internal-endpoint http://CONTROLLER_VIP:9292 --admin-endpoint http://CONTROLLER_VIP:9292
 
 Install glance on CONTROLLER1 and CONTROLLER2
 
-    glance-deploy --user ubuntu --hosts CONTROLLER1 install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme  --swift-store-auth-address http://CONTROLLER_VIP:5000/v2.0/ --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
-    glance-deploy --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme  --swift-store-auth-address http://CONTROLLER_VIP:5000/v2.0/ --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    glance-deploy --user ubuntu --hosts CONTROLLER1 install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme  --swift-store-auth-address http://CONTROLLER_VIP:5000/v3/ --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
+    glance-deploy --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme  --swift-store-auth-address http://CONTROLLER_VIP:5000/v3/ --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
 
 ## Nova HA
 
 Create nova database
 
-    nova-deploy --user ubuntu --hosts CONTROLLER1 create-nova-db --root-db-pass changeme --nova-db-pass changeme 
+    nova-deploy --user ubuntu --hosts CONTROLLER1 create-nova-db --root-db-pass changeme --nova-db-pass changeme
 
 Create service credentials
 
-    nova-deploy --user ubuntu --hosts CONTROLLER1 create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --nova-pass changeme --endpoint 'http://CONTROLLER_VIP:8774/v2/%\(tenant_id\)s'
+    nova-deploy --user ubuntu --hosts CONTROLLER1 create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --nova-pass changeme --public-endpoint 'http://CONTROLLER_VIP:8774/v2.1/%\(tenant_id\)s' --internal-endpoint 'http://CONTROLLER_VIP:8774/v2.1/%\(tenant_id\)s' --admin-endpoint 'http://CONTROLLER_VIP:8774/v2.1/%\(tenant_id\)s'
 
 Install nova on CONTROLLER1
 
-    nova-deploy --user ubuntu --hosts CONTROLLER1 install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --api-connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova_api --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme --populate
+    nova-deploy --user ubuntu --hosts CONTROLLER1 install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --api-connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova_api --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme --populate
 
 Install nova on CONTROLLER2
 
-    nova-deploy --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --api-connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova_api --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme
+    nova-deploy --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --api-connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova_api --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme
 
 ## Nova Compute
 
 Add nova computes
 
-    nova-compute-deploy --user ubuntu --hosts COMPUTE1 install --my-ip MANAGEMENT_IP --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
-    nova-compute-deploy --user ubuntu --hosts COMPUTE2 install --my-ip MANAGEMENT_IP --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    nova-compute-deploy --user ubuntu --hosts COMPUTE1 install --my-ip MANAGEMENT_IP --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    nova-compute-deploy --user ubuntu --hosts COMPUTE2 install --my-ip MANAGEMENT_IP --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
 
 The libvirt defaults to using ceph as shared storage, the ceph pool for running instance is vms. if you do not using ceph as it's bachend, you must remove the following param:
 
@@ -190,12 +190,12 @@ Create nova database
 
 Create service credentials
 
-    neutron-deploy --user ubuntu --hosts CONTROLLER1 create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --neutron-pass changeme --endpoint http://CONTROLLER_VIP:9696
+    neutron-deploy --user ubuntu --hosts CONTROLLER1 create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --neutron-pass changeme --public-endpoint http://CONTROLLER_VIP:9696 --internal-endpoint http://CONTROLLER_VIP:9696 --admin-endpoint http://CONTROLLER_VIP:9696
 
 Install Neutron for self-service
 
-    neutron-deploy --user ubuntu --hosts CONTROLLER1 install --connection mysql+pymysql://neutron:NEUTRON_PASS@CONTROLLER_VIP/neutron --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --nova-url http://CONTROLLER_VIP:8774/v2 --nova-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP --nova-metadata-ip CONTROLLER_VIP --metadata-proxy-shared-secret changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
-    neutron-deploy --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://neutron:NEUTRON_PASS@CONTROLLER_VIP/neutron --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --nova-url http://CONTROLLER_VIP:8774/v2 --nova-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP --nova-metadata-ip CONTROLLER_VIP --metadata-proxy-shared-secret changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    neutron-deploy --user ubuntu --hosts CONTROLLER1 install --connection mysql+pymysql://neutron:NEUTRON_PASS@CONTROLLER_VIP/neutron --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --nova-url http://CONTROLLER_VIP:8774/v2.1 --nova-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP --nova-metadata-ip CONTROLLER_VIP --metadata-proxy-shared-secret changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
+    neutron-deploy --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://neutron:NEUTRON_PASS@CONTROLLER_VIP/neutron --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --nova-url http://CONTROLLER_VIP:8774/v2.1 --nova-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP --nova-metadata-ip CONTROLLER_VIP --metadata-proxy-shared-secret changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
 
 
 ## Neutron Agent
@@ -221,7 +221,7 @@ Create cinder database
 
 Create cinder service creadentials
 
-    cinder-deploy --user ubuntu --hosts CONTROLLER1 create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --cinder-pass changeme --endpoint-v1 'http://CONTROLLER_VIP:8776/v1/%\(tenant_id\)s' --endpoint-v2 'http://CONTROLLER_VIP:8776/v2/%\(tenant_id\)s'
+    cinder-deploy --user ubuntu --hosts CONTROLLER1 create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --cinder-pass changeme --public-endpoint-v1 'http://CONTROLLER_VIP:8776/v1/%\(tenant_id\)s' --internal-endpoint-v1 'http://CONTROLLER_VIP:8776/v1/%\(tenant_id\)s' --admin-endpoint-v1 'http://CONTROLLER_VIP:8776/v1/%\(tenant_id\)s' --public-endpoint-v2 'http://CONTROLLER_VIP:8776/v2/%\(tenant_id\)s' --internal-endpoint-v2 'http://CONTROLLER_VIP:8776/v2/%\(tenant_id\)s' --admin-endpoint-v2 'http://CONTROLLER_VIP:8776/v2/%\(tenant_id\)s'
 
 Install cinder-api and cinder-volume on controller nodes, the volume backend defaults to ceph (you must have ceph installed)
 

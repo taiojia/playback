@@ -32,7 +32,7 @@ class Nova(Task):
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, nova_db_pass), shell=False)
 
     @runs_once
-    def _create_service_credentials(self, os_password, os_auth_url, nova_pass, endpoint):
+    def _create_service_credentials(self, os_password, os_auth_url, nova_pass, public_endpoint, internal_endpoint, admin_endpoint):
         with shell_env(OS_PROJECT_DOMAIN_NAME='default',
                        OS_USER_DOMAIN_NAME='default',
                        OS_PROJECT_NAME='admin',
@@ -49,11 +49,11 @@ class Nova(Task):
             print red(env.host_string + ' | Create the nova service entity')
             sudo('openstack service create --name nova --description "OpenStack Compute" compute')
             print red(env.host_string + ' | Create the Compute service API endpoints')
-            sudo('openstack endpoint create --region RegionOne compute public {0}'.format(endpoint))
-            sudo('openstack endpoint create --region RegionOne compute internal {0}'.format(endpoint))
-            sudo('openstack endpoint create --region RegionOne compute admin {0}'.format(endpoint))
+            sudo('openstack endpoint create --region RegionOne compute public {0}'.format(public_endpoint))
+            sudo('openstack endpoint create --region RegionOne compute internal {0}'.format(internal_endpoint))
+            sudo('openstack endpoint create --region RegionOne compute admin {0}'.format(admin_endpoint))
 
-    def _install_nova(self, connection, api_connection, auth_uri, auth_url, nova_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_user, rabbit_pass, api_servers, neutron_endpoint, neutron_pass, metadata_proxy_shared_secret, populate):
+    def _install_nova(self, connection, api_connection, auth_uri, auth_url, nova_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_user, rabbit_pass, glance_api_servers, neutron_endpoint, neutron_pass, metadata_proxy_shared_secret, populate):
         print red(env.host_string + ' | Install nova-api nova-cert nova-conductor nova-consoleauth nova-novncproxy nova-scheduler python-novaclient')
         sudo('apt-get update')
         # nova-cert deprecated in mitaka
@@ -75,7 +75,7 @@ class Nova(Task):
                                        'rabbit_hosts': rabbit_hosts,
                                        'rabbit_user': rabbit_user,
                                        'rabbit_password': rabbit_pass,
-                                       'api_servers': api_servers,
+                                       'api_servers': glance_api_servers,
                                        'url': neutron_endpoint,
                                        'neutron_pass': neutron_pass,
                                        'metadata_proxy_shared_secret': metadata_proxy_shared_secret
@@ -135,11 +135,21 @@ def create_service_credentials_subparser(s):
                                                     action='store',
                                                     default=None,
                                                     dest='nova_pass')
-    create_service_credentials_parser.add_argument('--endpoint',
-                                                    help='public, internal and admin endpoint for nova service e.g. http://CONTROLLER_VIP:8774/v2/%%\(tenant_id\)s',
+    create_service_credentials_parser.add_argument('--public-endpoint',
+                                                    help='public endpoint for nova service e.g. http://CONTROLLER_VIP:8774/v2.1/%\(tenant_id\)s',
                                                     action='store',
                                                     default=None,
-                                                    dest='endpoint')
+                                                    dest='public_endpoint')
+    create_service_credentials_parser.add_argument('--internal-endpoint',
+                                                    help='internal endpoint for nova service e.g. http://CONTROLLER_VIP:8774/v2.1/%\(tenant_id\)s',
+                                                    action='store',
+                                                    default=None,
+                                                    dest='internal_endpoint')
+    create_service_credentials_parser.add_argument('--admin-endpoint',
+                                                    help='admin endpoint for nova service e.g. http://CONTROLLER_VIP:8774/v2.1/%\(tenant_id\)s',
+                                                    action='store',
+                                                    default=None,
+                                                    dest='admin_endpoint')
     return create_service_credentials_parser
     
 def install_subparser(s):
@@ -194,11 +204,11 @@ def install_subparser(s):
                                 action='store',
                                 default=None,
                                 dest='rabbit_pass')
-    install_parser.add_argument('--api-servers',
+    install_parser.add_argument('--glance-api-servers',
                                 help='glance host e.g. http://CONTROLLER_VIP:9292',
                                 action='store',
                                 default=None,
-                                dest='api_servers')
+                                dest='glance_api_servers')
     install_parser.add_argument('--neutron-endpoint',
                                 help='neutron endpoint e.g. http://CONTROLLER_VIP:9696',
                                 action='store',
@@ -236,13 +246,13 @@ def create_nova_db(args):
 def create_service_credentials(args):
     target = make_target(args)
     execute(target._create_service_credentials, args.os_password, 
-            args.os_auth_url, args.nova_pass, args.endpoint)
+            args.os_auth_url, args.nova_pass, args.public_endpoint, args.internal_endpoint, args.admin_endpoint)
 
 def install(args):
     target = make_target(args)
     execute(target._install_nova, args.connection, args.api_connection, args.auth_uri, args.auth_url,
             args.nova_pass, args.my_ip, args.memcached_servers, args.rabbit_hosts, args.rabbit_user, 
-            args.rabbit_pass, args.api_servers, args.neutron_endpoint, args.neutron_pass,
+            args.rabbit_pass, args.glance_api_servers, args.neutron_endpoint, args.neutron_pass,
             args.metadata_proxy_shared_secret, args.populate)
         
 def parser():

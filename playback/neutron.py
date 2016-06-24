@@ -34,7 +34,7 @@ class Neutron(Task):
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, neutron_db_pass), shell=False)
 
     @runs_once
-    def _create_service_credentials(self, os_password, os_auth_url, neutron_pass, endpoint):
+    def _create_service_credentials(self, os_password, os_auth_url, neutron_pass, public_endpoint, internal_endpoint, admin_endpoint):
         with shell_env(OS_PROJECT_DOMAIN_NAME='default',
                        OS_USER_DOMAIN_NAME='default',
                        OS_PROJECT_NAME='admin',
@@ -51,9 +51,9 @@ class Neutron(Task):
             print red(env.host_string + ' | Create the neutron service entity')
             sudo('openstack service create --name neutron --description "OpenStack Networking" network')
             print red(env.host_string + ' | Create the network service API endpoints')
-            sudo('openstack endpoint create --region RegionOne network public {0}'.format(endpoint))
-            sudo('openstack endpoint create --region RegionOne network internal {0}'.format(endpoint))
-            sudo('openstack endpoint create --region RegionOne network admin {0}'.format(endpoint))
+            sudo('openstack endpoint create --region RegionOne network public {0}'.format(public_endpoint))
+            sudo('openstack endpoint create --region RegionOne network internal {0}'.format(internal_endpoint))
+            sudo('openstack endpoint create --region RegionOne network admin {0}'.format(admin_endpoint))
     
     def _install_self_service(self, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, neutron_pass, nova_url, nova_pass, public_interface, local_ip, nova_metadata_ip, metadata_proxy_shared_secret, memcached_servers, populate):
         print red(env.host_string + ' | Install the components')
@@ -191,11 +191,21 @@ def create_service_credentials_subparser(s):
                                                     action='store',
                                                     default=None,
                                                     dest='neutron_pass')
-    create_service_credentials_parser.add_argument('--endpoint',
-                                                    help='public, internal and admin endpoint for neutron service e.g. http://CONTROLLER_VIP:8774/v2/%%\(tenant_id\)s',
+    create_service_credentials_parser.add_argument('--public-endpoint',
+                                                    help='public endpoint for neutron service e.g. http://CONTROLLER_VIP:9696',
                                                     action='store',
                                                     default=None,
-                                                    dest='endpoint')
+                                                    dest='public_endpoint')
+    create_service_credentials_parser.add_argument('--internal-endpoint',
+                                                    help='internal endpoint for neutron service e.g. http://CONTROLLER_VIP:9696',
+                                                    action='store',
+                                                    default=None,
+                                                    dest='internal_endpoint')
+    create_service_credentials_parser.add_argument('--admin-endpoint',
+                                                    help='admin endpoint for neutron service e.g. http://CONTROLLER_VIP:9696',
+                                                    action='store',
+                                                    default=None,
+                                                    dest='admin_endpoint')
     return create_service_credentials_parser
 
 def install_subparser(s):
@@ -236,7 +246,7 @@ def install_subparser(s):
                         default=None,
                         dest='neutron_pass')
     install_parser.add_argument('--nova-url',
-                        help='URL for connection to nova (Only supports one nova region currently)',
+                        help='URL for connection to nova (Only supports one nova region currently) e.g. http://CONTROLLER_VIP:8774/v2.1',
                         action='store',
                         default=None,
                         dest='nova_url')
@@ -295,7 +305,9 @@ def create_service_credentials(args):
             args.os_password,
             args.os_auth_url,
             args.neutron_pass,
-            args.endpoint)
+            args.public_endpoint,
+            args.internal_endpoint,
+            args.admin_endpoint)
             
 def install(args):
     target = make_target(args)
