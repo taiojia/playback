@@ -205,7 +205,7 @@ def parser():
 
     def install_f(args):
         install(args)
-    install_parser = s.add_parser('install', help='install glance(default store: swift)')
+    install_parser = s.add_parser('install', help='install glance(default store: ceph)')
     install_parser.add_argument('--connection',
                         help='mysql database connection string e.g. mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance',
                         action='store',
@@ -227,9 +227,9 @@ def parser():
                         default=None,
                         dest='glance_pass')
     install_parser.add_argument('--swift-store-auth-address',
-                        help='the address where the Swift authentication service is listening e.g. http://CONTROLLER_VIP:5000/v3/',
+                        help='DEPRECATED the address where the Swift authentication service is listening e.g. http://CONTROLLER_VIP:5000/v3/',
                         action='store',
-                        default=None,
+                        default='DEPRECATED_BY_PLAYBACK',
                         dest='swift_store_auth_address')
     install_parser.add_argument('--memcached-servers',
                         help='memcached servers e.g. CONTROLLER1:11211,CONTROLLER2:11211',

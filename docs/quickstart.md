@@ -143,8 +143,8 @@ Create service credentials
 
 Install glance on CONTROLLER1 and CONTROLLER2
 
-    glance-deploy --user ubuntu --hosts CONTROLLER1 install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme  --swift-store-auth-address http://CONTROLLER_VIP:5000/v3/ --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
-    glance-deploy --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme  --swift-store-auth-address http://CONTROLLER_VIP:5000/v3/ --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    glance-deploy --user ubuntu --hosts CONTROLLER1 install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
+    glance-deploy --user ubuntu --hosts CONTROLLER2 install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
 
 ## Nova HA
 
