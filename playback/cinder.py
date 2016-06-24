@@ -56,7 +56,7 @@ class Cinder(Task):
     def _install(self, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, cinder_pass, my_ip, glance_api_servers, rbd_secret_uuid, memcached_servers, populate=False):
         print red(env.host_string + ' | Install the cinder-api and cinder-volume')
         sudo('apt-get update')
-        sudo('apt-get -y install cinder-api cinder-scheduler python-cinderclient cinder-volume python-mysqldb')
+        sudo('apt-get -y install cinder-api cinder-scheduler cinder-volume')
 
         print red(env.host_string + ' | Update /etc/cinder/cinder.conf')
         with open('tmp_cinder_conf_' + env.host_string, 'w') as f:

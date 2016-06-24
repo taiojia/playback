@@ -60,7 +60,7 @@ class Neutron(Task):
         sudo('apt-get update')
         # Remove neutron-plugin-linuxbridge-agent and conntrack
         #sudo('apt-get -y install neutron-server neutron-plugin-ml2 neutron-plugin-linuxbridge-agent neutron-l3-agent neutron-dhcp-agent neutron-metadata-agent python-neutronclient conntrack')
-        sudo('apt-get -y install neutron-server neutron-plugin-ml2 neutron-linuxbridge-agent neutron-l3-agent neutron-dhcp-agent neutron-metadata-agent python-neutronclient')
+        sudo('apt-get -y install neutron-server neutron-plugin-ml2 neutron-linuxbridge-agent neutron-l3-agent neutron-dhcp-agent neutron-metadata-agent')
 
         print red(env.host_string + ' | Update /etc/neutron/neutron.conf')
         with open('tmp_neutron_conf_'+env.host_string, 'w') as f:

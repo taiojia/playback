@@ -54,10 +54,10 @@ class Nova(Task):
             sudo('openstack endpoint create --region RegionOne compute admin {0}'.format(admin_endpoint))
 
     def _install_nova(self, connection, api_connection, auth_uri, auth_url, nova_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_user, rabbit_pass, glance_api_servers, neutron_endpoint, neutron_pass, metadata_proxy_shared_secret, populate):
-        print red(env.host_string + ' | Install nova-api nova-cert nova-conductor nova-consoleauth nova-novncproxy nova-scheduler python-novaclient')
+        print red(env.host_string + ' | Install nova-api nova-cert nova-conductor nova-consoleauth nova-novncproxy nova-scheduler')
         sudo('apt-get update')
         # nova-cert deprecated in mitaka
-        sudo('apt-get -y install nova-api nova-conductor nova-consoleauth nova-novncproxy nova-scheduler python-novaclient')
+        sudo('apt-get -y install nova-api nova-conductor nova-consoleauth nova-novncproxy nova-scheduler')
 
         print red(env.host_string + ' | Update configuration for /etc/nova/nova.conf')
         with open("tmp_nova_conf_" + env.host_string, "w") as f:

@@ -52,9 +52,9 @@ class Glance(Task):
             sudo('openstack endpoint create --region RegionOne image admin {0}'.format(admin_endpoint))
 
     def _install_glance(self, connection, auth_uri, auth_url, glance_pass, swift_store_auth_address, memcached_servers, populate):
-        print red(env.host_string + ' | Install glance python-glanceclient')
+        print red(env.host_string + ' | Install glance')
         sudo('apt-get update')
-        sudo('apt-get -y install glance python-glanceclient')
+        sudo('apt-get -y install glance')
 
         print red(env.host_string + ' | Update configuration for /etc/glance/glance-api.conf')
         with open("tmp_glance_api_conf_" + env.host_string, "w") as f:
