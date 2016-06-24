@@ -210,7 +210,7 @@ def finalize_install(args):
             args.swift_hash_path_prefix)
                 
 def parser():
-    p = argparse.ArgumentParser(description=cli_description+'this command used for provision Swift')
+    p = argparse.ArgumentParser(prog='swift-deploy', description=cli_description+'this command used for provision Swift')
     p.add_argument('-v', '--version',
                     action='version',
                     version=__version__)

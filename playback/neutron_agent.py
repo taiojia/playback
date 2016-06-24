@@ -132,7 +132,7 @@ def install(args):
             args.memcached_servers)
             
 def parser():
-    p = argparse.ArgumentParser(description=cli_description+'this command used for provision Neutron Agent')
+    p = argparse.ArgumentParser(prog='neutron-agent-deploy', description=cli_description+'this command used for provision Neutron Agent')
     p.add_argument('-v', '--version', action='version', version=__version__)
     p.add_argument('--user', 
                     help='the target user', 

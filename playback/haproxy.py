@@ -34,7 +34,7 @@ def gen_conf():
         f.write(conf_haproxy_cfg)
 
 def parser():
-    p = argparse.ArgumentParser(prog='playback-haproxy', description=cli_description+'this command used for provision HAProxy')
+    p = argparse.ArgumentParser(prog='haproxy-deploy', description=cli_description+'this command used for provision HAProxy')
     p.add_argument('-v', '--version', action='version', version=__version__)
     p.add_argument('--user', help='the target user', action='store', default='ubuntu', dest='user')
     p.add_argument('--hosts', help='the target address', action='store', dest='hosts')

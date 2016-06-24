@@ -246,7 +246,7 @@ def install(args):
             args.metadata_proxy_shared_secret, args.populate)
         
 def parser():
-    p = argparse.ArgumentParser(description=cli_description+'this command used for provision Nova')
+    p = argparse.ArgumentParser(prog='nova-deploy', description=cli_description+'this command used for provision Nova')
     p.add_argument('-v', '--version',
                     action='version',
                     version=__version__)

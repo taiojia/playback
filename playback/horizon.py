@@ -51,7 +51,7 @@ def install(args):
             args.time_zone)
 
 def parser():
-    p = argparse.ArgumentParser(prog='playback-horizon', description=cli_description+'this command used for provision Horizon')
+    p = argparse.ArgumentParser(prog='horizon-deploy', description=cli_description+'this command used for provision Horizon')
     p.add_argument('-v', '--version',
                     action='version',
                     version=__version__)

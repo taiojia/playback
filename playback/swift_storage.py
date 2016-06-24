@@ -445,7 +445,7 @@ def object_builder_rebalance(args):
     execute(target._object_builder_rebalance)
 
 def parser():
-    p = argparse.ArgumentParser(description=cli_description+'this command used for provision Swift Storage')
+    p = argparse.ArgumentParser(prog='swift-storage-deploy', description=cli_description+'this command used for provision Swift Storage')
     p.add_argument('-v', '--version',
                     action='version',
                     version=__version__)

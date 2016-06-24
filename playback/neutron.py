@@ -317,7 +317,7 @@ def install(args):
             args.populate)
             
 def parser():
-    p = argparse.ArgumentParser(description=cli_description+'this command used for provision Neutron')
+    p = argparse.ArgumentParser(prog='neutron-deploy', description=cli_description+'this command used for provision Neutron')
     p.add_argument('-v', '--version',
                     action='version',
                     version=__version__)

@@ -67,7 +67,7 @@ def join_cluster(args):
     execute(target._join_cluster, args.name)
 
 def parser():
-    p = argparse.ArgumentParser(description=cli_description+'this command used for provision RabbitMQ')
+    p = argparse.ArgumentParser(prog='rabbitmq-deploy', description=cli_description+'this command used for provision RabbitMQ')
     p.add_argument('-v', '--version',
                     action='version',
                     version=__version__)

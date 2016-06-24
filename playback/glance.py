@@ -143,7 +143,7 @@ def install(args):
             args.populate)
 
 def parser():
-    p = argparse.ArgumentParser(prog='playback-glance', description=cli_description+'this command used for provision Glance')
+    p = argparse.ArgumentParser(prog='glance-deploy', description=cli_description+'this command used for provision Glance')
     p.add_argument('-v', '--version', action='version', version=__version__)
     p.add_argument('--user', help='the target user', action='store', default='ubuntu', dest='user')
     p.add_argument('--hosts', help='the target address', action='store', dest='hosts')

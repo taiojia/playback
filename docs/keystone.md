@@ -4,21 +4,21 @@
 
 Create keystone database
 
-    playback-keystone --user ubuntu --hosts controller1.maas create-keystone-db --root-db-pass changeme --keystone-db-pass changeme
+    keystone-deploy --user ubuntu --hosts controller1.maas create-keystone-db --root-db-pass changeme --keystone-db-pass changeme
 
 Install keystone on controller1.maas, controller2.maas and controller3.maas. Note that you must specify the `CONTROLLER_VIP` for three controllers Virtual IP
 
-    playback-keystone --user ubuntu --hosts controller1.maas install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcached-servers controller1.maas:11211,controller2.maas:11211,controller3.maas --populate
-    playback-keystone --user ubuntu --hosts controller2.maas install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcached-servers controller1.maas:11211,controller2.maas:11211,controller3.maas
-    playback-keystone --user ubuntu --hosts controller3.maas install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcached-servers controller1.maas:11211,controller2.maas:11211,controller3.maas
+    keystone-deploy --user ubuntu --hosts controller1.maas install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcached-servers controller1.maas:11211,controller2.maas:11211,controller3.maas --populate
+    keystone-deploy --user ubuntu --hosts controller2.maas install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcached-servers controller1.maas:11211,controller2.maas:11211,controller3.maas
+    keystone-deploy --user ubuntu --hosts controller3.maas install --admin_token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcached-servers controller1.maas:11211,controller2.maas:11211,controller3.maas
 
 Create the service entity and API endpoints
 
-    playback-keystone --user ubuntu --hosts controller1.maas create-entity-and-endpoint --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --public-endpoint http://CONTROLLER_VIP:5000/v2.0 --internal-endpoint http://CONTROLLER_VIP:5000/v2.0 --admin-endpoint http://CONTROLLER_vip:35357/v2.0
+    keystone-deploy --user ubuntu --hosts controller1.maas create-entity-and-endpoint --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --public-endpoint http://CONTROLLER_VIP:5000/v2.0 --internal-endpoint http://CONTROLLER_VIP:5000/v2.0 --admin-endpoint http://CONTROLLER_vip:35357/v2.0
 
 Create projects, users, and roles
 
-    playback-keystone --user ubuntu --hosts controller1.maas create-projects-users-roles --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --admin-pass changeme --demo-pass changeme
+    keystone-deploy --user ubuntu --hosts controller1.maas create-projects-users-roles --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --admin-pass changeme --demo-pass changeme
 
 (OPTION) you will need to create OpenStack client environment scripts
 admin-openrc.sh
@@ -47,4 +47,4 @@ demo-openrc.sh
     export OS_IMAGE_API_VERSION=2
     export OS_AUTH_VERSION=3
 
-Using `playback-keystone --help` to see the details.
+Using `keystone-deploy --help` to see the details.

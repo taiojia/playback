@@ -7,37 +7,37 @@ Create ceph cluster directory
 
 Create cluster and add initial monitor(s) to the ceph.conf
 
-    playback-ceph-deploy new compute1.maas compute2.maas compute3.maas compute4.maas compute5.maas
+    ceph-deploy new compute1.maas compute2.maas compute3.maas compute4.maas compute5.maas
     echo "osd pool default size = 2" | tee -a ceph.conf
 
 Install ceph client(Optionaly you can use `--release jewel` to install jewel version)
 
-    playback-ceph-deploy install playback.maas controller1.maas controller2.maas controller3.maas compute1.maas compute2.maas compute3.maas compute4.maas compute5.maas compue6.maas comupte7.maas compute8.maas compute9.maas compute10.maas
+    ceph-deploy install playback.maas controller1.maas controller2.maas controller3.maas compute1.maas compute2.maas compute3.maas compute4.maas compute5.maas compue6.maas comupte7.maas compute8.maas compute9.maas compute10.maas
 
 Add the initial monitor(s) and gather the keys
 
-    playback-ceph-deploy mon create-initial
+    ceph-deploy mon create-initial
 
 If you want to add additional monitors, do that
 
-    playback-ceph-deploy mon add {additional-monitor}
+    ceph-deploy mon add {additional-monitor}
 
 Add ceph osd(s)
 
-    playback-ceph-deploy osd create --zap-disk --fs-type ext4 compute1.maas:/dev/sdb
-    playback-ceph-deploy osd create --zap-disk --fs-type ext4 compute1.maas:/dev/sdc
-    playback-ceph-deploy osd create --zap-disk --fs-type ext4 compute2.maas:/dev/sdb
-    playback-ceph-deploy osd create --zap-disk --fs-type ext4 compute2.maas:/dev/sdc
-    playback-ceph-deploy osd create --zap-disk --fs-type ext4 compute3.maas:/dev/sdb
-    playback-ceph-deploy osd create --zap-disk --fs-type ext4 compute3.maas:/dev/sdc
-    playback-ceph-deploy osd create --zap-disk --fs-type ext4 compute4.maas:/dev/sdb
-    playback-ceph-deploy osd create --zap-disk --fs-type ext4 compute4.maas:/dev/sdc
-    playback-ceph-deploy osd create --zap-disk --fs-type ext4 compute5.maas:/dev/sdb
-    playback-ceph-deploy osd create --zap-disk --fs-type ext4 compute5.maas:/dev/sdc
+    ceph-deploy osd create --zap-disk --fs-type ext4 compute1.maas:/dev/sdb
+    ceph-deploy osd create --zap-disk --fs-type ext4 compute1.maas:/dev/sdc
+    ceph-deploy osd create --zap-disk --fs-type ext4 compute2.maas:/dev/sdb
+    ceph-deploy osd create --zap-disk --fs-type ext4 compute2.maas:/dev/sdc
+    ceph-deploy osd create --zap-disk --fs-type ext4 compute3.maas:/dev/sdb
+    ceph-deploy osd create --zap-disk --fs-type ext4 compute3.maas:/dev/sdc
+    ceph-deploy osd create --zap-disk --fs-type ext4 compute4.maas:/dev/sdb
+    ceph-deploy osd create --zap-disk --fs-type ext4 compute4.maas:/dev/sdc
+    ceph-deploy osd create --zap-disk --fs-type ext4 compute5.maas:/dev/sdb
+    ceph-deploy osd create --zap-disk --fs-type ext4 compute5.maas:/dev/sdc
 
 Sync admin key
 
-    playback-ceph-deploy admin playback.maas controller1.maas controller2.maas controller3.maas compute1.maas compute2.maas compute3.maas compute4.maas compute5.maas compue6.maas comupte7.maas compute8.maas compute9.maas compute10.maas
+    ceph-deploy admin playback.maas controller1.maas controller2.maas controller3.maas compute1.maas compute2.maas compute3.maas compute4.maas compute5.maas compue6.maas comupte7.maas compute8.maas compute9.maas compute10.maas
     ssh {ceph-client-node} sudo chmod +r /etc/ceph/ceph.client.admin.keyring
 
 Create osd pool for cinder and running instance

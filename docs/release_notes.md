@@ -20,3 +20,18 @@
   * Support provisions OpenStack Mitaka with High Availability
   * Detailed command-line help
   * Refactor command-line arguments
+  * Glance, Nova, Nova Compute, Neutron and Neutron Agent now using the memcached servers
+  * Fix Horizon memcached server single point
+  * Split the templates to a single module
+  * User can define the rabbit user
+  * JSON RPC API has been deprecated in mitaka
+
+* v0.3.1 (Ris)
+  * Devel version, fix templates and noteable bugs
+
+* v0.3.2 (Ris)
+  * Pre-release, fix noteable bugs
+
+* v0.3.3 (Ris)
+  * Change command-line to *-deploy
+  * Pre-release, fix noteable bugs

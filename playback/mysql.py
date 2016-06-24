@@ -72,7 +72,7 @@ def manage_subparser(s):
     return manage_parser
 
 def parser():
-    p = argparse.ArgumentParser(prog='playback-mysql', description=cli_description+'this command used for provision Galera Cluster for MySQL')
+    p = argparse.ArgumentParser(prog='mysql-deploy', description=cli_description+'this command used for provision Galera Cluster for MySQL')
     p.add_argument('-v', '--version',
                     action='version',
                     version=__version__)

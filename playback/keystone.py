@@ -284,7 +284,7 @@ def create_projects_users_roles_subparser(s):
     return create_projects_users_roles_parser
 
 def parser():
-    p = argparse.ArgumentParser(prog='playback-keystone',description=cli_description+'this command used for provision Keystone')
+    p = argparse.ArgumentParser(prog='keystone-deploy',description=cli_description+'this command used for provision Keystone')
     p.add_argument('-v', '--version',
                     action='version',
                     version=__version__)

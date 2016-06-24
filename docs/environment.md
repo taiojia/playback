@@ -56,7 +56,7 @@ Prepare the OpenStack environment.
 
 The following command will help you to prepare the OpenStack environment and all hosts will be rebooted no confirmed.
 
-    playback-env --user ubuntu --hosts \
+    env-deploy --user ubuntu --hosts \
     haproxy1.maas,\
     haproxy2.maas,\
     controller1.maas,\
@@ -74,4 +74,4 @@ The following command will help you to prepare the OpenStack environment and all
     compute10.maas \
     prepare-host
 
-Using `playback-env --help` to see details.
+Using `env-deploy --help` to see details.

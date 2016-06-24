@@ -173,7 +173,7 @@ def install(args):
             args.api_servers, args.neutron_endpoint, args.neutron_pass, args.rbd_secret_uuid, args.memcached_servers)
     
 def parser():
-    p = argparse.ArgumentParser(description=cli_description+'this command used for provision Nova Compute')
+    p = argparse.ArgumentParser(prog='nova-compute-deploy', description=cli_description+'this command used for provision Nova Compute')
     p.add_argument('-v', '--version',
                     action='version',
                     version=__version__)
