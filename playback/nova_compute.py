@@ -25,9 +25,9 @@ class NovaCompute(Task):
         env.parallel = self.parallel
 
     def _install(self, my_ip, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, nova_pass, novncproxy_base_url, glance_api_servers, neutron_endpoint, neutron_pass, rbd_secret_uuid, memcached_servers):
-        print red(env.host_string + ' | Install nova-compute')
+        print red(env.host_string + ' | Install nova-compute sysfsutils')
         sudo('apt-get update')
-        sudo('apt-get -y install nova-compute')
+        sudo('apt-get -y install nova-compute sysfsutils')
 
         print red(env.host_string + ' | Update /etc/nova/nova.conf')
         with open('tmp_nova_conf_' + env.host_string, 'w') as f:
