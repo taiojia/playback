@@ -8,6 +8,7 @@
 * nova user can be login to each compute node via ssh passwordless(include sudo), and all compute nodes need to restart libvirt-bin to enable live migration
 * The playback node is the same as ceph-deploy node where can be login to each openstack node passwordless
 * The playback node default using ~/.ssh/id_rsa ssh private key to logon remote server
+* You need to restart the `nova-compute`, `cinder-volume` and `glance-api` services if you have selected the ceph as that backend
 
 ## Install Playback
 
@@ -336,7 +337,7 @@ Add ceph osd(s)
 Sync admin key
 
     ceph-deploy admin PLAYBACK-NODE CONTROLLER1 CONTROLLER2 COMPUTE1 COMPUTE2 BLOCK1 BLOCK2
-    ssh {ceph-client-node} sudo chmod +r /etc/ceph/ceph.client.admin.keyring
+    ssh {ceph-client-node} "sudo chmod +r /etc/ceph/ceph.client.admin.keyring"
 
 Create osd pool for cinder and running instance
 
@@ -351,20 +352,20 @@ Setup ceph client authentication
 
 Add the keyrings for `client.cinder` and `client.glance` to appropriate nodes and change their ownership
 
-    ceph auth get-or-create client.cinder | ssh {CINDER-VOLUME-NODE} sudo tee /etc/ceph/ceph.client.cinder.keyring
-    ssh {CINDER-VOLUME-NODE} sudo chown cinder:cinder /etc/ceph/ceph.client.cinder.keyring
+    ssh {CINDER-VOLUME-NODE} "ceph auth get-or-create client.cinder | sudo tee /etc/ceph/ceph.client.cinder.keyring"
+    ssh {CINDER-VOLUME-NODE} "sudo chown cinder:cinder /etc/ceph/ceph.client.cinder.keyring"
 
-    ceph auth get-or-create client.glance | ssh {GLANCE-API-NODE} sudo tee /etc/ceph/ceph.client.glance.keyring
-    ssh {GLANCE-API-NODE} sudo chown glance:glance /etc/ceph/ceph.client.glance.keyring
+    ssh {GLANCE-API-NODE} "ceph auth get-or-create client.glance | sudo tee /etc/ceph/ceph.client.glance.keyring"
+    ssh {GLANCE-API-NODE} "sudo chown glance:glance /etc/ceph/ceph.client.glance.keyring"
 
 Nodes running `nova-compute` need the keyring file for the `nova-compute` process
 
-    ceph auth get-or-create client.cinder | ssh {COMPUTE-NODE} sudo tee /etc/ceph/ceph.client.cinder.keyring
+    ssh {COMPUTE-NODE} "ceph auth get-or-create client.cinder | sudo tee /etc/ceph/ceph.client.cinder.keyring"
 
 They also need to store the secret key of the `client.cinder user` in `libvirt`. The libvirt process needs it to access the cluster while attaching a block device from Cinder.
 Create a temporary copy of the secret key on the nodes running `nova-compute`
 
-    ceph auth get-key client.cinder | ssh {COMPUTE-NODE} tee client.cinder.key
+    ssh {COMPUTE-NODE} "ceph auth get-key client.cinder | tee client.cinder.key"
 
 Then, on the `compute nodes`, add the secret key to `libvirt` and remove the temporary copy of the key(the uuid is the same as your --rbd-secret-uuid option, you have to save the uuid for later)
 
@@ -397,7 +398,7 @@ On every glance-api nodes edit your Ceph configuration file, add the client sect
 
 If you want to remove osd
 
-    ssh {OSD-NODE} sudo stop ceph-mon-all && sudo stop ceph-osd-all
+    ssh {OSD-NODE} "sudo stop ceph-mon-all && sudo stop ceph-osd-all"
     ceph osd out {OSD-NUM}
     ceph osd crush remove osd.{OSD-NUM}
     ceph auth del osd.{OSD-NUM}
