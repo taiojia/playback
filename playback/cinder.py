@@ -9,6 +9,7 @@ import argparse
 from playback.cli import cli_description
 from playback import __version__
 from playback.templates.cinder_conf import conf_cinder_conf
+from playback.templates.policy_json_for_cinder import conf_policy_json
 
 class Cinder(Task):
     def __init__(self, user, hosts=None, parallel=True, *args, **kwargs):
@@ -78,6 +79,15 @@ class Cinder(Task):
                                        'rbd_secret_uuid': rbd_secret_uuid,
                                        'memcached_servers': memcached_servers})
         os.remove('tmp_cinder_conf_' + env.host_string)
+
+        print red(env.host_string + ' | Enable Consistency groups')
+        with open('tmp_policy_json_' + env.host_string, 'w') as f:
+            f.write(conf_cinder_conf)
+        files.upload_template(filename='tmp_policy_json_' + env.host_string,
+                                destination='/etc/cinder/policy.json',
+                                use_sudo=True,
+                                backup=True)
+        os.remove('tmp_policy_json_' + env.host_string)
 
         if populate:
             print red(env.host_string + ' | Populate the Block Storage database')

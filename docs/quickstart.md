@@ -9,6 +9,7 @@
 * The playback node is the same as ceph-deploy node where can be login to each openstack node passwordless
 * The playback node default using ~/.ssh/id_rsa ssh private key to logon remote server
 * You need to restart the `nova-compute`, `cinder-volume` and `glance-api` services if you have selected the ceph as that backend
+* Playback support consistency groups for future use but the default LVM and Ceph driver does not support consistency groups yet because the consistency technology is not available at that storage level
 
 ## Install Playback
 
