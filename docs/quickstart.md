@@ -392,10 +392,13 @@ Now on every compute nodes edit your Ceph configuration file, add the client sec
     rbd cache writethrough until flush = true
     rbd concurrent management ops = 20
 
+    [client.cinder]
+    keyring = /etc/ceph/ceph.client.cinder.keyring
+
 On every glance-api nodes edit your Ceph configuration file, add the client section
 
     [client.glance]
-    keyring= /etc/ceph/client.glance.keyring
+    keyring= /etc/ceph/ceph.client.glance.keyring
 
 If you want to remove osd
 
