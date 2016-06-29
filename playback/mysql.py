@@ -80,7 +80,8 @@ def parser():
                     action='store', default='ubuntu', dest='user')
     p.add_argument('--hosts', help='the target address', 
                     action='store', dest='hosts')
-    p.add_argument('-i', '--key-filename', help='referencing file paths to SSH key files to try when connecting default ~/.ssh/id_rsa')
+    p.add_argument('-i', '--key-filename', help='referencing file paths to SSH key files to try when connecting default ~/.ssh/id_rsa',
+                    action='store', dest='key_filename', default='~/.ssh/id_rsa')
     s = p.add_subparsers(dest="subparser_name")
 
     def install_f(args):
