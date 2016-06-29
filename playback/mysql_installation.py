@@ -1,6 +1,6 @@
 from fabric.api import *
 from fabric.contrib import files
-from playback.templates.galera_list import conf_galera_list
+from playback.templates.galera_list import conf_galera_list_trusty
 
 class MysqlInstallation(object):
     """Install Galera Cluster for MySQL"""
@@ -16,7 +16,7 @@ class MysqlInstallation(object):
     def _enable_repo(self):
         sudo('apt-key adv --recv-keys --keyserver keyserver.ubuntu.com BC19DDBA')
         with cd('/etc/apt/sources.list.d/'):
-            files.append('galera.list', conf_galera_list, use_sudo=True)
+            files.append('galera.list', conf_galera_list_trusty, use_sudo=True)
         sudo('apt-get update')
         # TODO: Purge old galera.list
     
