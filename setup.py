@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 #
-# Copyright (c) 2015 Taio Jia (jiasir) <jiasir@icloud.com>
+# Copyright (c) 2015 Taio Jia (jiasir) <taio@outlook.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,6 @@
 import sys, os
 
 try:
-    sys.path.insert(0, os.path.abspath('libs'))
-    from playback import __version__, __author__
-except ImportError:
-    __author__ = 'jiasir'
-    __version__ = '0.1.9'
-
-
-try:
     from setuptools import setup, find_packages
 except ImportError:
     print("playback now needs setuptools in order to build. Install it using"
@@ -38,23 +30,43 @@ except ImportError:
           " install setuptools).")
     sys.exit(1)
 
+from playback import __version__, __author__
+
+def read(fname):
+    path = os.path.join(os.path.dirname(__file__), fname)
+    try:
+        f = open(path)
+    except IOError:
+        return None
+    return f.read()
+
 setup(name='playback',
-      version=__version__,
-      description='OpenStack orchestration tool',
-      author=__author__,
-      author_email='jiasir@icloud.com',
-      url='https://github.com/jiasir/playback/',
-      license='MIT License',
-      install_requires=['fabric', 'ansible', 'ecdsa', 'markupsafe', 'paramiko', 'jinja2', "PyYAML", 'setuptools',
-                        'pycrypto >= 2.6'],
-      package_dir={'': 'libs'},
-      packages=find_packages('libs'),
-      package_data={
-          '': ['config/*.cfg', 'config/inventory', 'config/vars/*/*', 'config/*yml', 'config/roles/*/*/*', 'config/patch/*.conf', 'config/patch/tmp/*.conf', 'config/patch/*.local'],
-      },
-      scripts=[
-          'bin/playback',
-          'bin/playback-nic',
-          'bin/playback-puppet'
-      ],
-      data_files=[], )
+    version=__version__,
+    description='OpenStack orchestration tool',
+    long_description=read('README.md'),
+    author=__author__,
+    author_email='jiasir@icloud.com',
+    url='https://github.com/jiasir/playback/',
+    license='MIT',
+    install_requires=['fabric == 1.10.2', 'ecdsa == 0.13', 'markupsafe == 0.23', 'paramiko == 1.16.0', 'jinja2 == 2.8', 'PyYAML == 3.11', 'setuptools == 19.6.2', 'pycrypto == 2.6.1', 'tqdm == 3.8.0'],
+    packages=find_packages(),
+    entry_points={ 
+       'console_scripts': [
+           'env-deploy = playback.env:main',
+           'mysql-deploy = playback.mysql:main',
+           'haproxy-deploy = playback.haproxy:main',
+           'rabbitmq-deploy = playback.rabbitmq:main',
+           'keystone-deploy = playback.keystone:main',
+           'glance-deploy = playback.glance:main',
+           'nova-deploy = playback.nova:main',
+           'nova-compute-deploy = playback.nova_compute:main',
+           'neutron-deploy = playback.neutron:main',
+           'neutron-agent-deploy = playback.neutron_agent:main',
+           'horizon-deploy = playback.horizon:main',
+           'cinder-deploy = playback.cinder:main',
+           'swift-deploy = playback.swift:main',
+           'swift-storage-deploy = playback.swift_storage:main',
+           'ceph-deploy = ceph_deploy.cli:main'
+           ]
+       },
+    )

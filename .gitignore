@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /remote/remote.iml
 /config/config_out.conf
 # Byte-compiled / optimized / DLL files
@@ -78,3 +79,99 @@ target/
 
 # kubernetes
 kubernetes/
+/playback.sln
+/playback.pyproj
+/.vs/playback/v14
+=======
+/remote/remote.iml
+/config/config_out.conf
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+/libs/playback.egg-info
+/.eggs
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+/build
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+#  Usually these files are written by a python script from a templates
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+/gobyexample
+
+# Sphinx documentation
+docs/_build/
+/kubernetes-bin
+
+# PyBuilder
+target/
+
+# IntelliJ IDEA
+*dump/
+.idea/
+*.iml
+
+# Vagrant
+.vagrant/
+/tem.py
+
+# Azure
+*.publishsettings
+*.pem
+
+# sqlite3
+*.sqlite3
+
+# kubernetes
+kubernetes/
+*.pyproj
+/playback.pyproj.user
+*.sln
+*.suo
+/env1
+>>>>>>> liberty
+.vs
+.vscode
+/tmp_my_cnf
+venv/
+example_argparse.py
+.DS_Store

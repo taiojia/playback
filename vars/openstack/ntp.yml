@@ -1,3 +1,0 @@
----
-# If you do not setting hosts, please define the ntp server ip. Management network ip if the ntp server on the OpenStack node.
-ntp_server_ip: 172.16.33.4

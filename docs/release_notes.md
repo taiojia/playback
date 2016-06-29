@@ -1,22 +1,4 @@
-# Playback
-
-Playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed automation with high availability on Ubuntu based operating system.
-
-## Platform
-
-Playback command-line tool supporting the following platform:
-
-* Mac OS X
-* Linux
-* Windows (needs [Git Bash](https://git-scm.com/download/win) or [Bash on Ubuntu on Windows](https://msdn.microsoft.com/en-us/commandline/wsl/about))
-
-## Getting statarted
-
-[Quickstart Guide](./docs/quickstart.md)
-
-[Getting stated with 3 controllers and 10 computes deployment](./docs/guide.md)
-
-## Release Notes
+# Release Notes
 
 * v0.0.3 (Pre-release)
   * Support provisions OpenStack Juno
@@ -28,7 +10,7 @@ Playback command-line tool supporting the following platform:
   * JSON RPC API for FastForward
 
 * v0.2.3 (Ris)
-  * Stable Version for Liberty
+  * Stable Version
   * Support provisions OpenStack Liberty with High Availability
   * The new command-line
   * Ansible backend was deprecated
@@ -60,3 +42,4 @@ Playback command-line tool supporting the following platform:
   * Using xfs as ceph osd type
   * Fix cannot create cinder volume when using the ceph as backend
   * Remove swift backend for glance instead of ceph
+  
