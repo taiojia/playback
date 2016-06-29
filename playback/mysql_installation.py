@@ -14,6 +14,7 @@ class MysqlInstallation(object):
         env.hosts = self.hosts
         env.parallel = self.parallel
         env.key_filename = self.key_filename
+        env.abort_on_prompts = True
 
     def _enable_repo(self):
         with settings(hide('running', 'commands', 'stdout', 'stderr')):

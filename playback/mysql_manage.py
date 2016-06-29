@@ -13,6 +13,7 @@ class MysqlManage(object):
         env.hosts = self.hosts
         env.parallel = self.parallel
         env.key_filename = self.key_filename
+        env.abort_on_prompts = True
 
     def _start_wsrep_new_cluster(self):
         sudo('service mysql start --wsrep-new-cluster')
