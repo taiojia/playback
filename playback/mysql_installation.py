@@ -21,4 +21,4 @@ class MysqlInstallation(object):
         # TODO: Purge old galera.list
     
     def _install(self):
-        sudo('DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes galera-3 mysql-wsrep-5.6')
+        sudo('DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes galera-3 galera-arbitrator-3 mysql-wsrep-5.6')
