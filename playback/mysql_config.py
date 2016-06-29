@@ -15,7 +15,7 @@ class MysqlConfig(object):
         env.hosts = self.hosts
         env.parallel = self.parallel
         env.key_filename = self.key_filename
-        env.abort_on_prompts = True
+        env.abort_on_prompts = False
 
     def _update_mysql_config(self, wsrep_cluster_address, wsrep_node_name, wsrep_node_address):
         with open('tmp_my_cnf_'+env.host_string, 'w') as f:
