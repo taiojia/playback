@@ -82,6 +82,7 @@ def parser():
                     action='store', dest='hosts')
     p.add_argument('-i', '--key-filename', help='referencing file paths to SSH key files to try when connecting default ~/.ssh/id_rsa',
                     action='store', dest='key_filename', default='~/.ssh/id_rsa')
+    p.add_argument('--password', help='the password used by the SSH layer when connecting to remote hosts', dest='password')
     s = p.add_subparsers(dest="subparser_name")
 
     def install_f(args):

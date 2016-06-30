@@ -6,7 +6,7 @@ from playback.templates.my_cnf import conf_my_cnf
 class MysqlConfig(object):
     """Setup Galera Cluster for MySQL"""
 
-    def __init__(self, hosts, user='ubuntu', key_filename='~/.ssh/id_rsa', parallel=True):
+    def __init__(self, hosts, user='ubuntu', key_filename='~/.ssh/id_rsa', password=None, parallel=True):
         self.user = user
         self.hosts = hosts
         self.parallel = parallel
@@ -15,6 +15,7 @@ class MysqlConfig(object):
         env.hosts = self.hosts
         env.parallel = self.parallel
         env.key_filename = self.key_filename
+        env.password = password
         env.abort_on_prompts = False
 
     def _update_mysql_config(self, wsrep_cluster_address, wsrep_node_name, wsrep_node_address):

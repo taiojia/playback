@@ -4,7 +4,7 @@ from fabric.api import *
 class MysqlManage(object):
     """Manage Galera Cluster for MySQL"""
 
-    def __init__(self, hosts, user='ubuntu', key_filename = '~/.ssh/id_rsa', parallel=True):
+    def __init__(self, hosts, user='ubuntu', key_filename = '~/.ssh/id_rsa', password=None, parallel=True):
         self.user = user
         self.hosts = hosts
         self.parallel = parallel
@@ -13,6 +13,7 @@ class MysqlManage(object):
         env.hosts = self.hosts
         env.parallel = self.parallel
         env.key_filename = self.key_filename
+        env.password = password
         env.abort_on_prompts = False
 
     def _start_wsrep_new_cluster(self):

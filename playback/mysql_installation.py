@@ -5,7 +5,7 @@ from playback.templates.galera_list import conf_galera_list_trusty, conf_galera_
 class MysqlInstallation(object):
     """Install Galera Cluster for MySQL"""
 
-    def __init__(self, hosts, user='ubuntu', key_filename='~/.ssh/id_rsa', parallel=True):
+    def __init__(self, hosts, user='ubuntu', key_filename='~/.ssh/id_rsa', password=None, parallel=True):
         self.user = user
         self.hosts = hosts
         self.parallel = parallel
@@ -14,6 +14,7 @@ class MysqlInstallation(object):
         env.hosts = self.hosts
         env.parallel = self.parallel
         env.key_filename = self.key_filename
+        env.password = password
         env.abort_on_prompts = False
 
     def _enable_repo(self):
