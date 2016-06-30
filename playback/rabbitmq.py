@@ -9,13 +9,17 @@ from playback import __version__
 
 class RabbitMq(object):
     """RabbitMQ HA Installation"""
-    def __init__(self, hosts, user='ubuntu', parallel=True):
+    def __init__(self, hosts, user='ubuntu', key_filename=None, password=None, parallel=True):
         self.user = user
         self.hosts = hosts
         self.parallel = parallel
+        self.key_filename = key_filename
+        self.password = password
         env.user = self.user
         env.hosts = self.hosts
         env.parallel = self.parallel
+        env.key_filename = self.key_filename
+        env.password = self.password
 
     def _install(self, erlang_cookie, rabbit_user, rabbit_pass):
         sudo('apt-get update')
@@ -52,7 +56,7 @@ def join_cluster_subparser(s):
 
 def make_target(args):
     try:
-        target = RabbitMq(user=args.user, hosts=args.hosts.split(','))
+        target = RabbitMq(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
     except AttributeError:
         sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
@@ -75,6 +79,9 @@ def parser():
                     action='store', default='ubuntu', dest='user')
     p.add_argument('--hosts', help='the target address', 
                     action='store', dest='hosts')
+    p.add_argument('-i', '--key-filename', help='referencing file paths to SSH key files to try when connecting', action='store', dest='key_filename', default=None)
+    p.add_argument('--password', help='the password used by the SSH layer when connecting to remote hosts', action='store', dest='password', default=None)
+
     s = p.add_subparsers(dest="subparser_name")
 
     def install_f(args):

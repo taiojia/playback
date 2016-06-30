@@ -8,10 +8,10 @@ import sys
 from playback.cli import cli_description
 from playback import __version__
 
-def prepare_host(user, hosts):
+def prepare_host(user, hosts, key_filename, password):
     from playback import prepare_host
     try:
-        remote = prepare_host.PrepareHost(user, hosts)
+        remote = prepare_host.PrepareHost(user, hosts, key_filename, password)
     except AttributeError:
         sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
@@ -28,10 +28,10 @@ def prepare_host(user, hosts):
 def gen_pass():
     os.system('openssl rand -hex 10')
     
-def cmd(user, hosts, run):
+def cmd(user, hosts, key_filename, password, run):
     from playback import cmd
     try:
-        remote = cmd.Cmd(user, hosts)
+        remote = cmd.Cmd(user, hosts, key_filename, password)
     except AttributeError:
         sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
@@ -42,11 +42,13 @@ def parser():
     p.add_argument('-v', '--version', action='version', version=__version__)
     p.add_argument('--user', help='the target user', action='store', dest='user')
     p.add_argument('--hosts', help='the target address', action='store', dest='hosts')
-    
+    p.add_argument('-i', '--key-filename', help='referencing file paths to SSH key files to try when connecting', action='store', dest='key_filename', default=None)
+    p.add_argument('--password', help='the password used by the SSH layer when connecting to remote hosts', action='store', dest='password', default=None)
+   
     s = p.add_subparsers(dest="subparser_name", help="commands")
     
     def prepare_host_f(args):
-        prepare_host(args.user, args.hosts.split(','))
+        prepare_host(args.user, args.hosts.split(','), args.key_filename, args.password)
     prepare_host_parser = s.add_parser('prepare-host', help='prepare the OpenStack environment')
     prepare_host_parser.set_defaults(func=prepare_host_f)
     
@@ -56,7 +58,7 @@ def parser():
     gen_pass_parser.set_defaults(func=gen_pass_f)
     
     def cmd_f(args):
-        cmd(args.user, args.hosts.split(','), args.run)
+        cmd(args.user, args.hosts.split(','), args.key_filename, args.password, args.run)
     cmd_parser = s.add_parser('cmd', help='run command line on the target host')
     cmd_parser.add_argument('--run', help='the command running on the remote node', action='store', default=None, dest='run')
     cmd_parser.set_defaults(func=cmd_f)

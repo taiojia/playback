@@ -10,7 +10,7 @@ from playback.templates.haproxy_cfg import conf_haproxy_cfg
 def install(args):
     from playback import haproxy_install
     try:
-        target = haproxy_install.HaproxyInstall(user=args.user, hosts=args.hosts.split(','))
+        target = haproxy_install.HaproxyInstall(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
     except AttributeError as e:
         sys.stderr.write(e.message)
         sys.exit(1)
@@ -19,7 +19,7 @@ def install(args):
 def config(args):
     from playback import haproxy_config
     try:
-        target = haproxy_config.HaproxyConfig(user=args.user, hosts=args.hosts.split(','))
+        target = haproxy_config.HaproxyConfig(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
     except AttributeError:
         sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
@@ -38,6 +38,8 @@ def parser():
     p.add_argument('-v', '--version', action='version', version=__version__)
     p.add_argument('--user', help='the target user', action='store', default='ubuntu', dest='user')
     p.add_argument('--hosts', help='the target address', action='store', dest='hosts')
+    p.add_argument('-i', '--key-filename', help='referencing file paths to SSH key files to try when connecting', action='store', dest='key_filename', default=None)
+    p.add_argument('--password', help='the password used by the SSH layer when connecting to remote hosts', action='store', dest='password', default=None)
 
     s = p.add_subparsers(dest="subparser_name") 
 

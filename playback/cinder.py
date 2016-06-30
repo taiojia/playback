@@ -12,14 +12,18 @@ from playback.templates.cinder_conf import conf_cinder_conf
 from playback.templates.policy_json_for_cinder import conf_policy_json
 
 class Cinder(Task):
-    def __init__(self, user, hosts=None, parallel=True, *args, **kwargs):
+    def __init__(self, user='ubuntu', hosts=None, key_filename=None, password=None,parallel=True, *args, **kwargs):
         super(Cinder, self).__init__(*args, **kwargs)
         self.user = user
         self.hosts = hosts
         self.parallel = parallel
+        self.key_filename = key_filename
+        self.password = password
         env.user = self.user
         env.hosts = self.hosts
         env.parallel = self.parallel
+        env.key_filename = key_filename
+        env.password = password
 
     @runs_once
     def _create_cinder_db(self, root_db_pass, cinder_db_pass):
@@ -102,26 +106,26 @@ class Cinder(Task):
         print red(env.host_string + ' | Remove the SQLite database file')
         sudo('rm -f /var/lib/cinder/cinder.sqlite')
 
-def make_target(user, hosts):
+def make_target(user, hosts, key_filename, password):
     try:
-        target = Cinder(user, hosts)
+        target = Cinder(user, hosts, key_filename, password)
     except AttributeError:
         sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
     
     return target
     
-def create_cinder_db(user, hosts, root_db_pass, cinder_db_pass):
-    target = make_target(user, hosts)
+def create_cinder_db(user, hosts, key_filename, password, root_db_pass, cinder_db_pass):
+    target = make_target(user, hosts, key_filename, password)
     execute(target._create_cinder_db, root_db_pass, cinder_db_pass)
 
-def create_service_credentials(user ,hosts, os_password, os_auth_url, cinder_pass, public_endpoint_v1, internal_endpoint_v1, admin_endpoint_v1, public_endpoint_v2, internal_endpoint_v2, admin_endpoint_v2):
-    target =make_target(user, hosts)
+def create_service_credentials(user ,hosts, key_filename, password, os_password, os_auth_url, cinder_pass, public_endpoint_v1, internal_endpoint_v1, admin_endpoint_v1, public_endpoint_v2, internal_endpoint_v2, admin_endpoint_v2):
+    target =make_target(user, hosts, key_filename, password)
     execute(target._create_service_credentials, os_password, 
             os_auth_url, cinder_pass, public_endpoint_v1, internal_endpoint_v1, admin_endpoint_v1, public_endpoint_v2, internal_endpoint_v2, admin_endpoint_v2)
 
-def install(user, hosts, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, cinder_pass, my_ip, glance_api_servers, rbd_secret_uuid, memcached_servers, populate):
-    target = make_target(user, hosts)
+def install(user, hosts, key_filename, password, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, cinder_pass, my_ip, glance_api_servers, rbd_secret_uuid, memcached_servers, populate):
+    target = make_target(user, hosts, key_filename, password)
     execute(target._install,
             connection,
             rabbit_hosts,
@@ -141,18 +145,20 @@ def parser():
     p.add_argument('-v', '--version', action='version', version=__version__)
     p.add_argument('--user', help='the target user', action='store', default='ubuntu', dest='user')
     p.add_argument('--hosts', help='the target address', action='store', dest='hosts')
-    
+    p.add_argument('-i', '--key-filename', help='referencing file paths to SSH key files to try when connecting', action='store', dest='key_filename', default=None)
+    p.add_argument('--password', help='the password used by the SSH layer when connecting to remote hosts', action='store', dest='password', default=None)
+
     s = p.add_subparsers(dest="subparser_name", help="commands")
     
     def create_cinder_db_f(args):
-        create_cinder_db(args.user, args.hosts.split(','), args.root_db_pass, args.cinder_db_pass)
+        create_cinder_db(args.user, args.hosts.split(','), args.key_filename, args.password, args.root_db_pass, args.cinder_db_pass)
     create_cinder_db_parser = s.add_parser('create-cinder-db', help='create the cinder database')
     create_cinder_db_parser.add_argument('--root-db-pass', help='the openstack database root passowrd', action='store', default=None, dest='root_db_pass')
     create_cinder_db_parser.add_argument('--cinder-db-pass', help='cinder db passowrd', action='store', default=None, dest='cinder_db_pass')
     create_cinder_db_parser.set_defaults(func=create_cinder_db_f)
     
     def create_service_credentials_f(args):
-        create_service_credentials(args.user, args.hosts.split(','), args.os_password, args.os_auth_url, args.cinder_pass, args.public_endpoint_v1, args.internal_endpoint_v1, args.admin_endpoint_v1, args.public_endpoint_v2, args.internal_endpoint_v2, args.admin_endpoint_v2)
+        create_service_credentials(args.user, args.hosts.split(','), args.key_filename, args.password, args.os_password, args.os_auth_url, args.cinder_pass, args.public_endpoint_v1, args.internal_endpoint_v1, args.admin_endpoint_v1, args.public_endpoint_v2, args.internal_endpoint_v2, args.admin_endpoint_v2)
     create_service_credentials_parser = s.add_parser('create-service-credentials',help='create the cinder service credentials')
     create_service_credentials_parser.add_argument('--os-password', help='the password for admin user', action='store', default=None, dest='os_password')
     create_service_credentials_parser.add_argument('--os-auth-url', help='keystone endpoint url e.g. http://CONTROLLER_VIP:35357/v3', action='store', default=None, dest='os_auth_url')
@@ -167,7 +173,7 @@ def parser():
     create_service_credentials_parser.set_defaults(func=create_service_credentials_f)
     
     def install_f(args):
-        install(args.user, args.hosts.split(','), args.connection, args.rabbit_hosts, args.rabbit_user, args.rabbit_pass, args.auth_uri, args.auth_url, args.cinder_pass, args.my_ip, args.glance_api_servers, args.rbd_secret_uuid, args.memcached_servers, args.populate)
+        install(args.user, args.hosts.split(','), args.key_filename, args.password, args.connection, args.rabbit_hosts, args.rabbit_user, args.rabbit_pass, args.auth_uri, args.auth_url, args.cinder_pass, args.my_ip, args.glance_api_servers, args.rbd_secret_uuid, args.memcached_servers, args.populate)
     install_parser = s.add_parser('install', help='install cinder api and volume')
     install_parser.add_argument('--connection', help='mysql database connection string e.g. mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinder', action='store', default=None, dest='connection')
     install_parser.add_argument('--rabbit-hosts', help='rabbit hosts e.g. CONTROLLER1,CONTROLLER2', action='store', default=None, dest='rabbit_hosts')

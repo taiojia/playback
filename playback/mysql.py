@@ -9,7 +9,7 @@ from playback import __version__
 def install(args):
     from playback import mysql_installation
     try:
-        target = mysql_installation.MysqlInstallation(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename)
+        target = mysql_installation.MysqlInstallation(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
     except AttributeError:
         err_hosts = red('No hosts found. Please using --hosts param.')
         sys.stderr.write(err_hosts)
@@ -20,7 +20,7 @@ def install(args):
 def config(args):
     from playback import mysql_config
     try:
-        target = mysql_config.MysqlConfig(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename)
+        target = mysql_config.MysqlConfig(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
     except AttributeError:
         err_hosts = red('No hosts found. Please using --hosts param.')
         sys.stderr.write(err_hosts)
@@ -31,7 +31,7 @@ def config(args):
 def manage(args):
     from playback import mysql_manage
     try:
-        target = mysql_manage.MysqlManage(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename)
+        target = mysql_manage.MysqlManage(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
     except AttributeError:
         err_hosts = red('No hosts found. Please using --hosts param.')
         sys.stderr.write(err_hosts)
@@ -80,9 +80,9 @@ def parser():
                     action='store', default='ubuntu', dest='user')
     p.add_argument('--hosts', help='the target address', 
                     action='store', dest='hosts')
-    p.add_argument('-i', '--key-filename', help='referencing file paths to SSH key files to try when connecting default ~/.ssh/id_rsa',
-                    action='store', dest='key_filename', default='~/.ssh/id_rsa')
-    p.add_argument('--password', help='the password used by the SSH layer when connecting to remote hosts', dest='password')
+    p.add_argument('-i', '--key-filename', help='referencing file paths to SSH key files to try when connecting', default=None,
+                    action='store', dest='key_filename')
+    p.add_argument('--password', help='the password used by the SSH layer when connecting to remote hosts', action='store', dest='password', default=None)
     s = p.add_subparsers(dest="subparser_name")
 
     def install_f(args):

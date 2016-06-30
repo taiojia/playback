@@ -12,14 +12,18 @@ from playback.templates.linuxbridge_agent_ini_for_agent import conf_linuxbridge_
 from playback import __version__
 
 class NeutronAgent(Task):
-    def __init__(self, user, hosts=None, parallel=True, *args, **kwargs):
+    def __init__(self, user, hosts=None, key_filename=None, password=None, parallel=True, *args, **kwargs):
         super(NeutronAgent, self).__init__(*args, **kwargs)
         self.user = user
         self.hosts = hosts
         self.parallel = parallel
+        self.key_filename = key_filename
+        self.password = password
         env.user = self.user
         env.hosts = self.hosts
         env.parallel = self.parallel
+        env.key_filename = self.key_filename
+        env.password = self.password
 
     def _install(self, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, neutron_pass, public_interface, local_ip, memcached_servers):
         print red(env.host_string + ' | Install the components')
@@ -112,7 +116,7 @@ def install_subparser(s):
 
 def make_target(args):
     try:
-        target = NeutronAgent(user=args.user, hosts=args.hosts.split(','))
+        target = NeutronAgent(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
     except AttributeError:
         sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
@@ -143,6 +147,8 @@ def parser():
                     help='the target address', 
                     action='store', 
                     dest='hosts')
+    p.add_argument('-i', '--key-filename', help='referencing file paths to SSH key files to try when connecting', action='store', dest='key_filename', default=None)
+    p.add_argument('--password', help='the password used by the SSH layer when connecting to remote hosts', action='store', dest='password', default=None)
 
     s = p.add_subparsers(dest='subparser_name')
     

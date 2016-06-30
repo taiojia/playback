@@ -12,14 +12,18 @@ from playback.templates.glance_api_conf import conf_glance_api_conf
 from playback.templates.glance_registry_conf import conf_glance_registry_conf
 
 class Glance(Task):
-    def __init__(self, user, hosts=None, parallel=True, *args, **kwargs):
+    def __init__(self, user, hosts=None, key_filename=None, password=None, parallel=True, *args, **kwargs):
         super(Glance, self).__init__(*args, **kwargs)
         self.user = user
         self.hosts = hosts
         self.parallel = parallel
+        self.key_filename = key_filename
+        self.password = password
         env.user = self.user
         env.hosts = self.hosts
         env.parallel = self.parallel
+        env.key_filename = self.key_filename
+        env.password = self.password
 
     @runs_once
     def _create_glance_db(self, root_db_pass, glance_db_pass):
@@ -102,7 +106,7 @@ class Glance(Task):
         print red(env.host_string + ' | Remove the SQLite database file')
         sudo('rm -f /var/lib/glance/glance.sqlite')
 
-def make_target(user, hosts):
+def make_target(user, hosts, key_filename, password):
     """
     The deployment instance
     param::
@@ -110,7 +114,7 @@ def make_target(user, hosts):
     hosts: list
     """
     try:
-        target = Glance(user, hosts)
+        target = Glance(user, hosts, key_filename, password)
     except AttributeError:
         sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
@@ -118,13 +122,13 @@ def make_target(user, hosts):
     return target
 
 def create_glance_db(args):
-    target = make_target(args.user, args.hosts.split(','))
+    target = make_target(args.user, args.hosts.split(','), args.key_filename, args.password)
     execute(target._create_glance_db, 
             args.root_db_pass, 
             args.glance_db_pass)
 
 def create_service_credentials(args):
-    target = make_target(args.user, args.hosts.split(','))
+    target = make_target(args.user, args.hosts.split(','), args.key_filename, args.password)
     execute(target._create_service_credentials, 
             args.os_password, 
             args.os_auth_url, 
@@ -134,7 +138,7 @@ def create_service_credentials(args):
             args.admin_endpoint)
 
 def install(args):
-    target = make_target(args.user, args.hosts.split(','))
+    target = make_target(args.user, args.hosts.split(','), args.key_filename, args.password)
     execute(target._install_glance, 
             args.connection, 
             args.auth_uri, 
@@ -149,6 +153,8 @@ def parser():
     p.add_argument('-v', '--version', action='version', version=__version__)
     p.add_argument('--user', help='the target user', action='store', default='ubuntu', dest='user')
     p.add_argument('--hosts', help='the target address', action='store', dest='hosts')
+    p.add_argument('-i', '--key-filename', help='referencing file paths to SSH key files to try when connecting', action='store', dest='key_filename', default=None)
+    p.add_argument('--password', help='the password used by the SSH layer when connecting to remote hosts', action='store', dest='password', default=None)
 
     s = p.add_subparsers(dest="subparser_name")
 

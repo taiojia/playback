@@ -5,13 +5,17 @@ from playback.templates.external_interface import conf_external_interface
 class PrepareHost(object):
     """Prepare OpenStack physical hosts"""
 
-    def __init__(self, user, hosts=None, parallel=True):
+    def __init__(self, user, hosts=None, key_filename=None, password=None, parallel=True):
         self.user = user
         self.hosts = hosts
         self.parallel = parallel
+        self.key_filename = key_filename
+        self.password = password
         env.user = self.user
         env.hosts = self.hosts
         env.parallel = self.parallel
+        env.key_filename = self.key_filename
+        env.password = self.password
         
     def setup_external_interface(self):
         """host networking"""
