@@ -74,6 +74,6 @@ The following command will help you to prepare the OpenStack environment and all
     compute8.maas,\
     compute9.maas,\
     compute10.maas \
-    prepare-host
+    prepare-host --public-interface eth1
 
 Using `env-deploy --help` to see details.

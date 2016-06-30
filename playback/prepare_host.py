@@ -1,5 +1,7 @@
 from fabric.api import *
 from fabric.contrib import files
+from fabric.colors import red
+import os
 from playback.templates.external_interface import conf_external_interface
 
 class PrepareHost(object):
@@ -17,14 +19,21 @@ class PrepareHost(object):
         env.key_filename = self.key_filename
         env.password = self.password
         
-    def setup_external_interface(self):
+    def setup_external_interface(self, public_interface):
         """host networking"""
-        with cd('/etc/network'):
-            files.append('interfaces', conf_external_interface, use_sudo=True)
-        sudo('ifdown eth1', warn_only=True)
-        sudo('ifup eth1', warn_only=True)
-        # TODO: purge old eth1 configuration
-        
+        print red(env.host_string + ' | Setup public interface')
+        with open('tmp_public_interface_cfg_'+env.host_string, 'w') as f:
+            f.write(conf_external_interface)
+        files.upload_template(filename='tmp_public_interface_cfg_'+env.host_string,
+                                destination='/etc/network/interfaces.d/public_interface.cfg',
+                                use_jinja=True,
+                                use_sudo=True,
+                                backup=True,
+                                context={
+                                    public_interface: public_interface
+                                })
+        os.remove('tmp_public_interface_cfg_'+env.host_string)
+
     def setup_ntp(self):
         """network time protocal (ntp)"""
         sudo('echo \'Asia/Shanghai\' > /etc/timezone')

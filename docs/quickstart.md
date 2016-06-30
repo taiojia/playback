@@ -37,7 +37,7 @@ Prepare the OpenStack environment.
     COMPUTE8,\
     COMPUTE9,\
     COMPUTE10 \
-    prepare-host
+    prepare-host --public-interface eth1
 
 ## MySQL HA
 

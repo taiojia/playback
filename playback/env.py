@@ -8,7 +8,7 @@ import sys
 from playback.cli import cli_description
 from playback import __version__
 
-def prepare_host(user, hosts, key_filename, password):
+def prepare_host(user, hosts, key_filename, password, public_interface):
     from playback import prepare_host
     try:
         remote = prepare_host.PrepareHost(user, hosts, key_filename, password)
@@ -17,7 +17,7 @@ def prepare_host(user, hosts, key_filename, password):
         sys.exit(1)
 
     # host networking
-    execute(remote.setup_external_interface)
+    execute(remote.setup_external_interface, public_interface)
 
     # ntp
     execute(remote.setup_ntp)
@@ -48,8 +48,9 @@ def parser():
     s = p.add_subparsers(dest="subparser_name", help="commands")
     
     def prepare_host_f(args):
-        prepare_host(args.user, args.hosts.split(','), args.key_filename, args.password)
+        prepare_host(args.user, args.hosts.split(','), args.key_filename, args.password, args.public_interface)
     prepare_host_parser = s.add_parser('prepare-host', help='prepare the OpenStack environment')
+    prepare_host_parser.add_argument('--public-interface', help='public interface e.g. eth1', action='store', default='eth1', dest='public_interface')
     prepare_host_parser.set_defaults(func=prepare_host_f)
     
     def gen_pass_f(args):
