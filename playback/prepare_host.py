@@ -32,7 +32,7 @@ class PrepareHost(Task):
                                 use_sudo=True,
                                 backup=True,
                                 context={
-                                    public_interface: public_interface
+                                    'public_interface': public_interface
                                 })
         os.remove('tmp_public_interface_cfg_'+env.host_string)
 
