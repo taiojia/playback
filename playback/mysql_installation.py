@@ -1,11 +1,14 @@
 from fabric.api import *
 from fabric.contrib import files
+from fabric.tasks import Task
 from playback.templates.galera_list import conf_galera_list_trusty, conf_galera_list_xenial
+from playback import common
 
-class MysqlInstallation(object):
+class MysqlInstallation(Task, common.Common):
     """Install Galera Cluster for MySQL"""
 
-    def __init__(self, hosts, user='ubuntu', key_filename=None, password=None, parallel=True):
+    def __init__(self, user, hosts=None, key_filename=None, password=None, parallel=True, *args, **kwargs):
+        super(MysqlInstallation, self).__init__(*args, **kwargs)
         self.user = user
         self.hosts = hosts
         self.parallel = parallel
@@ -18,16 +21,12 @@ class MysqlInstallation(object):
         env.password = self.password
         env.abort_on_prompts = False
 
-    def _release(self):
-        release = sudo('lsb_release -cs')
-        return release
-
     def _enable_repo(self):
         if self._release() == 'trusty':
             conf_galera_list = conf_galera_list_trusty
             sudo('apt-key adv --recv-keys --keyserver keyserver.ubuntu.com BC19DDBA')  
         if self._release() == 'xenial':
-            conf_galera_list = conf_galera_list_xenial  
+            conf_galera_list = conf_galera_list_xenial
             sudo('apt-key adv --recv-keys --keyserver keyserver.ubuntu.com F1656F24C74CD1D8')  
         with cd('/etc/apt/sources.list.d/'):
             sudo('rm -rf galera.list', warn_only=True)

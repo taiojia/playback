@@ -1,10 +1,12 @@
 from fabric.api import *
+from fabric.tasks import Task
+from playback import common
 
-
-class MysqlManage(object):
+class MysqlManage(Task, common.Common):
     """Manage Galera Cluster for MySQL"""
 
-    def __init__(self, hosts, user='ubuntu', key_filename=None, password=None, parallel=True):
+    def __init__(self, user, hosts=None, key_filename=None, password=None, parallel=True, *args, **kwargs):
+        super(MysqlManage, self).__init__(*args, **kwargs)
         self.user = user
         self.hosts = hosts
         self.parallel = parallel
@@ -16,10 +18,6 @@ class MysqlManage(object):
         env.key_filename = self.key_filename
         env.password = self.password
         env.abort_on_prompts = False
-
-    def _release(self):
-        release = sudo('lsb_release -cs')
-        return release
 
     def _start_wsrep_new_cluster(self):
         sudo('service mysql start --wsrep-new-cluster')
