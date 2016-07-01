@@ -29,6 +29,10 @@ class Keystone(common.Common):
         sudo("apt-get update")
         sudo("apt-get install keystone apache2 libapache2-mod-wsgi memcached python-memcache -y")
 
+        if self._release() == 'xenial':
+            sudo('systemctl stop keystone')
+            sudo('update-rc.d keystone disable')
+
         # Configure /etc/keysone/keystone.conf
         with open('tmp_keystone_conf_'+env.host_string,'w') as f:
             f.write(conf_keystone_conf)
