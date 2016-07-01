@@ -18,15 +18,24 @@ class MysqlInstallation(object):
         env.password = self.password
         env.abort_on_prompts = False
 
+    def _release(self):
+        release = sudo('lsb_release -cs')
+        return release
+
     def _enable_repo(self):
-        result = sudo('lsb_release -cs')
-        if result == 'xenial':
-            conf_galera_list = conf_galera_list_xenial
-        sudo('apt-key adv --recv-keys --keyserver keyserver.ubuntu.com BC19DDBA')
+        if self._release() == 'trusty':
+            conf_galera_list = conf_galera_list_trusty
+            sudo('apt-key adv --recv-keys --keyserver keyserver.ubuntu.com BC19DDBA')  
+        if self._release() == 'xenial':
+            conf_galera_list = conf_galera_list_xenial  
+            sudo('apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db')  
         with cd('/etc/apt/sources.list.d/'):
             sudo('rm -rf galera.list', warn_only=True)
             files.append('galera.list', conf_galera_list, use_sudo=True)
         sudo('apt-get update')
     
     def _install(self):
-        sudo('DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes galera-3 galera-arbitrator-3 mysql-wsrep-5.6')
+        if self._release() == 'trusty':
+            sudo('DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes galera-3 mysql-wsrep-5.6')
+        if self._release() == 'xenial':
+            sudo('DEBIAN_FRONTEND=noninteractive apt-get install -y --allow mariadb-client mariadb-galera-server galera')
