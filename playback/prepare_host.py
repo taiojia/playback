@@ -1,13 +1,15 @@
 from fabric.api import *
 from fabric.contrib import files
+from fabric.tasks import Task
 from fabric.colors import red
 import os
 from playback.templates.external_interface import conf_external_interface
 
-class PrepareHost(object):
+class PrepareHost(Task):
     """Prepare OpenStack physical hosts"""
 
-    def __init__(self, user, hosts=None, key_filename=None, password=None, parallel=True):
+    def __init__(self, user, hosts=None, key_filename=None, password=None, parallel=True, *args, **kwargs):
+        super(PrepareHost, self).__init__(*args, **kwargs)
         self.user = user
         self.hosts = hosts
         self.parallel = parallel
@@ -41,15 +43,26 @@ class PrepareHost(object):
         sudo('apt-get install chrony -y')
         # TODO: setup ntp server and ntp client, current all are clients
 
+    def _release(self):
+        result = sudo('lsb_release -cs')
+        return result
+
     def set_openstack_repository(self):
-        """openstack packages"""
-        sudo('apt-get update')
-        sudo('apt-get install software-properties-common -y')
-        sudo('add-apt-repository cloud-archive:mitaka -y')
+        """openstack packages"""      
+        if self._release() == 'trusty':
+            print red(env.host_string + ' | Enable the OpenStack repository for trusty')
+            sudo('apt-get update')
+            sudo('apt-get install software-properties-common -y')
+            sudo('add-apt-repository cloud-archive:mitaka -y')
+        
+        print red(env.host_string + ' | Executing dist-upgrade')
         with prefix('sudo apt-get update'):
             sudo('DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade')
-        
-        print "[Playback] waiting for reboot\n"
-        reboot(wait=600)
+             
+        print red(env.host_string + ' | [Playback] waiting for reboot\n')
+        with settings(warn_only=True):
+            reboot(wait=600)
+
+        print red(env.host_string + ' | Install the OpenStack client')
         with prefix('sudo apt-get update'):
             sudo('apt-get install python-openstackclient -y')

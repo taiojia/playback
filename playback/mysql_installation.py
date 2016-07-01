@@ -19,10 +19,9 @@ class MysqlInstallation(object):
         env.abort_on_prompts = False
 
     def _enable_repo(self):
-        with settings(hide('running', 'commands', 'stdout', 'stderr')):
-            result = sudo('lsb_release -cs')
-            if result == 'xenial':
-                conf_galera_list = conf_galera_list_xenial
+        result = sudo('lsb_release -cs')
+        if result == 'xenial':
+            conf_galera_list = conf_galera_list_xenial
         sudo('apt-key adv --recv-keys --keyserver keyserver.ubuntu.com BC19DDBA')
         with cd('/etc/apt/sources.list.d/'):
             sudo('rm -rf galera.list', warn_only=True)
