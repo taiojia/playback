@@ -8,7 +8,9 @@ class MysqlManage(common.Common):
     def _start_wsrep_new_cluster(self):
         sudo('service mysql start --wsrep-new-cluster')
         if self._release() == 'xenial':
-            sudo('systemctl start mysql --wsrep-new-cluster')
+            result = sudo('systemctl start mysql --wsrep-new-cluster')
+            if result.failed:
+                sudo('service mysql start --wsrep-new-cluster')
 
     def _start_mysql(self):
         sudo('service mysql start')
