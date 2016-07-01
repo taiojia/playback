@@ -28,7 +28,7 @@ class MysqlInstallation(object):
             sudo('apt-key adv --recv-keys --keyserver keyserver.ubuntu.com BC19DDBA')  
         if self._release() == 'xenial':
             conf_galera_list = conf_galera_list_xenial  
-            sudo('apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db')  
+            sudo('apt-key adv --recv-keys --keyserver keyserver.ubuntu.com F1656F24C74CD1D8')  
         with cd('/etc/apt/sources.list.d/'):
             sudo('rm -rf galera.list', warn_only=True)
             files.append('galera.list', conf_galera_list, use_sudo=True)
@@ -38,4 +38,4 @@ class MysqlInstallation(object):
         if self._release() == 'trusty':
             sudo('DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes galera-3 mysql-wsrep-5.6')
         if self._release() == 'xenial':
-            sudo('DEBIAN_FRONTEND=noninteractive apt-get install -y --allow mariadb-client mariadb-galera-server galera')
+            sudo('DEBIAN_FRONTEND=noninteractive apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages mariadb-client-10.2 mariadb-server-10.2 galera-3')
