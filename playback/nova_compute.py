@@ -1,6 +1,5 @@
 from fabric.api import *
 from fabric.contrib import files
-from fabric.tasks import Task
 from fabric.network import disconnect_all
 from fabric.colors import red
 import os
@@ -13,20 +12,9 @@ from playback.templates.libvirt_bin import conf_libvirt_bin
 from playback.templates.libvirtd_conf import conf_libvirtd_conf
 
 from playback import __version__
+from playback import common
 
-class NovaCompute(Task):
-    def __init__(self, user, hosts=None, key_filename=None, password=None, parallel=True, *args, **kwargs):
-        super(NovaCompute, self).__init__(*args, **kwargs)
-        self.user = user
-        self.hosts = hosts
-        self.parallel = parallel
-        self.key_filename = key_filename
-        self.password = password
-        env.user = self.user
-        env.hosts = self.hosts
-        env.parallel = self.parallel
-        env.key_filename = self.key_filename
-        env.password = self.password
+class NovaCompute(common.Common):
 
     def _install(self, my_ip, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, nova_pass, novncproxy_base_url, glance_api_servers, neutron_endpoint, neutron_pass, rbd_secret_uuid, memcached_servers):
         print red(env.host_string + ' | Install nova-compute sysfsutils')

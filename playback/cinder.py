@@ -1,6 +1,5 @@
 from fabric.api import *
 from fabric.contrib import files
-from fabric.tasks import Task
 from fabric.network import disconnect_all
 from fabric.colors import red
 import os
@@ -10,20 +9,9 @@ from playback.cli import cli_description
 from playback import __version__
 from playback.templates.cinder_conf import conf_cinder_conf
 from playback.templates.policy_json_for_cinder import conf_policy_json
+from playback import common
 
-class Cinder(Task):
-    def __init__(self, user='ubuntu', hosts=None, key_filename=None, password=None,parallel=True, *args, **kwargs):
-        super(Cinder, self).__init__(*args, **kwargs)
-        self.user = user
-        self.hosts = hosts
-        self.parallel = parallel
-        self.key_filename = key_filename
-        self.password = password
-        env.user = self.user
-        env.hosts = self.hosts
-        env.parallel = self.parallel
-        env.key_filename = key_filename
-        env.password = password
+class Cinder(common.Common):
 
     @runs_once
     def _create_cinder_db(self, root_db_pass, cinder_db_pass):

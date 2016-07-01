@@ -11,19 +11,9 @@ from playback.templates.keystone_conf import conf_keystone_conf
 from playback.templates.wsgi_keystone_conf import conf_wsgi_keystone_conf
 from playback.templates.keystone_paste_ini import conf_keystone_paste_ini
 from playback.templates.memcached_conf import conf_memcached_conf
+from playback import common
 
-class Keystone(object):
-    def __init__(self, user, hosts=None, key_filename=None, password=None, parallel=True):
-        self.user = user
-        self.hosts = hosts
-        self.parallel = parallel
-        self.key_filename = key_filename
-        self.password = password
-        env.user = self.user
-        env.hosts = self.hosts
-        env.parallel = self.parallel
-        env.key_filename = self.key_filename
-        env.password = self.password
+class Keystone(common.Common):
 
     @runs_once
     def _create_keystone_db(self, root_db_pass, keystone_db_pass):

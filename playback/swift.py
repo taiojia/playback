@@ -1,6 +1,5 @@
 from fabric.api import *
 from fabric.contrib import files
-from fabric.tasks import Task
 from fabric.network import disconnect_all
 from fabric.colors import red
 import os
@@ -10,20 +9,9 @@ from playback.cli import cli_description
 from playback.templates.proxy_server_conf import conf_proxy_server_conf
 from playback.templates.swift_conf import conf_swift_conf
 from playback import __version__
+from playback import common
 
-class Swift(Task):
-    def __init__(self, user, hosts=None, key_filename=None, password=None, parallel=True, *args, **kwargs):
-        super(Swift, self).__init__(*args, **kwargs)
-        self.user = user
-        self.hosts = hosts
-        self.parallel = parallel
-        self.key_filename = key_filename
-        self.password = password
-        env.user = self.user
-        env.hosts = self.hosts
-        env.parallel = self.parallel
-        env.key_filename = self.key_filename
-        env.password = self.password
+class Swift(common.Common):
 
     @runs_once
     def _create_service_credentials(self, os_password, os_auth_url, swift_pass, public_endpoint, internal_endpoint, admin_endpoint):

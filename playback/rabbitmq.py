@@ -6,20 +6,10 @@ from fabric.colors import red
 import sys
 from playback.cli import cli_description
 from playback import __version__
+from playback import common
 
-class RabbitMq(object):
+class RabbitMq(common.Common):
     """RabbitMQ HA Installation"""
-    def __init__(self, hosts, user='ubuntu', key_filename=None, password=None, parallel=True):
-        self.user = user
-        self.hosts = hosts
-        self.parallel = parallel
-        self.key_filename = key_filename
-        self.password = password
-        env.user = self.user
-        env.hosts = self.hosts
-        env.parallel = self.parallel
-        env.key_filename = self.key_filename
-        env.password = self.password
 
     def _install(self, erlang_cookie, rabbit_user, rabbit_pass):
         sudo('apt-get update')

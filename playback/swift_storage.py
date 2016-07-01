@@ -1,6 +1,5 @@
 from fabric.api import *
 from fabric.contrib import files
-from fabric.tasks import Task
 from fabric.network import disconnect_all
 from fabric.colors import red
 import os
@@ -14,20 +13,9 @@ from playback.templates.account_server_conf import conf_account_server_conf
 from playback.templates.container_server_conf import conf_container_server_conf
 from playback.templates.object_server_conf import conf_object_server_conf
 from playback import __version__
+from playback import common
 
-class SwiftStorage(Task):
-    def __init__(self, user, hosts=None, key_filename=None, password=None, parallel=True, *args, **kwargs):
-        super(SwiftStorage, self).__init__(*args, **kwargs)
-        self.user = user
-        self.hosts = hosts
-        self.parallel = parallel
-        self.key_filename = key_filename
-        self.password = password
-        env.user = self.user
-        env.hosts = self.hosts
-        env.parallel = self.parallel
-        env.key_filename = self.key_filename
-        env.password = self.password
+class SwiftStorage(common.Common):
 
     def _prepare_disks(self, disks_name):
         """format disks to xfs and mount it"""
