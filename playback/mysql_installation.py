@@ -1,25 +1,10 @@
 from fabric.api import *
 from fabric.contrib import files
-from fabric.tasks import Task
 from playback.templates.galera_list import conf_galera_list_trusty, conf_galera_list_xenial
 from playback import common
 
-class MysqlInstallation(Task, common.Common):
+class MysqlInstallation(common.Common):
     """Install Galera Cluster for MySQL"""
-
-    def __init__(self, user, hosts=None, key_filename=None, password=None, parallel=True, *args, **kwargs):
-        super(MysqlInstallation, self).__init__(*args, **kwargs)
-        self.user = user
-        self.hosts = hosts
-        self.parallel = parallel
-        self.key_filename = key_filename
-        self.password = password
-        env.user = self.user
-        env.hosts = self.hosts
-        env.parallel = self.parallel
-        env.key_filename = self.key_filename
-        env.password = self.password
-        env.abort_on_prompts = False
 
     def _enable_repo(self):
         if self._release() == 'trusty':
