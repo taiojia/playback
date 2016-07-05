@@ -66,7 +66,6 @@ setup(name='playback',
            'cinder-deploy = playback.cinder:main',
            'swift-deploy = playback.swift:main',
            'swift-storage-deploy = playback.swift_storage:main',
-           'ceph-deploy = ceph_deploy.cli:main'
            ]
        },
     )
