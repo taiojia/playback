@@ -74,7 +74,7 @@ class Cinder(common.Common):
 
         print red(env.host_string + ' | Enable Consistency groups')
         with open('tmp_policy_json_' + env.host_string, 'w') as f:
-            f.write(conf_cinder_conf)
+            f.write(conf_policy_json)
         files.upload_template(filename='tmp_policy_json_' + env.host_string,
                                 destination='/etc/cinder/policy.json',
                                 use_sudo=True,
