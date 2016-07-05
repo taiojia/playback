@@ -21,5 +21,7 @@ class MysqlInstallation(common.Common):
     def _install(self):
         if self._release() == 'trusty':
             sudo('DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes galera-3 mysql-wsrep-5.6')
+            sudo('service mysql stop', warn_only=True)
         if self._release() == 'xenial':
             sudo('DEBIAN_FRONTEND=noninteractive apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages mariadb-client-10.2 mariadb-server-10.2 galera-3')
+            sudo('service mysql stop', warn_only=True)
