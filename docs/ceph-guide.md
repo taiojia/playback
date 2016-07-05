@@ -5,6 +5,12 @@ For more information about ceph backend visit:
 [preflight](http://docs.ceph.com/docs/jewel/start/quick-start-preflight/)
 [Cinder and Glance driver](http://docs.ceph.com/docs/jewel/rbd/rbd-openstack/)
 
+Install ceph-deploy(1.5.34)
+
+    wget -q -O- 'https://download.ceph.com/keys/release.asc' | sudo apt-key add -
+    echo deb http://download.ceph.com/debian-jewel/ $(lsb_release -sc) main | sudo tee /etc/apt/sources.list.d/ceph.list
+    sudo apt-get update && sudo apt-get install ceph-deploy
+
 Create ceph cluster directory
 
     mkdir ceph-cluster
