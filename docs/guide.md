@@ -15,3 +15,4 @@
 * [Swift](./swift.md)
 * [Swift Storage](./swift-storage.md)
 * [Ceph Guide](./ceph-guide.md)
+* [Manila](./manila.md)
