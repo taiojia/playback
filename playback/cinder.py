@@ -151,12 +151,12 @@ def parser():
     create_service_credentials_parser.add_argument('--os-password', help='the password for admin user', action='store', default=None, dest='os_password')
     create_service_credentials_parser.add_argument('--os-auth-url', help='keystone endpoint url e.g. http://CONTROLLER_VIP:35357/v3', action='store', default=None, dest='os_auth_url')
     create_service_credentials_parser.add_argument('--cinder-pass', help='password for cinder user', action='store', default=None, dest='cinder_pass')
-    create_service_credentials_parser.add_argument('--public-endpoint-v1', help='public endpoint for volume service e.g. http://CONTROLLER_VIP:8776/v1/%%\(tenant_id\)s', action='store', default=None, dest='public_endpoint_v1')
-    create_service_credentials_parser.add_argument('--internal-endpoint-v1', help='internal endpoint for volume service e.g. http://CONTROLLER_VIP:8776/v1/%%\(tenant_id\)s', action='store', default=None, dest='internal_endpoint_v1')
-    create_service_credentials_parser.add_argument('--admin-endpoint-v1', help='admin endpoint for volume service e.g. http://CONTROLLER_VIP:8776/v1/%%\(tenant_id\)s', action='store', default=None, dest='admin_endpoint_v1')
-    create_service_credentials_parser.add_argument('--public-endpoint-v2', help='public endpoint v2 for volumev2 service e.g. http://CONTROLLER_VIP:8776/v2/%%\(tenant_id\)s', action='store', default=None, dest='public_endpoint_v2')
-    create_service_credentials_parser.add_argument('--internal-endpoint-v2', help='internal endpoint v2 for volumev2 service e.g. http://CONTROLLER_VIP:8776/v2/%%\(tenant_id\)s', action='store', default=None, dest='internal_endpoint_v2')
-    create_service_credentials_parser.add_argument('--admin-endpoint-v2', help='admin endpoint v2 for volumev2 service e.g. http://CONTROLLER_VIP:8776/v2/%%\(tenant_id\)s', action='store', default=None, dest='admin_endpoint_v2')
+    create_service_credentials_parser.add_argument('--public-endpoint-v1', help=r'public endpoint for volume service e.g. "http://CONTROLLER_VIP:8776/v1/%%\(tenant_id\)s"', action='store', default=None, dest='public_endpoint_v1')
+    create_service_credentials_parser.add_argument('--internal-endpoint-v1', help=r'internal endpoint for volume service e.g. "http://CONTROLLER_VIP:8776/v1/%%\(tenant_id\)s"', action='store', default=None, dest='internal_endpoint_v1')
+    create_service_credentials_parser.add_argument('--admin-endpoint-v1', help=r'admin endpoint for volume service e.g. "http://CONTROLLER_VIP:8776/v1/%%\(tenant_id\)s"', action='store', default=None, dest='admin_endpoint_v1')
+    create_service_credentials_parser.add_argument('--public-endpoint-v2', help=r'public endpoint v2 for volumev2 service e.g. "http://CONTROLLER_VIP:8776/v2/%%\(tenant_id\)s"', action='store', default=None, dest='public_endpoint_v2')
+    create_service_credentials_parser.add_argument('--internal-endpoint-v2', help=r'internal endpoint v2 for volumev2 service e.g. "http://CONTROLLER_VIP:8776/v2/%%\(tenant_id\)s"', action='store', default=None, dest='internal_endpoint_v2')
+    create_service_credentials_parser.add_argument('--admin-endpoint-v2', help=r'admin endpoint v2 for volumev2 service e.g. "http://CONTROLLER_VIP:8776/v2/%%\(tenant_id\)s"', action='store', default=None, dest='admin_endpoint_v2')
 
     create_service_credentials_parser.set_defaults(func=create_service_credentials_f)
     

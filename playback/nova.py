@@ -128,17 +128,17 @@ def create_service_credentials_subparser(s):
                                                     default=None,
                                                     dest='nova_pass')
     create_service_credentials_parser.add_argument('--public-endpoint',
-                                                    help='public endpoint for nova service e.g. http://CONTROLLER_VIP:8774/v2.1/%\(tenant_id\)s',
+                                                    help=r'public endpoint for nova service e.g. "http://CONTROLLER_VIP:8774/v2.1/%%\(tenant_id\)s"',
                                                     action='store',
                                                     default=None,
                                                     dest='public_endpoint')
     create_service_credentials_parser.add_argument('--internal-endpoint',
-                                                    help='internal endpoint for nova service e.g. http://CONTROLLER_VIP:8774/v2.1/%\(tenant_id\)s',
+                                                    help=r'internal endpoint for nova service e.g. "http://CONTROLLER_VIP:8774/v2.1/%%\(tenant_id\)s"',
                                                     action='store',
                                                     default=None,
                                                     dest='internal_endpoint')
     create_service_credentials_parser.add_argument('--admin-endpoint',
-                                                    help='admin endpoint for nova service e.g. http://CONTROLLER_VIP:8774/v2.1/%\(tenant_id\)s',
+                                                    help=r'admin endpoint for nova service e.g. "http://CONTROLLER_VIP:8774/v2.1/%%\(tenant_id\)s"',
                                                     action='store',
                                                     default=None,
                                                     dest='admin_endpoint')
