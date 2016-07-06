@@ -122,4 +122,11 @@ listen swift_proxy_cluster
   option  tcpka
   server controller1 controller1:8080 check inter 2000 rise 2 fall 5
   server controller2 controller2:8080 check inter 2000 rise 2 fall 5
+
+listen manila_cluster
+  bind 0.0.0.0:8786
+  balance source
+  option tcpka
+  server controller1 controller1:8786 check inter 2000 rise 2 fall 5
+  server controller2 controller2:8786 check inter 2000 rise 2 fall 5
 """
