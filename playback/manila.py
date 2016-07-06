@@ -5,7 +5,6 @@ from fabric.colors import red
 import os
 import argparse
 import sys
-from playback.cli import cli_description
 from playback import __version__
 from playback import common
 from playback.templates.manila_conf import conf_manila_conf
@@ -242,7 +241,8 @@ def install(args):
             args.populate)
 
 def parser():
-    p, s = common.parser()
+    des = 'this command used for provision manila controller node.'
+    p, s = common.parser(des)
 
     def create_manila_db_f(args):
         create_manila_db(args)

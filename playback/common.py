@@ -23,12 +23,12 @@ class Common(Task):
         release = sudo('lsb_release -cs')
         return release
 
-def parser():
+def parser(des):
     """
     Setup common parser
     return: parser and subparsers
     """
-    p = argparse.ArgumentParser(prog='nova-deploy', description=cli_description+'this command used for provision Nova')
+    p = argparse.ArgumentParser(prog='nova-deploy', description=cli_description + des)
     p.add_argument('-v', '--version',
                     action='version',
                     version=__version__)
