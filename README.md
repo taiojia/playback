@@ -21,6 +21,7 @@ Playback command-line tool supporting the following platform:
 * v0.3.4 (Ris)
   * Support xenial
   * Support systemd
+  * Support Shard File Systems service
   * Fix Live Migration error on xenial
   * Fix Keysonte bugs
   * Fix no JSON object could be decoded with cinder
