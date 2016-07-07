@@ -28,3 +28,5 @@ class MysqlManage(common.Common):
     def _change_root_password(self, pwd):
         sudo('mysqladmin -uroot password %s' % pwd)
 
+    def _show_cluster_status(self, root_db_pass):
+        sudo("mysql -uroot -p{root_db_pass} -e \"SHOW STATUS LIKE 'wsrep_%';\"".format(root_db_pass=root_db_pass), shell=False)

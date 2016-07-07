@@ -44,6 +44,10 @@ def manage(args):
         execute(target._stop_mysql)
     if args.change_root_password:
         execute(target._change_root_password, args.change_root_password)
+    if args.show_cluster_status:
+        if args.root_db_pass == None:
+            raise Exception('--root-db-pass is empty\n')
+        execute(target._show_cluster_status, args.root_db_pass)
 
 def install_subparser(s):
     install_parser = s.add_parser('install', help='install Galera Cluster for MySQL')
@@ -69,6 +73,10 @@ def manage_subparser(s):
                                 action='store_true', default=False, dest='stop')
     manage_parser.add_argument('--change-root-password', help='change the root password',
                                 action='store', default=False, dest='change_root_password')
+    manage_parser.add_argument('--show-cluster-status', help='show the cluster status',
+                                action='store_true', default=False, dest='show_cluster_status')
+    manage_parser.add_argument('--root-db-pass', help='the password of root user',
+                                action='store', default=None, dest='root_db_pass')
     return manage_parser
 
 def parser():
