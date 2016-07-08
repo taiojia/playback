@@ -9,7 +9,7 @@ class MysqlManage(common.Common):
         if self._release() == 'xenial':
             result = sudo('galera_new_cluster', warn_only=True)
             if result.failed:
-                sudo('service mysql start --wsrep-new-cluster')
+                sudo('systemctl start mysql')
         else:
             sudo('service mysql start --wsrep-new-cluster')
 

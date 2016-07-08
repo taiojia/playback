@@ -14,12 +14,20 @@ class MysqlConfig(common.Common):
             conf_my_cnf = conf_my_cnf_xenial
         with open('tmp_my_cnf_'+env.host_string, 'w') as f:
             f.write(conf_my_cnf)
-        files.upload_template(filename='tmp_my_cnf_'+env.host_string, 
-                              destination='/etc/mysql/my.cnf', 
-                              context={'wsrep_cluster_address': wsrep_cluster_address, 
-                                       'wsrep_node_name': wsrep_node_name, 
-                                       'wsrep_node_address': wsrep_node_address}, 
-                              use_jinja=True, use_sudo=True, backup=True)
+        if self._release() == "trusty":
+            files.upload_template(filename='tmp_my_cnf_'+env.host_string, 
+                                destination='/etc/mysql/my.cnf', 
+                                context={'wsrep_cluster_address': wsrep_cluster_address, 
+                                        'wsrep_node_name': wsrep_node_name, 
+                                        'wsrep_node_address': wsrep_node_address}, 
+                                use_jinja=True, use_sudo=True, backup=True)
+        if self._release() == "xenial":
+            files.upload_template(filename='tmp_my_cnf_'+env.host_string, 
+                                destination='/etc/mysql/mariadb.conf.d/openstack.cnf', 
+                                context={'wsrep_cluster_address': wsrep_cluster_address, 
+                                        'wsrep_node_name': wsrep_node_name, 
+                                        'wsrep_node_address': wsrep_node_address}, 
+                                use_jinja=True, use_sudo=True, backup=True)
         try:
             os.remove('tmp_my_cnf_'+env.host_string)
         except Exception:
