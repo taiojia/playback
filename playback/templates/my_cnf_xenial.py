@@ -12,5 +12,6 @@ wsrep_cluster_address="{{ wsrep_cluster_address }}"
 wsrep_node_name="{{ wsrep_node_name }}"
 wsrep_node_address="{{ wsrep_node_address }}"
 wsrep_provider=/usr/lib/libgalera_smm.so
+wsrep_provider_options="pc.recovery=TRUE;gcache.size=300M"
 binlog_format=ROW
 """

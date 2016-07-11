@@ -7,6 +7,7 @@ class MysqlManage(common.Common):
 
     def _start_wsrep_new_cluster(self):
         if self._release() == 'xenial':
+            sudo('systemctl mysql stop', warn_only=True)
             result = sudo('service mysql bootstrap', warn_only=True)
             if result.failed:
                 sudo('systemctl start mysql')
@@ -15,9 +16,9 @@ class MysqlManage(common.Common):
 
     def _start_mysql(self):     
         if self._release() == 'xenial':
-            sudo('systemctl start mysql')
+            sudo('systemctl restart mysql')
         else:
-            sudo('service mysql start')
+            sudo('service mysql restart')
 
     def _stop_mysql(self):
         if self._release() == 'xenial':
