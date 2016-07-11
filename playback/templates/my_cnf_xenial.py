@@ -12,4 +12,5 @@ wsrep_cluster_address="{{ wsrep_cluster_address }}"
 wsrep_node_name="{{ wsrep_node_name }}"
 wsrep_node_address="{{ wsrep_node_address }}"
 wsrep_provider=/usr/lib/libgalera_smm.so
+binlog_format=ROW
 """
