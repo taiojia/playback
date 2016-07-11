@@ -6,10 +6,10 @@ max_connections = 4096
 collation-server = utf8_general_ci
 character-set-server = utf8
 
-# DEPRECATED MariaDB Galera Cluster in Xenial
-#wsrep_cluster_name="galera_cluster"
-#wsrep_cluster_address="{{ wsrep_cluster_address }}"
-#wsrep_node_name="{{ wsrep_node_name }}"
-#wsrep_node_address="{{ wsrep_node_address }}"
-#wsrep_provider=/usr/lib/libgalera_smm.so
+# MariaDB Galera Cluster in Xenial
+wsrep_cluster_name="galera_cluster"
+wsrep_cluster_address="{{ wsrep_cluster_address }}"
+wsrep_node_name="{{ wsrep_node_name }}"
+wsrep_node_address="{{ wsrep_node_address }}"
+wsrep_provider=/usr/lib/libgalera_smm.so
 """

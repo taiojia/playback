@@ -23,7 +23,7 @@ class MysqlConfig(common.Common):
                                 use_jinja=True, use_sudo=True, backup=True)
         if self._release() == "xenial":
             files.upload_template(filename='tmp_my_cnf_'+env.host_string, 
-                                destination='/etc/mysql/mariadb.conf.d/openstack.cnf', 
+                                destination='/etc/mysql/conf.d/openstack.cnf', 
                                 context={'wsrep_cluster_address': wsrep_cluster_address, 
                                         'wsrep_node_name': wsrep_node_name, 
                                         'wsrep_node_address': wsrep_node_address}, 
