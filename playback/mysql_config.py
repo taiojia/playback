@@ -3,6 +3,7 @@ from fabric.contrib import files
 import os
 from playback.templates.my_cnf import conf_my_cnf
 from playback.templates.my_cnf_xenial import conf_my_cnf_xenial
+from playback.templates.debian_cnf import conf_debian_cnf
 from playback import common
 
 
@@ -28,6 +29,12 @@ class MysqlConfig(common.Common):
                                         'wsrep_node_name': wsrep_node_name, 
                                         'wsrep_node_address': wsrep_node_address}, 
                                 use_jinja=True, use_sudo=True, backup=True)
+            with open('tmp_debian_cnf_'+env.host_string, 'w') as f:
+                f.write(conf_debian_cnf)
+            files.upload_template(filename='tmp_debian_cnf_'+env.host_string,
+                                    destination='/etc/mysql/debian.cnf',
+                                    use_sudo=True,
+                                    backup=False)
         try:
             os.remove('tmp_my_cnf_'+env.host_string)
         except Exception:
