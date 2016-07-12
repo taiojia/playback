@@ -26,8 +26,8 @@ class PrepareHost(common.Common):
 
     def setup_ntp(self):
         """network time protocal (ntp)"""
-        sudo('echo \'Asia/Shanghai\' > /etc/timezone')
-        sudo('cat /usr/share/zoneinfo/Asia/Shanghai | tee /etc/localtime')
+        sudo('echo \'Asia/Shanghai\' | sudo tee /etc/timezone')
+        sudo('cat /usr/share/zoneinfo/Asia/Shanghai | sudo tee /etc/localtime')
         sudo('apt-get update')
         sudo('apt-get install chrony -y')
         # TODO: setup ntp server and ntp client, current all are clients
