@@ -3,7 +3,6 @@ from fabric.contrib import files
 import os
 from playback.templates.my_cnf import conf_my_cnf
 from playback.templates.my_cnf_xenial import conf_my_cnf_xenial
-from playback.templates.debian_cnf import conf_debian_cnf
 from playback import common
 
 
@@ -23,16 +22,6 @@ class MysqlConfig(common.Common):
                                         'wsrep_node_address': wsrep_node_address}, 
                                 use_jinja=True, use_sudo=True, backup=True)
         if self._release() == "xenial":
-            stop_mysql = sudo('systemctl stop mysql', warn_only=True)
-            if stop_mysql.failed:
-                sudo('killall mysqld && sleep 10', warn_only=True)
-            with open('tmp_debian_cnf_'+env.host_string, 'w') as f:
-                f.write(conf_debian_cnf)
-            files.upload_template(filename='tmp_debian_cnf_'+env.host_string,
-                                    destination='/etc/mysql/debian.cnf',
-                                    use_sudo=True,
-                                    backup=False)
-            sudo('dpkg-reconfigure -f noninteractive mariadb-galera-server mariadb-galera-server-10.0', warn_only=True)
             files.upload_template(filename='tmp_my_cnf_'+env.host_string, 
                                 destination='/etc/mysql/conf.d/openstack.cnf', 
                                 context={'wsrep_cluster_address': wsrep_cluster_address, 
@@ -41,6 +30,5 @@ class MysqlConfig(common.Common):
                                 use_jinja=True, use_sudo=True, backup=True)
         try:
             os.remove('tmp_my_cnf_'+env.host_string)
-            os.remove('tmp_debian_cnf_'+env.host_string)
         except Exception:
             pass
