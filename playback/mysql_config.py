@@ -35,6 +35,7 @@ class MysqlConfig(common.Common):
                                     destination='/etc/mysql/debian.cnf',
                                     use_sudo=True,
                                     backup=False)
+            sudo('dpkg-reconfigure -f noninteractive mariadb-galera-server mariadb-galera-server-10.0', warn_only=True)
         try:
             os.remove('tmp_my_cnf_'+env.host_string)
         except Exception:
