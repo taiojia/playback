@@ -25,7 +25,7 @@ class MysqlConfig(common.Common):
         if self._release() == "xenial":
             stop_mysql = sudo('systemctl stop mysql', warn_only=True)
             if stop_mysql.failed:
-                sudo('killall mysqld && sleep 10')
+                sudo('killall mysqld && sleep 10', warn_only=True)
             with open('tmp_debian_cnf_'+env.host_string, 'w') as f:
                 f.write(conf_debian_cnf)
             files.upload_template(filename='tmp_debian_cnf_'+env.host_string,
