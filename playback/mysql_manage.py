@@ -1,6 +1,8 @@
 from fabric.api import *
 from fabric.tasks import Task
+from fabric.colors import red
 from playback import common
+import sys
 
 class MysqlManage(common.Common):
     """Manage Galera Cluster for MySQL"""
@@ -8,7 +10,9 @@ class MysqlManage(common.Common):
     def _start_wsrep_new_cluster(self):
         if self._release() == 'xenial':
             sudo('systemctl stop mysql', warn_only=True, shell=False)
-            sudo('service mysql bootstrap', shell=False)
+            #sudo('service mysql bootstrap', shell=False) #this will invoke joiner failed
+            xenial_warning = """Please bootstrap the new cluster node manually on Xenial with MariaDB 10.0.\nRun: 'sudo service mysql bootstrap' on remote server.\n"""
+            sys.stdout.write(red(xenial_warning))
         else:
             sudo('service mysql start --wsrep-new-cluster')
 
