@@ -23,7 +23,9 @@ class MysqlConfig(common.Common):
                                         'wsrep_node_address': wsrep_node_address}, 
                                 use_jinja=True, use_sudo=True, backup=True)
         if self._release() == "xenial":
-            sudo('systemctl stop mysql', warn_only=True)
+            stop_mysql = sudo('systemctl stop mysql', warn_only=True)
+            if stop_mysql.failed:
+                sudo('killall mysqld && sleep 10')
             with open('tmp_debian_cnf_'+env.host_string, 'w') as f:
                 f.write(conf_debian_cnf)
             files.upload_template(filename='tmp_debian_cnf_'+env.host_string,
