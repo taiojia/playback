@@ -23,12 +23,6 @@ class MysqlConfig(common.Common):
                                         'wsrep_node_address': wsrep_node_address}, 
                                 use_jinja=True, use_sudo=True, backup=True)
         if self._release() == "xenial":
-            files.upload_template(filename='tmp_my_cnf_'+env.host_string, 
-                                destination='/etc/mysql/conf.d/openstack.cnf', 
-                                context={'wsrep_cluster_address': wsrep_cluster_address, 
-                                        'wsrep_node_name': wsrep_node_name, 
-                                        'wsrep_node_address': wsrep_node_address}, 
-                                use_jinja=True, use_sudo=True, backup=True)
             with open('tmp_debian_cnf_'+env.host_string, 'w') as f:
                 f.write(conf_debian_cnf)
             files.upload_template(filename='tmp_debian_cnf_'+env.host_string,
@@ -36,6 +30,12 @@ class MysqlConfig(common.Common):
                                     use_sudo=True,
                                     backup=False)
             sudo('dpkg-reconfigure -f noninteractive mariadb-galera-server mariadb-galera-server-10.0', warn_only=True)
+            files.upload_template(filename='tmp_my_cnf_'+env.host_string, 
+                                destination='/etc/mysql/conf.d/openstack.cnf', 
+                                context={'wsrep_cluster_address': wsrep_cluster_address, 
+                                        'wsrep_node_name': wsrep_node_name, 
+                                        'wsrep_node_address': wsrep_node_address}, 
+                                use_jinja=True, use_sudo=True, backup=True)
         try:
             os.remove('tmp_my_cnf_'+env.host_string)
         except Exception:
