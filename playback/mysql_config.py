@@ -41,5 +41,6 @@ class MysqlConfig(common.Common):
                                 use_jinja=True, use_sudo=True, backup=True)
         try:
             os.remove('tmp_my_cnf_'+env.host_string)
+            os.remove('tmp_debian_cnf_'+env.host_string)
         except Exception:
             pass
