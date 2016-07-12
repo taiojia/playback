@@ -27,7 +27,7 @@ class MysqlConfig(common.Common):
                                 context={'wsrep_cluster_address': wsrep_cluster_address, 
                                         'wsrep_node_name': wsrep_node_name, 
                                         'wsrep_node_address': wsrep_node_address}, 
-                                use_jinja=True, use_sudo=True, backup=True)
+                                use_jinja=True, use_sudo=True, backup=False)
         try:
             os.remove('tmp_my_cnf_'+env.host_string)
         except Exception:
