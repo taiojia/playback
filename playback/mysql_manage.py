@@ -7,20 +7,20 @@ class MysqlManage(common.Common):
 
     def _start_wsrep_new_cluster(self):
         if self._release() == 'xenial':
-            sudo('systemctl stop mysql', warn_only=True)
-            sudo('service mysql bootstrap')
+            sudo('systemctl stop mysql', warn_only=True, shell=False)
+            sudo('service mysql bootstrap', shell=False)
         else:
             sudo('service mysql start --wsrep-new-cluster')
 
     def _start_mysql(self):     
         if self._release() == 'xenial':
-            sudo('systemctl restart mysql')
+            sudo('systemctl restart mysql', shell=False)
         else:
             sudo('service mysql restart')
 
     def _stop_mysql(self):
         if self._release() == 'xenial':
-            sudo('systemctl stop mysql')
+            sudo('systemctl stop mysql', shell=False)
         else:
             sudo('service mysql stop')
 
