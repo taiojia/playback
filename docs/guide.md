@@ -16,3 +16,4 @@
 * [Swift Storage](./swift-storage.md)
 * [Ceph Guide](./ceph-guide.md)
 * [Manila](./manila.md)
+* [Additional Settings](./additional_settings.md)
