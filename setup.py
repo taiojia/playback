@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 #
-# Copyright (c) 2015 Taio Jia (jiasir) <taio@outlook.com>
+# Copyright (c) 2015-2016 Taio Jia (jiasir) <jiasir@icloud.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,7 @@ def read(fname):
 
 setup(name='playback',
     version=__version__,
-    description='OpenStack orchestration tool',
+    description='OpenStack provision tools',
     long_description=read('README.md'),
     author=__author__,
     author_email='jiasir@icloud.com',
