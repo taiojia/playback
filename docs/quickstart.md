@@ -7,7 +7,7 @@
 * We assume that you have ceph installed, the cinder bachend default using ceph, the running instace default to using ceph as it's local storage. About ceph please visit: http://docs.ceph.com/docs/master/rbd/rbd-openstack/ or see the (Option)Ceph Guide below.
 * The playback node is the same as ceph-deploy node where can be login to each openstack node passwordless and sudo-passwordless
 * The playback node default using ~/.ssh/id_rsa ssh private key to logon remote server
-* You need to restart the `nova-compute`, `cinder-volume` and `glance-api` services if you have selected the ceph as that backend
+* You need to restart the `nova-compute`, `cinder-volume` and `glance-api` services to finalize the installation if you have selected the ceph as that backend
 * Playback support consistency groups for future use but the default LVM and Ceph driver does not support consistency groups yet because the consistency technology is not available at that storage level
 
 ## Install Playback
@@ -56,6 +56,11 @@ Start the cluster
     mysql-deploy --user ubuntu --hosts CONTROLLER2 manage --start
     mysql-deploy --user ubuntu --hosts CONTROLLER1 manage --change-root-password changeme
 
+Show the cluster status
+
+    mysql-deploy --user ubuntu --hosts CONTROLLER1 manage --show-cluster-status --root-db-pass changeme
+
+
 ## HAProxy HA
 
 Deploy to HAPROXY1
@@ -82,7 +87,7 @@ Deploy to CONTROLLER1 and CONTROLLER2
 
     rabbitmq-deploy --user ubuntu --hosts CONTROLLER1,CONTROLLER2 install --erlang-cookie changemechangeme --rabbit-user openstack --rabbit-pass changeme
 
-Create cluster
+Create cluster(Ensure CONTROLLER2 can access CONTROLLER1 via hostname)
 
     rabbitmq-deploy --user ubuntu --hosts CONTROLLER2 join-cluster --name rabbit@CONTROLLER1
 
@@ -303,7 +308,10 @@ Finalize installation on all nodes
 For more information about ceph backend visit:
 
 [preflight](http://docs.ceph.com/docs/jewel/start/quick-start-preflight/)
+
 [Cinder and Glance driver](http://docs.ceph.com/docs/jewel/rbd/rbd-openstack/)
+
+On Xenial please using ceph-deploy version 1.5.34
 
 Install ceph-deploy(1.5.34)
 
@@ -321,7 +329,7 @@ Create cluster and add initial monitor(s) to the ceph.conf
     ceph-deploy new  CONTROLLER1 CONTROLLER2 COMPUTE1 COMPUTE2 BLOCK1 BLOCK2
     echo "osd pool default size = 2" | tee -a ceph.conf
 
-Install ceph client(Optionaly you can use `--release jewel` to install jewel version, the ceph-deploy 1.5.34 default release is jewel)
+Install ceph client(Optionaly you can use `--release jewel` to install jewel version, the ceph-deploy 1.5.34 default release is jewel) and you can use `--repo-url http://your-local-repo.example.org/mirror/download.ceph.com/debian-jewel` to specify the local repository.
 
     ceph-deploy install PLAYBACK-NODE CONTROLLER1 CONTROLLER2 COMPUTE1 COMPUTE2 BLOCK1 BLOCK2
 
@@ -343,7 +351,7 @@ Add ceph osd(s)
 Sync admin key
 
     ceph-deploy admin PLAYBACK-NODE CONTROLLER1 CONTROLLER2 COMPUTE1 COMPUTE2 BLOCK1 BLOCK2
-    ssh {ceph-client-node} "sudo chmod +r /etc/ceph/ceph.client.admin.keyring"
+    sudo chmod +r /etc/ceph/ceph.client.admin.keyring # On all ceph clients node
 
 Create osd pool for cinder and running instance
 
@@ -358,26 +366,27 @@ Setup ceph client authentication
 
 Add the keyrings for `client.cinder` and `client.glance` to appropriate nodes and change their ownership
 
-    ssh {CINDER-VOLUME-NODE} "ceph auth get-or-create client.cinder | sudo tee /etc/ceph/ceph.client.cinder.keyring"
-    ssh {CINDER-VOLUME-NODE} "sudo chown cinder:cinder /etc/ceph/ceph.client.cinder.keyring"
+    ceph auth get-or-create client.cinder | sudo tee /etc/ceph/ceph.client.cinder.keyring # On all cinder-volume nodes
+    sudo chown cinder:cinder /etc/ceph/ceph.client.cinder.keyring" # On all cinder-volume nodes
 
-    ssh {GLANCE-API-NODE} "ceph auth get-or-create client.glance | sudo tee /etc/ceph/ceph.client.glance.keyring"
-    ssh {GLANCE-API-NODE} "sudo chown glance:glance /etc/ceph/ceph.client.glance.keyring"
+    ceph auth get-or-create client.glance | sudo tee /etc/ceph/ceph.client.glance.keyring # On all glance-api nodes
+    sudo chown glance:glance /etc/ceph/ceph.client.glance.keyring" # On all glance-api nodes
 
 Nodes running `nova-compute` need the keyring file for the `nova-compute` process
 
-    ssh {COMPUTE-NODE} "ceph auth get-or-create client.cinder | sudo tee /etc/ceph/ceph.client.cinder.keyring"
+    ceph auth get-or-create client.cinder | sudo tee /etc/ceph/ceph.client.cinder.keyring # On all nova-compute nodes
 
 They also need to store the secret key of the `client.cinder user` in `libvirt`. The libvirt process needs it to access the cluster while attaching a block device from Cinder.
 Create a temporary copy of the secret key on the nodes running `nova-compute`
 
-    ssh {COMPUTE-NODE} "ceph auth get-key client.cinder | tee client.cinder.key"
+    ceph auth get-key client.cinder | tee client.cinder.key # On all nova-compute nodes
 
 Then, on the `compute nodes`, add the secret key to `libvirt` and remove the temporary copy of the key(the uuid is the same as your --rbd-secret-uuid option, you have to save the uuid for later)
 
     uuidgen
     457eb676-33da-42ec-9a8c-9293d545c337
 
+    # The following steps on all nova-compute nodes
     cat > secret.xml <<EOF
     <secret ephemeral='no' private='no'>
       <uuid>457eb676-33da-42ec-9a8c-9293d545c337</uuid>
@@ -390,7 +399,7 @@ Then, on the `compute nodes`, add the secret key to `libvirt` and remove the tem
     Secret 457eb676-33da-42ec-9a8c-9293d545c337 created
     sudo virsh secret-set-value --secret 457eb676-33da-42ec-9a8c-9293d545c337 --base64 $(cat client.cinder.key) && rm client.cinder.key secret.xml
 
-Now on every compute nodes edit your Ceph configuration file, add the client section
+(optional)Now on every compute nodes edit your Ceph configuration file, add the client section
 
     [client]
     rbd cache = true
@@ -400,25 +409,25 @@ Now on every compute nodes edit your Ceph configuration file, add the client sec
     [client.cinder]
     keyring = /etc/ceph/ceph.client.cinder.keyring
 
-On every glance-api nodes edit your Ceph configuration file, add the client section
+(optional)On every glance-api nodes edit your Ceph configuration file, add the client section
 
     [client.glance]
     keyring= /etc/ceph/ceph.client.glance.keyring
 
-If you want to remove osd
+(optional)If you want to remove osd
 
-    ssh {OSD-NODE} "sudo stop ceph-mon-all && sudo stop ceph-osd-all"
+    sudo stop ceph-mon-all && sudo stop ceph-osd-all # On osd node
     ceph osd out {OSD-NUM}
     ceph osd crush remove osd.{OSD-NUM}
     ceph auth del osd.{OSD-NUM}
     ceph osd rm {OSD-NUM}
     ceph osd crush remove {HOST}
 
-If you want to remove monitor
+(optional)If you want to remove monitor
 
     ceph mon remove {MON-ID}
 
-Notes: you need to restart the `nova-compute`, `cinder-volume` and `glance-api` services.
+Notes: you need to restart the `nova-compute`, `cinder-volume` and `glance-api` services to finalize the installation.
 
 ## Shared File Systems service
 

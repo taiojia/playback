@@ -11,4 +11,6 @@ Create the cluster, note that `controller2.maas` and `controller3.maas` can be a
     rabbitmq-deploy --user ubuntu --hosts controller2.maas join-cluster --name rabbit@controller1
     rabbitmq-deploy --user ubuntu --hosts controller3.maas join-cluster --name rabbit@controller1
 
+Ensure controller2.maas and controller3.maas can access controller1 via hostname.
+
 Using `rabbitmq-deploy --help` to see the details.

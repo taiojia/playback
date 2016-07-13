@@ -4,11 +4,11 @@ HAProxy as the load balancer for OpenStack APIs and MySQL Master node. We are us
 
 ## Deploy HAProxy
 
-Deploy to HAPROXY1
+Deploy to haproxy1.maas
 
     haproxy-deploy --user ubuntu --hosts haproxy1.maas install
 
-Deploy to HAPROXY2
+Deploy to haproxy2.maas
 
     haproxy-deploy --user ubuntu --hosts haproxy2.maas install
 

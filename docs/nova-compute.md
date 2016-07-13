@@ -2,7 +2,7 @@
 
 ## Deploy Nova on compute nodes
 
-Add nova computes
+Add nova computes(use `uuidgen` to generate the ceph uuid)
 
     nova-compute-deploy --user ubuntu --hosts compute1.maas install --my-ip MANAGEMENT_IP --rabbit-hosts controller1.maas,controller2.maas,controller3.maas --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers controller1.maas:11211,controller2.maas:11211,controller3.maas:11211
     nova-compute-deploy --user ubuntu --hosts compute2.maas install --my-ip MANAGEMENT_IP --rabbit-hosts controller1.maas,controller2.maas,controller3.maas --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers controller1.maas:11211,controller2.maas:11211,controller3.maas:11211

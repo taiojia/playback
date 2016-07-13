@@ -36,4 +36,10 @@ Start the cluster.
     mysql-deploy --user ubuntu --hosts controller3.maas manage --start
     mysql-deploy --user ubuntu --hosts controller1.maas manage --change-root-password changeme
 
+Show the cluster status.
+
+    mysql-deploy --user ubuntu --hosts controller1.maas manage --show-cluster-status --root-db-pass changeme
+
+For more information about [testing cluster](http://galeracluster.com/documentation-webpages/testingcluster.html)
+
 Using `mysql-deploy --help` to see the details.
