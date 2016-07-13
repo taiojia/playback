@@ -1,6 +1,6 @@
 # Playback
 
-Playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed automation with high availability on Ubuntu based operating system.
+Playback is an OpenStack provisioning DevOps tool that all of the OpenStack components can be deployed automation with high availability on Ubuntu based operating system(Xenial and trusty).
 
 Playback provides the following tools to provision OpenStack:
 
@@ -24,7 +24,7 @@ Playback provides the following tools to provision OpenStack:
 
 ## Platform
 
-Playback command-line tool supporting the following platform:
+Playback command-line tools supporting the following platform:
 
 * Mac OS X
 * Linux
@@ -39,7 +39,7 @@ Playback command-line tool supporting the following platform:
 ## Release Notes
 
 * v0.3.4 (Ris)
-  * Support xenial
+  * Support OpenStack Mitaka on Xenial and Trusty
   * Support systemd
   * Support Shard File Systems service
   * Fix Live Migration error on xenial
