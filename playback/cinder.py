@@ -20,6 +20,9 @@ class Cinder(common.Common):
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'localhost' IDENTIFIED BY '{1}';\"".format(root_db_pass, cinder_db_pass), shell=False)
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, cinder_db_pass), shell=False)
 
+    def create_cinder_db(self, *args, **kwargs):
+        return execute(self._create_cinder_db, *args, **kwargs)
+
     @runs_once
     def _create_service_credentials(self, os_password, os_auth_url, cinder_pass, public_endpoint_v1, internal_endpoint_v1, admin_endpoint_v1, public_endpoint_v2, internal_endpoint_v2, admin_endpoint_v2):
         with shell_env(OS_PROJECT_DOMAIN_NAME='default',
@@ -45,6 +48,9 @@ class Cinder(common.Common):
             sudo('openstack endpoint create --region RegionOne volumev2 public {0}'.format(public_endpoint_v2))
             sudo('openstack endpoint create --region RegionOne volumev2 internal {0}'.format(internal_endpoint_v2))
             sudo('openstack endpoint create --region RegionOne volumev2 admin {0}'.format(admin_endpoint_v2))
+
+    def create_service_credentials(self, *args, **kwargs):
+        return execute(self._create_service_credentials, *args, **kwargs)
 
     def _install(self, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, cinder_pass, my_ip, glance_api_servers, rbd_secret_uuid, memcached_servers, populate=False):
         print red(env.host_string + ' | Install the cinder-api and cinder-volume')
@@ -94,6 +100,9 @@ class Cinder(common.Common):
         print red(env.host_string + ' | Remove the SQLite database file')
         sudo('rm -f /var/lib/cinder/cinder.sqlite')
 
+    def install(self, *args, **kwargs):
+        return execute(self._install, *args, **kwargs)
+
 def make_target(user, hosts, key_filename, password):
     try:
         target = Cinder(user, hosts, key_filename, password)
@@ -105,16 +114,18 @@ def make_target(user, hosts, key_filename, password):
     
 def create_cinder_db(user, hosts, key_filename, password, root_db_pass, cinder_db_pass):
     target = make_target(user, hosts, key_filename, password)
-    execute(target._create_cinder_db, root_db_pass, cinder_db_pass)
+    target.create_cinder_db(root_db_pass, cinder_db_pass)
 
 def create_service_credentials(user ,hosts, key_filename, password, os_password, os_auth_url, cinder_pass, public_endpoint_v1, internal_endpoint_v1, admin_endpoint_v1, public_endpoint_v2, internal_endpoint_v2, admin_endpoint_v2):
     target =make_target(user, hosts, key_filename, password)
-    execute(target._create_service_credentials, os_password, 
-            os_auth_url, cinder_pass, public_endpoint_v1, internal_endpoint_v1, admin_endpoint_v1, public_endpoint_v2, internal_endpoint_v2, admin_endpoint_v2)
+    target.create_service_credentials(os_password, 
+            os_auth_url, cinder_pass, public_endpoint_v1,
+            internal_endpoint_v1, admin_endpoint_v1, public_endpoint_v2,
+            internal_endpoint_v2, admin_endpoint_v2)
 
 def install(user, hosts, key_filename, password, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, cinder_pass, my_ip, glance_api_servers, rbd_secret_uuid, memcached_servers, populate):
     target = make_target(user, hosts, key_filename, password)
-    execute(target._install,
+    target.install(
             connection,
             rabbit_hosts,
             rabbit_user,

@@ -24,8 +24,8 @@ class PrepareHost(common.Common):
                                 })
         os.remove('tmp_public_interface_cfg_'+env.host_string)
     
-    def setup_external_interface(self, public_interface):
-        execute(self._setup_external_interface, public_interface)
+    def setup_external_interface(self, *args, **kwargs):
+        return execute(self._setup_external_interface, *args, **kwargs)
 
     def _setup_ntp(self):
         """network time protocal (ntp)"""
@@ -36,7 +36,7 @@ class PrepareHost(common.Common):
         # TODO: setup ntp server and ntp client, current all are clients
 
     def setup_ntp(self):
-        execute(self._setup_ntp)
+        return execute(self._setup_ntp)
 
     def _set_openstack_repository(self):
         """openstack packages"""      
@@ -59,4 +59,4 @@ class PrepareHost(common.Common):
             sudo('apt-get install python-openstackclient -y')
 
     def set_openstack_repository(self):
-        execute(self._set_openstack_repository)
+        return execute(self._set_openstack_repository)

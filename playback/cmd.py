@@ -7,5 +7,5 @@ class Cmd(common.Common):
     def _cmd(self, command_line):
         sudo(command_line, warn_only=True)
 
-    def cmd(self, command_line):
-        execute(self._cmd, command_line)
+    def cmd(self, *args, **kwargs):
+        return execute(self._cmd, *args, **kwargs)
