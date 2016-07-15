@@ -22,6 +22,9 @@ class Keystone(common.Common):
                                                                                                                                                             keystone_db_pass=keystone_db_pass), shell=False)
         sudo("mysql -uroot -p{root_db_pass} -e \"GRANT ALL PRIVILEGES ON keystone.* TO 'keystone\'@\'%\' IDENTIFIED BY \'{keystone_db_pass}';\"".format(root_db_pass=root_db_pass, 
                                                                                                                                                         keystone_db_pass=keystone_db_pass), shell=False)
+    def create_keystone_db(self, *args, **kwargs):
+        return execute(self._create_keystone_db, *args, **kwargs)
+
     def _install_keystone(self, admin_token, connection, memcached_servers, populate):
         # Disable the keystone service from starting automatically after installation
         sudo('echo "manual" > /etc/init/keystone.override')
@@ -83,6 +86,9 @@ class Keystone(common.Common):
         
         # Remove the SQLite database file
         sudo('rm -f /var/lib/keystone/keystone.db')
+    
+    def install_keystone(self, *args, **kwargs):
+        return execute(self._install_keystone, *args, **kwargs)
 
     # Create the service entity and API endpoints
     @runs_once
@@ -98,6 +104,9 @@ class Keystone(common.Common):
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} endpoint create --region RegionOne identity admin {admin_endpoint}'.format(os_token=os_token, 
                                                                                                                                                                             os_url=os_url, 
                                                                                                                                                                             admin_endpoint=admin_endpoint))
+
+    def create_entity_and_endpoint(self, *args, **kwargs):
+        return execute(self._create_entity_and_endpoint, *args, **kwargs)
 
     # Create projects, users, and roles
     @runs_once
@@ -135,6 +144,9 @@ class Keystone(common.Common):
         # Add the user role to the demo project and user
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} role add --project demo --user demo user'.format(os_token=os_token,
                                                                                                                                              os_url=os_url))
+    def create_projects_users_roles(self, *args, **kwargs):
+        return execute(self._create_projects_users_roles, *args, **kwargs)
+
     def _update_keystone_paste_ini(self):
         """remove admin_token_auth from the [pipeline:public_api], 
         [pipeline:admin_api], and [pipeline:api_v3] sections"""
@@ -145,6 +157,9 @@ class Keystone(common.Common):
                               use_sudo=True,
                               backup=True)
         os.remove('tmp_keystone_paste_ini_'+env.host_string)
+
+    def update_keystone_paste_ini(self, *args, **kwargs):
+        return execute(self._update_keystone_paste_ini, *args, **kwargs)
 
 def make_target(args):
     try:
@@ -158,13 +173,13 @@ def make_target(args):
 
 def create_keystone_db(args):
     target = make_target(args)
-    execute(target._create_keystone_db, 
+    target.create_keystone_db(
             args.root_db_pass, 
             args.keystone_db_pass)
 
 def install(args):
     target = make_target(args)
-    execute(target._install_keystone, 
+    target.install_keystone(
             args.admin_token, 
             args.connection, 
             args.memcached_servers,
@@ -172,7 +187,7 @@ def install(args):
 
 def create_entity_and_endpoint(args):
     target = make_target(args)
-    execute(target._create_entity_and_endpoint, 
+    target.create_entity_and_endpoint(
         args.os_token,
         args.os_url,
         args.public_endpoint,
@@ -181,12 +196,12 @@ def create_entity_and_endpoint(args):
 
 def create_projects_users_roles(args):
     target = make_target(args)
-    execute(target._create_projects_users_roles,
+    target.create_projects_users_roles(
         args.os_token,
         args.os_url,
         args.admin_pass,
         args.demo_pass)
-    execute(target._update_keystone_paste_ini)
+    target.update_keystone_paste_ini()
 
 def create_keystone_db_subparser(s):
     create_keystone_db_parser = s.add_parser('create-keystone-db', help='create the keystone database', )
