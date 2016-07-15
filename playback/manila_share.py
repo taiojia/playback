@@ -11,7 +11,7 @@ from playback.templates.manila_conf_for_share import conf_manila_conf
 
 class ManilaShare(common.Common):
 
-    def _install_manila(self, connection, auth_uri, auth_url, manila_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_user, rabbit_pass, neutron_endpoint, neutron_pass, nova_pass, cinder_pass):
+    def _install_manila_share(self, connection, auth_uri, auth_url, manila_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_user, rabbit_pass, neutron_endpoint, neutron_pass, nova_pass, cinder_pass):
         sys.stdout.write(red(env.host_string + ' | Install manila-share python-pymysql and neutron-plugin-linuxbridge-agent\n'))
         sudo('apt update')
         sudo('apt install manila-api manila-share python-pymysql neutron-plugin-linuxbridge-agent -y')
@@ -46,7 +46,8 @@ class ManilaShare(common.Common):
         if finalize.failed or self._release == 'trusty':
             sudo('service manila-share restart')
 
-
+    def install_manila_share(self, *args, **kwargs):
+        return execute(self._install_manila_share, *args, **kwargs)
 
 def install_subparser(s):
     install_parser = s.add_parser('install',help='install manila share node')
@@ -128,7 +129,7 @@ def make_target(args):
 
 def install(args):
     target = make_target(args)
-    execute(target._install_manila,
+    target.install_manila_share(
             args.connection,
             args.auth_uri,
             args.auth_url,

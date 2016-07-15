@@ -18,6 +18,9 @@ class Manila(common.Common):
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON manila.* TO 'manila'@'localhost' IDENTIFIED BY '{1}';\"".format(root_db_pass, manila_db_pass), shell=False)
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON manila.* TO 'manila'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, manila_db_pass), shell=False)
 
+    def create_manila_db(self, *args, **kwargs):
+        return execute(self._create_manila_db, *args, **kwargs)
+
     @runs_once
     def _create_service_credentials(self, os_password, os_auth_url, manila_pass, public_endpoint_v1, internal_endpoint_v1, admin_endpoint_v1, public_endpoint_v2, internal_endpoint_v2, admin_endpoint_v2):
         with shell_env(OS_PROJECT_DOMAIN_NAME='default',
@@ -44,6 +47,9 @@ class Manila(common.Common):
             sudo('openstack endpoint create --region RegionOne sharev2 public {0}'.format(public_endpoint_v2))
             sudo('openstack endpoint create --region RegionOne sharev2 internal {0}'.format(internal_endpoint_v2))
             sudo('openstack endpoint create --region RegionOne sharev2 admin {0}'.format(admin_endpoint_v2))
+
+    def create_service_credentials(self, *args, **kwargs):
+        return execute(self._create_service_credentials, *args, **kwargs)
 
     def _install_manila(self, connection, auth_uri, auth_url, manila_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_user, rabbit_pass, populate):
         sys.stdout.write(red(env.host_string + ' | Install manila-api manila-scheduler python-manilaclient\n'))
@@ -81,8 +87,8 @@ class Manila(common.Common):
             sudo('service manila-scheduler restart')
             sudo('service manila-api restart')
 
-
-
+    def install_manila(self, *args, **kwargs):
+        return execute(self._install_manila, *args, **kwargs)
 
 def create_manila_db_subparser(s):
     create_manila_db_parser = s.add_parser('create-manila-db', help='create manila database')
@@ -211,11 +217,11 @@ def make_target(args):
 
 def create_manila_db(args):
     target = make_target(args)
-    execute(target._create_manila_db, args.root_db_pass, args.manila_db_pass)
+    target.create_manila_db(args.root_db_pass, args.manila_db_pass)
 
 def create_service_credentials(args):
     target = make_target(args)
-    execute(target._create_service_credentials,
+    target.create_service_credentials(
             args.os_password,
             args.os_auth_url,
             args.manila_pass,
@@ -228,7 +234,7 @@ def create_service_credentials(args):
 
 def install(args):
     target = make_target(args)
-    execute(target._install_manila,
+    target.install_manila(
             args.connection,
             args.auth_uri,
             args.auth_url,
