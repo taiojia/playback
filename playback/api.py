@@ -16,3 +16,5 @@ from playback.nova_compute import NovaCompute
 from playback.rabbitmq import RabbitMq
 from playback.swift import Swift
 from playback.swift_storage import SwiftStorage
+from playback.manila import Manila
+from playback.manila_share import ManilaShare
