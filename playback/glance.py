@@ -21,6 +21,9 @@ class Glance(common.Common):
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'localhost' IDENTIFIED BY '{1}';\"".format(root_db_pass, glance_db_pass), shell=False)
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, glance_db_pass), shell=False)
 
+    def create_glance_db(self, *args, **kwargs):
+        execute(self._create_glance_db, *args, **kwargs)
+
     @runs_once
     def _create_service_credentials(self, os_password, os_auth_url, glance_pass, public_endpoint, internal_endpoint, admin_endpoint):
         with shell_env(OS_PROJECT_DOMAIN_NAME='default',
@@ -42,6 +45,9 @@ class Glance(common.Common):
             sudo('openstack endpoint create --region RegionOne image public {0}'.format(public_endpoint))
             sudo('openstack endpoint create --region RegionOne image internal {0}'.format(internal_endpoint))
             sudo('openstack endpoint create --region RegionOne image admin {0}'.format(admin_endpoint))
+
+    def create_service_credentials(self, *args, **kwargs):
+        execute(self._create_service_credentials, *args, **kwargs)
 
     def _install_glance(self, connection, auth_uri, auth_url, glance_pass, swift_store_auth_address, memcached_servers, populate):
         print red(env.host_string + ' | Install glance')
@@ -94,6 +100,9 @@ class Glance(common.Common):
         print red(env.host_string + ' | Remove the SQLite database file')
         sudo('rm -f /var/lib/glance/glance.sqlite')
 
+    def install_glance(self, *args, **kwargs):
+        execute(self._install_glance, *args, **kwargs)
+
 def make_target(user, hosts, key_filename, password):
     """
     The deployment instance
@@ -111,13 +120,13 @@ def make_target(user, hosts, key_filename, password):
 
 def create_glance_db(args):
     target = make_target(args.user, args.hosts.split(','), args.key_filename, args.password)
-    execute(target._create_glance_db, 
+    target.create_glance_db(
             args.root_db_pass, 
             args.glance_db_pass)
 
 def create_service_credentials(args):
     target = make_target(args.user, args.hosts.split(','), args.key_filename, args.password)
-    execute(target._create_service_credentials, 
+    target.create_service_credentials(
             args.os_password, 
             args.os_auth_url, 
             args.glance_pass, 
@@ -127,7 +136,7 @@ def create_service_credentials(args):
 
 def install(args):
     target = make_target(args.user, args.hosts.split(','), args.key_filename, args.password)
-    execute(target._install_glance, 
+    target.install_glance(
             args.connection, 
             args.auth_uri, 
             args.auth_url, 
