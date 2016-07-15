@@ -23,6 +23,9 @@ class Nova(common.Common):
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'localhost' IDENTIFIED BY '{1}';\"".format(root_db_pass, nova_db_pass), shell=False)
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, nova_db_pass), shell=False)
 
+    def create_nova_db(self, *args, **kwargs):
+        return execute(self._create_nova_db, *args, **kwargs)
+
     @runs_once
     def _create_service_credentials(self, os_password, os_auth_url, nova_pass, public_endpoint, internal_endpoint, admin_endpoint):
         with shell_env(OS_PROJECT_DOMAIN_NAME='default',
@@ -44,6 +47,9 @@ class Nova(common.Common):
             sudo('openstack endpoint create --region RegionOne compute public {0}'.format(public_endpoint))
             sudo('openstack endpoint create --region RegionOne compute internal {0}'.format(internal_endpoint))
             sudo('openstack endpoint create --region RegionOne compute admin {0}'.format(admin_endpoint))
+
+    def create_service_credentials(self, *args, **kwargs):
+        return execute(self._create_service_credentials, *args, **kwargs)
 
     def _install_nova(self, connection, api_connection, auth_uri, auth_url, nova_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_user, rabbit_pass, glance_api_servers, neutron_endpoint, neutron_pass, metadata_proxy_shared_secret, populate):
         print red(env.host_string + ' | Install nova-api nova-cert nova-conductor nova-consoleauth nova-novncproxy nova-scheduler')
@@ -94,6 +100,9 @@ class Nova(common.Common):
          
         print red(env.host_string + ' | Remove the SQLite database file')
         sudo('rm -f /var/lib/nova/nova.sqlite')
+
+    def install_nova(self, *args, **kwargs):
+        return execute(self._install_nova, *args, **kwargs)
 
 def create_nova_db_subparser(s):
     create_nova_db_parser = s.add_parser('create-nova-db',
@@ -233,16 +242,18 @@ def make_target(args):
     
 def create_nova_db(args):
     target = make_target(args)
-    execute(target._create_nova_db, args.root_db_pass, args.nova_db_pass)
+    target.create_nova_db(args.root_db_pass, args.nova_db_pass)
 
 def create_service_credentials(args):
     target = make_target(args)
-    execute(target._create_service_credentials, args.os_password, 
-            args.os_auth_url, args.nova_pass, args.public_endpoint, args.internal_endpoint, args.admin_endpoint)
+    target.create_service_credentials(args.os_password, 
+            args.os_auth_url, args.nova_pass, 
+            args.public_endpoint, args.internal_endpoint, 
+            args.admin_endpoint)
 
 def install(args):
     target = make_target(args)
-    execute(target._install_nova, args.connection, args.api_connection, args.auth_uri, args.auth_url,
+    target.install_nova(args.connection, args.api_connection, args.auth_uri, args.auth_url,
             args.nova_pass, args.my_ip, args.memcached_servers, args.rabbit_hosts, args.rabbit_user, 
             args.rabbit_pass, args.glance_api_servers, args.neutron_endpoint, args.neutron_pass,
             args.metadata_proxy_shared_secret, args.populate)

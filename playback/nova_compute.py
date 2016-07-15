@@ -81,6 +81,9 @@ class NovaCompute(common.Common):
         os.remove('tmp_libvirtd_conf_' + env.host_string)
         sudo('service libvirt-bin restart')
 
+    def install(self, *args, **kwargs):
+        return execute(self._install, *args, **kwargs)
+
 def install_subparser(s):
     install_parser = s.add_parser('install', help='install nova compute')
     install_parser.add_argument('--my-ip',
@@ -160,7 +163,7 @@ def make_target(args):
         
 def install(args):
     target = make_target(args)
-    execute(target._install, args.my_ip, args.rabbit_hosts, args.rabbit_user, args.rabbit_pass,
+    target.install(args.my_ip, args.rabbit_hosts, args.rabbit_user, args.rabbit_pass,
             args.auth_uri, args.auth_url, args.nova_pass, args.novncproxy_base_url,
             args.glance_api_servers, args.neutron_endpoint, args.neutron_pass, args.rbd_secret_uuid, args.memcached_servers)
     
