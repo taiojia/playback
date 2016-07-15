@@ -30,6 +30,9 @@ class Horizon(common.Common):
                                        'time_zone': time_zone})
         os.remove('tmp_local_settings_py_' + env.host_string)
 
+    def install(self, *args, **kwargs):
+        return execute(self._install, *args, **kwargs)
+
 def install(args):
     try:
         target = Horizon(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
@@ -37,7 +40,7 @@ def install(args):
         sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
 
-    execute(target._install, 
+    target.install(
             args.openstack_host, 
             args.memcached_servers, 
             args.time_zone)
