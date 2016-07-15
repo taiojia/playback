@@ -30,6 +30,9 @@ class SwiftStorage(common.Common):
             files.append(fstab, '/dev/{0} /srv/node/{1} xfs noatime,nodiratime,nobarrier,logbufs=8 0 2'.format(disk,disk), use_sudo=True)
             sudo('mount /srv/node/{0}'.format(disk))
 
+    def prepare_disks(self, *args, **kwargs):
+        return execute(self._prepare_disks, *args, **kwargs)
+
     def _install(self, address, bind_ip):
         print red(env.host_string + ' | Install the supporting utility packages')
         sudo('apt-get update')
@@ -104,10 +107,16 @@ class SwiftStorage(common.Common):
         sudo('chown -R root:swift /var/cache/swift')
         sudo('chmod -R 755 /var/cache/swift')
 
+    def install(self, *args, **kwargs):
+        return execute(self._install, *args, **kwargs)
+
     @runs_once
     def _create_account_builder_file(self, partitions, replicas, moving):
         with cd('/etc/swift'):
             sudo('swift-ring-builder account.builder create {0} {1} {2}'.format(partitions, replicas, moving))
+
+    def create_account_builder_file(self, *args, **kwargs):
+        return execute(self._create_account_builder_file, *args, **kwargs)
 
     @runs_once
     def _account_builder_add(self, region, zone, ip, device, weight):
@@ -120,17 +129,25 @@ class SwiftStorage(common.Common):
             print red(env.host_string + ' | Verify the ring contents')
             sudo('swift-ring-builder account.builder')
              
+    def account_builder_add(self, *args, **kwargs):
+        return execute(self._account_builder_add, *args, **kwargs)
+
     @runs_once
     def _account_builder_rebalance(self):
         with cd('/etc/swift'):
             print red(env.host_string + ' | Rebalance the ring')
             sudo('swift-ring-builder account.builder rebalance')
 
+    def account_builder_rebalance(self):
+        return execute(self._account_builder_rebalance)
 
     @runs_once
     def _create_container_builder_file(self, partitions, replicas, moving):
         with cd('/etc/swift'):
             sudo('swift-ring-builder container.builder create {0} {1} {2}'.format(partitions, replicas, moving))
+
+    def create_container_builder_file(self, *args, **kwargs):
+        return execute(self._create_container_builder_file, *args, **kwargs)
 
     @runs_once
     def _container_builder_add(self, region, zone, ip, device, weight):
@@ -143,16 +160,25 @@ class SwiftStorage(common.Common):
             print red(env.host_string + ' | Verify the ring contents')
             sudo('swift-ring-builder container.builder')
             
+    def container_builder_add(self, *args, **kwargs):
+        return execute(self._container_builder_add, *args, **kwargs)
+
     @runs_once
     def _container_builder_rebalance(self):
         with cd('/etc/swift'):
             print red(env.host_string + ' | Rebalance the ring')
             sudo('swift-ring-builder container.builder rebalance')
 
+    def container_builder_rebalance(self):
+        return execute(self._container_builder_rebalance)
+
     @runs_once
     def _create_object_builder_file(self, partitions, replicas, moving):
         with cd('/etc/swift'):
             sudo('swift-ring-builder object.builder create {0} {1} {2}'.format(partitions, replicas, moving))
+
+    def create_object_builder_file(self, *args, **kwargs):
+        return execute(self._create_object_builder_file, *args, **kwargs)
 
     @runs_once
     def _object_builder_add(self, region, zone, ip, device, weight):
@@ -165,21 +191,33 @@ class SwiftStorage(common.Common):
             print red(env.host_string + ' | Verify the ring contents')
             sudo('swift-ring-builder object.builder')
 
+    def object_builder_add(self, *args, **kwargs):
+        return execute(self._object_builder_add, *args, **kwargs)
+
     @runs_once
     def _object_builder_rebalance(self):
         with cd('/etc/swift'):
             print red(env.host_string + ' | Rebalance the ring')
             sudo('swift-ring-builder object.builder rebalance')
     
+    def object_builder_rebalance(self):
+        return execute(self._object_builder_rebalance)
+
     def _get_builder_file(self):
         get('/etc/swift/account.ring.gz', './account.ring.gz')
         get('/etc/swift/container.ring.gz', './container.ring.gz')
         get('/etc/swift/object.ring.gz', './object.ring.gz')
 
+    def get_builder_file(self):
+        return execute(self._get_builder_file)
+
     def _sync_builder_file(self):
         put('./account.ring.gz', '/etc/swift/account.ring.gz', use_sudo=True)
         put('./container.ring.gz', '/etc/swift/container.ring.gz', use_sudo=True)
         put('./object.ring.gz', '/etc/swift/object.ring.gz', use_sudo=True)
+
+    def sync_builder_file(self):
+        return execute(self.sync_builder_file)
         
 def prepare_disks_subparser(s):
     prepare_disks_parser = s.add_parser('prepare-disks',
@@ -379,62 +417,62 @@ def make_target(args):
 
 def prepare_disks(args):
     target = make_target(args)
-    execute(target._prepare_disks, args.name)
+    target.prepare_disks(args.name)
 
 def install(args):
     target = make_target(args)
-    execute(target._install, args.address, args.bind_ip)
+    target.install(args.address, args.bind_ip)
 
 def create_account_builder_file(args):
     target = make_target(args)
-    execute(target._create_account_builder_file, args.partitions, args.replicas, args.moving)
+    target.create_account_builder_file(args.partitions, args.replicas, args.moving)
 
 def account_builder_add(args):
     target = make_target(args)
-    execute(target._account_builder_add, args.region, args.zone, 
+    target.account_builder_add(args.region, args.zone, 
             args.ip, args.device, args.weight)
 
 def create_container_builder_file(args):
     target = make_target(args)
-    execute(target._create_container_builder_file, args.partitions,
+    target.create_container_builder_file(args.partitions,
             args.replicas,
             args.moving)
 
 def container_builder_add(args):
     target = make_target(args)
-    execute(target._container_builder_add, args.region, 
+    target.container_builder_add(args.region, 
             args.zone, args.ip, 
             args.device, args.weight)
 
 def create_object_builder_file(args):
     target = make_target(args)
-    execute(target._create_object_builder_file, args.partitions,
+    target.create_object_builder_file(args.partitions,
             args.replicas, args.moving)
 
 def object_builder_add(args):
     target = make_target(args)
-    execute(target._object_builder_add, args.region, args.zone, 
+    target.object_builder_add(args.region, args.zone, 
             args.ip, args.device, args.weight)
 
 def sync_builder_file(args):
     target = make_target(args)
-    execute(target._get_builder_file)
-    execute(target._sync_builder_file, hosts=args.to.split(','))
+    target.get_builder_file()
+    target.sync_builder_file(hosts=args.to.split(','))
     os.remove('account.ring.gz')
     os.remove('container.ring.gz')
     os.remove('object.ring.gz')
 
 def account_builder_rebalance(args):
     target = make_target(args)
-    execute(target._account_builder_rebalance)
+    target.account_builder_rebalance()
 
 def container_builder_rebalance(args):
     target = make_target(args)
-    execute(target._container_builder_rebalance)
+    target.container_builder_rebalance()
 
 def object_builder_rebalance(args):
     target = make_target(args)
-    execute(target._object_builder_rebalance)
+    target.object_builder_rebalance()
 
 def parser():
     p = argparse.ArgumentParser(prog='swift-storage-deploy', description=cli_description+'this command used for provision Swift Storage')

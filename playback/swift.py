@@ -36,6 +36,9 @@ class Swift(common.Common):
             sudo('openstack endpoint create --region RegionOne object-store internal {0}'.format(internal_endpoint))
             sudo('openstack endpoint create --region RegionOne object-store admin {0}'.format(admin_endpoint))
 
+    def create_service_credentials(self, *args, **kwargs):
+        return execute(self._create_service_credentials, *args, **kwargs)
+
     def _install(self, auth_uri, auth_url, swift_pass, memcached_servers, with_memcached):
         print red(env.host_string + ' | Install swift proxy')
         sudo('apt-get update')
@@ -69,7 +72,8 @@ class Swift(common.Common):
                                        'memcached_servers': memcached_servers})
         os.remove('tmp_proxy_server_conf_' + env.host_string)
 
-
+    def install(self, *args, **kwargs):
+        return execute(self._install, *args, **kwargs)
 
     def _finalize_install(self, swift_hash_path_suffix, swift_hash_path_prefix):
         print red(env.host_string + ' | Update /etc/swift/swift.conf')
@@ -90,6 +94,9 @@ class Swift(common.Common):
         sudo('service swift-proxy restart', warn_only=True)
         print red(env.host_string + ' | On the storage nodes, start the Object Storage services')
         sudo('swift-init all start', warn_only=True)
+
+    def finalize_install(self, *args, **kwargs):
+        return execute(self._finalize_install, *args, **kwargs)
 
 def create_service_credentials_subparser(s):
     create_service_credentials_parser = s.add_parser('create-service-credentials', help='create the swift service credentials')
@@ -178,7 +185,7 @@ def make_target(args):
 
 def create_service_credentials(args):
     target = make_target(args)
-    execute(target._create_service_credentials,
+    target.create_service_credentials(
             args.os_password, 
             args.os_auth_url, 
             args.swift_pass, 
@@ -188,7 +195,7 @@ def create_service_credentials(args):
 
 def install(args):
     target = make_target(args)
-    execute(target._install,
+    target.install(
             args.auth_uri, 
             args.auth_url, 
             args.swift_pass, 
@@ -197,7 +204,7 @@ def install(args):
 
 def finalize_install(args):
     target = make_target(args)
-    execute(target._finalize_install,
+    target.finalize_install(
             args.swift_hash_path_suffix, 
             args.swift_hash_path_prefix)
                 
