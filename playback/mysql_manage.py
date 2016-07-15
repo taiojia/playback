@@ -16,11 +16,17 @@ class MysqlManage(common.Common):
         else:
             sudo('service mysql start --wsrep-new-cluster')
 
+    def start_wsrep_new_cluster(self):
+        return execute(self._start_wsrep_new_cluster)
+
     def _start_mysql(self):     
         if self._release() == 'xenial':
             sudo('systemctl restart mysql', shell=False)
         else:
             sudo('service mysql restart')
+
+    def start_mysql(self):
+        return execute(self._start_mysql)
 
     def _stop_mysql(self):
         if self._release() == 'xenial':
@@ -28,8 +34,17 @@ class MysqlManage(common.Common):
         else:
             sudo('service mysql stop')
 
+    def stop_mysql(self):
+        return execute(self._stop_mysql)
+
     def _change_root_password(self, pwd):
         sudo('mysqladmin -uroot password %s' % pwd)
 
+    def change_root_password(self, *args, **kwargs):
+        return execute(self._change_root_password, *args, **kwargs)
+
     def _show_cluster_status(self, root_db_pass):
         sudo("mysql -uroot -p{root_db_pass} -e \"SHOW STATUS LIKE 'wsrep_%';\"".format(root_db_pass=root_db_pass), shell=False)
+
+    def show_cluster_status(self, *args, **kwargs):
+        return execute(self._show_cluster_status, *args, **kwargs)

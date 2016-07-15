@@ -32,3 +32,6 @@ class MysqlConfig(common.Common):
             os.remove('tmp_my_cnf_'+env.host_string)
         except Exception:
             pass
+
+    def update_mysql_config(self, *args, **kwargs):
+        return execute(self._update_mysql_config, *args, **kwargs)

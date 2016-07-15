@@ -19,8 +19,14 @@ class MysqlInstallation(common.Common):
             files.append('galera.list', conf_galera_list, use_sudo=True)
             sudo('apt-get update')
     
+    def enable_repo(self):
+        return execute(self._enable_repo)
+    
     def _install(self):
         if self._release() == 'trusty':
             sudo('DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes galera-3 mysql-wsrep-5.6')
         if self._release() == 'xenial':
             sudo('DEBIAN_FRONTEND=noninteractive apt install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages mariadb-client mariadb-galera-server galera rsync')
+
+    def install(self):
+        return execute(self._install)

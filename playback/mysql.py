@@ -7,47 +7,47 @@ from playback.cli import cli_description
 from playback import __version__
 
 def install(args):
-    from playback import mysql_installation
+    from playback.api import MysqlInstallation
     try:
-        target = mysql_installation.MysqlInstallation(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
+        target = MysqlInstallation(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
     except AttributeError:
         err_hosts = red('No hosts found. Please using --hosts param.')
         sys.stderr.write(err_hosts)
         sys.exit(1)
-    execute(target._enable_repo)
-    execute(target._install)
+    target.enable_repo()
+    target.install()
 
 def config(args):
-    from playback import mysql_config
+    from playback.api import MysqlConfig
     try:
-        target = mysql_config.MysqlConfig(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
+        target = MysqlConfig(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
     except AttributeError:
         err_hosts = red('No hosts found. Please using --hosts param.')
         sys.stderr.write(err_hosts)
         sys.exit(1)
-    execute(target._update_mysql_config, args.wsrep_cluster_address, 
+    target.update_mysql_config(args.wsrep_cluster_address, 
             args.wsrep_node_name, args.wsrep_node_address)
 
 def manage(args):
-    from playback import mysql_manage
+    from playback.api import MysqlManage
     try:
-        target = mysql_manage.MysqlManage(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
+        target = MysqlManage(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
     except AttributeError:
         err_hosts = red('No hosts found. Please using --hosts param.')
         sys.stderr.write(err_hosts)
         sys.exit(1)
     if args.wsrep_new_cluster:
-        execute(target._start_wsrep_new_cluster)
+        target.start_wsrep_new_cluster()
     if args.start:
-        execute(target._start_mysql)
+        target.start_mysql()
     if args.stop:
-        execute(target._stop_mysql)
+        target.stop_mysql()
     if args.change_root_password:
-        execute(target._change_root_password, args.change_root_password)
+        target.change_root_password(args.change_root_password)
     if args.show_cluster_status:
         if args.root_db_pass == None:
             raise Exception('--root-db-pass is empty\n')
-        execute(target._show_cluster_status, args.root_db_pass)
+        target.show_cluster_status(args.root_db_pass)
 
 def install_subparser(s):
     install_parser = s.add_parser('install', help='install Galera Cluster for MySQL')
