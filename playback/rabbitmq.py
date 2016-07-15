@@ -22,11 +22,17 @@ class RabbitMq(common.Common):
         sudo('rabbitmqctl set_permissions %s ".*" ".*" ".*"' % rabbit_user)
         sudo('service rabbitmq-server restart')
 
+    def install(self, *args, **kwargs):
+        return execute(self._install, *args, **kwargs)
+
     def _join_cluster(self, name):
         sudo('rabbitmqctl stop_app')
         sudo('rabbitmqctl join_cluster %s' % name)
         sudo('rabbitmqctl start_app')
         sudo('rabbitmqctl set_policy ha-all \'^(?!amq\.).*\' \'{"ha-mode": "all"}\'')
+
+    def join_cluster(self, *args, **kwargs):
+        return execute(self._join_cluster, *args, **kwargs)
 
 def install_subparser(s):
     install_parser = s.add_parser('install', help='install RabbitMQ HA')
@@ -54,11 +60,11 @@ def make_target(args):
 
 def install(args):
     target = make_target(args)
-    execute(target._install, args.erlang_cookie, args.rabbit_user, args.rabbit_pass)
+    target.install(args.erlang_cookie, args.rabbit_user, args.rabbit_pass)
 
 def join_cluster(args):
     target = make_target(args)
-    execute(target._join_cluster, args.name)
+    target.join_cluster(args.name)
 
 def parser():
     p = argparse.ArgumentParser(prog='rabbitmq-deploy', description=cli_description+'this command used for provision RabbitMQ')
