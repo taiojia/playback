@@ -1,5 +1,8 @@
 # Release Notes
 
+* v0.3.5 (Ris)
+  Add API for Fastforward
+  
 * v0.3.4 (Ris)
   * Support xenial
   * Support systemd
@@ -52,7 +55,6 @@
   * Support provisions OpenStack Juno
   * Ansible as the backend
   * All configurations definded in one config file
-
 
 
 
