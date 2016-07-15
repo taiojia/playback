@@ -8,25 +8,25 @@ from playback import __version__
 from playback.templates.haproxy_cfg import conf_haproxy_cfg
 
 def install(args):
-    from playback import haproxy_install
+    from playback.api import HaproxyInstall
     try:
-        target = haproxy_install.HaproxyInstall(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
+        target = HaproxyInstall(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
     except AttributeError as e:
         sys.stderr.write(e.message)
         sys.exit(1)
-    execute(target._install)
+    target.install()
 
 def config(args):
-    from playback import haproxy_config
+    from playback.api import HaproxyConfig
     try:
-        target = haproxy_config.HaproxyConfig(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
+        target = HaproxyConfig(user=args.user, hosts=args.hosts.split(','), key_filename=args.key_filename, password=args.password)
     except AttributeError:
         sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
     if args.upload_conf:
-        execute(target._upload_conf, args.upload_conf)
+        target.upload_conf(args.upload_conf)
     if args.configure_keepalived:
-        execute(target._configure_keepalived, args.router_id, args.priority, 
+        target.configure_keepalived(args.router_id, args.priority, 
                 args.state, args.interface, args.vip)
 
 def gen_conf():
