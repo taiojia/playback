@@ -25,6 +25,9 @@ class Neutron(common.Common):
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'localhost' IDENTIFIED BY '{1}';\"".format(root_db_pass, neutron_db_pass), shell=False)
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, neutron_db_pass), shell=False)
 
+    def create_neutron_db(self, *args, **kwargs):
+        return execute(self._create_neutron_db, *args, **kwargs)
+
     @runs_once
     def _create_service_credentials(self, os_password, os_auth_url, neutron_pass, public_endpoint, internal_endpoint, admin_endpoint):
         with shell_env(OS_PROJECT_DOMAIN_NAME='default',
@@ -47,6 +50,9 @@ class Neutron(common.Common):
             sudo('openstack endpoint create --region RegionOne network internal {0}'.format(internal_endpoint))
             sudo('openstack endpoint create --region RegionOne network admin {0}'.format(admin_endpoint))
     
+    def create_service_credentials(self, *args, **kwargs):
+        return execute(self._create_service_credentials, *args, **kwargs)
+
     def _install_self_service(self, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, neutron_pass, nova_url, nova_pass, public_interface, local_ip, nova_metadata_ip, metadata_proxy_shared_secret, memcached_servers, populate):
         print red(env.host_string + ' | Install the components')
         sudo('apt-get update')
@@ -149,6 +155,9 @@ class Neutron(common.Common):
         sudo('service neutron-l3-agent restart')
         print red(env.host_string + ' | Remove the SQLite database file')
         sudo('rm -f /var/lib/neutron/neutron.sqlite', warn_only=True)
+
+    def install_self_service(self, *args, **kwargs):
+        return execute(self._install_self_service, *args, **kwargs)
 
 def create_neutron_db_subparser(s):
     create_neutron_db_parser = s.add_parser('create-neutron-db',
@@ -289,11 +298,11 @@ def make_target(args):
     
 def create_neutron_db(args):
     target = make_target(args)
-    execute(target._create_neutron_db, args.root_db_pass, args.neutron_db_pass)
+    target.create_neutron_db(args.root_db_pass, args.neutron_db_pass)
 
 def create_service_credentials(args):
     target = make_target(args)
-    execute(target._create_service_credentials,
+    target.create_service_credentials(
             args.os_password,
             args.os_auth_url,
             args.neutron_pass,
@@ -303,7 +312,7 @@ def create_service_credentials(args):
             
 def install(args):
     target = make_target(args)
-    execute(target._install_self_service,
+    target.install_self_service(
             args.connection, 
             args.rabbit_hosts, 
             args.rabbit_user, 

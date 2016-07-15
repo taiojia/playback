@@ -54,6 +54,9 @@ class NeutronAgent(common.Common):
         sudo('service nova-compute restart')
         sudo('service neutron-linuxbridge-agent restart')
 
+    def install(self, *args, **kwargs):
+        return execute(self._install, *args, **kwargs)
+
 def install_subparser(s):
     install_parser = s.add_parser('install', help='install neutron agent')
     install_parser.add_argument('--rabbit-hosts',
@@ -113,7 +116,7 @@ def make_target(args):
     
 def install(args):
     target = make_target(args)
-    execute(target._install, 
+    target.install(
             args.rabbit_hosts,
             args.rabbit_user,  
             args.rabbit_pass, 
