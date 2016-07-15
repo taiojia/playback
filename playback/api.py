@@ -1,4 +1,5 @@
-from fabric.tasks import execute
+from playback.cmd import Cmd
+from playback.prepare_host import PrepareHost
 from playback.keystone import Keystone
 from playback.cinder import Cinder
 from playback.glance import Glance

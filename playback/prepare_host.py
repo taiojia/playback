@@ -9,7 +9,7 @@ from playback import common
 class PrepareHost(common.Common):
     """Prepare OpenStack physical hosts"""
         
-    def setup_external_interface(self, public_interface):
+    def _setup_external_interface(self, public_interface):
         """host networking"""
         print red(env.host_string + ' | Setup public interface')
         with open('tmp_public_interface_cfg_'+env.host_string, 'w') as f:
@@ -23,8 +23,11 @@ class PrepareHost(common.Common):
                                     'public_interface': public_interface
                                 })
         os.remove('tmp_public_interface_cfg_'+env.host_string)
+    
+    def setup_external_interface(self, public_interface):
+        execute(self._setup_external_interface, public_interface)
 
-    def setup_ntp(self):
+    def _setup_ntp(self):
         """network time protocal (ntp)"""
         sudo('echo \'Asia/Shanghai\' | sudo tee /etc/timezone')
         sudo('cat /usr/share/zoneinfo/Asia/Shanghai | sudo tee /etc/localtime')
@@ -32,11 +35,10 @@ class PrepareHost(common.Common):
         sudo('apt-get install chrony -y')
         # TODO: setup ntp server and ntp client, current all are clients
 
-    def _release(self):
-        result = sudo('lsb_release -cs')
-        return result
+    def setup_ntp(self):
+        execute(self._setup_ntp)
 
-    def set_openstack_repository(self):
+    def _set_openstack_repository(self):
         """openstack packages"""      
         if self._release() == 'trusty':
             print red(env.host_string + ' | Enable the OpenStack repository for trusty')
@@ -55,3 +57,6 @@ class PrepareHost(common.Common):
         print red(env.host_string + ' | Install the OpenStack client')
         with prefix('sudo apt-get update'):
             sudo('apt-get install python-openstackclient -y')
+
+    def set_openstack_repository(self):
+        execute(self._set_openstack_repository)

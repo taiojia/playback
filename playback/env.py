@@ -9,33 +9,33 @@ from playback.cli import cli_description
 from playback import __version__
 
 def prepare_host(user, hosts, key_filename, password, public_interface):
-    from playback import prepare_host
+    from playback.api import PrepareHost
     try:
-        remote = prepare_host.PrepareHost(user, hosts, key_filename, password)
+        remote = PrepareHost(user, hosts, key_filename, password)
     except AttributeError:
         sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
 
     # host networking
-    execute(remote.setup_external_interface, public_interface)
+    remote.setup_external_interface(public_interface)
 
     # ntp
-    execute(remote.setup_ntp)
+    remote.setup_ntp()
 
     # openstack packages
-    execute(remote.set_openstack_repository)
+    remote.set_openstack_repository()
 
 def gen_pass():
     os.system('openssl rand -hex 10')
     
 def cmd(user, hosts, key_filename, password, run):
-    from playback import cmd
+    from playback.api import Cmd
     try:
-        remote = cmd.Cmd(user, hosts, key_filename, password)
+        remote = Cmd(user, hosts, key_filename, password)
     except AttributeError:
         sys.stderr.write(red('No hosts found. Please using --hosts param.'))
         sys.exit(1)
-    execute(remote.cmd, run)
+    remote.cmd(run)
      
 def parser():
     p = argparse.ArgumentParser(prog='env-deploy', description=cli_description+'this command used for provision OpenStack basic environments')
