@@ -51,23 +51,6 @@ setup(name='playback',
     install_requires=['fabric == 1.10.2', 'ecdsa == 0.13', 'markupsafe == 0.23', 'paramiko == 1.16.0', 'jinja2 == 2.8', 'PyYAML == 3.11', 'setuptools == 19.6.2', 'pycrypto == 2.6.1', 'tqdm == 3.8.0'],
     packages=find_packages(),
     entry_points={ 
-       'console_scripts': [
-           'env-deploy = playback.env:main',
-           'mysql-deploy = playback.mysql:main',
-           'haproxy-deploy = playback.haproxy:main',
-           'rabbitmq-deploy = playback.rabbitmq:main',
-           'keystone-deploy = playback.keystone:main',
-           'glance-deploy = playback.glance:main',
-           'nova-deploy = playback.nova:main',
-           'nova-compute-deploy = playback.nova_compute:main',
-           'neutron-deploy = playback.neutron:main',
-           'neutron-agent-deploy = playback.neutron_agent:main',
-           'horizon-deploy = playback.horizon:main',
-           'cinder-deploy = playback.cinder:main',
-           'swift-deploy = playback.swift:main',
-           'swift-storage-deploy = playback.swift_storage:main',
-           'manila-deploy = playback.manila:main',
-           'manila-share-deploy = playback.manila_share:main'
-           ]
+       'console_scripts': []
        },
     )
