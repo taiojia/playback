@@ -175,5 +175,3 @@ kubernetes/
 venv/
 example_argparse.py
 .DS_Store
-docs/build/
-docs/source/
