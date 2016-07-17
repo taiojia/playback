@@ -4,7 +4,17 @@ from playback.templates.galera_list import conf_galera_list_trusty, conf_galera_
 from playback import common
 
 class MysqlInstallation(common.Common):
-    """Install Galera Cluster for MySQL"""
+    """
+    Install Galera Cluster for MySQL
+    
+    :param user(str): the user for remote server to login 
+    :param hosts(list): this is a second param
+    :param key_filename(str): the ssh private key to used, default None
+    :param password(str): the password for remote server
+    :param parallel(bool): paralleler execute on remote server, default True
+    :returns: None
+    """
+
 
     def _enable_repo(self):
         if self._release() == 'trusty':

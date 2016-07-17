@@ -7,7 +7,16 @@ from playback import common
 
 
 class MysqlConfig(common.Common):
-    """Setup Galera Cluster for MySQL"""
+    """
+    Config Galera Cluster for MySQL
+    
+    :param user(str): the user for remote server to login 
+    :param hosts(list): this is a second param
+    :param key_filename(str): the ssh private key to used, default None
+    :param password(str): the password for remote server
+    :param parallel(bool): paralleler execute on remote server, default True
+    :returns: None
+    """
     
     def _update_mysql_config(self, wsrep_cluster_address, wsrep_node_name, wsrep_node_address):
         if self._release() == "xenial":

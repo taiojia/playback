@@ -7,10 +7,18 @@ from playback.templates.external_interface import conf_external_interface
 from playback import common
 
 class PrepareHost(common.Common):
-    """Prepare OpenStack physical hosts"""
+    """
+    Prepare the OpenStack environment
+
+    :param user(str): the user for remote server to login 
+    :param hosts(list): this is a second param
+    :param key_filename(str): the ssh private key to used, default None
+    :param password(str): the password for remote server
+    :param parallel(bool): paralleler execute on remote server, default True
+    :returns: None
+    """
         
     def _setup_external_interface(self, public_interface):
-        """host networking"""
         print red(env.host_string + ' | Setup public interface')
         with open('tmp_public_interface_cfg_'+env.host_string, 'w') as f:
             f.write(conf_external_interface)
@@ -25,6 +33,11 @@ class PrepareHost(common.Common):
         os.remove('tmp_public_interface_cfg_'+env.host_string)
     
     def setup_external_interface(self, *args, **kwargs):
+        """
+        host networking
+
+        :param public_interface(str): the public interface 
+        """
         return execute(self._setup_external_interface, *args, **kwargs)
 
     def _setup_ntp(self):
@@ -36,6 +49,7 @@ class PrepareHost(common.Common):
         # TODO: setup ntp server and ntp client, current all are clients
 
     def setup_ntp(self):
+        """Setup ntp service"""
         return execute(self._setup_ntp)
 
     def _set_openstack_repository(self):
@@ -59,4 +73,7 @@ class PrepareHost(common.Common):
             sudo('apt-get install python-openstackclient -y')
 
     def set_openstack_repository(self):
+        """
+        Install OpenStack repository only for trusty
+        """
         return execute(self._set_openstack_repository)

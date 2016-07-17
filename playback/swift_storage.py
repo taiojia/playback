@@ -6,7 +6,6 @@ import os
 import argparse
 from tqdm import *
 import sys
-from playback.cli import cli_description
 from playback.templates.rsyncd_conf import conf_rsyncd_conf
 from playback.templates.rsync import conf_rsync
 from playback.templates.account_server_conf import conf_account_server_conf
@@ -16,6 +15,16 @@ from playback import __version__
 from playback import common
 
 class SwiftStorage(common.Common):
+    """
+    Deploy swift storage node
+
+    :param user(str): the user for remote server to login 
+    :param hosts(list): this is a second param
+    :param key_filename(str): the ssh private key to used, default None
+    :param password(str): the password for remote server
+    :param parallel(bool): paralleler execute on remote server, default True
+    :returns: None
+    """
 
     def _prepare_disks(self, disks_name):
         """format disks to xfs and mount it"""

@@ -5,7 +5,6 @@ from fabric.colors import red
 import os
 import argparse
 import sys
-from playback.cli import cli_description
 from playback.templates.nova_conf_for_compute import conf_nova_conf
 from playback.templates.nova_compute_conf import conf_nova_compute_conf
 from playback.templates.libvirt_bin import conf_libvirt_bin
@@ -15,7 +14,16 @@ from playback import __version__
 from playback import common
 
 class NovaCompute(common.Common):
+    """
+    Deploy Nova compute
 
+    :param user(str): the user for remote server to login 
+    :param hosts(list): this is a second param
+    :param key_filename(str): the ssh private key to used, default None
+    :param password(str): the password for remote server
+    :param parallel(bool): paralleler execute on remote server, default True
+    :returns: None
+    """
     def _install(self, my_ip, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, nova_pass, novncproxy_base_url, glance_api_servers, neutron_endpoint, neutron_pass, rbd_secret_uuid, memcached_servers):
         print red(env.host_string + ' | Install nova-compute sysfsutils')
         sudo('apt-get update')

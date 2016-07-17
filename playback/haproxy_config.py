@@ -5,7 +5,16 @@ from playback.templates.keepalived_conf import conf_keepalived_conf
 from playback import common
 
 class HaproxyConfig(common.Common):
-    """Configure HAProxy and Keepalived"""
+    """
+    Configure HAProxy and Keepalived
+
+    :param user(str): the user for remote server to login 
+    :param hosts(list): this is a second param
+    :param key_filename(str): the ssh private key to used, default None
+    :param password(str): the password for remote server
+    :param parallel(bool): paralleler execute on remote server, default True
+    :returns: None
+    """
     
     def _upload_conf(self, file):
         put(file, '/etc/haproxy/haproxy.cfg', use_sudo=True)

@@ -10,6 +10,16 @@ from playback import __version__
 from playback import common
 
 class Horizon(common.Common):
+    """
+    Install horizon
+    
+    :param user(str): the user for remote server to login 
+    :param hosts(list): this is a second param
+    :param key_filename(str): the ssh private key to used, default None
+    :param password(str): the password for remote server
+    :param parallel(bool): paralleler execute on remote server, default True
+    :returns: None
+    """
 
     def _install(self, openstack_host, memcached_servers, time_zone):
         print red(env.host_string + ' | Install the packages')

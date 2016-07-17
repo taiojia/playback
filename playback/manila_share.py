@@ -10,6 +10,16 @@ from playback import common
 from playback.templates.manila_conf_for_share import conf_manila_conf
 
 class ManilaShare(common.Common):
+    """
+    Install manila share service
+    
+    :param user(str): the user for remote server to login 
+    :param hosts(list): this is a second param
+    :param key_filename(str): the ssh private key to used, default None
+    :param password(str): the password for remote server
+    :param parallel(bool): paralleler execute on remote server, default True
+    :returns: None
+    """
 
     def _install_manila_share(self, connection, auth_uri, auth_url, manila_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_user, rabbit_pass, neutron_endpoint, neutron_pass, nova_pass, cinder_pass):
         sys.stdout.write(red(env.host_string + ' | Install manila-share python-pymysql and neutron-plugin-linuxbridge-agent\n'))

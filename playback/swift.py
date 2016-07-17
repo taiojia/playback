@@ -5,13 +5,22 @@ from fabric.colors import red
 import os
 import argparse
 import sys
-from playback.cli import cli_description
 from playback.templates.proxy_server_conf import conf_proxy_server_conf
 from playback.templates.swift_conf import conf_swift_conf
 from playback import __version__
 from playback import common
 
 class Swift(common.Common):
+    """
+    Deploy swift proxy node
+
+    :param user(str): the user for remote server to login 
+    :param hosts(list): this is a second param
+    :param key_filename(str): the ssh private key to used, default None
+    :param password(str): the password for remote server
+    :param parallel(bool): paralleler execute on remote server, default True
+    :returns: None
+    """
 
     @runs_once
     def _create_service_credentials(self, os_password, os_auth_url, swift_pass, public_endpoint, internal_endpoint, admin_endpoint):

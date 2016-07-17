@@ -5,13 +5,22 @@ from fabric.colors import red
 import os
 import sys
 import argparse
-from playback.cli import cli_description
 from playback import __version__
 from playback.templates.cinder_conf import conf_cinder_conf
 from playback.templates.policy_json_for_cinder import conf_policy_json
 from playback import common
 
 class Cinder(common.Common):
+    """
+    Install cinder and volume service
+
+    :param user(str): the user for remote server to login 
+    :param hosts(list): this is a second param
+    :param key_filename(str): the ssh private key to used, default None
+    :param password(str): the password for remote server
+    :param parallel(bool): paralleler execute on remote server, default True
+    :returns: None
+    """
 
     @runs_once
     def _create_cinder_db(self, root_db_pass, cinder_db_pass):

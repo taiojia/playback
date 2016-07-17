@@ -4,12 +4,19 @@ from fabric.contrib import files
 from fabric.network import disconnect_all
 from fabric.colors import red
 import sys
-from playback.cli import cli_description
 from playback import __version__
 from playback import common
 
 class RabbitMq(common.Common):
-    """RabbitMQ HA Installation"""
+    """RabbitMQ HA Installation
+    
+    :param user(str): the user for remote server to login 
+    :param hosts(list): this is a second param
+    :param key_filename(str): the ssh private key to used, default None
+    :param password(str): the password for remote server
+    :param parallel(bool): paralleler execute on remote server, default True
+    :returns: None
+    """
 
     def _install(self, erlang_cookie, rabbit_user, rabbit_pass):
         sudo('apt-get update')

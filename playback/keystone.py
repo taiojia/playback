@@ -14,6 +14,16 @@ from playback.templates.memcached_conf import conf_memcached_conf
 from playback import common
 
 class Keystone(common.Common):
+    """
+    Install keystone
+    
+    :param user(str): the user for remote server to login 
+    :param hosts(list): this is a second param
+    :param key_filename(str): the ssh private key to used, default None
+    :param password(str): the password for remote server
+    :param parallel(bool): paralleler execute on remote server, default True
+    :returns: None
+    """
 
     @runs_once
     def _create_keystone_db(self, root_db_pass, keystone_db_pass):

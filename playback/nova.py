@@ -5,13 +5,21 @@ from fabric.colors import red
 import os
 import argparse
 import sys
-from playback.cli import cli_description
 from playback.templates.nova_conf import conf_nova_conf
 from playback import __version__
 from playback import common
 
 class Nova(common.Common):
+    """
+    Deploy Nova
 
+    :param user(str): the user for remote server to login 
+    :param hosts(list): this is a second param
+    :param key_filename(str): the ssh private key to used, default None
+    :param password(str): the password for remote server
+    :param parallel(bool): paralleler execute on remote server, default True
+    :returns: None
+    """
     @runs_once
     def _create_nova_db(self, root_db_pass, nova_db_pass):
         print red(env.host_string + ' | Create nova database')
