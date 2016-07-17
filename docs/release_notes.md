@@ -2,7 +2,7 @@
 
 * v0.3.5 (Ris)
   Add API for Fastforward
-  
+
 * v0.3.4 (Ris)
   * Support xenial
   * Support systemd
