@@ -42,7 +42,7 @@ def read(fname):
 
 setup(name='playback',
     version=__version__,
-    description='OpenStack provision tools',
+    description='OpenStack provisioning and orchestration library',
     long_description=read('README.md'),
     author=__author__,
     author_email='jiasir@icloud.com',
