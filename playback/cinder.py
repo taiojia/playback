@@ -30,6 +30,12 @@ class Cinder(common.Common):
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, cinder_db_pass), shell=False)
 
     def create_cinder_db(self, *args, **kwargs):
+        """
+        Create a database named `cinder` and the `cinder` user
+
+        :param root_db_pass(str): the password of mysql `root` account
+        :param cinder_db_pass(str): the password of `cinder` user:
+        """
         return execute(self._create_cinder_db, *args, **kwargs)
 
     @runs_once
@@ -59,6 +65,19 @@ class Cinder(common.Common):
             sudo('openstack endpoint create --region RegionOne volumev2 admin {0}'.format(admin_endpoint_v2))
 
     def create_service_credentials(self, *args, **kwargs):
+        r"""
+        Create the cinder service credentials
+
+        :param os_password(str): the password of OpenStack `admin` user
+        :param os_auth_url(str): keystone endpoint url e.g. `http://CONTROLLER_VIP:35357/v3`
+        :param cinder_pass(str): password of `cinder` user
+        :param public_endpoint_v1(str): public endpoint for volume service e.g. `http://CONTROLLER_VIP:8776/v1/%\\(tenant_id\\)s`
+        :param internal_endpoint_v1(str): internal endpoint for volume service e.g. `http://CONTROLLER_VIP:8776/v1/%\\(tenant_id\\)s`
+        :param admin_endpoint_v1(str): admin endpoint for volume service e.g. `http://CONTROLLER_VIP:8776/v1/%\\(tenant_id\\)s`
+        :param public_endpoint_v2(str): public endpoint v2 for volumev2 service e.g. `http://CONTROLLER_VIP:8776/v2/%\\(tenant_id\\)s`
+        :param internal_endpoint_v2(str): internal endpoint v2 for volumev2 service e.g. `http://CONTROLLER_VIP:8776/v2/%\\(tenant_id\\)s`
+        :param admin_endpoint_v2(str): admin endpoint v2 for volumev2 service e.g. `http://CONTROLLER_VIP:8776/v2/%\\(tenant_id\\)s`
+        """
         return execute(self._create_service_credentials, *args, **kwargs)
 
     def _install(self, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, cinder_pass, my_ip, glance_api_servers, rbd_secret_uuid, memcached_servers, populate=False):
@@ -110,5 +129,21 @@ class Cinder(common.Common):
         sudo('rm -f /var/lib/cinder/cinder.sqlite')
 
     def install(self, *args, **kwargs):
+        """
+        Install cinder and volume service
+
+        :param connection(str): mysql database connection string e.g. `mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinde`
+        :param rabbit_hosts(str): rabbit hosts e.g. `CONTROLLER1,CONTROLLER2`
+        :param rabbit_user(str): the user of rabbit, e.g. `openstack`
+        :param rabbit_pass(str): the password of `rabbit_user`
+        :param auth_uri(str): keystone internal endpoint e.g. `http://CONTROLLER_VIP:5000`
+        :param auth_url(str): keystone admin endpoint e.g. `http://CONTROLLER_VIP:35357`
+        :param cinder_pass(str): create a password of `cinder` user
+        :param my_ip(str): the host management ip
+        :param glance_api_servers(str): glance host e.g. `http://CONTROLLER_VIP:9292`
+        :param rbd_secret_uuid(str): ceph rbd secret uuid, use `uuidgen` to generate the ceph uuid
+        :param memcached_servers(str): memcached servers e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
+        :param populate(bool): Populate the cinder database, default `False`
+        """
         return execute(self._install, *args, **kwargs)
 
