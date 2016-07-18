@@ -64,5 +64,19 @@ class NeutronAgent(common.Common):
         sudo('service neutron-linuxbridge-agent restart')
 
     def install(self, *args, **kwargs):
+        """
+        Install neutron agent
+
+        :param rabbit_hosts: rabbit hosts e.g. `CONTROLLER1,CONTROLLER2`
+        :param rabbit_user: the user of rabbit, e.g. `openstack`
+        :param rabbit_pass: the password of `rabbit_user`
+        :param auth_uri: keystone internal endpoint e.g. `http://CONTROLLER_VIP:5000`
+        :param auth_url: keystone admin endpoint e.g. `http://CONTROLLER_VIP:35357`
+        :param neutron_pass: the password of `neutron` user
+        :param public_interface: public interface e.g. `eth1`
+        :param local_ip: underlying physical network interface that handles overlay networks(uses the management interface IP)
+        :param memcached_servers: memcached servers e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
+        :returns: None
+        """
         return execute(self._install, *args, **kwargs)
 
