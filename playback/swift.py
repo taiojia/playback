@@ -46,6 +46,17 @@ class Swift(common.Common):
             sudo('openstack endpoint create --region RegionOne object-store admin {0}'.format(admin_endpoint))
 
     def create_service_credentials(self, *args, **kwargs):
+        r"""
+        Create the swift service credentials
+
+        :param os_password: the password of openstack `admin` user
+        :param os_auth_url: keystone endpoint url e.g. `http://CONTROLLER_VIP:35357/v3`
+        :param swift_pass: password of `swift` user
+        :param public_endpoint: public endpoint for swift service e.g. `http://CONTROLLER_VIP:8080/v1/AUTH_%\\(tenant_id\\)s`
+        :param internal_endpoint: internal endpoint for swift service e.g. `http://CONTROLLER_VIP:8080/v1/AUTH_%\\(tenant_id\\)s`
+        :param admin_endpoint: admin endpoint for swift service e.g. `http://CONTROLLER_VIP:8080/v1`
+        :returns: None
+        """
         return execute(self._create_service_credentials, *args, **kwargs)
 
     def _install(self, auth_uri, auth_url, swift_pass, memcached_servers, with_memcached):
@@ -82,6 +93,16 @@ class Swift(common.Common):
         os.remove('tmp_proxy_server_conf_' + env.host_string)
 
     def install(self, *args, **kwargs):
+        """
+        Install swift proxy service
+
+        :param auth_uri: keystone internal endpoint e.g. `http://CONTROLLER_VIP:5000`
+        :param auth_url: keystone admin endpoint e.g. `http://CONTROLLER_VIP:35357`
+        :param swift_pass: password of `swift` user
+        :param memcached_servers: memcache servers e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
+        :param with_memcached: install memcached on remote server, if you have other memcached on the controller node, you can use `memcached_serser`
+        :returns: None
+        """
         return execute(self._install, *args, **kwargs)
 
     def _finalize_install(self, swift_hash_path_suffix, swift_hash_path_prefix):
@@ -105,5 +126,12 @@ class Swift(common.Common):
         sudo('swift-init all start', warn_only=True)
 
     def finalize_install(self, *args, **kwargs):
+        """
+        Finalize swift installation
+
+        :param swift_hash_path_suffix: `swift_hash_path_suffix` and `swift_hash_path_prefix` are used as part of the hashing algorithm when determining data placement in the cluster. These values should remain secret and MUST NOT change once a cluster has been deployed
+        :param swift_hash_path_prefix: `swift_hash_path_suffix` and `swift_hash_path_prefix` are used as part of the hashing algorithm when determining data placement in the cluster. These values should remain secret and MUST NOT change once a cluster has been deployed
+        :returns None
+        """
         return execute(self._finalize_install, *args, **kwargs)
 
