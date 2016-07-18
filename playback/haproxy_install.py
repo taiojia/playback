@@ -19,5 +19,10 @@ class HaproxyInstall(common.Common):
         sudo('apt-get install -y haproxy keepalived mysql-client')
     
     def install(self):
+        """
+        Install HAProxy and Keepalived
+        
+        :returns: None
+        """
         return execute(self._install)
         

@@ -21,6 +21,12 @@ class HaproxyConfig(common.Common):
         sudo('service haproxy reload')
 
     def upload_conf(self, *args, **kwargs):
+        """
+        Upload configuration file to the target host
+
+        :param file: the path of haproxy configration file
+        :returns: None
+        """
         return execute(self._upload_conf, *args, **kwargs)
 
     def _configure_keepalived(self, router_id, priority, state, interface, vip):
@@ -38,4 +44,14 @@ class HaproxyConfig(common.Common):
         sudo('service keepalived restart')
 
     def configure_keepalived(self, *args, **kwargs):
+        """
+        Configure keepalived
+
+        :param router_id: Keepalived router id e.g. `lb1`
+        :param priority: Keepalived priority e.g. `150`
+        :param state: Keepalived state e.g. `MASTER` or 'SLAVE'
+        :param interface: Keepalived binding interface e.g. `eth0`
+        :param vip: Keepalived virtual ip e.g. `CONTROLLER_VIP`
+        :returns: None
+        """
         return execute(self._configure_keepalived, *args, **kwargs)
