@@ -29,6 +29,13 @@ class Manila(common.Common):
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON manila.* TO 'manila'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, manila_db_pass), shell=False)
 
     def create_manila_db(self, *args, **kwargs):
+        """
+        Create manila database and the user named manila
+
+        :param root_db_pass: the password of mysql root user 
+        :param manila_db_pass: the password of manila database user
+        :returns: None
+        """
         return execute(self._create_manila_db, *args, **kwargs)
 
     @runs_once
@@ -59,6 +66,20 @@ class Manila(common.Common):
             sudo('openstack endpoint create --region RegionOne sharev2 admin {0}'.format(admin_endpoint_v2))
 
     def create_service_credentials(self, *args, **kwargs):
+        r"""
+        create the manila service credentials
+
+        :param os_password: the password of openstack `admin` user
+        :param os_auth_url: keystone endpoint url e.g. `http://CONTROLLER_VIP:35357/v3`
+        :param manila_pass: passowrd of `manila` user
+        :param public_endpoint_v1: public endpoint for manila service e.g. `http://CONTROLLER_VIP:8786/v1/%\\(tenant_id\\)s`
+        :param internal_endpoint_v1: internal endpoint for manila service e.g. `http://CONTROLLER_VIP:8786/v1/%\\(tenant_id\\)s`
+        :param admin_endpoint_v1: admin endpoint for manila service e.g. `http://CONTROLLER_VIP:8786/v1/%\\(tenant_id\\)s`
+        :param public_endpoint_v2: public endpoint for manila service e.g. `http://CONTROLLER_VIP:8786/v2/%\\(tenant_id\\)s`
+        :param internal_endpoint_v2: internal endpoint for manila service e.g. `http://CONTROLLER_VIP:8786/v2/%\\(tenant_id\\)s`
+        :param admin_endpoint_v2: admin endpoint for manila service e.g. `http://CONTROLLER_VIP:8786/v2/%\\(tenant_id\\)s`
+        :returns: None
+        """
         return execute(self._create_service_credentials, *args, **kwargs)
 
     def _install_manila(self, connection, auth_uri, auth_url, manila_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_user, rabbit_pass, populate):
@@ -98,5 +119,20 @@ class Manila(common.Common):
             sudo('service manila-api restart')
 
     def install_manila(self, *args, **kwargs):
+        """
+        Install manila
+
+        :param connection: mysql manila database connection string e.g. `mysql+pymysql://manila:MANILA_PASS@CONTROLLER_VIP/manila`
+        :param auth_uri: keystone internal endpoint e.g. `http://CONTROLLER_VIP:5000`
+        :param auth_url: keystone admin endpoint e.g. `http://CONTROLLER_VIP:35357`
+        :param manila_pass: passowrd of `manila` user
+        :param my_ip: the host management ip
+        :param memcached_servers: memcached servers e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
+        :param rabbit_hosts: rabbit hosts e.g. `CONTROLLER1,CONTROLLER2`
+        :param rabbit_user: the user of rabbit openstack user, e.g. `openstack`
+        :param rabbit_pass: the password of `rabbit_user`
+        :param populate: populate the manila database
+        :returns: None
+        """
         return execute(self._install_manila, *args, **kwargs)
 

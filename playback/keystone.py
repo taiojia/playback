@@ -33,6 +33,13 @@ class Keystone(common.Common):
         sudo("mysql -uroot -p{root_db_pass} -e \"GRANT ALL PRIVILEGES ON keystone.* TO 'keystone\'@\'%\' IDENTIFIED BY \'{keystone_db_pass}';\"".format(root_db_pass=root_db_pass, 
                                                                                                                                                         keystone_db_pass=keystone_db_pass), shell=False)
     def create_keystone_db(self, *args, **kwargs):
+        """
+        Create the `keystone` database and the user named keystone
+
+        :param root_db_pass: the mysql database `root` passowrd
+        :param keystone_db_pass: the password of `keystone` database user
+        :returns: None
+        """
         return execute(self._create_keystone_db, *args, **kwargs)
 
     def _install_keystone(self, admin_token, connection, memcached_servers, populate):
@@ -98,6 +105,15 @@ class Keystone(common.Common):
         sudo('rm -f /var/lib/keystone/keystone.db')
     
     def install_keystone(self, *args, **kwargs):
+        """
+        Install keystone
+
+        :param admin_token: define the value of the initial administration token
+        :param connection: database connection string e.g. `mysql+pymysql://keystone:PASS@CONTROLLER_VIP/keystone`
+        :param memcached_servers: memcached servers. e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
+        :param populate: populate the `keystone` database
+        :returns: None
+        """
         return execute(self._install_keystone, *args, **kwargs)
 
     # Create the service entity and API endpoints
@@ -116,6 +132,16 @@ class Keystone(common.Common):
                                                                                                                                                                             admin_endpoint=admin_endpoint))
 
     def create_entity_and_endpoint(self, *args, **kwargs):
+        """
+        Create the service entity and API endpoints
+
+        :param os_token: the openstack admin token
+        :param os_url: keystone endpoint url e.g. `http://CONTROLLER_VIP:35357/v3`
+        :param public_endpoint: the public endpoint e.g. `http://CONTROLLER_VIP:5000/v3`
+        :param internal_endpoint: the internal endpoint e.g. `http://CONTROLLER_VIP:5000/v3`
+        :param admin_endpoint: the admin endpoint e.g. `http://CONTROLLER_VIP:35357/v3`
+        :returns: None
+        """
         return execute(self._create_entity_and_endpoint, *args, **kwargs)
 
     # Create projects, users, and roles
@@ -155,6 +181,15 @@ class Keystone(common.Common):
         sudo('openstack --os-identity-api-version 3 --os-token {os_token} --os-url {os_url} role add --project demo --user demo user'.format(os_token=os_token,
                                                                                                                                              os_url=os_url))
     def create_projects_users_roles(self, *args, **kwargs):
+        """
+        Create an administrative and demo project, user, and role for administrative and testing operations in your environment
+
+        :param os_token: the openstack admin token
+        :param os_url: keystone endpoint url e.g. `http://CONTROLLER_VIP:35357/v3`
+        :param admin_pass: passowrd of openstack `admin` user
+        :param demo_pass: passowrd of openstack `demo` user
+        :returns: None
+        """
         return execute(self._create_projects_users_roles, *args, **kwargs)
 
     def _update_keystone_paste_ini(self):
@@ -168,6 +203,12 @@ class Keystone(common.Common):
                               backup=True)
         os.remove('tmp_keystone_paste_ini_'+env.host_string)
 
-    def update_keystone_paste_ini(self, *args, **kwargs):
+    def update_keystone_paste_ini(self):
+        """
+        Remove admin_token_auth from the [pipeline:public_api], 
+        [pipeline:admin_api], and [pipeline:api_v3] sections in `/etc/keystone/keystone-paste.ini`
+
+        :returns: None
+        """
         return execute(self._update_keystone_paste_ini, *args, **kwargs)
 
