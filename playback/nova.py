@@ -32,6 +32,13 @@ class Nova(common.Common):
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, nova_db_pass), shell=False)
 
     def create_nova_db(self, *args, **kwargs):
+        """
+        Create the nova and nova_api database and the user named nova
+
+        :param root_db_pass: the password of mysql database root user
+        :param nova_db_pass: the password of nova database user
+        :returns: None
+        """
         return execute(self._create_nova_db, *args, **kwargs)
 
     @runs_once
@@ -57,6 +64,17 @@ class Nova(common.Common):
             sudo('openstack endpoint create --region RegionOne compute admin {0}'.format(admin_endpoint))
 
     def create_service_credentials(self, *args, **kwargs):
+        r"""
+        Create the nova service credentials
+
+        :param os_password: the password of openstack `admin` user
+        :param os_auth_url: keystone endpoint url e.g. `http://CONTROLLER_VIP:35357/v3`
+        :param nova_pass: passowrd of `nova` user
+        :param public_endpoint: public endpoint for nova service e.g. `http://CONTROLLER_VIP:8774/v2.1/%\\(tenant_id\\)s`
+        :param internal_endpoint: internal endpoint for nova service e.g. `http://CONTROLLER_VIP:8774/v2.1/%\\(tenant_id\\)s`
+        :param admin_endpoint: admin endpoint for nova service e.g. `http://CONTROLLER_VIP:8774/v2.1/%\\(tenant_id\\)s`
+        :returns: None
+        """
         return execute(self._create_service_credentials, *args, **kwargs)
 
     def _install_nova(self, connection, api_connection, auth_uri, auth_url, nova_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_user, rabbit_pass, glance_api_servers, neutron_endpoint, neutron_pass, metadata_proxy_shared_secret, populate):
@@ -110,5 +128,25 @@ class Nova(common.Common):
         sudo('rm -f /var/lib/nova/nova.sqlite')
 
     def install_nova(self, *args, **kwargs):
+        """
+        Install nova
+
+        :param connection: mysql nova database connection string e.g. `mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova`
+        :param api_connection: mysql nova_api database connection string e.g. `mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova_api`
+        :param auth_uri: keystone internal endpoint e.g. `http://CONTROLLER_VIP:5000`
+        :param auth_url: keystone admin endpoint e.g. `http://CONTROLLER_VIP:35357`
+        :param nova_pass: passowrd of `nova` user
+        :param my_ip: the host management ip
+        :param memcached_servers: memcached servers e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
+        :param rabbit_hosts: rabbit hosts e.g. `CONTROLLER1,CONTROLLER2`
+        :param rabbit_user: the user of rabbit e.g. `openstack`
+        :param rabbit_pass: the password of `rabbit_user`
+        :param glance_api_servers: glance host e.g. `http://CONTROLLER_VIP:9292`
+        :param neutron_endpoint: neutron endpoint e.g. `http://CONTROLLER_VIP:9696`
+        :param neutron_pass: the password of `neutron` user
+        :param metadata_proxy_shared_secret: metadata proxy shared secret
+        :param populate: populate the nova database
+        :returns: None
+        """
         return execute(self._install_nova, *args, **kwargs)
 
