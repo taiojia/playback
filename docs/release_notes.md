@@ -1,5 +1,8 @@
 # Release Notes
 
+* v0.3.6 (Ris)
+  Move command line to FastForward
+
 * v0.3.5 (Ris)
   Add API for Fastforward
 
