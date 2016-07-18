@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Glance &mdash; Playback 0.3.6 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Playback 0.3.6 documentation" href="index.html" />
+    <link rel="next" title="Nova" href="nova.html" />
+    <link rel="prev" title="Keystone" href="keystone.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-playback.glance">
+<span id="glance"></span><h1>Glance<a class="headerlink" href="#module-playback.glance" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="playback.glance.Glance">
+<em class="property">class </em><code class="descclassname">playback.glance.</code><code class="descname">Glance</code><span class="sig-paren">(</span><em>user='ubuntu'</em>, <em>hosts=None</em>, <em>key_filename=None</em>, <em>password=None</em>, <em>parallel=True</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#playback.glance.Glance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">playback.common.Common</span></code></p>
+<p>Install glance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user(str)</strong> &#8211; the user for remote server to login</li>
+<li><strong>hosts(list)</strong> &#8211; this is a second param</li>
+<li><strong>key_filename(str)</strong> &#8211; the ssh private key to used, default None</li>
+<li><strong>password(str)</strong> &#8211; the password for remote server</li>
+<li><strong>parallel(bool)</strong> &#8211; paralleler execute on remote server, default True</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="playback.glance.Glance.create_glance_db">
+<code class="descname">create_glance_db</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#playback.glance.Glance.create_glance_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the <cite>glance</cite> database and the user named <cite>glance</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>root_db_pass</strong> &#8211; the mysql database <cite>root</cite> passowrd</li>
+<li><strong>glance_db_pass</strong> &#8211; the password of <cite>glance</cite> user</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="playback.glance.Glance.create_service_credentials">
+<code class="descname">create_service_credentials</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#playback.glance.Glance.create_service_credentials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the glance service credentials</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>os_password</strong> &#8211; the password of openstack <cite>admin</cite> user</li>
+<li><strong>os_auth_url</strong> &#8211; keystone endpoint url e.g. <cite>http://CONTROLLER_VIP:35357/v3</cite></li>
+<li><strong>glance_pass</strong> &#8211; create a passowrd of <cite>glance</cite> user</li>
+<li><strong>public_endpoint</strong> &#8211; public endpoint for glance service e.g. <cite>http://CONTROLLER_VIP:9292</cite></li>
+<li><strong>internal_endpoint</strong> &#8211; internal endpoint for glance service e.g. <cite>http://CONTROLLER_VIP:9292</cite></li>
+<li><strong>admin_endpoint</strong> &#8211; admin endpoint for glance service e.g. <cite>http://CONTROLLER_VIP:9292</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="playback.glance.Glance.install_glance">
+<code class="descname">install_glance</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#playback.glance.Glance.install_glance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Install glance, default store is ceph</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>connection</strong> &#8211; mysql database connection string e.g. <cite>mysql+pymysql://glance:GLANCE_PASS&#64;CONTROLLER_VIP/glance</cite></li>
+<li><strong>auth_uri</strong> &#8211; keystone internal endpoint e.g. <cite>http://CONTROLLER_VIP:5000</cite></li>
+<li><strong>auth_url</strong> &#8211; keystone admin endpoint e.g. <cite>http://CONTROLLER_VIP:35357</cite></li>
+<li><strong>glance_pass</strong> &#8211; passowrd of <cite>glance</cite> user</li>
+<li><strong>swift_store_auth_address</strong> &#8211; DEPRECATED! the address where the Swift authentication service is listening e.g. <cite>http://CONTROLLER_VIP:5000/v3/</cite></li>
+<li><strong>memcached_servers</strong> &#8211; memcached servers e.g. <cite>CONTROLLER1:11211,CONTROLLER2:11211</cite></li>
+<li><strong>populate</strong> &#8211; populate the glance database</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="keystone.html" title="previous chapter">Keystone</a></li>
+      <li>Next: <a href="nova.html" title="next chapter">Nova</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/glance.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, jiasir.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="_sources/glance.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

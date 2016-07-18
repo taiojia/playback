@@ -1,0 +1,368 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SwiftStorage &mdash; Playback 0.3.6 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Playback 0.3.6 documentation" href="index.html" />
+    <link rel="next" title="Manila" href="manila.html" />
+    <link rel="prev" title="Swift" href="swift.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-playback.swift_storage">
+<span id="swiftstorage"></span><h1>SwiftStorage<a class="headerlink" href="#module-playback.swift_storage" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="playback.swift_storage.SwiftStorage">
+<em class="property">class </em><code class="descclassname">playback.swift_storage.</code><code class="descname">SwiftStorage</code><span class="sig-paren">(</span><em>user='ubuntu'</em>, <em>hosts=None</em>, <em>key_filename=None</em>, <em>password=None</em>, <em>parallel=True</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#playback.swift_storage.SwiftStorage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">playback.common.Common</span></code></p>
+<p>Deploy swift storage node</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user(str)</strong> &#8211; the user for remote server to login</li>
+<li><strong>hosts(list)</strong> &#8211; this is a second param</li>
+<li><strong>key_filename(str)</strong> &#8211; the ssh private key to used, default None</li>
+<li><strong>password(str)</strong> &#8211; the password for remote server</li>
+<li><strong>parallel(bool)</strong> &#8211; paralleler execute on remote server, default True</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="playback.swift_storage.SwiftStorage.account_builder_add">
+<code class="descname">account_builder_add</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#playback.swift_storage.SwiftStorage.account_builder_add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add each storage node to the account ring</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>region</strong> &#8211; swift storage region e.g. <cite>1</cite></li>
+<li><strong>zone</strong> &#8211; swift storage zone e.g. <cite>1</cite></li>
+<li><strong>ip</strong> &#8211; the IP address of the management network on the each storage node e.g. <cite>STORAGE_NODE_IP</cite></li>
+<li><strong>device</strong> &#8211; a storage device name on the same storage node e.g. <cite>sdb</cite></li>
+<li><strong>weight</strong> &#8211; the storage device weight e.g. <cite>100</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="playback.swift_storage.SwiftStorage.account_builder_rebalance">
+<code class="descname">account_builder_rebalance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#playback.swift_storage.SwiftStorage.account_builder_rebalance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebalance account builder</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="playback.swift_storage.SwiftStorage.container_builder_add">
+<code class="descname">container_builder_add</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#playback.swift_storage.SwiftStorage.container_builder_add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add each storage node to the container ring</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>region</strong> &#8211; swift storage region e.g. <cite>1</cite></li>
+<li><strong>zone</strong> &#8211; swift storage zone e.g. <cite>1</cite></li>
+<li><strong>ip</strong> &#8211; the IP address of the management network on the storage node e.g. <cite>STORAGE_NODE_IP</cite></li>
+<li><strong>device</strong> &#8211; a storage device name on the same storage node e.g. <cite>sdb</cite></li>
+<li><strong>weight</strong> &#8211; the storage device weight e.g. <cite>100</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="playback.swift_storage.SwiftStorage.container_builder_rebalance">
+<code class="descname">container_builder_rebalance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#playback.swift_storage.SwiftStorage.container_builder_rebalance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebalance container builder</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="playback.swift_storage.SwiftStorage.create_account_builder_file">
+<code class="descname">create_account_builder_file</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#playback.swift_storage.SwiftStorage.create_account_builder_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create account ring</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>partitions</strong> &#8211; 2^10 (1024) maximum partitions e.g. <cite>10</cite></li>
+<li><strong>replicas</strong> &#8211; 3 replicas of each object e.g. <cite>3</cite></li>
+<li><strong>moving</strong> &#8211; 1 hour minimum time between moving a partition more than once e.g. <cite>1</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="playback.swift_storage.SwiftStorage.create_container_builder_file">
+<code class="descname">create_container_builder_file</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#playback.swift_storage.SwiftStorage.create_container_builder_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create container ring</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>partitions</strong> &#8211; 2^10 (1024) maximum partitions e.g. <cite>10</cite></li>
+<li><strong>replicas</strong> &#8211; 3 replicas of each object e.g. <cite>3</cite></li>
+<li><strong>moving</strong> &#8211; 1 hour minimum time between moving a partition more than once e.g. <cite>1</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="playback.swift_storage.SwiftStorage.create_object_builder_file">
+<code class="descname">create_object_builder_file</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#playback.swift_storage.SwiftStorage.create_object_builder_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create object ring</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>partitions</strong> &#8211; 2^10 (1024) maximum partitions e.g. <cite>10</cite></li>
+<li><strong>replicas</strong> &#8211; 3 replicas of each object e.g. <cite>3</cite></li>
+<li><strong>moving</strong> &#8211; 1 hour minimum time between moving a partition more than once e.g. <cite>1</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="playback.swift_storage.SwiftStorage.get_builder_file">
+<code class="descname">get_builder_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#playback.swift_storage.SwiftStorage.get_builder_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy <a href="#id1"><span class="problematic" id="id2">*</span></a>.ring.gz to local</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="playback.swift_storage.SwiftStorage.install">
+<code class="descname">install</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#playback.swift_storage.SwiftStorage.install" title="Permalink to this definition">¶</a></dt>
+<dd><p>Install swift storage</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>address</strong> &#8211; the management interface ip for rsync</li>
+<li><strong>bind_ip</strong> &#8211; the management interface ip for swift storage binding</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="playback.swift_storage.SwiftStorage.object_builder_add">
+<code class="descname">object_builder_add</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#playback.swift_storage.SwiftStorage.object_builder_add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add each storage node to the object ring</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>region</strong> &#8211; swift storage region e.g. <cite>1</cite></li>
+<li><strong>zone</strong> &#8211; swift storage zone e.g. <cite>1</cite></li>
+<li><strong>ip</strong> &#8211; the IP address of the management network on the storage node e.g. <cite>STORAGE_NODE_IP</cite></li>
+<li><strong>device</strong> &#8211; a storage device name on the same storage node e.g. <cite>sdb</cite></li>
+<li><strong>weight</strong> &#8211; the storage device weight e.g. <cite>100</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="playback.swift_storage.SwiftStorage.object_builder_rebalance">
+<code class="descname">object_builder_rebalance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#playback.swift_storage.SwiftStorage.object_builder_rebalance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebalance object builder</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="playback.swift_storage.SwiftStorage.prepare_disks">
+<code class="descname">prepare_disks</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#playback.swift_storage.SwiftStorage.prepare_disks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare the disks for storage</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>disks_name</strong> &#8211; the device name, e.g. <cite>sdb,sdc</cite></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="playback.swift_storage.SwiftStorage.sync_builder_file">
+<code class="descname">sync_builder_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#playback.swift_storage.SwiftStorage.sync_builder_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the account.ring.gz, container.ring.gz, and object.ring.gz files from local to the /etc/swift directory on each storage node and any additional nodes running the proxy service</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="swift.html" title="previous chapter">Swift</a></li>
+      <li>Next: <a href="manila.html" title="next chapter">Manila</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/swift_storage.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, jiasir.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="_sources/swift_storage.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
