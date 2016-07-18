@@ -36,7 +36,8 @@ class PrepareHost(common.Common):
         """
         host networking
 
-        :param public_interface(str): the public interface 
+        :param public_interface(str): the public interface
+        :returns: None
         """
         return execute(self._setup_external_interface, *args, **kwargs)
 
@@ -49,7 +50,11 @@ class PrepareHost(common.Common):
         # TODO: setup ntp server and ntp client, current all are clients
 
     def setup_ntp(self):
-        """Setup ntp service"""
+        """
+        Setup ntp service
+
+        :returns: None
+        """
         return execute(self._setup_ntp)
 
     def _set_openstack_repository(self):
@@ -75,5 +80,7 @@ class PrepareHost(common.Common):
     def set_openstack_repository(self):
         """
         Install OpenStack repository only for trusty
+
+        :returns: None
         """
         return execute(self._set_openstack_repository)
