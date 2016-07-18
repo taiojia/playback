@@ -40,5 +40,13 @@ class Horizon(common.Common):
         os.remove('tmp_local_settings_py_' + env.host_string)
 
     def install(self, *args, **kwargs):
+        """
+        Install horizon
+
+        :param openstack_host: configure the dashboard to use OpenStack services on the controller node e.g. `CONTROLLER_VIP`
+        :param memcached_servers: django memcache e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
+        :param time_zone: the timezone of the server. This should correspond with the timezone of your entire OpenStack installation e.g. `America/New_York`
+        :returns: None
+        """
         return execute(self._install, *args, **kwargs)
 
