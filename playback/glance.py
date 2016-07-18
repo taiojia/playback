@@ -31,6 +31,13 @@ class Glance(common.Common):
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, glance_db_pass), shell=False)
 
     def create_glance_db(self, *args, **kwargs):
+        """
+        Create the `glance` database and the user named `glance`
+
+        :param root_db_pass: the mysql database `root` passowrd
+        :param glance_db_pass: the password of `glance` user
+        :returns: None
+        """
         execute(self._create_glance_db, *args, **kwargs)
 
     @runs_once
@@ -56,7 +63,18 @@ class Glance(common.Common):
             sudo('openstack endpoint create --region RegionOne image admin {0}'.format(admin_endpoint))
 
     def create_service_credentials(self, *args, **kwargs):
-        execute(self._create_service_credentials, *args, **kwargs)
+        """
+        Create the glance service credentials
+
+        :param os_password: the password of openstack `admin` user
+        :param os_auth_url: keystone endpoint url e.g. `http://CONTROLLER_VIP:35357/v3`
+        :param glance_pass: create a passowrd of `glance` user
+        :param public_endpoint: public endpoint for glance service e.g. `http://CONTROLLER_VIP:9292`
+        :param internal_endpoint: internal endpoint for glance service e.g. `http://CONTROLLER_VIP:9292`
+        :param admin_endpoint: admin endpoint for glance service e.g. `http://CONTROLLER_VIP:9292`
+        :returns: None
+        """
+        return execute(self._create_service_credentials, *args, **kwargs)
 
     def _install_glance(self, connection, auth_uri, auth_url, glance_pass, swift_store_auth_address, memcached_servers, populate):
         print red(env.host_string + ' | Install glance')
@@ -73,7 +91,7 @@ class Glance(common.Common):
                                        'auth_uri': auth_uri,
                                        'auth_url': auth_url,
                                        'password': glance_pass,
-                                       'swift_store_auth_address': swift_store_auth_address,
+                                       'swift_store_auth_address': None,
                                        'swift_store_key': glance_pass,
                                        'memcached_servers': memcached_servers},
                               use_jinja=True,
@@ -110,4 +128,16 @@ class Glance(common.Common):
         sudo('rm -f /var/lib/glance/glance.sqlite')
 
     def install_glance(self, *args, **kwargs):
-        execute(self._install_glance, *args, **kwargs)
+        """
+        Install glance, default store is ceph
+
+        :param connection: mysql database connection string e.g. `mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance`
+        :param auth_uri: keystone internal endpoint e.g. `http://CONTROLLER_VIP:5000`
+        :param auth_url: keystone admin endpoint e.g. `http://CONTROLLER_VIP:35357`
+        :param glance_pass: passowrd of `glance` user
+        :param swift_store_auth_address: DEPRECATED! the address where the Swift authentication service is listening e.g. `http://CONTROLLER_VIP:5000/v3/`
+        :param memcached_servers: memcached servers e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
+        :param populate: populate the glance database
+        :returns: None
+        """
+        return execute(self._install_glance, *args, **kwargs)
