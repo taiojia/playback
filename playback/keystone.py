@@ -5,7 +5,6 @@ from fabric.network import disconnect_all
 import os
 import argparse
 import sys
-from playback.cli import cli_description
 from playback import __version__
 from playback.templates.keystone_conf import conf_keystone_conf
 from playback.templates.wsgi_keystone_conf import conf_wsgi_keystone_conf
