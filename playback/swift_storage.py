@@ -40,6 +40,12 @@ class SwiftStorage(common.Common):
             sudo('mount /srv/node/{0}'.format(disk))
 
     def prepare_disks(self, *args, **kwargs):
+        """
+        Prepare the disks for storage
+
+        :param disks_name: the device name, e.g. `sdb,sdc`
+        :returns: None
+        """
         return execute(self._prepare_disks, *args, **kwargs)
 
     def _install(self, address, bind_ip):
@@ -117,6 +123,13 @@ class SwiftStorage(common.Common):
         sudo('chmod -R 755 /var/cache/swift')
 
     def install(self, *args, **kwargs):
+        """
+        Install swift storage
+
+        :param address: the management interface ip for rsync
+        :param bind_ip: the management interface ip for swift storage binding
+        :returns: None
+        """
         return execute(self._install, *args, **kwargs)
 
     @runs_once
@@ -125,6 +138,14 @@ class SwiftStorage(common.Common):
             sudo('swift-ring-builder account.builder create {0} {1} {2}'.format(partitions, replicas, moving))
 
     def create_account_builder_file(self, *args, **kwargs):
+        """
+        Create account ring
+        
+        :param partitions: 2^10 (1024) maximum partitions e.g. `10`
+        :param replicas: 3 replicas of each object e.g. `3`
+        :param moving: 1 hour minimum time between moving a partition more than once e.g. `1`
+        :returns: None
+        """
         return execute(self._create_account_builder_file, *args, **kwargs)
 
     @runs_once
@@ -139,6 +160,16 @@ class SwiftStorage(common.Common):
             sudo('swift-ring-builder account.builder')
              
     def account_builder_add(self, *args, **kwargs):
+        """
+        Add each storage node to the account ring
+
+        :param region: swift storage region e.g. `1`
+        :param zone: swift storage zone e.g. `1`
+        :param ip: the IP address of the management network on the each storage node e.g. `STORAGE_NODE_IP`
+        :param device: a storage device name on the same storage node e.g. `sdb`
+        :param weight: the storage device weight e.g. `100`
+        :returns: None
+        """
         return execute(self._account_builder_add, *args, **kwargs)
 
     @runs_once
@@ -148,6 +179,11 @@ class SwiftStorage(common.Common):
             sudo('swift-ring-builder account.builder rebalance')
 
     def account_builder_rebalance(self):
+        """
+        Rebalance account builder
+        
+        :returns: None
+        """
         return execute(self._account_builder_rebalance)
 
     @runs_once
@@ -156,6 +192,14 @@ class SwiftStorage(common.Common):
             sudo('swift-ring-builder container.builder create {0} {1} {2}'.format(partitions, replicas, moving))
 
     def create_container_builder_file(self, *args, **kwargs):
+        """
+        Create container ring
+
+        :param partitions: 2^10 (1024) maximum partitions e.g. `10`
+        :param replicas: 3 replicas of each object e.g. `3`
+        :param moving: 1 hour minimum time between moving a partition more than once e.g. `1`
+        :returns: None
+        """
         return execute(self._create_container_builder_file, *args, **kwargs)
 
     @runs_once
@@ -170,6 +214,16 @@ class SwiftStorage(common.Common):
             sudo('swift-ring-builder container.builder')
             
     def container_builder_add(self, *args, **kwargs):
+        """
+        Add each storage node to the container ring
+
+        :param region: swift storage region e.g. `1`
+        :param zone: swift storage zone e.g. `1`
+        :param ip: the IP address of the management network on the storage node e.g. `STORAGE_NODE_IP`
+        :param device: a storage device name on the same storage node e.g. `sdb`
+        :param weight: the storage device weight e.g. `100`
+        :returns: None
+        """
         return execute(self._container_builder_add, *args, **kwargs)
 
     @runs_once
@@ -179,6 +233,11 @@ class SwiftStorage(common.Common):
             sudo('swift-ring-builder container.builder rebalance')
 
     def container_builder_rebalance(self):
+        """
+        Rebalance container builder
+
+        :returns: None
+        """
         return execute(self._container_builder_rebalance)
 
     @runs_once
@@ -187,6 +246,14 @@ class SwiftStorage(common.Common):
             sudo('swift-ring-builder object.builder create {0} {1} {2}'.format(partitions, replicas, moving))
 
     def create_object_builder_file(self, *args, **kwargs):
+        """
+        Create object ring
+
+        :param partitions: 2^10 (1024) maximum partitions e.g. `10`
+        :param replicas: 3 replicas of each object e.g. `3`
+        :param moving: 1 hour minimum time between moving a partition more than once e.g. `1`
+        :returns: None
+        """
         return execute(self._create_object_builder_file, *args, **kwargs)
 
     @runs_once
@@ -201,6 +268,16 @@ class SwiftStorage(common.Common):
             sudo('swift-ring-builder object.builder')
 
     def object_builder_add(self, *args, **kwargs):
+        """
+        Add each storage node to the object ring
+
+        :param region: swift storage region e.g. `1`
+        :param zone: swift storage zone e.g. `1`
+        :param ip: the IP address of the management network on the storage node e.g. `STORAGE_NODE_IP`
+        :param device: a storage device name on the same storage node e.g. `sdb`
+        :param weight: the storage device weight e.g. `100`
+        :returns: None
+        """
         return execute(self._object_builder_add, *args, **kwargs)
 
     @runs_once
@@ -210,6 +287,11 @@ class SwiftStorage(common.Common):
             sudo('swift-ring-builder object.builder rebalance')
     
     def object_builder_rebalance(self):
+        """
+        Rebalance object builder
+
+        :returns: None
+        """
         return execute(self._object_builder_rebalance)
 
     def _get_builder_file(self):
@@ -218,6 +300,11 @@ class SwiftStorage(common.Common):
         get('/etc/swift/object.ring.gz', './object.ring.gz')
 
     def get_builder_file(self):
+        """
+        Copy *.ring.gz to local
+
+        :returns: None
+        """
         return execute(self._get_builder_file)
 
     def _sync_builder_file(self):
@@ -226,5 +313,10 @@ class SwiftStorage(common.Common):
         put('./object.ring.gz', '/etc/swift/object.ring.gz', use_sudo=True)
 
     def sync_builder_file(self):
+        """
+        Copy the account.ring.gz, container.ring.gz, and object.ring.gz files from local to the /etc/swift directory on each storage node and any additional nodes running the proxy service
+
+        :returns: None
+        """
         return execute(self.sync_builder_file)
         
