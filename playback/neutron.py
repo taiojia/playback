@@ -35,6 +35,13 @@ class Neutron(common.Common):
         sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, neutron_db_pass), shell=False)
 
     def create_neutron_db(self, *args, **kwargs):
+        """
+        Create the neutron database and the user named neutron
+
+        :param root_db_pass: the password of openstack database `root` user
+        :param neutron_db_pass: the password of `neutron` database user
+        :returns: None
+        """
         return execute(self._create_neutron_db, *args, **kwargs)
 
     @runs_once
@@ -60,6 +67,17 @@ class Neutron(common.Common):
             sudo('openstack endpoint create --region RegionOne network admin {0}'.format(admin_endpoint))
     
     def create_service_credentials(self, *args, **kwargs):
+        """
+        create the neutron service credentials
+
+        :param os_password: the password of openstack `admin` user
+        :param os_auth_url: keystone endpoint url e.g. `http://CONTROLLER_VIP:35357/v3`
+        :param neutron_pass: the password of `neutron` user
+        :param public_endpoint: public endpoint for neutron service e.g. `http://CONTROLLER_VIP:9696`
+        :param internal_endpoint: internal endpoint for neutron service e.g. `http://CONTROLLER_VIP:9696`
+        :param admin_endpoint: admin endpoint for neutron service e.g. `http://CONTROLLER_VIP:9696`
+        :returns: None
+        """
         return execute(self._create_service_credentials, *args, **kwargs)
 
     def _install_self_service(self, connection, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, neutron_pass, nova_url, nova_pass, public_interface, local_ip, nova_metadata_ip, metadata_proxy_shared_secret, memcached_servers, populate):
@@ -166,5 +184,25 @@ class Neutron(common.Common):
         sudo('rm -f /var/lib/neutron/neutron.sqlite', warn_only=True)
 
     def install_self_service(self, *args, **kwargs):
+        """
+        Install neutron for self-service
+
+        :param connection: mysql database connection string e.g. `mysql+pymysql://neutron:NEUTRON_PASS@CONTROLLER_VIP/neutron`
+        :param rabbit_hosts: rabbit hosts e.g. `CONTROLLER1,CONTROLLER2`
+        :param rabbit_user: the user of rabbit, e.g. `openstack`
+        :param rabbit_pass: the password of `rabbit_user`
+        :param auth_uri: keystone internal endpoint e.g. `http://CONTROLLER_VIP:5000`
+        :param auth_url: keystone admin endpoint e.g. `http://CONTROLLER_VIP:35357`
+        :param neutron_pass: the password of `neutron` user
+        :param nova_url: URL for connection to nova (Only supports one nova region currently) e.g. `http://CONTROLLER_VIP:8774/v2.1`
+        :param nova_pass: passowrd of `nova` user
+        :param public_interface: public interface e.g. `eth1`
+        :param local_ip: underlying physical network interface that handles overlay networks(uses the management interface IP)
+        :param nova_metadata_ip: IP address used by Nova metadata server e.g. `CONTROLLER_VIP`
+        :param metadata_proxy_shared_secret: metadata proxy shared secret
+        :param memcached_servers: memcached servers e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
+        :param populate: populate the neutron database
+        :returns: None
+        """
         return execute(self._install_self_service, *args, **kwargs)
 
