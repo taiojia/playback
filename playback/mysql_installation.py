@@ -30,6 +30,11 @@ class MysqlInstallation(common.Common):
             sudo('apt-get update')
     
     def enable_repo(self):
+        """
+        Setup repository for trusty only
+        
+        :returns: None
+        """
         return execute(self._enable_repo)
     
     def _install(self):
@@ -39,4 +44,9 @@ class MysqlInstallation(common.Common):
             sudo('DEBIAN_FRONTEND=noninteractive apt install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages mariadb-client mariadb-galera-server galera rsync')
 
     def install(self):
+        """
+        Install Galera Cluster for MySQL if trusty, install MariaDB Galera Cluster if xenial
+
+        :returns: None
+        """
         return execute(self._install)

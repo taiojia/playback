@@ -43,4 +43,12 @@ class MysqlConfig(common.Common):
             pass
 
     def update_mysql_config(self, *args, **kwargs):
+        """
+        If trusty setup Galera Cluster for MySQL. If xenial setup MariaDB Galera Cluster
+
+        :param wsrep_cluster_address: the IP addresses for each cluster node e.g. `gcomm://CONTROLLER1_IP,CONTROLLER2_IP`
+        :param wsrep_node_name: the logical name of the cluster node e.g. `galera1`
+        :param wsrep_node_address: the IP address of the cluster node e.g. `CONTROLLER1_IP`
+        :returns: None
+        """
         return execute(self._update_mysql_config, *args, **kwargs)
