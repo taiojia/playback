@@ -57,5 +57,23 @@ class ManilaShare(common.Common):
             sudo('service manila-share restart')
 
     def install_manila_share(self, *args, **kwargs):
+        """
+        Install manila share service
+
+        :param connection: mysql manila database connection string e.g. `mysql+pymysql://manila:MANILA_PASS@CONTROLLER_VIP/manila`
+        :param auth_uri: keystone internal endpoint e.g. `http://CONTROLLER_VIP:5000`
+        :param auth_url: keystone admin endpoint e.g. `http://CONTROLLER_VIP:35357`
+        :param manila_pass: passowrd of `manila` user
+        :param my_ip: the host management ip
+        :param memcached_servers: memcached servers e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
+        :param rabbit_hosts: rabbit hosts e.g. `CONTROLLER1,CONTROLLER2`
+        :param rabbit_user: the user of rabbit openstack user, e.g. 1openstack1
+        :param rabbit_pass: the password of `rabbit_user`
+        :param neutron_endpoint: neutron endpoint e.g. `http://CONTROLLER_VIP:9696`
+        :param neutron_pass: the password of `neutron` user
+        :param nova_pass: the passowrd of `nova` user
+        :param cinder_pass: the passowrd of `cinder` user
+        :returns: None
+        """
         return execute(self._install_manila_share, *args, **kwargs)
 
