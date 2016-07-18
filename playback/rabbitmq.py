@@ -30,6 +30,14 @@ class RabbitMq(common.Common):
         sudo('service rabbitmq-server restart')
 
     def install(self, *args, **kwargs):
+        """
+        Install rabbitmq
+
+        :param erlang_cookie: setup elang cookie
+        :param rabbit_user: set rabbit user name
+        :param rabbit_pass: set rabbit password of `rabbit_user`
+        :returns: None
+        """
         return execute(self._install, *args, **kwargs)
 
     def _join_cluster(self, name):
@@ -39,5 +47,11 @@ class RabbitMq(common.Common):
         sudo('rabbitmqctl set_policy ha-all \'^(?!amq\.).*\' \'{"ha-mode": "all"}\'')
 
     def join_cluster(self, *args, **kwargs):
+        """
+        Join to the cluster
+
+        :param name: the joined name, e.g. `rabbit@CONTROLLER1`, ensure the `CONTROLLER1` can be accessed by target host
+        :returns: None
+        """
         return execute(self._join_cluster, *args, **kwargs)
 
