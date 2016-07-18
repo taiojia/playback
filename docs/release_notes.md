@@ -1,5 +1,8 @@
 # Release Notes
 
+* v0.3.7 (Ris)
+  Fix module error
+
 * v0.3.6 (Ris)
   Move command line to FastForward
 

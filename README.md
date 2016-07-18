@@ -14,5 +14,5 @@ Playback is an OpenStack provisioning and orchestration library that all of the 
 
 ## Release Notes
 
-* v0.3.6 (Ris)
-  Move command line to FastForward
+* v0.3.7 (Ris)
+  Fix module error
