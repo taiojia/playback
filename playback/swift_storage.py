@@ -312,11 +312,11 @@ class SwiftStorage(common.Common):
         put('./container.ring.gz', '/etc/swift/container.ring.gz', use_sudo=True)
         put('./object.ring.gz', '/etc/swift/object.ring.gz', use_sudo=True)
 
-    def sync_builder_file(self):
+    def sync_builder_file(self, hosts):
         """
         Copy the account.ring.gz, container.ring.gz, and object.ring.gz files from local to the /etc/swift directory on each storage node and any additional nodes running the proxy service
 
         :returns: None
         """
-        return execute(self.sync_builder_file)
+        return execute(self._sync_builder_file, hosts=hosts)
         
