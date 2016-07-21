@@ -1,5 +1,8 @@
 # Release Notes
 
+* v0.3.8 (Ris)
+  Fix builder file upload error
+
 * v0.3.7 (Ris)
   Fix module error
 

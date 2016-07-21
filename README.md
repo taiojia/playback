@@ -12,7 +12,7 @@ Playback is an OpenStack provisioning and orchestration library that all of the 
     horizon = Horizon(user=remote_user, hosts=remote_hosts)
     horizon.install(openstack_host='192.168.1.2', memcached_servers='192.168.1.3:11211,192.168.1.4:11211', time_zone='America/New_York')
 
-## Release Notes
+## Current version
 
-* v0.3.7 (Ris)
-  Fix module error
+* v0.3.8 (Ris)
+  Fix builder file upload error
