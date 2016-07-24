@@ -132,17 +132,17 @@ class Cinder(common.Common):
         """
         Install cinder and volume service
 
-        :param connection(str): mysql database connection string e.g. `mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinde`
-        :param rabbit_hosts(str): rabbit hosts e.g. `CONTROLLER1,CONTROLLER2`
-        :param rabbit_user(str): the user of rabbit, e.g. `openstack`
-        :param rabbit_pass(str): the password of `rabbit_user`
-        :param auth_uri(str): keystone internal endpoint e.g. `http://CONTROLLER_VIP:5000`
-        :param auth_url(str): keystone admin endpoint e.g. `http://CONTROLLER_VIP:35357`
-        :param cinder_pass(str): create a password of `cinder` user
-        :param my_ip(str): the host management ip
-        :param glance_api_servers(str): glance host e.g. `http://CONTROLLER_VIP:9292`
-        :param rbd_secret_uuid(str): ceph rbd secret uuid, use `uuidgen` to generate the ceph uuid
-        :param memcached_servers(str): memcached servers e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
+        :param connection: The SQLAlchemy connection string to use to connect to the database. (string value) e.g. `mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinde`
+        :param rabbit_hosts: RabbitMQ HA cluster host:port pairs. (list value) e.g. `CONTROLLER1,CONTROLLER2`
+        :param rabbit_user(str): The RabbitMQ userid. (string value) e.g. `openstack`
+        :param rabbit_pass(str): The RabbitMQ password. (string value)
+        :param auth_uri(str): Complete public Identity API endpoint. (string value) e.g. `http://CONTROLLER_VIP:5000`
+        :param auth_url(str): Complete admin Identity API endpoint. (string value) e.g. `http://CONTROLLER_VIP:35357`
+        :param cinder_pass(str): create a password of `cinder` database user
+        :param my_ip(str): IP address of this host (string value)
+        :param glance_api_servers(str): A list of the URLs of glance API servers available to cinder ([http[s]://][hostname|ip]:port). If protocol is not specified it defaults to http. (list value) e.g. `http://CONTROLLER_VIP:9292`
+        :param rbd_secret_uuid(str): (String) The libvirt uuid of the secret for the rbd_user volumes (string value) , use `uuidgen` to generate the ceph uuid
+        :param memcached_servers(str): Optionally specify a list of memcached server(s) to use for caching. If left undefined, tokens will instead be cached in-process. (list value) e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
         :param populate(bool): Populate the cinder database, default `False`
         """
         return execute(self._install, *args, **kwargs)
