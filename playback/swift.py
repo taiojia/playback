@@ -62,7 +62,7 @@ class Swift(common.Common):
     def _install(self, auth_uri, auth_url, swift_pass, memcached_servers, with_memcached):
         print red(env.host_string + ' | Install swift proxy')
         sudo('apt-get update')
-        sudo('apt-get -y install swift swift-proxy python-swiftclient python-keystoneclient python-keystonemiddleware')
+        sudo('apt-get -y install swift swift-proxy python-swiftclient python-keystoneclient python-keystonemiddleware python-memcache')
         # Install memcached
         if with_memcached:
             sudo('apt-get -y install memcached')
