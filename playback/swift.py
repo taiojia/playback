@@ -124,6 +124,7 @@ class Swift(common.Common):
         sudo('service swift-proxy restart', warn_only=True)
         print red(env.host_string + ' | On the storage nodes, start the Object Storage services')
         sudo('swift-init all start', warn_only=True)
+        sudo('swift-init all reload', warn_only=True)
 
     def finalize_install(self, *args, **kwargs):
         """
