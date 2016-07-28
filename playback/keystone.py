@@ -108,8 +108,8 @@ class Keystone(common.Common):
         Install keystone
 
         :param admin_token: define the value of the initial administration token
-        :param connection: database connection string e.g. `mysql+pymysql://keystone:PASS@CONTROLLER_VIP/keystone`
-        :param memcached_servers: memcached servers. e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
+        :param connection: (String) The SQLAlchemy connection string to use to connect to the database. e.g. `mysql+pymysql://keystone:PASS@CONTROLLER_VIP/keystone`
+        :param memcached_servers: (List) Optionally specify a list of memcached server(s) to use for caching. If left undefined, tokens will instead be cached in-process. e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
         :param populate: populate the `keystone` database
         :returns: None
         """
