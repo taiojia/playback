@@ -131,12 +131,12 @@ class Glance(common.Common):
         """
         Install glance, default store is ceph
 
-        :param connection: mysql database connection string e.g. `mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance`
-        :param auth_uri: keystone internal endpoint e.g. `http://CONTROLLER_VIP:5000`
-        :param auth_url: keystone admin endpoint e.g. `http://CONTROLLER_VIP:35357`
+        :param connection: The SQLAlchemy connection string to use to connect to the database. (string value) e.g. `mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance`
+        :param auth_uri: Complete public Identity API endpoint. (string value) e.g. `http://CONTROLLER_VIP:5000`
+        :param auth_url: The URL to the keystone service. If "use_user_token" is not in effect and using keystone auth, then URL of keystone can be specified. (string value) e.g. `http://CONTROLLER_VIP:35357`
         :param glance_pass: passowrd of `glance` user
         :param swift_store_auth_address: DEPRECATED! the address where the Swift authentication service is listening e.g. `http://CONTROLLER_VIP:5000/v3/`
-        :param memcached_servers: memcached servers e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
+        :param memcached_servers: Optionally specify a list of memcached server(s) to use for caching. If left undefined, tokens will instead be cached in-process. (list value) e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
         :param populate: populate the glance database
         :returns: None
         """
