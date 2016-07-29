@@ -122,15 +122,15 @@ class Manila(common.Common):
         """
         Install manila
 
-        :param connection: mysql manila database connection string e.g. `mysql+pymysql://manila:MANILA_PASS@CONTROLLER_VIP/manila`
-        :param auth_uri: keystone internal endpoint e.g. `http://CONTROLLER_VIP:5000`
+        :param connection: The SQLAlchemy connection string to use to connect to the database. (string value) e.g. `mysql+pymysql://manila:MANILA_PASS@CONTROLLER_VIP/manila`
+        :param auth_uri: Complete public Identity API endpoint. (string value) e.g. `http://CONTROLLER_VIP:5000`
         :param auth_url: keystone admin endpoint e.g. `http://CONTROLLER_VIP:35357`
         :param manila_pass: passowrd of `manila` user
-        :param my_ip: the host management ip
-        :param memcached_servers: memcached servers e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
-        :param rabbit_hosts: rabbit hosts e.g. `CONTROLLER1,CONTROLLER2`
-        :param rabbit_user: the user of rabbit openstack user, e.g. `openstack`
-        :param rabbit_pass: the password of `rabbit_user`
+        :param my_ip: IP address of this host. (string value)
+        :param memcached_servers: Memcached servers or None for in process cache. (list value) e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
+        :param rabbit_hosts: RabbitMQ HA cluster host:port pairs. (list value) e.g. `CONTROLLER1,CONTROLLER2`
+        :param rabbit_user: The RabbitMQ userid. (string value) e.g. `openstack`
+        :param rabbit_pass: The RabbitMQ password. (string value)
         :param populate: populate the manila database
         :returns: None
         """
