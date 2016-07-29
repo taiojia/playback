@@ -16,6 +16,24 @@ class PrepareHost(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :Examples:
+
+        .. code-block:: python
+
+            # create an instance of PrepareHost
+            p = PrepareHost(
+                user='ubuntu', 
+                hosts='haproxy1,haproxy2,controller1,controller2,compute1,compute2,compute3,compute4'
+                )
+
+            # setup the external interface
+            p.setup_external_interface(public_interface='eth1')
+
+            # setup ntp
+            p.setup_ntp()
+
+            # setup repo
+            p.setup_openstack_repository()
     """
         
     def _setup_external_interface(self, public_interface):
@@ -79,7 +97,9 @@ class PrepareHost(common.Common):
 
     def set_openstack_repository(self):
         """
-        Install OpenStack repository only for trusty
+        Install OpenStack repository only for trusty.
+
+        This method install cloud-archive:mitaka on trusty, when xenial using the default xenial repo.
 
         :returns: None
         """
