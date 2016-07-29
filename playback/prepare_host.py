@@ -23,7 +23,7 @@ class PrepareHost(common.Common):
             # create an instance of PrepareHost
             p = PrepareHost(
                 user='ubuntu', 
-                hosts='haproxy1,haproxy2,controller1,controller2,compute1,compute2,compute3,compute4'
+                hosts=[haproxy1,haproxy2,controller1,controller2,compute1,compute2,compute3,compute4]
                 )
 
             # setup the external interface
