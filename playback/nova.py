@@ -131,20 +131,20 @@ class Nova(common.Common):
         """
         Install nova
 
-        :param connection: mysql nova database connection string e.g. `mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova`
-        :param api_connection: mysql nova_api database connection string e.g. `mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova_api`
-        :param auth_uri: keystone internal endpoint e.g. `http://CONTROLLER_VIP:5000`
-        :param auth_url: keystone admin endpoint e.g. `http://CONTROLLER_VIP:35357`
+        :param connection: (String) The SQLAlchemy connection string to use to connect to the Nova API database. e.g. `mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova`
+        :param api_connection: mysql nova_api database SQLAlchemy connection string e.g. `mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova_api`
+        :param auth_uri: (String) Complete public Identity API endpoint. e.g. `http://CONTROLLER_VIP:5000`
+        :param auth_url: (String) Authentication endpoint e.g. `http://CONTROLLER_VIP:35357`
         :param nova_pass: passowrd of `nova` user
-        :param my_ip: the host management ip
-        :param memcached_servers: memcached servers e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
-        :param rabbit_hosts: rabbit hosts e.g. `CONTROLLER1,CONTROLLER2`
-        :param rabbit_user: the user of rabbit e.g. `openstack`
-        :param rabbit_pass: the password of `rabbit_user`
-        :param glance_api_servers: glance host e.g. `http://CONTROLLER_VIP:9292`
+        :param my_ip: (String) IP address of this host
+        :param memcached_servers: A list of memcached server(s) to use for caching. (list value) e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
+        :param rabbit_hosts: RabbitMQ HA cluster host:port pairs. (list value) e.g. `CONTROLLER1,CONTROLLER2`
+        :param rabbit_user: The RabbitMQ userid. (string value) e.g. `openstack`
+        :param rabbit_pass: The RabbitMQ password. (string value)
+        :param glance_api_servers: (List) A list of the glance api servers endpoints available to nova. These should be fully qualified urls of the form scheme://hostname:port[/path] e.g. `http://CONTROLLER_VIP:9292`
         :param neutron_endpoint: neutron endpoint e.g. `http://CONTROLLER_VIP:9696`
         :param neutron_pass: the password of `neutron` user
-        :param metadata_proxy_shared_secret: metadata proxy shared secret
+        :param metadata_proxy_shared_secret: (String) Shared secret to validate proxies Neutron metadata requests
         :param populate: populate the nova database
         :returns: None
         """
