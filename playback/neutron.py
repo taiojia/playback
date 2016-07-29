@@ -187,20 +187,20 @@ class Neutron(common.Common):
         """
         Install neutron for self-service
 
-        :param connection: mysql database connection string e.g. `mysql+pymysql://neutron:NEUTRON_PASS@CONTROLLER_VIP/neutron`
-        :param rabbit_hosts: rabbit hosts e.g. `CONTROLLER1,CONTROLLER2`
-        :param rabbit_user: the user of rabbit, e.g. `openstack`
-        :param rabbit_pass: the password of `rabbit_user`
-        :param auth_uri: keystone internal endpoint e.g. `http://CONTROLLER_VIP:5000`
+        :param connection: The SQLAlchemy connection string to use to connect to the database. (string value) e.g. `mysql+pymysql://neutron:NEUTRON_PASS@CONTROLLER_VIP/neutron`
+        :param rabbit_hosts: RabbitMQ HA cluster host:port pairs. (list value) e.g. `CONTROLLER1,CONTROLLER2`
+        :param rabbit_user: The RabbitMQ userid. (string value) e.g. `openstack`
+        :param rabbit_pass: The RabbitMQ password. (string value)
+        :param auth_uri: Complete public Identity API endpoint. (string value) e.g. `http://CONTROLLER_VIP:5000`
         :param auth_url: keystone admin endpoint e.g. `http://CONTROLLER_VIP:35357`
         :param neutron_pass: the password of `neutron` user
         :param nova_url: URL for connection to nova (Only supports one nova region currently) e.g. `http://CONTROLLER_VIP:8774/v2.1`
         :param nova_pass: passowrd of `nova` user
         :param public_interface: public interface e.g. `eth1`
-        :param local_ip: underlying physical network interface that handles overlay networks(uses the management interface IP)
-        :param nova_metadata_ip: IP address used by Nova metadata server e.g. `CONTROLLER_VIP`
-        :param metadata_proxy_shared_secret: metadata proxy shared secret
-        :param memcached_servers: memcached servers e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
+        :param local_ip: underlying physical network interface that handles overlay networks(uses the management interface IP) (ip address value)
+        :param nova_metadata_ip:  IP address used by Nova metadata server. (string value) e.g. `CONTROLLER_VIP`
+        :param metadata_proxy_shared_secret: When proxying metadata requests, Neutron signs the Instance-ID header with a shared secret to prevent spoofing. You may select any string for a secret, but it must match here and in the configuration used by the Nova Metadata Server. NOTE: Nova uses the same config key, but in [neutron] section. (string value)
+        :param memcached_servers: Optionally specify a list of memcached server(s) to use for caching. (list value) e.g. `CONTROLLER1:11211,CONTROLLER2:11211`
         :param populate: populate the neutron database
         :returns: None
         """
