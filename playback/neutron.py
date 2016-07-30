@@ -88,7 +88,6 @@ class Neutron(common.Common):
                 nova_metadata_ip='192.168.1.1',
                 metadata_proxy_shared_secret='changeme-changeme-changeme-changeme',
                 memcached_servers='controller1:11211,controller2:11211'
-                populate=True
             )
     """
 
