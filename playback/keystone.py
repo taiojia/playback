@@ -22,6 +22,79 @@ class Keystone(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+
+        .. code-block:: python
+
+            # create two instance
+            keystone1 = Keystone(
+                user='ubuntu',
+                hosts=['controller1']
+            )
+            keystone2 = Keystone(
+                user='ubuntu',
+                hosts=['controller2']
+            )
+
+            # create keystone database
+            keystone1.create_keystone_db(
+                root_db_pass='changeme',
+                keystone_db_pass='changeme'
+            )
+            
+            # install keystone on controller1 and controller2
+            keystone1.install_keystone(
+                admin_token='changeme',
+                connection='mysql+pymysql://keystone:changeme@192.168.1.1/keystone',
+                memcached_servers='controller1:11211,controller2:11211',
+                populate=True
+            )
+            keystone2.install_keystone(
+                admin_token='changeme',
+                connection='mysql+pymysql://keystone:changeme@192.168.1.1/keystone',
+                memcached_servers='controller1:11211,controller2:11211'
+            )
+
+            # create the service entity and api endpoints
+            keystone1.create_entity_and_endpoint(
+                os_token='changeme',
+                os_url='http://192.168.1.1:35357/v3',
+                public_endpoint='http://192.168.1.1:5000/v3',
+                internal_endpoint='http://192.168.1.1:5000/v3',
+                admin_endpoint='http://192.168.1.1:35357/v3'
+            )
+            
+            # create projects, users, and roles
+            keystone1.create_projects_users_roles(
+                os_token='changeme',
+                os_url='http://192.168.1.1:35357/v3',
+                admin_pass='changeme',
+                demo_pass='changeme'
+            )
+
+            # you will need to create OpenStack client environment scripts admin-openrc.sh
+            export OS_PROJECT_DOMAIN_NAME=default
+            export OS_USER_DOMAIN_NAME=default
+            export OS_PROJECT_NAME=admin
+            export OS_TENANT_NAME=admin
+            export OS_USERNAME=admin
+            export OS_PASSWORD=changeme
+            export OS_AUTH_URL=http://192.168.1.1:35357/v3
+            export OS_IDENTITY_API_VERSION=3
+            export OS_IMAGE_API_VERSION=2
+            export OS_AUTH_VERSION=3
+
+            # demo-openrc.sh
+            export OS_PROJECT_DOMAIN_NAME=default
+            export OS_USER_DOMAIN_NAME=default
+            export OS_PROJECT_NAME=demo
+            export OS_TENANT_NAME=demo
+            export OS_USERNAME=demo
+            export OS_PASSWORD=changeme
+            export OS_AUTH_URL=http://192.168.1.1:5000/v3
+            export OS_IDENTITY_API_VERSION=3
+            export OS_IMAGE_API_VERSION=2
+            export OS_AUTH_VERSION=3
     """
 
     @runs_once
