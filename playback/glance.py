@@ -20,6 +20,52 @@ class Glance(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+    
+        .. code-block:: python
+
+            # create glance instances
+            glance1 = Glance(
+                user='ubuntu',
+                hosts=['controller1']
+            )
+            glance2 = Glance(
+                user='ubuntu',
+                hosts=['controller2']
+            )
+
+            # create glance database
+            glance1.create_glance_db(
+                root_db_pass='changeme',
+                glance_db_pass='changeme'
+            )
+
+            # create service credentials
+            glance1.create_service_credentials(
+                os_password='changeme',
+                os_auth_url='http://192.168.1.1:35357/v3',
+                glance_pass='changeme',
+                public_endpoint='http://192.168.1.1:9292',
+                internal_endpoint='http://192.168.1.1:9292',
+                admin_endpoint='http://192.168.1.1:9292'
+            )
+
+            # install glance
+            glance1.install_glance(
+                connection='mysql+pymysql://glance:changeme@192.168.1.1/glance',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                glance_pass='changeme',
+                memcached_servers='controller1:11211,controller2:11211',
+                populate=True
+            )
+            glance2.install_glance(
+                connection='mysql+pymysql://glance:changeme@192.168.1.1/glance',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                glance_pass='changeme',
+                memcached_servers='controller1:11211,controller2:11211'
+            )
     """
 
     @runs_once
