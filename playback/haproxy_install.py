@@ -12,6 +12,15 @@ class HaproxyInstall(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+
+        .. code-block:: python
+
+            # create an haproxy instance
+            haproxy = HaproxyInstall(user='ubuntu', hosts=['haproxy1', 'haproxy2'])
+
+            # install haproxy on haproxy1 and haproxy2
+            haproxy.install()
     """
 
     def _install(self):

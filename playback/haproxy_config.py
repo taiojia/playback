@@ -14,6 +14,44 @@ class HaproxyConfig(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+
+        .. code-block:: python
+
+            # create two haproxy instances
+            haproxy1 = HaproxyConfig(
+                user='ubuntu',
+                hosts=['haproxy1']
+            )
+            haproxy2 = HaproxyConfig(
+                user='ubuntu',
+                hosts=['haproxy2']
+            )
+
+            # generate haproxy configfile example or manually create
+            from playback.templates.haproxy_cfg import conf_haproxy_cfg
+            with open('haproxy.cfg', 'w') as f:
+                f.write(conf_haproxy_cfg)
+            
+            # upload config to haproxy1 and haproxy2
+            haproxy1.upload_conf('haproxy.cfg')
+            haproxy2.upload_conf('haproxy.cfg')
+
+            # setup keepalived
+            haproxy1.configure_keepalived(
+                router_id='lb1',
+                priority=150,
+                state='MASTER',
+                interface='eth0',
+                vip='192.168.1.1'
+            )
+            haproxy2.configure_keepalived(
+                router_id='lb2',
+                priority=100,
+                state='SLAVE',
+                interface='eth0',
+                vip='192.168.1.1'
+            )
     """
     
     def _upload_conf(self, file):
