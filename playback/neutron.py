@@ -25,6 +25,71 @@ class Neutron(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+
+        .. code-block:: python
+
+            # create neutron instances
+            neutron1 = Neutron(
+                user='ubuntu',
+                hosts=['controller1']
+            )
+            neutron2 = Neutron(
+                user='ubuntu',
+                hosts=['controller2']
+            )
+
+            # create neutron database
+            neutron1.create_neutron_db(
+                root_db_pass='changeme',
+                neutron_db_pass='changeme'
+            )
+
+            # create service credentials
+            neutron1.create_service_credentials(
+                os_password='changeme',
+                os_auth_url='http://192.168.1.1:35357/v3',
+                neutron_pass='changeme',
+                public_endpoint='http://192.168.1.1:9696',
+                internal_endpoint='http://192.168.1.1:9696',
+                admin_endpoint='http://192.168.1.1:9696'
+            )
+
+            # install neutron for self-service
+            neutron1.install_self_service(
+                connection='mysql+pymysql://neutron:changeme@192.168.1.1/neutron',
+                rabbit_hosts='controller1,controller2',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                neutron_pass='changeme',
+                nova_url='http://192.168.1.1:8774/v2.1',
+                nova_pass='changeme',
+                public_interface='eth1',
+                local_ip='192.168.1.2',
+                nova_metadata_ip='192.168.1.1',
+                metadata_proxy_shared_secret='changeme-changeme-changeme-changeme',
+                memcached_servers='controller1:11211,controller2:11211'
+                populate=True
+            )
+            neutron2.install_self_service(
+                connection='mysql+pymysql://neutron:changeme@192.168.1.1/neutron',
+                rabbit_hosts='controller1,controller2',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                neutron_pass='changeme',
+                nova_url='http://192.168.1.1:8774/v2.1',
+                nova_pass='changeme',
+                public_interface='eth1',
+                local_ip='192.168.1.3',
+                nova_metadata_ip='192.168.1.1',
+                metadata_proxy_shared_secret='changeme-changeme-changeme-changeme',
+                memcached_servers='controller1:11211,controller2:11211'
+                populate=True
+            )
     """
 
     @runs_once
