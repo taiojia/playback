@@ -19,6 +19,70 @@ class Nova(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+
+        .. code-block:: python
+
+            # create two instances
+            nova1 = Nova(
+                user='ubuntu',
+                hosts=['controller1']
+            )
+            nova2 = Nova(
+                user='ubuntu',
+                hosts=['controller2']
+            )
+
+            # create nova database
+            nova1.create_nova_db(
+                root_db_pass='changeme',
+                nova_db_pass='changeme'
+            )
+
+            # create service credentials
+            nova1.create_service_credentials(
+                os_password='changeme',
+                os_auth_url='http://192.168.1.1:35357/v3',
+                nova_pass='changeme'
+                public_endpoint='http://192.168.1.1:8774/v2.1/%\(tenant_id\)s'
+                internal_endpoint='http://192.168.1.1:8774/v2.1/%\(tenant_id\)s'
+                admin_endpoint='http://192.168.1.1:8774/v2.1/%\(tenant_id\)s'
+            )
+
+            # install nova
+            nova1.install_nova(
+                connection='mysql+pymysql://nova:changeme@192.168.1.1/nova',
+                api_connection='mysql+pymysql://nova:changeme@192.168.1.1/nova_api',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                nova_pass='changeme',
+                my_ip='192.168.1.2',
+                memcached_servers='controller1:11211,controller2:11211',
+                rabbit_hosts='controller1,controller2',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                glance_api_servers='http://192.168.1.1:9292',
+                neutron_endpoint='http://192.168.1.1:9696',
+                neutron_pass='changeme',
+                metadata_proxy_shared_secret='changeme',
+                populate=True
+            )
+            nova2.install_nova(
+                connection='mysql+pymysql://nova:changeme@192.168.1.1/nova',
+                api_connection='mysql+pymysql://nova:changeme@192.168.1.1/nova_api',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                nova_pass='changeme',
+                my_ip='192.168.1.3',
+                memcached_servers='controller1:11211,controller2:11211',
+                rabbit_hosts='controller1,controller2',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                glance_api_servers='http://192.168.1.1:9292',
+                neutron_endpoint='http://192.168.1.1:9696',
+                neutron_pass='changeme',
+                metadata_proxy_shared_secret='changeme'
+            )
     """
     @runs_once
     def _create_nova_db(self, root_db_pass, nova_db_pass):
