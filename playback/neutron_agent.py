@@ -21,6 +21,73 @@ class NeutronAgent(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+
+        .. code-block:: python
+
+            # create neutron agent instances
+            agent1 = NeutronAgent(
+                user='ubuntu',
+                hosts=['compute1']
+            )
+            agent2 = NeutronAgent(
+                user='ubuntu',
+                hosts=['compute2']
+            )
+            agent3 = NeutronAgent(
+                user='ubuntu',
+                hosts=['compute3']
+            )
+            agent4 = NeutronAgent(
+                user='ubuntu',
+                hosts=['compute4']
+            )
+
+            # install neutron agent
+            agent1.install(
+                rabbit_hosts='controller1,controller2',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                neutron_pass='changeme',
+                public_interface='eth1',
+                local_ip='192.168.1.11',
+                memcached_servers='controller1:11211,controller2:11211',
+            )
+            agent2.install(
+                rabbit_hosts='controller1,controller2',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                neutron_pass='changeme',
+                public_interface='eth1',
+                local_ip='192.168.1.12',
+                memcached_servers='controller1:11211,controller2:11211',
+            )
+            agent3.install(
+                rabbit_hosts='controller1,controller2',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                neutron_pass='changeme',
+                public_interface='eth1',
+                local_ip='192.168.1.13',
+                memcached_servers='controller1:11211,controller2:11211',
+            )
+            agent4.install(
+                rabbit_hosts='controller1,controller2',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                neutron_pass='changeme',
+                public_interface='eth1',
+                local_ip='192.168.1.14',
+                memcached_servers='controller1:11211,controller2:11211',
+            )
     """
 
     def _install(self, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, neutron_pass, public_interface, local_ip, memcached_servers):
