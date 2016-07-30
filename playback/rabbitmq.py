@@ -16,6 +16,29 @@ class RabbitMq(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+
+        .. code-block:: python
+
+            # create a rabbit instance
+            rabbit = RabbitMq(
+                user='ubuntu',
+                hosts=['controller1', 'controller2']
+            )
+
+            # install rabbit on controller1 and controller2
+            rabbit.install(
+                erlang_cookie='changemechangeme',
+                rabbit_user='openstack',
+                rabbit_pass='changeme'
+            )
+
+            # create cluster, ensure controller2 can access controller1 via hostname
+            rabbit_controller2 = RabbitMq(
+                user='ubuntu',
+                hosts=['controller2']
+            )
+            rabbit_controller2.join_cluster(name='rabbit@controller1')
     """
 
     def _install(self, erlang_cookie, rabbit_user, rabbit_pass):
