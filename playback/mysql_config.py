@@ -16,6 +16,29 @@ class MysqlConfig(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+
+        .. code-block:: python
+
+            # create a mysql instance
+            mysql_controller1 = MysqlConfig(
+                    user='ubuntu',
+                    hosts=['controller1']
+                    )
+
+            # setup cluster on controller1
+            mysql_controller1.update_mysql_config(
+                wsrep_cluster_address = 'gcomm://controller1,controller2'
+                wsrep_node_name = 'galera1'
+                wsrep_node_address = '192.168.1.2'
+            )
+
+            # setup cluster on controller2
+            mysql_controller2.update_mysql_config(
+                wsrep_cluster_address = 'gcomm://controller1,controller2'
+                wsrep_node_name = 'galera2'
+                wsrep_node_address = '192.168.1.3'
+            )
     """
     
     def _update_mysql_config(self, wsrep_cluster_address, wsrep_node_name, wsrep_node_address):

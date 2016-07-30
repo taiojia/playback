@@ -13,6 +13,21 @@ class MysqlInstallation(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+
+        .. code-block:: python
+
+            # create mysql installation isinstance
+            mysql = MysqlInstallation(
+                    user='ubuntu', 
+                    hosts=['controller1', 'controller2']
+                    )
+
+            # add mariadb galera cluster if xenial, galera cluster for mysql if trusty
+            mysql.enable_repo()
+
+            # install mysql ha on controller1 and controller2
+            mysql.install()
     """
 
 

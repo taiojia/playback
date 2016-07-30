@@ -14,6 +14,25 @@ class MysqlManage(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+
+        .. code-block:: python
+
+            # create two mysql instances
+            mysql1 = MysqlManage(user='ubuntu', hosts=['controller1'])
+            mysql2 = MysqlManage(user='ubuntu', hosts=['controller2'])
+
+            # bootstrap the first cluster node
+            mysql1.start_wsrep_new_cluster()
+
+            # start the second cluster node
+            mysql2.start_mysql()
+
+            # change the mysql root password
+            mysql1.change_root_password('changeme')
+
+            # show the cluster status
+            mysql1.show_cluster_status('changeme')
     """
 
     def _start_wsrep_new_cluster(self):
