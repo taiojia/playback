@@ -23,6 +23,77 @@ class NovaCompute(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+
+        .. code-block:: python
+
+            # create nova compute instances
+            nova_compute1 = NovaCompute(user='ubuntu', hosts=['compute1'])
+            nova_compute2 = NovaCompute(user='ubuntu', hosts=['compute2'])
+            nova_compute3 = NovaCompute(user='ubuntu', hosts=['compute3'])
+            nova_compute4 = NovaCompute(user='ubuntu', hosts=['compute4'])
+
+            # install nova compute
+            nova_compute1.install(
+                my_ip='192.168.1.11',
+                rabbit_hosts='controller1,controller2',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                nova_pass='changeme',
+                novncproxy_base_url='http://192.168.1.1:6080/vnc_auto.html',
+                glance_api_servers='http://192.168.1.1:9292',
+                neutron_endpoint='http://192.168.1.1:9696',
+                neutron_pass='changeme',
+                rbd_secret_uuid='changeme-0000-0000-0000-000000000000',
+                memcached_servers='controller1:11211,controller2:11211'
+            )
+            nova_compute2.install(
+                my_ip='192.168.1.12',
+                rabbit_hosts='controller1,controller2',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                nova_pass='changeme',
+                novncproxy_base_url='http://192.168.1.1:6080/vnc_auto.html',
+                glance_api_servers='http://192.168.1.1:9292',
+                neutron_endpoint='http://192.168.1.1:9696',
+                neutron_pass='changeme',
+                rbd_secret_uuid='changeme-0000-0000-0000-000000000000',
+                memcached_servers='controller1:11211,controller2:11211'
+            )
+            nova_compute3.install(
+                my_ip='192.168.1.13',
+                rabbit_hosts='controller1,controller2',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                nova_pass='changeme',
+                novncproxy_base_url='http://192.168.1.1:6080/vnc_auto.html',
+                glance_api_servers='http://192.168.1.1:9292',
+                neutron_endpoint='http://192.168.1.1:9696',
+                neutron_pass='changeme',
+                rbd_secret_uuid='changeme-0000-0000-0000-000000000000',
+                memcached_servers='controller1:11211,controller2:11211'
+            )
+            nova_compute4.install(
+                my_ip='192.168.1.14',
+                rabbit_hosts='controller1,controller2',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                nova_pass='changeme',
+                novncproxy_base_url='http://192.168.1.1:6080/vnc_auto.html',
+                glance_api_servers='http://192.168.1.1:9292',
+                neutron_endpoint='http://192.168.1.1:9696',
+                neutron_pass='changeme',
+                rbd_secret_uuid='changeme-0000-0000-0000-000000000000',
+                memcached_servers='controller1:11211,controller2:11211'
+            )
     """
     def _install(self, my_ip, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, nova_pass, novncproxy_base_url, glance_api_servers, neutron_endpoint, neutron_pass, rbd_secret_uuid, memcached_servers):
         print red(env.host_string + ' | Install nova-compute sysfsutils')
