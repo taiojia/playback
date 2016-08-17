@@ -24,6 +24,235 @@ class SwiftStorage(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+
+        .. code-block::
+            
+            # create storage instances
+            swift_storage1 = SwiftStorage(user='ubuntu', hosts=['compute1'])
+            swift_storage2 = SwiftStorage(user='ubuntu', hosts=['compute2'])
+
+            # prepare disks on storage nodes
+            swift_storage1.prepare_disks('sdb,sdc,sdd,sde')
+            swift_storage2.prepare_disks('sdb,sdc,sdd,sde')
+
+            # install swift storage
+            swift_storage1.install(
+                address='192.168.1.11'
+                bind_ip='192.168.1.11'
+            )
+            swift_storage2.install(
+                address='192.168.1.12'
+                bind_ip='192.168.1.12'
+            )
+
+            # create a ring instance
+            ring = SwiftStorage(user='ubuntu', hosts=['controller1'])
+
+            # create account ring
+            ring.create_account_builder_file(
+                partitions=10,
+                replicas=3,
+                moving=1
+            )
+            ring.account_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.11',
+                device='sdb',
+                weight=100
+            )
+            ring.account_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.11',
+                device='sdc',
+                weight=100
+            )
+            ring.account_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.11',
+                device='sdd',
+                weight=100
+            )
+            ring.account_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.11',
+                device='sde',
+                weight=100
+            )
+            ring.account_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.12',
+                device='sdb',
+                weight=100
+            )
+            ring.account_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.12',
+                device='sdc',
+                weight=100
+            )
+            ring.account_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.12',
+                device='sdd',
+                weight=100
+            )
+            ring.account_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.12',
+                device='sde',
+                weight=100
+            )
+            ring.account_builder_rebalance()
+
+            # create container ring
+            ring.create_container_builder_file(
+                partitions=10,
+                replicas=3,
+                moving=1
+            )
+            ring.container_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.11',
+                device='sdb',
+                weight=100
+            )
+            ring.container_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.11',
+                device='sdc',
+                weight=100
+            )
+            ring.container_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.11',
+                device='sdd',
+                weight=100
+            )
+            ring.container_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.11',
+                device='sde',
+                weight=100
+            )
+            ring.container_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.12',
+                device='sdb',
+                weight=100
+            )
+            ring.container_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.12',
+                device='sdc',
+                weight=100
+            )
+            ring.container_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.12',
+                device='sdd',
+                weight=100
+            )
+            ring.container_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.12',
+                device='sde',
+                weight=100
+            )
+            ring.container_builder_rebalance()
+
+            # create object ring
+            ring.create_object_builder_file(
+                partitions=10,
+                replicas=3,
+                moving=1
+            )
+            ring.object_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.11',
+                device='sdb',
+                weight=100
+            )
+            ring.object_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.11',
+                device='sdc',
+                weight=100
+            )
+            ring.object_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.11',
+                device='sdd',
+                weight=100
+            )
+            ring.object_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.11',
+                device='sde',
+                weight=100
+            )
+            ring.object_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.12',
+                device='sdb',
+                weight=100
+            )
+            ring.object_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.12',
+                device='sdc',
+                weight=100
+            )
+            ring.object_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.12',
+                device='sdd',
+                weight=100
+            )
+            ring.object_builder_add(
+                region=1,
+                zone=1,
+                ip='192.168.1.12',
+                device='sde',
+                weight=100
+            )
+            ring.object_builder_rebalance()
+
+            # sync the builder file from controller node to each storage node and other any proxy node
+            ring.sync_builder_file(
+                hosts=['controller2', 'compute1', 'compute2']
+            )
+
+            # finalize installation on all nodes
+            from playback.swift import Swift
+            finalize = Swift(user='ubuntu', hosts=['controller1','controller2', 'compute1', 'compute2'])
+            finalize.finalize_install(
+                swift_hash_path_suffix='changeme',
+                swift_hash_path_prefix='changeme'
+            )
     """
 
     def _prepare_disks(self, disks_name):

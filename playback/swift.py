@@ -20,6 +20,41 @@ class Swift(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+
+        .. code-block::
+            
+            # create swift proxy instances
+            swift_proxy1 = Swift(user='ubuntu', hosts=['controller1'])
+            swift_proxy2 = Swift(user='ubuntu', hosts=['controller2'])
+
+            # create the Identity service credentials(only do this at once)
+            swift_proxy1.create_service_credentials(
+                os_password='changeme',
+                os_auth_url='http://192.168.1.1:35357/v3',
+                swift_pass='changeme',
+                public_endpoint='http://192.168.1.1:8080/v1/AUTH_%\(tenant_id\)s',
+                internal_endpoint='http://192.168.1.1:8080/v1/AUTH_%\(tenant_id\)s',
+                admin_endpoint='http://192.168.1.1:8080/v1'
+            )
+
+            # install swift proxy
+            swift_proxy1.install(
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                swift_pass='changeme'
+                memcached_servers='controller1:11211,controller2:11211',
+                with_memcached=False # if True install memcached on this node
+            )
+            swift_proxy2.install(
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                swift_pass='changeme'
+                memcached_servers='controller1:11211,controller2:11211',
+                with_memcached=False # if True install memcached on this node
+            )
+
+            # see swift storage documents for full install of swift
     """
 
     @runs_once
