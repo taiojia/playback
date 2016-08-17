@@ -22,7 +22,7 @@ class Swift(common.Common):
     :returns: None
     :examples:
 
-        .. code-block::
+        .. code-block:: python
             
             # create swift proxy instances
             swift_proxy1 = Swift(user='ubuntu', hosts=['controller1'])
@@ -167,7 +167,7 @@ class Swift(common.Common):
 
         :param swift_hash_path_suffix: `swift_hash_path_suffix` and `swift_hash_path_prefix` are used as part of the hashing algorithm when determining data placement in the cluster. These values should remain secret and MUST NOT change once a cluster has been deployed
         :param swift_hash_path_prefix: `swift_hash_path_suffix` and `swift_hash_path_prefix` are used as part of the hashing algorithm when determining data placement in the cluster. These values should remain secret and MUST NOT change once a cluster has been deployed
-        :returns None
+        :returns: None
         """
         return execute(self._finalize_install, *args, **kwargs)
 

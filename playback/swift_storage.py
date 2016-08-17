@@ -26,7 +26,7 @@ class SwiftStorage(common.Common):
     :returns: None
     :examples:
 
-        .. code-block::
+        .. code-block:: python
             
             # create storage instances
             swift_storage1 = SwiftStorage(user='ubuntu', hosts=['compute1'])
