@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Nova &mdash; Playback 0.3.8 documentation</title>
+    <title>Nova &mdash; Playback 0.3.9 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3.8',
+        VERSION:     '0.3.9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,11 +23,12 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Playback 0.3.8 documentation" href="index.html" />
+    <link rel="top" title="Playback 0.3.9 documentation" href="index.html" />
     <link rel="next" title="NovaCompute" href="nova_compute.html" />
     <link rel="prev" title="Glance" href="glance.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
@@ -60,7 +61,71 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"><div class="first last highlight-python"><div class="highlight"><pre><span></span><span class="c1"># create two instances</span>
+<span class="n">nova1</span> <span class="o">=</span> <span class="n">Nova</span><span class="p">(</span>
+    <span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span>
+    <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;controller1&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">nova2</span> <span class="o">=</span> <span class="n">Nova</span><span class="p">(</span>
+    <span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span>
+    <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;controller2&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># create nova database</span>
+<span class="n">nova1</span><span class="o">.</span><span class="n">create_nova_db</span><span class="p">(</span>
+    <span class="n">root_db_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">nova_db_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># create service credentials</span>
+<span class="n">nova1</span><span class="o">.</span><span class="n">create_service_credentials</span><span class="p">(</span>
+    <span class="n">os_password</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">os_auth_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357/v3&#39;</span><span class="p">,</span>
+    <span class="n">nova_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span>
+    <span class="n">public_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:8774/v2.1/%\(tenant_id\)s&#39;</span>
+    <span class="n">internal_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:8774/v2.1/%\(tenant_id\)s&#39;</span>
+    <span class="n">admin_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:8774/v2.1/%\(tenant_id\)s&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># install nova</span>
+<span class="n">nova1</span><span class="o">.</span><span class="n">install_nova</span><span class="p">(</span>
+    <span class="n">connection</span><span class="o">=</span><span class="s1">&#39;mysql+pymysql://nova:changeme@192.168.1.1/nova&#39;</span><span class="p">,</span>
+    <span class="n">api_connection</span><span class="o">=</span><span class="s1">&#39;mysql+pymysql://nova:changeme@192.168.1.1/nova_api&#39;</span><span class="p">,</span>
+    <span class="n">auth_uri</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:5000&#39;</span><span class="p">,</span>
+    <span class="n">auth_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357&#39;</span><span class="p">,</span>
+    <span class="n">nova_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">my_ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.2&#39;</span><span class="p">,</span>
+    <span class="n">memcached_servers</span><span class="o">=</span><span class="s1">&#39;controller1:11211,controller2:11211&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_hosts</span><span class="o">=</span><span class="s1">&#39;controller1,controller2&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_user</span><span class="o">=</span><span class="s1">&#39;openstack&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">glance_api_servers</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:9292&#39;</span><span class="p">,</span>
+    <span class="n">neutron_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:9696&#39;</span><span class="p">,</span>
+    <span class="n">neutron_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">metadata_proxy_shared_secret</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">populate</span><span class="o">=</span><span class="bp">True</span>
+<span class="p">)</span>
+<span class="n">nova2</span><span class="o">.</span><span class="n">install_nova</span><span class="p">(</span>
+    <span class="n">connection</span><span class="o">=</span><span class="s1">&#39;mysql+pymysql://nova:changeme@192.168.1.1/nova&#39;</span><span class="p">,</span>
+    <span class="n">api_connection</span><span class="o">=</span><span class="s1">&#39;mysql+pymysql://nova:changeme@192.168.1.1/nova_api&#39;</span><span class="p">,</span>
+    <span class="n">auth_uri</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:5000&#39;</span><span class="p">,</span>
+    <span class="n">auth_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357&#39;</span><span class="p">,</span>
+    <span class="n">nova_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">my_ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.3&#39;</span><span class="p">,</span>
+    <span class="n">memcached_servers</span><span class="o">=</span><span class="s1">&#39;controller1:11211,controller2:11211&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_hosts</span><span class="o">=</span><span class="s1">&#39;controller1,controller2&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_user</span><span class="o">=</span><span class="s1">&#39;openstack&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">glance_api_servers</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:9292&#39;</span><span class="p">,</span>
+    <span class="n">neutron_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:9696&#39;</span><span class="p">,</span>
+    <span class="n">neutron_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">metadata_proxy_shared_secret</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 </td>
 </tr>
 </tbody>
@@ -120,20 +185,20 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>connection</strong> &#8211; mysql nova database connection string e.g. <cite>mysql+pymysql://nova:NOVA_PASS&#64;CONTROLLER_VIP/nova</cite></li>
-<li><strong>api_connection</strong> &#8211; mysql nova_api database connection string e.g. <cite>mysql+pymysql://nova:NOVA_PASS&#64;CONTROLLER_VIP/nova_api</cite></li>
-<li><strong>auth_uri</strong> &#8211; keystone internal endpoint e.g. <cite>http://CONTROLLER_VIP:5000</cite></li>
-<li><strong>auth_url</strong> &#8211; keystone admin endpoint e.g. <cite>http://CONTROLLER_VIP:35357</cite></li>
+<li><strong>connection</strong> &#8211; (String) The SQLAlchemy connection string to use to connect to the Nova API database. e.g. <cite>mysql+pymysql://nova:NOVA_PASS&#64;CONTROLLER_VIP/nova</cite></li>
+<li><strong>api_connection</strong> &#8211; mysql nova_api database SQLAlchemy connection string e.g. <cite>mysql+pymysql://nova:NOVA_PASS&#64;CONTROLLER_VIP/nova_api</cite></li>
+<li><strong>auth_uri</strong> &#8211; (String) Complete public Identity API endpoint. e.g. <cite>http://CONTROLLER_VIP:5000</cite></li>
+<li><strong>auth_url</strong> &#8211; (String) Authentication endpoint e.g. <cite>http://CONTROLLER_VIP:35357</cite></li>
 <li><strong>nova_pass</strong> &#8211; passowrd of <cite>nova</cite> user</li>
-<li><strong>my_ip</strong> &#8211; the host management ip</li>
-<li><strong>memcached_servers</strong> &#8211; memcached servers e.g. <cite>CONTROLLER1:11211,CONTROLLER2:11211</cite></li>
-<li><strong>rabbit_hosts</strong> &#8211; rabbit hosts e.g. <cite>CONTROLLER1,CONTROLLER2</cite></li>
-<li><strong>rabbit_user</strong> &#8211; the user of rabbit e.g. <cite>openstack</cite></li>
-<li><strong>rabbit_pass</strong> &#8211; the password of <cite>rabbit_user</cite></li>
-<li><strong>glance_api_servers</strong> &#8211; glance host e.g. <cite>http://CONTROLLER_VIP:9292</cite></li>
+<li><strong>my_ip</strong> &#8211; (String) IP address of this host</li>
+<li><strong>memcached_servers</strong> &#8211; A list of memcached server(s) to use for caching. (list value) e.g. <cite>CONTROLLER1:11211,CONTROLLER2:11211</cite></li>
+<li><strong>rabbit_hosts</strong> &#8211; RabbitMQ HA cluster host:port pairs. (list value) e.g. <cite>CONTROLLER1,CONTROLLER2</cite></li>
+<li><strong>rabbit_user</strong> &#8211; The RabbitMQ userid. (string value) e.g. <cite>openstack</cite></li>
+<li><strong>rabbit_pass</strong> &#8211; The RabbitMQ password. (string value)</li>
+<li><strong>glance_api_servers</strong> &#8211; (List) A list of the glance api servers endpoints available to nova. These should be fully qualified urls of the form scheme://hostname:port[/path] e.g. <cite>http://CONTROLLER_VIP:9292</cite></li>
 <li><strong>neutron_endpoint</strong> &#8211; neutron endpoint e.g. <cite>http://CONTROLLER_VIP:9696</cite></li>
 <li><strong>neutron_pass</strong> &#8211; the password of <cite>neutron</cite> user</li>
-<li><strong>metadata_proxy_shared_secret</strong> &#8211; metadata proxy shared secret</li>
+<li><strong>metadata_proxy_shared_secret</strong> &#8211; (String) Shared secret to validate proxies Neutron metadata requests</li>
 <li><strong>populate</strong> &#8211; populate the nova database</li>
 </ul>
 </td>
@@ -189,7 +254,7 @@
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
       <a href="_sources/nova.txt"

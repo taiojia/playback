@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>MysqlManage &mdash; Playback 0.3.8 documentation</title>
+    <title>MysqlManage &mdash; Playback 0.3.9 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3.8',
+        VERSION:     '0.3.9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,11 +23,12 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Playback 0.3.8 documentation" href="index.html" />
+    <link rel="top" title="Playback 0.3.9 documentation" href="index.html" />
     <link rel="next" title="HaproxyInstall" href="haproxy_install.html" />
     <link rel="prev" title="MysqlConfig" href="mysql_config.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
@@ -60,7 +61,26 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"><div class="first last highlight-python"><div class="highlight"><pre><span></span><span class="c1"># create two mysql instances</span>
+<span class="n">mysql1</span> <span class="o">=</span> <span class="n">MysqlManage</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;controller1&#39;</span><span class="p">])</span>
+<span class="n">mysql2</span> <span class="o">=</span> <span class="n">MysqlManage</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;controller2&#39;</span><span class="p">])</span>
+
+<span class="c1"># bootstrap the first cluster node</span>
+<span class="n">mysql1</span><span class="o">.</span><span class="n">start_wsrep_new_cluster</span><span class="p">()</span>
+
+<span class="c1"># start the second cluster node</span>
+<span class="n">mysql2</span><span class="o">.</span><span class="n">start_mysql</span><span class="p">()</span>
+
+<span class="c1"># change the mysql root password</span>
+<span class="n">mysql1</span><span class="o">.</span><span class="n">change_root_password</span><span class="p">(</span><span class="s1">&#39;changeme&#39;</span><span class="p">)</span>
+
+<span class="c1"># show the cluster status</span>
+<span class="n">mysql1</span><span class="o">.</span><span class="n">show_cluster_status</span><span class="p">(</span><span class="s1">&#39;changeme&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </td>
 </tr>
 </tbody>
@@ -183,7 +203,7 @@
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
       <a href="_sources/mysql_manage.txt"

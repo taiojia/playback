@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Keystone &mdash; Playback 0.3.8 documentation</title>
+    <title>Keystone &mdash; Playback 0.3.9 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3.8',
+        VERSION:     '0.3.9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,11 +23,12 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Playback 0.3.8 documentation" href="index.html" />
+    <link rel="top" title="Playback 0.3.9 documentation" href="index.html" />
     <link rel="next" title="Glance" href="glance.html" />
     <link rel="prev" title="RabbitMq" href="rabbitmq.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
@@ -60,7 +61,80 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"><div class="first last highlight-python"><div class="highlight"><pre><span></span><span class="c1"># create two instance</span>
+<span class="n">keystone1</span> <span class="o">=</span> <span class="n">Keystone</span><span class="p">(</span>
+    <span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span>
+    <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;controller1&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">keystone2</span> <span class="o">=</span> <span class="n">Keystone</span><span class="p">(</span>
+    <span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span>
+    <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;controller2&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># create keystone database</span>
+<span class="n">keystone1</span><span class="o">.</span><span class="n">create_keystone_db</span><span class="p">(</span>
+    <span class="n">root_db_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">keystone_db_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># install keystone on controller1 and controller2</span>
+<span class="n">keystone1</span><span class="o">.</span><span class="n">install_keystone</span><span class="p">(</span>
+    <span class="n">admin_token</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">connection</span><span class="o">=</span><span class="s1">&#39;mysql+pymysql://keystone:changeme@192.168.1.1/keystone&#39;</span><span class="p">,</span>
+    <span class="n">memcached_servers</span><span class="o">=</span><span class="s1">&#39;controller1:11211,controller2:11211&#39;</span><span class="p">,</span>
+    <span class="n">populate</span><span class="o">=</span><span class="bp">True</span>
+<span class="p">)</span>
+<span class="n">keystone2</span><span class="o">.</span><span class="n">install_keystone</span><span class="p">(</span>
+    <span class="n">admin_token</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">connection</span><span class="o">=</span><span class="s1">&#39;mysql+pymysql://keystone:changeme@192.168.1.1/keystone&#39;</span><span class="p">,</span>
+    <span class="n">memcached_servers</span><span class="o">=</span><span class="s1">&#39;controller1:11211,controller2:11211&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># create the service entity and api endpoints</span>
+<span class="n">keystone1</span><span class="o">.</span><span class="n">create_entity_and_endpoint</span><span class="p">(</span>
+    <span class="n">os_token</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">os_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357/v3&#39;</span><span class="p">,</span>
+    <span class="n">public_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:5000/v3&#39;</span><span class="p">,</span>
+    <span class="n">internal_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:5000/v3&#39;</span><span class="p">,</span>
+    <span class="n">admin_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357/v3&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># create projects, users, and roles</span>
+<span class="n">keystone1</span><span class="o">.</span><span class="n">create_projects_users_roles</span><span class="p">(</span>
+    <span class="n">os_token</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">os_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357/v3&#39;</span><span class="p">,</span>
+    <span class="n">admin_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">demo_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># you will need to create OpenStack client environment scripts admin-openrc.sh</span>
+<span class="n">export</span> <span class="n">OS_PROJECT_DOMAIN_NAME</span><span class="o">=</span><span class="n">default</span>
+<span class="n">export</span> <span class="n">OS_USER_DOMAIN_NAME</span><span class="o">=</span><span class="n">default</span>
+<span class="n">export</span> <span class="n">OS_PROJECT_NAME</span><span class="o">=</span><span class="n">admin</span>
+<span class="n">export</span> <span class="n">OS_TENANT_NAME</span><span class="o">=</span><span class="n">admin</span>
+<span class="n">export</span> <span class="n">OS_USERNAME</span><span class="o">=</span><span class="n">admin</span>
+<span class="n">export</span> <span class="n">OS_PASSWORD</span><span class="o">=</span><span class="n">changeme</span>
+<span class="n">export</span> <span class="n">OS_AUTH_URL</span><span class="o">=</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.1</span><span class="p">:</span><span class="mi">35357</span><span class="o">/</span><span class="n">v3</span>
+<span class="n">export</span> <span class="n">OS_IDENTITY_API_VERSION</span><span class="o">=</span><span class="mi">3</span>
+<span class="n">export</span> <span class="n">OS_IMAGE_API_VERSION</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">export</span> <span class="n">OS_AUTH_VERSION</span><span class="o">=</span><span class="mi">3</span>
+
+<span class="c1"># demo-openrc.sh</span>
+<span class="n">export</span> <span class="n">OS_PROJECT_DOMAIN_NAME</span><span class="o">=</span><span class="n">default</span>
+<span class="n">export</span> <span class="n">OS_USER_DOMAIN_NAME</span><span class="o">=</span><span class="n">default</span>
+<span class="n">export</span> <span class="n">OS_PROJECT_NAME</span><span class="o">=</span><span class="n">demo</span>
+<span class="n">export</span> <span class="n">OS_TENANT_NAME</span><span class="o">=</span><span class="n">demo</span>
+<span class="n">export</span> <span class="n">OS_USERNAME</span><span class="o">=</span><span class="n">demo</span>
+<span class="n">export</span> <span class="n">OS_PASSWORD</span><span class="o">=</span><span class="n">changeme</span>
+<span class="n">export</span> <span class="n">OS_AUTH_URL</span><span class="o">=</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.1</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">v3</span>
+<span class="n">export</span> <span class="n">OS_IDENTITY_API_VERSION</span><span class="o">=</span><span class="mi">3</span>
+<span class="n">export</span> <span class="n">OS_IMAGE_API_VERSION</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">export</span> <span class="n">OS_AUTH_VERSION</span><span class="o">=</span><span class="mi">3</span>
+</pre></div>
+</div>
 </td>
 </tr>
 </tbody>
@@ -143,8 +217,8 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>admin_token</strong> &#8211; define the value of the initial administration token</li>
-<li><strong>connection</strong> &#8211; database connection string e.g. <cite>mysql+pymysql://keystone:PASS&#64;CONTROLLER_VIP/keystone</cite></li>
-<li><strong>memcached_servers</strong> &#8211; memcached servers. e.g. <cite>CONTROLLER1:11211,CONTROLLER2:11211</cite></li>
+<li><strong>connection</strong> &#8211; (String) The SQLAlchemy connection string to use to connect to the database. e.g. <cite>mysql+pymysql://keystone:PASS&#64;CONTROLLER_VIP/keystone</cite></li>
+<li><strong>memcached_servers</strong> &#8211; (List) Optionally specify a list of memcached server(s) to use for caching. If left undefined, tokens will instead be cached in-process. e.g. <cite>CONTROLLER1:11211,CONTROLLER2:11211</cite></li>
 <li><strong>populate</strong> &#8211; populate the <cite>keystone</cite> database</li>
 </ul>
 </td>
@@ -215,7 +289,7 @@
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
       <a href="_sources/keystone.txt"

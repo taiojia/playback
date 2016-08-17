@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>ManilaShare &mdash; Playback 0.3.8 documentation</title>
+    <title>ManilaShare &mdash; Playback 0.3.9 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3.8',
+        VERSION:     '0.3.9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,10 +23,11 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Playback 0.3.8 documentation" href="index.html" />
+    <link rel="top" title="Playback 0.3.9 documentation" href="index.html" />
     <link rel="prev" title="Manila" href="manila.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
@@ -73,15 +74,15 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>connection</strong> &#8211; mysql manila database connection string e.g. <cite>mysql+pymysql://manila:MANILA_PASS&#64;CONTROLLER_VIP/manila</cite></li>
-<li><strong>auth_uri</strong> &#8211; keystone internal endpoint e.g. <cite>http://CONTROLLER_VIP:5000</cite></li>
-<li><strong>auth_url</strong> &#8211; keystone admin endpoint e.g. <cite>http://CONTROLLER_VIP:35357</cite></li>
+<li><strong>connection</strong> &#8211; The SQLAlchemy connection string to use to connect to the database. (string value) e.g. <cite>mysql+pymysql://manila:MANILA_PASS&#64;CONTROLLER_VIP/manila</cite></li>
+<li><strong>auth_uri</strong> &#8211; Complete public Identity API endpoint. (string value) e.g. <cite>http://CONTROLLER_VIP:5000</cite></li>
+<li><strong>auth_url</strong> &#8211; Authentication URL (unknown value) e.g. <cite>http://CONTROLLER_VIP:35357</cite></li>
 <li><strong>manila_pass</strong> &#8211; passowrd of <cite>manila</cite> user</li>
-<li><strong>my_ip</strong> &#8211; the host management ip</li>
-<li><strong>memcached_servers</strong> &#8211; memcached servers e.g. <cite>CONTROLLER1:11211,CONTROLLER2:11211</cite></li>
-<li><strong>rabbit_hosts</strong> &#8211; rabbit hosts e.g. <cite>CONTROLLER1,CONTROLLER2</cite></li>
-<li><strong>rabbit_user</strong> &#8211; the user of rabbit openstack user, e.g. 1openstack1</li>
-<li><strong>rabbit_pass</strong> &#8211; the password of <cite>rabbit_user</cite></li>
+<li><strong>my_ip</strong> &#8211; IP address of this host. (string value)</li>
+<li><strong>memcached_servers</strong> &#8211; Memcached servers or None for in process cache. (list value) e.g. <cite>CONTROLLER1:11211,CONTROLLER2:11211</cite></li>
+<li><strong>rabbit_hosts</strong> &#8211; RabbitMQ HA cluster host:port pairs. (list value) e.g. <cite>CONTROLLER1,CONTROLLER2</cite></li>
+<li><strong>rabbit_user</strong> &#8211; The RabbitMQ userid. (string value) e.g. openstack</li>
+<li><strong>rabbit_pass</strong> &#8211; The RabbitMQ password. (string value)</li>
 <li><strong>neutron_endpoint</strong> &#8211; neutron endpoint e.g. <cite>http://CONTROLLER_VIP:9696</cite></li>
 <li><strong>neutron_pass</strong> &#8211; the password of <cite>neutron</cite> user</li>
 <li><strong>nova_pass</strong> &#8211; the passowrd of <cite>nova</cite> user</li>
@@ -139,7 +140,7 @@
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
       <a href="_sources/manila_share.txt"
