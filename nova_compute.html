@@ -61,7 +61,78 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"><div class="first last highlight-python"><div class="highlight"><pre><span></span><span class="c1"># create nova compute instances</span>
+<span class="n">nova_compute1</span> <span class="o">=</span> <span class="n">NovaCompute</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;compute1&#39;</span><span class="p">])</span>
+<span class="n">nova_compute2</span> <span class="o">=</span> <span class="n">NovaCompute</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;compute2&#39;</span><span class="p">])</span>
+<span class="n">nova_compute3</span> <span class="o">=</span> <span class="n">NovaCompute</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;compute3&#39;</span><span class="p">])</span>
+<span class="n">nova_compute4</span> <span class="o">=</span> <span class="n">NovaCompute</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;compute4&#39;</span><span class="p">])</span>
+
+<span class="c1"># install nova compute</span>
+<span class="n">nova_compute1</span><span class="o">.</span><span class="n">install</span><span class="p">(</span>
+    <span class="n">my_ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_hosts</span><span class="o">=</span><span class="s1">&#39;controller1,controller2&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_user</span><span class="o">=</span><span class="s1">&#39;openstack&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">auth_uri</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:5000&#39;</span><span class="p">,</span>
+    <span class="n">auth_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357&#39;</span><span class="p">,</span>
+    <span class="n">nova_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">novncproxy_base_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:6080/vnc_auto.html&#39;</span><span class="p">,</span>
+    <span class="n">glance_api_servers</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:9292&#39;</span><span class="p">,</span>
+    <span class="n">neutron_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:9696&#39;</span><span class="p">,</span>
+    <span class="n">neutron_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">rbd_secret_uuid</span><span class="o">=</span><span class="s1">&#39;changeme-0000-0000-0000-000000000000&#39;</span><span class="p">,</span>
+    <span class="n">memcached_servers</span><span class="o">=</span><span class="s1">&#39;controller1:11211,controller2:11211&#39;</span>
+<span class="p">)</span>
+<span class="n">nova_compute2</span><span class="o">.</span><span class="n">install</span><span class="p">(</span>
+    <span class="n">my_ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.12&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_hosts</span><span class="o">=</span><span class="s1">&#39;controller1,controller2&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_user</span><span class="o">=</span><span class="s1">&#39;openstack&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">auth_uri</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:5000&#39;</span><span class="p">,</span>
+    <span class="n">auth_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357&#39;</span><span class="p">,</span>
+    <span class="n">nova_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">novncproxy_base_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:6080/vnc_auto.html&#39;</span><span class="p">,</span>
+    <span class="n">glance_api_servers</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:9292&#39;</span><span class="p">,</span>
+    <span class="n">neutron_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:9696&#39;</span><span class="p">,</span>
+    <span class="n">neutron_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">rbd_secret_uuid</span><span class="o">=</span><span class="s1">&#39;changeme-0000-0000-0000-000000000000&#39;</span><span class="p">,</span>
+    <span class="n">memcached_servers</span><span class="o">=</span><span class="s1">&#39;controller1:11211,controller2:11211&#39;</span>
+<span class="p">)</span>
+<span class="n">nova_compute3</span><span class="o">.</span><span class="n">install</span><span class="p">(</span>
+    <span class="n">my_ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.13&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_hosts</span><span class="o">=</span><span class="s1">&#39;controller1,controller2&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_user</span><span class="o">=</span><span class="s1">&#39;openstack&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">auth_uri</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:5000&#39;</span><span class="p">,</span>
+    <span class="n">auth_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357&#39;</span><span class="p">,</span>
+    <span class="n">nova_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">novncproxy_base_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:6080/vnc_auto.html&#39;</span><span class="p">,</span>
+    <span class="n">glance_api_servers</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:9292&#39;</span><span class="p">,</span>
+    <span class="n">neutron_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:9696&#39;</span><span class="p">,</span>
+    <span class="n">neutron_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">rbd_secret_uuid</span><span class="o">=</span><span class="s1">&#39;changeme-0000-0000-0000-000000000000&#39;</span><span class="p">,</span>
+    <span class="n">memcached_servers</span><span class="o">=</span><span class="s1">&#39;controller1:11211,controller2:11211&#39;</span>
+<span class="p">)</span>
+<span class="n">nova_compute4</span><span class="o">.</span><span class="n">install</span><span class="p">(</span>
+    <span class="n">my_ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.14&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_hosts</span><span class="o">=</span><span class="s1">&#39;controller1,controller2&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_user</span><span class="o">=</span><span class="s1">&#39;openstack&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">auth_uri</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:5000&#39;</span><span class="p">,</span>
+    <span class="n">auth_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357&#39;</span><span class="p">,</span>
+    <span class="n">nova_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">novncproxy_base_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:6080/vnc_auto.html&#39;</span><span class="p">,</span>
+    <span class="n">glance_api_servers</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:9292&#39;</span><span class="p">,</span>
+    <span class="n">neutron_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:9696&#39;</span><span class="p">,</span>
+    <span class="n">neutron_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">rbd_secret_uuid</span><span class="o">=</span><span class="s1">&#39;changeme-0000-0000-0000-000000000000&#39;</span><span class="p">,</span>
+    <span class="n">memcached_servers</span><span class="o">=</span><span class="s1">&#39;controller1:11211,controller2:11211&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 </td>
 </tr>
 </tbody>

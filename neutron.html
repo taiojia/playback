@@ -61,7 +61,71 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"><div class="first last highlight-python"><div class="highlight"><pre><span></span><span class="c1"># create neutron instances</span>
+<span class="n">neutron1</span> <span class="o">=</span> <span class="n">Neutron</span><span class="p">(</span>
+    <span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span>
+    <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;controller1&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">neutron2</span> <span class="o">=</span> <span class="n">Neutron</span><span class="p">(</span>
+    <span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span>
+    <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;controller2&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># create neutron database</span>
+<span class="n">neutron1</span><span class="o">.</span><span class="n">create_neutron_db</span><span class="p">(</span>
+    <span class="n">root_db_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">neutron_db_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># create service credentials</span>
+<span class="n">neutron1</span><span class="o">.</span><span class="n">create_service_credentials</span><span class="p">(</span>
+    <span class="n">os_password</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">os_auth_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357/v3&#39;</span><span class="p">,</span>
+    <span class="n">neutron_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">public_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:9696&#39;</span><span class="p">,</span>
+    <span class="n">internal_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:9696&#39;</span><span class="p">,</span>
+    <span class="n">admin_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:9696&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># install neutron for self-service</span>
+<span class="n">neutron1</span><span class="o">.</span><span class="n">install_self_service</span><span class="p">(</span>
+    <span class="n">connection</span><span class="o">=</span><span class="s1">&#39;mysql+pymysql://neutron:changeme@192.168.1.1/neutron&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_hosts</span><span class="o">=</span><span class="s1">&#39;controller1,controller2&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_user</span><span class="o">=</span><span class="s1">&#39;openstack&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">auth_uri</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:5000&#39;</span><span class="p">,</span>
+    <span class="n">auth_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357&#39;</span><span class="p">,</span>
+    <span class="n">neutron_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">nova_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:8774/v2.1&#39;</span><span class="p">,</span>
+    <span class="n">nova_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">public_interface</span><span class="o">=</span><span class="s1">&#39;eth1&#39;</span><span class="p">,</span>
+    <span class="n">local_ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.2&#39;</span><span class="p">,</span>
+    <span class="n">nova_metadata_ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.1&#39;</span><span class="p">,</span>
+    <span class="n">metadata_proxy_shared_secret</span><span class="o">=</span><span class="s1">&#39;changeme-changeme-changeme-changeme&#39;</span><span class="p">,</span>
+    <span class="n">memcached_servers</span><span class="o">=</span><span class="s1">&#39;controller1:11211,controller2:11211&#39;</span>
+    <span class="n">populate</span><span class="o">=</span><span class="bp">True</span>
+<span class="p">)</span>
+<span class="n">neutron2</span><span class="o">.</span><span class="n">install_self_service</span><span class="p">(</span>
+    <span class="n">connection</span><span class="o">=</span><span class="s1">&#39;mysql+pymysql://neutron:changeme@192.168.1.1/neutron&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_hosts</span><span class="o">=</span><span class="s1">&#39;controller1,controller2&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_user</span><span class="o">=</span><span class="s1">&#39;openstack&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">auth_uri</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:5000&#39;</span><span class="p">,</span>
+    <span class="n">auth_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357&#39;</span><span class="p">,</span>
+    <span class="n">neutron_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">nova_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:8774/v2.1&#39;</span><span class="p">,</span>
+    <span class="n">nova_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">public_interface</span><span class="o">=</span><span class="s1">&#39;eth1&#39;</span><span class="p">,</span>
+    <span class="n">local_ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.3&#39;</span><span class="p">,</span>
+    <span class="n">nova_metadata_ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.1&#39;</span><span class="p">,</span>
+    <span class="n">metadata_proxy_shared_secret</span><span class="o">=</span><span class="s1">&#39;changeme-changeme-changeme-changeme&#39;</span><span class="p">,</span>
+    <span class="n">memcached_servers</span><span class="o">=</span><span class="s1">&#39;controller1:11211,controller2:11211&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 </td>
 </tr>
 </tbody>

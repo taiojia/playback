@@ -61,7 +61,42 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"><div class="first last highlight-python"><div class="highlight"><pre><span></span><span class="c1"># create swift proxy instances</span>
+<span class="n">swift_proxy1</span> <span class="o">=</span> <span class="n">Swift</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;controller1&#39;</span><span class="p">])</span>
+<span class="n">swift_proxy2</span> <span class="o">=</span> <span class="n">Swift</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;controller2&#39;</span><span class="p">])</span>
+
+<span class="c1"># create the Identity service credentials(only do this at once)</span>
+<span class="n">swift_proxy1</span><span class="o">.</span><span class="n">create_service_credentials</span><span class="p">(</span>
+    <span class="n">os_password</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">os_auth_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357/v3&#39;</span><span class="p">,</span>
+    <span class="n">swift_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">public_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:8080/v1/AUTH_%\(tenant_id\)s&#39;</span><span class="p">,</span>
+    <span class="n">internal_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:8080/v1/AUTH_%\(tenant_id\)s&#39;</span><span class="p">,</span>
+    <span class="n">admin_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:8080/v1&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># install swift proxy</span>
+<span class="n">swift_proxy1</span><span class="o">.</span><span class="n">install</span><span class="p">(</span>
+    <span class="n">auth_uri</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:5000&#39;</span><span class="p">,</span>
+    <span class="n">auth_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357&#39;</span><span class="p">,</span>
+    <span class="n">swift_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span>
+    <span class="n">memcached_servers</span><span class="o">=</span><span class="s1">&#39;controller1:11211,controller2:11211&#39;</span><span class="p">,</span>
+    <span class="n">with_memcached</span><span class="o">=</span><span class="bp">False</span> <span class="c1"># if True install memcached on this node</span>
+<span class="p">)</span>
+<span class="n">swift_proxy2</span><span class="o">.</span><span class="n">install</span><span class="p">(</span>
+    <span class="n">auth_uri</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:5000&#39;</span><span class="p">,</span>
+    <span class="n">auth_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357&#39;</span><span class="p">,</span>
+    <span class="n">swift_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span>
+    <span class="n">memcached_servers</span><span class="o">=</span><span class="s1">&#39;controller1:11211,controller2:11211&#39;</span><span class="p">,</span>
+    <span class="n">with_memcached</span><span class="o">=</span><span class="bp">False</span> <span class="c1"># if True install memcached on this node</span>
+<span class="p">)</span>
+
+<span class="c1"># see swift storage documents for full install of swift</span>
+</pre></div>
+</div>
 </td>
 </tr>
 </tbody>
@@ -99,15 +134,17 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>swift_hash_path_suffix</strong> &#8211; <cite>swift_hash_path_suffix</cite> and <cite>swift_hash_path_prefix</cite> are used as part of the hashing algorithm when determining data placement in the cluster. These values should remain secret and MUST NOT change once a cluster has been deployed</li>
 <li><strong>swift_hash_path_prefix</strong> &#8211; <cite>swift_hash_path_suffix</cite> and <cite>swift_hash_path_prefix</cite> are used as part of the hashing algorithm when determining data placement in the cluster. These values should remain secret and MUST NOT change once a cluster has been deployed</li>
 </ul>
 </td>
 </tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
 </tbody>
 </table>
-<p>:returns None</p>
 </dd></dl>
 
 <dl class="method">

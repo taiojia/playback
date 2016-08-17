@@ -61,7 +61,236 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"><div class="first last highlight-python"><div class="highlight"><pre><span></span><span class="c1"># create storage instances</span>
+<span class="n">swift_storage1</span> <span class="o">=</span> <span class="n">SwiftStorage</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;compute1&#39;</span><span class="p">])</span>
+<span class="n">swift_storage2</span> <span class="o">=</span> <span class="n">SwiftStorage</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;compute2&#39;</span><span class="p">])</span>
+
+<span class="c1"># prepare disks on storage nodes</span>
+<span class="n">swift_storage1</span><span class="o">.</span><span class="n">prepare_disks</span><span class="p">(</span><span class="s1">&#39;sdb,sdc,sdd,sde&#39;</span><span class="p">)</span>
+<span class="n">swift_storage2</span><span class="o">.</span><span class="n">prepare_disks</span><span class="p">(</span><span class="s1">&#39;sdb,sdc,sdd,sde&#39;</span><span class="p">)</span>
+
+<span class="c1"># install swift storage</span>
+<span class="n">swift_storage1</span><span class="o">.</span><span class="n">install</span><span class="p">(</span>
+    <span class="n">address</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span>
+    <span class="n">bind_ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span>
+<span class="p">)</span>
+<span class="n">swift_storage2</span><span class="o">.</span><span class="n">install</span><span class="p">(</span>
+    <span class="n">address</span><span class="o">=</span><span class="s1">&#39;192.168.1.12&#39;</span>
+    <span class="n">bind_ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.12&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># create a ring instance</span>
+<span class="n">ring</span> <span class="o">=</span> <span class="n">SwiftStorage</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;controller1&#39;</span><span class="p">])</span>
+
+<span class="c1"># create account ring</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">create_account_builder_file</span><span class="p">(</span>
+    <span class="n">partitions</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">replicas</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">moving</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">account_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdb&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">account_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdc&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">account_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdd&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">account_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sde&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">account_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.12&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdb&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">account_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.12&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdc&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">account_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.12&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdd&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">account_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.12&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sde&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">account_builder_rebalance</span><span class="p">()</span>
+
+<span class="c1"># create container ring</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">create_container_builder_file</span><span class="p">(</span>
+    <span class="n">partitions</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">replicas</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">moving</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">container_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdb&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">container_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdc&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">container_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdd&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">container_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sde&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">container_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.12&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdb&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">container_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.12&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdc&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">container_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.12&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdd&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">container_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.12&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sde&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">container_builder_rebalance</span><span class="p">()</span>
+
+<span class="c1"># create object ring</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">create_object_builder_file</span><span class="p">(</span>
+    <span class="n">partitions</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">replicas</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">moving</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">object_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdb&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">object_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdc&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">object_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdd&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">object_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.11&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sde&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">object_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.12&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdb&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">object_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.12&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdc&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">object_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.12&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sdd&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">object_builder_add</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">zone</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.12&#39;</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;sde&#39;</span><span class="p">,</span>
+    <span class="n">weight</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">object_builder_rebalance</span><span class="p">()</span>
+
+<span class="c1"># sync the builder file from controller node to each storage node and other any proxy node</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">sync_builder_file</span><span class="p">(</span>
+    <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;controller2&#39;</span><span class="p">,</span> <span class="s1">&#39;compute1&#39;</span><span class="p">,</span> <span class="s1">&#39;compute2&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># finalize installation on all nodes</span>
+<span class="kn">from</span> <span class="nn">playback.swift</span> <span class="kn">import</span> <span class="n">Swift</span>
+<span class="n">finalize</span> <span class="o">=</span> <span class="n">Swift</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;controller1&#39;</span><span class="p">,</span><span class="s1">&#39;controller2&#39;</span><span class="p">,</span> <span class="s1">&#39;compute1&#39;</span><span class="p">,</span> <span class="s1">&#39;compute2&#39;</span><span class="p">])</span>
+<span class="n">finalize</span><span class="o">.</span><span class="n">finalize_install</span><span class="p">(</span>
+    <span class="n">swift_hash_path_suffix</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">swift_hash_path_prefix</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 </td>
 </tr>
 </tbody>
