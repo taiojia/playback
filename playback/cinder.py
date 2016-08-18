@@ -20,6 +20,62 @@ class Cinder(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+
+        .. code-block:: python
+
+            # create cinder instances for HA
+            cinder1 = Cinder(user='ubuntu', hosts=['controller1'])
+            cinder2 = Cinder(user='ubuntu', hosts=['controller2'])
+
+            # create cinder database
+            cinder1.create_cinder_db(
+                root_db_pass='changeme',
+                cinder_db_pass='changeme'
+            )
+
+            # create cinder service creadentials
+            cinder1.create_service_credentials(
+                os_password='changeme',
+                os_auth_url='http://192.168.1.1:35357/v3',
+                cinder_pass='changeme',
+                public_endpoint_v1='http://192.168.1.1:8776/v1/%\(tenant_id\)s',
+                internal_endpoint_v1='http://192.168.1.1:8776/v1/%\(tenant_id\)s',
+                admin_endpoint_v1='http://192.168.1.1:8776/v1/%\(tenant_id\)s',
+                public_endpoint_v2='http://192.168.1.1:8776/v2/%\(tenant_id\)s',
+                internal_endpoint_v2='http://192.168.1.1:8776/v2/%\(tenant_id\)s',
+                admin_endpoint_v2='http://192.168.1.1:8776/v2/%\(tenant_id\)s'
+            )
+
+            # install cinder-api and cinder-volume on controller nodes, the volume backend defaults to ceph (you must have ceph installed)
+            cinder1.install(
+                connection='mysql+pymysql://cinder:changeme@192.168.1.1/cinder',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                rabbit_hosts='192.168.1.2,192.168.1.3',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                cinder_pass='changeme',
+                my_ip='192.168.1.2',
+                glance_api_servers='http://192.168.1.1:9292',
+                rbd_secret_uuid='please_use_uuidgen_to_generate',
+                memcached_servers='192.168.1.2:11211,192.168.1.3:11211',
+                populate=True
+            )
+            cinder2.install(
+                connection='mysql+pymysql://cinder:changeme@192.168.1.1/cinder',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                rabbit_hosts='192.168.1.2,192.168.1.3',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                cinder_pass='changeme',
+                my_ip='192.168.1.3',
+                glance_api_servers='http://192.168.1.1:9292',
+                rbd_secret_uuid='please_use_uuidgen_to_generate',
+                memcached_servers='192.168.1.2:11211,192.168.1.3:11211',
+                populate=True
+            )
     """
 
     @runs_once
