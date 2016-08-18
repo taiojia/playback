@@ -19,6 +19,17 @@ class Horizon(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+
+        .. code-block:: python
+
+            # create a horizon instance
+            horizon = Horizon(user='ubuntu', hosts=['controller1', 'controller2'])
+            horizon.install(
+                openstack_host='192.168.1.1',
+                memcached_servers='controller1',
+                time_zone='America/New_York'
+            )
     """
 
     def _install(self, openstack_host, memcached_servers, time_zone):
