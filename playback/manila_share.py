@@ -19,6 +19,51 @@ class ManilaShare(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+
+        .. code-block:: python
+
+            # create manila share instances
+            manila_share1 = ManilaShare(user='ubuntu', hosts=['controller1'])
+            manila_share2 = ManilaShare(user='ubuntu', hosts=['controller2'])
+
+            # install manila share service the same as manila service nodes
+            manila_share1.install_manila_share(
+                connection='mysql+pymysql://manila:changeme@192.168.1.1/manila',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                manila_pass='changeme',
+                my_ip='192.168.1.2',
+                memcached_servers='192.168.1.2:11211,192.168.1.3:11211',
+                rabbit_hosts='192.168.1.2,192.168.1.3',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                neutron_endpoint='http://192.168.1.1:9696',
+                neutron_pass='changeme',
+                nova_pass='changeme',
+                cinder_pass='changeme'
+            )
+            manila_share2.install_manila_share(
+                connection='mysql+pymysql://manila:changeme@192.168.1.1/manila',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                manila_pass='changeme',
+                my_ip='192.168.1.3',
+                memcached_servers='192.168.1.2:11211,192.168.1.3:11211',
+                rabbit_hosts='192.168.1.2,192.168.1.3',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                neutron_endpoint='http://192.168.1.1:9696',
+                neutron_pass='changeme',
+                nova_pass='changeme',
+                cinder_pass='changeme'
+            )
+
+            # create the service image for manila
+            http://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance-manila.html
+
+            # create shares with share servers management support
+            http://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance-manila-dhss-true-option2.html
     """
 
     def _install_manila_share(self, connection, auth_uri, auth_url, manila_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_user, rabbit_pass, neutron_endpoint, neutron_pass, nova_pass, cinder_pass):

@@ -19,6 +19,58 @@ class Manila(common.Common):
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
+    :examples:
+
+        .. code-block:: python
+
+            # create manila instances for HA
+            manila1 = Manila(user='ubuntu', hosts=['controller1'])
+            manila2 = Manila(user='ubuntu', hosts=['controlelr2'])
+
+            # create manila database
+            manila1.create_manila_db(
+                root_db_pass='changeme',
+                manila_db_pass='changeme'
+            )
+
+            # create manila service credentials
+            manila1.create_service_credentials(
+                os_password='changeme',
+                os_auth_url='http://192.168.1.1:35357/v3',
+                manila_pass='changeme',
+                public_endpoint_v1='http://192.168.1.1:8786/v1/%\(tenant_id\)s',
+                internal_endpoint_v1='http://192.168.1.1:8786/v1/%\(tenant_id\)s',
+                admin_endpoint_v1='http://192.168.1.1:8786/v1/%\(tenant_id\)s',
+                public_endpoint_v2='http://192.168.1.1:8786/v2/%\(tenant_id\)s',
+                internal_endpoint_v2='http://192.168.1.1:8786/v2/%\(tenant_id\)s',
+                admin_endpoint_v2='http://192.168.1.1:8786/v2/%\(tenant_id\)s'
+            )
+
+            # install manila on controller nodes
+            manila1.install_manila(
+                connection='mysql+pymysql://manila:changeme@192.168.1.1/manila',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                manila_pass='changeme',
+                my_ip='192.168.1.2',
+                memcached_servers='192.168.1.2:11211,192.168.1.3:11211',
+                rabbit_hosts='192.168.1.2,192.168.1.3',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                populate=True
+            )
+            manila2.install_manila(
+                connection='mysql+pymysql://manila:changeme@192.168.1.1/manila',
+                auth_uri='http://192.168.1.1:5000',
+                auth_url='http://192.168.1.1:35357',
+                manila_pass='changeme',
+                my_ip='192.168.1.3',
+                memcached_servers='192.168.1.2:11211,192.168.1.3:11211',
+                rabbit_hosts='192.168.1.2,192.168.1.3',
+                rabbit_user='openstack',
+                rabbit_pass='changeme',
+                populate=False
+            )
     """
 
     @runs_once
