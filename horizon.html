@@ -61,7 +61,18 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"><div class="first last highlight-python"><div class="highlight"><pre><span></span><span class="c1"># create a horizon instance</span>
+<span class="n">horizon</span> <span class="o">=</span> <span class="n">Horizon</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;controller1&#39;</span><span class="p">,</span> <span class="s1">&#39;controller2&#39;</span><span class="p">])</span>
+<span class="n">horizon</span><span class="o">.</span><span class="n">install</span><span class="p">(</span>
+    <span class="n">openstack_host</span><span class="o">=</span><span class="s1">&#39;192.168.1.1&#39;</span><span class="p">,</span>
+    <span class="n">memcached_servers</span><span class="o">=</span><span class="s1">&#39;controller1&#39;</span><span class="p">,</span>
+    <span class="n">time_zone</span><span class="o">=</span><span class="s1">&#39;America/New_York&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 </td>
 </tr>
 </tbody>

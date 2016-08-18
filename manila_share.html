@@ -60,7 +60,52 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">None</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"><div class="first last highlight-python"><div class="highlight"><pre><span></span><span class="c1"># create manila share instances</span>
+<span class="n">manila_share1</span> <span class="o">=</span> <span class="n">ManilaShare</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;controller1&#39;</span><span class="p">])</span>
+<span class="n">manila_share2</span> <span class="o">=</span> <span class="n">ManilaShare</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;ubuntu&#39;</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;controller2&#39;</span><span class="p">])</span>
+
+<span class="c1"># install manila share service the same as manila service nodes</span>
+<span class="n">manila_share1</span><span class="o">.</span><span class="n">install_manila_share</span><span class="p">(</span>
+    <span class="n">connection</span><span class="o">=</span><span class="s1">&#39;mysql+pymysql://manila:changeme@192.168.1.1/manila&#39;</span><span class="p">,</span>
+    <span class="n">auth_uri</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:5000&#39;</span><span class="p">,</span>
+    <span class="n">auth_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357&#39;</span><span class="p">,</span>
+    <span class="n">manila_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">my_ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.2&#39;</span><span class="p">,</span>
+    <span class="n">memcached_servers</span><span class="o">=</span><span class="s1">&#39;192.168.1.2:11211,192.168.1.3:11211&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_hosts</span><span class="o">=</span><span class="s1">&#39;192.168.1.2,192.168.1.3&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_user</span><span class="o">=</span><span class="s1">&#39;openstack&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">neutron_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:9696&#39;</span><span class="p">,</span>
+    <span class="n">neutron_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">nova_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">cinder_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span>
+<span class="p">)</span>
+<span class="n">manila_share2</span><span class="o">.</span><span class="n">install_manila_share</span><span class="p">(</span>
+    <span class="n">connection</span><span class="o">=</span><span class="s1">&#39;mysql+pymysql://manila:changeme@192.168.1.1/manila&#39;</span><span class="p">,</span>
+    <span class="n">auth_uri</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:5000&#39;</span><span class="p">,</span>
+    <span class="n">auth_url</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:35357&#39;</span><span class="p">,</span>
+    <span class="n">manila_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">my_ip</span><span class="o">=</span><span class="s1">&#39;192.168.1.3&#39;</span><span class="p">,</span>
+    <span class="n">memcached_servers</span><span class="o">=</span><span class="s1">&#39;192.168.1.2:11211,192.168.1.3:11211&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_hosts</span><span class="o">=</span><span class="s1">&#39;192.168.1.2,192.168.1.3&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_user</span><span class="o">=</span><span class="s1">&#39;openstack&#39;</span><span class="p">,</span>
+    <span class="n">rabbit_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">neutron_endpoint</span><span class="o">=</span><span class="s1">&#39;http://192.168.1.1:9696&#39;</span><span class="p">,</span>
+    <span class="n">neutron_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">nova_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span><span class="p">,</span>
+    <span class="n">cinder_pass</span><span class="o">=</span><span class="s1">&#39;changeme&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># create the service image for manila</span>
+<span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">docs</span><span class="o">.</span><span class="n">openstack</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">mitaka</span><span class="o">/</span><span class="n">install</span><span class="o">-</span><span class="n">guide</span><span class="o">-</span><span class="n">ubuntu</span><span class="o">/</span><span class="n">launch</span><span class="o">-</span><span class="n">instance</span><span class="o">-</span><span class="n">manila</span><span class="o">.</span><span class="n">html</span>
+
+<span class="c1"># create shares with share servers management support</span>
+<span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">docs</span><span class="o">.</span><span class="n">openstack</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">mitaka</span><span class="o">/</span><span class="n">install</span><span class="o">-</span><span class="n">guide</span><span class="o">-</span><span class="n">ubuntu</span><span class="o">/</span><span class="n">launch</span><span class="o">-</span><span class="n">instance</span><span class="o">-</span><span class="n">manila</span><span class="o">-</span><span class="n">dhss</span><span class="o">-</span><span class="n">true</span><span class="o">-</span><span class="n">option2</span><span class="o">.</span><span class="n">html</span>
+</pre></div>
+</div>
 </td>
 </tr>
 </tbody>
