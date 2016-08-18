@@ -1,5 +1,8 @@
 # Release Notes
 
+* v0.3.9 (Ris)
+  Improved documents
+  
 * v0.3.8 (Ris)
   Fix builder file upload error
 
