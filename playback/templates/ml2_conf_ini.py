@@ -175,6 +175,7 @@ flat_networks = provider
 # physical_network available for allocation as tenant networks.
 #
 # network_vlan_ranges =
+network_vlan_ranges = provider
 # Example: network_vlan_ranges = physnet1:1000:2999,physnet2
 
 [ml2_type_gre]
@@ -218,4 +219,5 @@ vni_ranges = 1:1000
 # Use ipset to speed-up the iptables security groups. Enabling ipset support
 # requires that ipset is installed on L2 agent node.
 enable_ipset = True
+firewall_driver = iptables
 """
