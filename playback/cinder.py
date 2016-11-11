@@ -1,20 +1,22 @@
-from fabric.api import *
-from fabric.contrib import files
-from fabric.network import disconnect_all
-from fabric.colors import red
+import argparse
 import os
 import sys
-import argparse
-from playback import __version__
+
+from fabric.api import *
+from fabric.colors import red
+from fabric.contrib import files
+from fabric.network import disconnect_all
+
+from playback import __version__, common
 from playback.templates.cinder_conf import conf_cinder_conf
 from playback.templates.policy_json_for_cinder import conf_policy_json
-from playback import common
+
 
 class Cinder(common.Common):
     """
     Install cinder and volume service
 
-    :param user(str): the user for remote server to login 
+    :param user(str): the user for remote server to login
     :param hosts(list): this is a second param
     :param key_filename(str): the ssh private key to used, default None
     :param password(str): the password for remote server
@@ -81,9 +83,12 @@ class Cinder(common.Common):
     @runs_once
     def _create_cinder_db(self, root_db_pass, cinder_db_pass):
         print red(env.host_string + ' | Create cinder database')
-        sudo("mysql -uroot -p{0} -e \"CREATE DATABASE cinder;\"".format(root_db_pass), shell=False)
-        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'localhost' IDENTIFIED BY '{1}';\"".format(root_db_pass, cinder_db_pass), shell=False)
-        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, cinder_db_pass), shell=False)
+        sudo(
+            "mysql -uroot -p{0} -e \"CREATE DATABASE cinder;\"".format(root_db_pass), shell=False)
+        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'localhost' IDENTIFIED BY '{1}';\"".format(
+            root_db_pass, cinder_db_pass), shell=False)
+        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'%' IDENTIFIED BY '{1}';\"".format(
+            root_db_pass, cinder_db_pass), shell=False)
 
     def create_cinder_db(self, *args, **kwargs):
         """
@@ -102,23 +107,31 @@ class Cinder(common.Common):
                        OS_TENANT_NAME='admin',
                        OS_USERNAME='admin',
                        OS_PASSWORD=os_password,
-                       OS_AUTH_URL=os_auth_url, 
+                       OS_AUTH_URL=os_auth_url,
                        OS_IDENTITY_API_VERSION='3',
                        OS_IMAGE_API_VERSION='2'):
             print red(env.host_string + ' | Create the cinder user')
-            sudo('openstack user create --domain default --password {0} cinder'.format(cinder_pass))
+            sudo(
+                'openstack user create --domain default --password {0} cinder'.format(cinder_pass))
             print red(env.host_string + ' | Add the admin role to the cinder user and service project')
             sudo('openstack role add --project service --user cinder admin')
             print red(env.host_string + ' | Create the cinder and cinderv2 service entity')
-            sudo('openstack service create --name cinder --description "OpenStack Block Storage" volume')
+            sudo(
+                'openstack service create --name cinder --description "OpenStack Block Storage" volume')
             sudo('openstack service create --name cinderv2 --description "OpenStack Block Storage" volumev2')
             print red(env.host_string + ' | Create the Block Storage service API endpoints')
-            sudo('openstack endpoint create --region RegionOne volume public {0}'.format(public_endpoint_v1))
-            sudo('openstack endpoint create --region RegionOne volume internal {0}'.format(internal_endpoint_v1))
-            sudo('openstack endpoint create --region RegionOne volume admin {0}'.format(admin_endpoint_v1))
-            sudo('openstack endpoint create --region RegionOne volumev2 public {0}'.format(public_endpoint_v2))
-            sudo('openstack endpoint create --region RegionOne volumev2 internal {0}'.format(internal_endpoint_v2))
-            sudo('openstack endpoint create --region RegionOne volumev2 admin {0}'.format(admin_endpoint_v2))
+            sudo(
+                'openstack endpoint create --region RegionOne volume public {0}'.format(public_endpoint_v1))
+            sudo(
+                'openstack endpoint create --region RegionOne volume internal {0}'.format(internal_endpoint_v1))
+            sudo(
+                'openstack endpoint create --region RegionOne volume admin {0}'.format(admin_endpoint_v1))
+            sudo(
+                'openstack endpoint create --region RegionOne volumev2 public {0}'.format(public_endpoint_v2))
+            sudo(
+                'openstack endpoint create --region RegionOne volumev2 internal {0}'.format(internal_endpoint_v2))
+            sudo(
+                'openstack endpoint create --region RegionOne volumev2 admin {0}'.format(admin_endpoint_v2))
 
     def create_service_credentials(self, *args, **kwargs):
         r"""
@@ -166,9 +179,9 @@ class Cinder(common.Common):
         with open('tmp_policy_json_' + env.host_string, 'w') as f:
             f.write(conf_policy_json)
         files.upload_template(filename='tmp_policy_json_' + env.host_string,
-                                destination='/etc/cinder/policy.json',
-                                use_sudo=True,
-                                backup=True)
+                              destination='/etc/cinder/policy.json',
+                              use_sudo=True,
+                              backup=True)
         os.remove('tmp_policy_json_' + env.host_string)
 
         if populate:
@@ -202,4 +215,3 @@ class Cinder(common.Common):
         :param populate(bool): Populate the cinder database, default `False`
         """
         return execute(self._install, *args, **kwargs)
-

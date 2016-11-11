@@ -1,24 +1,26 @@
+import argparse
+import os
+import sys
+
 from fabric.api import *
+from fabric.colors import red
 from fabric.contrib import files
 from fabric.network import disconnect_all
-from fabric.colors import red
-import os
-import argparse
 from tqdm import *
-import sys
-from playback.templates.rsyncd_conf import conf_rsyncd_conf
-from playback.templates.rsync import conf_rsync
+
+from playback import __version__, common
 from playback.templates.account_server_conf import conf_account_server_conf
 from playback.templates.container_server_conf import conf_container_server_conf
 from playback.templates.object_server_conf import conf_object_server_conf
-from playback import __version__
-from playback import common
+from playback.templates.rsync import conf_rsync
+from playback.templates.rsyncd_conf import conf_rsyncd_conf
+
 
 class SwiftStorage(common.Common):
     """
     Deploy swift storage node
 
-    :param user(str): the user for remote server to login 
+    :param user(str): the user for remote server to login
     :param hosts(list): this is a second param
     :param key_filename(str): the ssh private key to used, default None
     :param password(str): the password for remote server
@@ -27,7 +29,7 @@ class SwiftStorage(common.Common):
     :examples:
 
         .. code-block:: python
-            
+
             # create storage instances
             swift_storage1 = SwiftStorage(user='ubuntu', hosts=['compute1'])
             swift_storage2 = SwiftStorage(user='ubuntu', hosts=['compute2'])
@@ -265,7 +267,8 @@ class SwiftStorage(common.Common):
                 sudo('apt-get -y install xfsprogs')
                 sudo('mkfs.xfs -f /dev/{0}'.format(disk))
             sudo('mkdir -p /srv/node/{0}'.format(disk))
-            files.append(fstab, '/dev/{0} /srv/node/{1} xfs noatime,nodiratime,nobarrier,logbufs=8 0 2'.format(disk,disk), use_sudo=True)
+            files.append(
+                fstab, '/dev/{0} /srv/node/{1} xfs noatime,nodiratime,nobarrier,logbufs=8 0 2'.format(disk, disk), use_sudo=True)
             sudo('mount /srv/node/{0}'.format(disk))
 
     def prepare_disks(self, *args, **kwargs):
@@ -364,12 +367,13 @@ class SwiftStorage(common.Common):
     @runs_once
     def _create_account_builder_file(self, partitions, replicas, moving):
         with cd('/etc/swift'):
-            sudo('swift-ring-builder account.builder create {0} {1} {2}'.format(partitions, replicas, moving))
+            sudo(
+                'swift-ring-builder account.builder create {0} {1} {2}'.format(partitions, replicas, moving))
 
     def create_account_builder_file(self, *args, **kwargs):
         """
         Create account ring
-        
+
         :param partitions: 2^10 (1024) maximum partitions e.g. `10`
         :param replicas: 3 replicas of each object e.g. `3`
         :param moving: 1 hour minimum time between moving a partition more than once e.g. `1`
@@ -387,7 +391,7 @@ class SwiftStorage(common.Common):
                                                                                                                                         weight))
             print red(env.host_string + ' | Verify the ring contents')
             sudo('swift-ring-builder account.builder')
-             
+
     def account_builder_add(self, *args, **kwargs):
         """
         Add each storage node to the account ring
@@ -410,7 +414,7 @@ class SwiftStorage(common.Common):
     def account_builder_rebalance(self):
         """
         Rebalance account builder
-        
+
         :returns: None
         """
         return execute(self._account_builder_rebalance)
@@ -418,7 +422,8 @@ class SwiftStorage(common.Common):
     @runs_once
     def _create_container_builder_file(self, partitions, replicas, moving):
         with cd('/etc/swift'):
-            sudo('swift-ring-builder container.builder create {0} {1} {2}'.format(partitions, replicas, moving))
+            sudo('swift-ring-builder container.builder create {0} {1} {2}'.format(
+                partitions, replicas, moving))
 
     def create_container_builder_file(self, *args, **kwargs):
         """
@@ -435,13 +440,13 @@ class SwiftStorage(common.Common):
     def _container_builder_add(self, region, zone, ip, device, weight):
         with cd('/etc/swift'):
             sudo('swift-ring-builder container.builder add --region {0} --zone {1} --ip {2} --port 6001 --device {3} --weight {4}'.format(region,
-                                                                                                                                        zone,
-                                                                                                                                        ip,
-                                                                                                                                        device,
-                                                                                                                                        weight))
+                                                                                                                                          zone,
+                                                                                                                                          ip,
+                                                                                                                                          device,
+                                                                                                                                          weight))
             print red(env.host_string + ' | Verify the ring contents')
             sudo('swift-ring-builder container.builder')
-            
+
     def container_builder_add(self, *args, **kwargs):
         """
         Add each storage node to the container ring
@@ -472,7 +477,8 @@ class SwiftStorage(common.Common):
     @runs_once
     def _create_object_builder_file(self, partitions, replicas, moving):
         with cd('/etc/swift'):
-            sudo('swift-ring-builder object.builder create {0} {1} {2}'.format(partitions, replicas, moving))
+            sudo(
+                'swift-ring-builder object.builder create {0} {1} {2}'.format(partitions, replicas, moving))
 
     def create_object_builder_file(self, *args, **kwargs):
         """
@@ -489,10 +495,10 @@ class SwiftStorage(common.Common):
     def _object_builder_add(self, region, zone, ip, device, weight):
         with cd('/etc/swift'):
             sudo('swift-ring-builder object.builder add --region {0} --zone {1} --ip {2} --port 6000 --device {3} --weight {4}'.format(region,
-                                                                                                                                        zone,
-                                                                                                                                        ip,
-                                                                                                                                        device,
-                                                                                                                                        weight))
+                                                                                                                                       zone,
+                                                                                                                                       ip,
+                                                                                                                                       device,
+                                                                                                                                       weight))
             print red(env.host_string + ' | Verify the ring contents')
             sudo('swift-ring-builder object.builder')
 
@@ -514,7 +520,7 @@ class SwiftStorage(common.Common):
         with cd('/etc/swift'):
             print red(env.host_string + ' | Rebalance the ring')
             sudo('swift-ring-builder object.builder rebalance')
-    
+
     def object_builder_rebalance(self):
         """
         Rebalance object builder
@@ -548,4 +554,3 @@ class SwiftStorage(common.Common):
         :returns: None
         """
         return execute(self._sync_builder_file, hosts=hosts)
-        

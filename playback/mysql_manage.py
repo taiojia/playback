@@ -1,14 +1,17 @@
-from fabric.api import *
-from fabric.tasks import Task
-from fabric.colors import red
-from playback import common
 import sys
+
+from fabric.api import *
+from fabric.colors import red
+from fabric.tasks import Task
+
+from playback import common
+
 
 class MysqlManage(common.Common):
     """
     Manage Galera Cluster for MySQL
-    
-    :param user(str): the user for remote server to login 
+
+    :param user(str): the user for remote server to login
     :param hosts(list): this is a second param
     :param key_filename(str): the ssh private key to used, default None
     :param password(str): the password for remote server
@@ -38,7 +41,8 @@ class MysqlManage(common.Common):
     def _start_wsrep_new_cluster(self):
         if self._release() == 'xenial':
             sudo('systemctl stop mysql', warn_only=True, shell=False)
-            #sudo('service mysql bootstrap', shell=False) #this will invoke joiner failed
+            # sudo('service mysql bootstrap', shell=False) #this will invoke
+            # joiner failed
             xenial_warning = """Please bootstrap the new cluster node manually on Xenial with MariaDB 10.0.\nRun: 'sudo service mysql bootstrap' on remote server.\n"""
             sys.stdout.write(red(xenial_warning))
         else:
@@ -52,7 +56,7 @@ class MysqlManage(common.Common):
         """
         return execute(self._start_wsrep_new_cluster)
 
-    def _start_mysql(self):     
+    def _start_mysql(self):
         if self._release() == 'xenial':
             sudo('systemctl restart mysql', shell=False)
         else:
@@ -93,7 +97,8 @@ class MysqlManage(common.Common):
         return execute(self._change_root_password, *args, **kwargs)
 
     def _show_cluster_status(self, root_db_pass):
-        sudo("mysql -uroot -p{root_db_pass} -e \"SHOW STATUS LIKE 'wsrep_%';\"".format(root_db_pass=root_db_pass), shell=False)
+        sudo("mysql -uroot -p{root_db_pass} -e \"SHOW STATUS LIKE 'wsrep_%';\"".format(
+            root_db_pass=root_db_pass), shell=False)
 
     def show_cluster_status(self, *args, **kwargs):
         """

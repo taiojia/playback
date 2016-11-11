@@ -1,23 +1,24 @@
+import argparse
+import os
+import sys
+
 from fabric.api import *
+from fabric.colors import red
 from fabric.contrib import files
 from fabric.network import disconnect_all
-from fabric.colors import red
-import os
-import argparse
-import sys
-from playback.templates.nova_conf_for_compute import conf_nova_conf
-from playback.templates.nova_compute_conf import conf_nova_compute_conf
+
+from playback import __version__, common
 from playback.templates.libvirt_bin import conf_libvirt_bin
 from playback.templates.libvirtd_conf import conf_libvirtd_conf
+from playback.templates.nova_compute_conf import conf_nova_compute_conf
+from playback.templates.nova_conf_for_compute import conf_nova_conf
 
-from playback import __version__
-from playback import common
 
 class NovaCompute(common.Common):
     """
     Deploy Nova compute
 
-    :param user(str): the user for remote server to login 
+    :param user(str): the user for remote server to login
     :param hosts(list): this is a second param
     :param key_filename(str): the ssh private key to used, default None
     :param password(str): the password for remote server
@@ -95,6 +96,7 @@ class NovaCompute(common.Common):
                 memcached_servers='controller1:11211,controller2:11211'
             )
     """
+
     def _install(self, my_ip, rabbit_hosts, rabbit_user, rabbit_pass, auth_uri, auth_url, nova_pass, novncproxy_base_url, glance_api_servers, neutron_endpoint, neutron_pass, rbd_secret_uuid, memcached_servers):
         print red(env.host_string + ' | Install nova-compute sysfsutils')
         sudo('apt-get update')
@@ -104,14 +106,14 @@ class NovaCompute(common.Common):
         with open('tmp_nova_conf_' + env.host_string, 'w') as f:
             f.write(conf_nova_conf)
 
-        files.upload_template(filename='tmp_nova_conf_'+env.host_string,
+        files.upload_template(filename='tmp_nova_conf_' + env.host_string,
                               destination='/etc/nova/nova.conf',
                               use_jinja=True,
                               use_sudo=True,
                               backup=True,
                               context={'my_ip': my_ip,
                                        'rabbit_hosts': rabbit_hosts,
-                                       'rabbit_user': rabbit_user, 
+                                       'rabbit_user': rabbit_user,
                                        'rabbit_password': rabbit_pass,
                                        'auth_uri': auth_uri,
                                        'auth_url': auth_url,
@@ -127,7 +129,7 @@ class NovaCompute(common.Common):
         with open('tmp_nova_compute_conf_' + env.host_string, 'w') as f:
             f.write(conf_nova_compute_conf)
 
-        files.upload_template(filename='tmp_nova_compute_conf_'+env.host_string,
+        files.upload_template(filename='tmp_nova_compute_conf_' + env.host_string,
                               destination='/etc/nova/nova-compute.conf',
                               use_jinja=True,
                               use_sudo=True,
@@ -180,4 +182,3 @@ class NovaCompute(common.Common):
         :returns: None
         """
         return execute(self._install, *args, **kwargs)
-

@@ -1,27 +1,29 @@
+import argparse
+import os
+import sys
+
 from fabric.api import *
+from fabric.colors import red
 from fabric.contrib import files
 from fabric.network import disconnect_all
-from fabric.colors import red
-import os
-import argparse
-import sys
-from playback import __version__
+
+from playback import __version__, common
 from playback.templates.glance_api_conf import conf_glance_api_conf
 from playback.templates.glance_registry_conf import conf_glance_registry_conf
-from playback import common
+
 
 class Glance(common.Common):
     """
     Install glance
 
-    :param user(str): the user for remote server to login 
+    :param user(str): the user for remote server to login
     :param hosts(list): this is a second param
     :param key_filename(str): the ssh private key to used, default None
     :param password(str): the password for remote server
     :param parallel(bool): paralleler execute on remote server, default True
     :returns: None
     :examples:
-    
+
         .. code-block:: python
 
             # create glance instances
@@ -72,9 +74,12 @@ class Glance(common.Common):
     def _create_glance_db(self, root_db_pass, glance_db_pass):
         """Create the glance database"""
         print red(env.host_string + ' | Create glance database')
-        sudo("mysql -uroot -p{0} -e \"CREATE DATABASE glance;\"".format(root_db_pass), shell=False)
-        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'localhost' IDENTIFIED BY '{1}';\"".format(root_db_pass, glance_db_pass), shell=False)
-        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, glance_db_pass), shell=False)
+        sudo(
+            "mysql -uroot -p{0} -e \"CREATE DATABASE glance;\"".format(root_db_pass), shell=False)
+        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'localhost' IDENTIFIED BY '{1}';\"".format(
+            root_db_pass, glance_db_pass), shell=False)
+        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY '{1}';\"".format(
+            root_db_pass, glance_db_pass), shell=False)
 
     def create_glance_db(self, *args, **kwargs):
         """
@@ -94,19 +99,24 @@ class Glance(common.Common):
                        OS_TENANT_NAME='admin',
                        OS_USERNAME='admin',
                        OS_PASSWORD=os_password,
-                       OS_AUTH_URL=os_auth_url, 
+                       OS_AUTH_URL=os_auth_url,
                        OS_IDENTITY_API_VERSION='3',
                        OS_IMAGE_API_VERSION='2'):
             print red(env.host_string + ' | Create the glance user')
-            sudo('openstack user create --domain default --password {0} glance'.format(glance_pass))
+            sudo(
+                'openstack user create --domain default --password {0} glance'.format(glance_pass))
             print red(env.host_string + ' | Add the admin role to the glance user and service project')
             sudo('openstack role add --project service --user glance admin')
             print red(env.host_string + ' | Create the glance service entity')
-            sudo('openstack service create --name glance --description "OpenStack Image service" image')
+            sudo(
+                'openstack service create --name glance --description "OpenStack Image service" image')
             print red(env.host_string + ' | Create the Image service API endpoints')
-            sudo('openstack endpoint create --region RegionOne image public {0}'.format(public_endpoint))
-            sudo('openstack endpoint create --region RegionOne image internal {0}'.format(internal_endpoint))
-            sudo('openstack endpoint create --region RegionOne image admin {0}'.format(admin_endpoint))
+            sudo(
+                'openstack endpoint create --region RegionOne image public {0}'.format(public_endpoint))
+            sudo(
+                'openstack endpoint create --region RegionOne image internal {0}'.format(internal_endpoint))
+            sudo(
+                'openstack endpoint create --region RegionOne image admin {0}'.format(admin_endpoint))
 
     def create_service_credentials(self, *args, **kwargs):
         """
@@ -131,7 +141,7 @@ class Glance(common.Common):
         with open("tmp_glance_api_conf_" + env.host_string, "w") as f:
             f.write(conf_glance_api_conf)
 
-        files.upload_template(filename='tmp_glance_api_conf_'+env.host_string,
+        files.upload_template(filename='tmp_glance_api_conf_' + env.host_string,
                               destination='/etc/glance/glance-api.conf',
                               context={'connection': connection,
                                        'auth_uri': auth_uri,
@@ -148,8 +158,8 @@ class Glance(common.Common):
         print red(env.host_string + ' | Update configuration for /etc/glance/glance-registry.conf')
         with open('tmp_glance_registry_conf_' + env.host_string, 'w') as f:
             f.write(conf_glance_registry_conf)
-        
-        files.upload_template(filename='tmp_glance_registry_conf_'+env.host_string,
+
+        files.upload_template(filename='tmp_glance_registry_conf_' + env.host_string,
                               destination='/etc/glance/glance-registry.conf',
                               context={'connection': connection,
                                        'auth_uri': auth_uri,
@@ -160,12 +170,11 @@ class Glance(common.Common):
                               use_sudo=True,
                               backup=True)
         os.remove('tmp_glance_registry_conf_' + env.host_string)
-   
+
         if populate:
             print red(env.host_string + ' | Populate the Image service database')
             sudo('su -s /bin/sh -c "glance-manage db_sync" glance', shell=False)
 
-        
         print red(env.host_string + ' | Restart the Image services')
         sudo('service glance-registry restart')
         sudo('service glance-api restart')

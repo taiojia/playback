@@ -1,20 +1,22 @@
+import argparse
+import os
+import sys
+
 from fabric.api import *
+from fabric.colors import red
 from fabric.contrib import files
 from fabric.network import disconnect_all
-from fabric.colors import red
-import os
-import argparse
-import sys
+
+from playback import __version__, common
 from playback.templates.proxy_server_conf import conf_proxy_server_conf
 from playback.templates.swift_conf import conf_swift_conf
-from playback import __version__
-from playback import common
+from playback.templates.memcached_conf import conf_memcached_conf
 
 class Swift(common.Common):
     """
     Deploy swift proxy node
 
-    :param user(str): the user for remote server to login 
+    :param user(str): the user for remote server to login
     :param hosts(list): this is a second param
     :param key_filename(str): the ssh private key to used, default None
     :param password(str): the password for remote server
@@ -23,7 +25,7 @@ class Swift(common.Common):
     :examples:
 
         .. code-block:: python
-            
+
             # create swift proxy instances
             swift_proxy1 = Swift(user='ubuntu', hosts=['controller1'])
             swift_proxy2 = Swift(user='ubuntu', hosts=['controller2'])
@@ -65,20 +67,24 @@ class Swift(common.Common):
                        OS_TENANT_NAME='admin',
                        OS_USERNAME='admin',
                        OS_PASSWORD=os_password,
-                       OS_AUTH_URL=os_auth_url, 
+                       OS_AUTH_URL=os_auth_url,
                        OS_IDENTITY_API_VERSION='3',
                        OS_IMAGE_API_VERSION='2',
                        OS_AUTH_VERSION='3'):
             print red(env.host_string + ' | Create the swift user')
-            sudo('openstack user create --domain default --password {0} swift'.format(swift_pass))
+            sudo(
+                'openstack user create --domain default --password {0} swift'.format(swift_pass))
             print red(env.host_string + ' | Add the admin role to the swift user and service project')
             sudo('openstack role add --project service --user swift admin')
             print red(env.host_string + ' | Create the swift service entity')
             sudo('openstack service create --name swift --description "OpenStack Object Storage" object-store')
             print red(env.host_string + ' | Create the Object Storage service API endpoints')
-            sudo('openstack endpoint create --region RegionOne object-store public {0}'.format(public_endpoint))
-            sudo('openstack endpoint create --region RegionOne object-store internal {0}'.format(internal_endpoint))
-            sudo('openstack endpoint create --region RegionOne object-store admin {0}'.format(admin_endpoint))
+            sudo(
+                'openstack endpoint create --region RegionOne object-store public {0}'.format(public_endpoint))
+            sudo(
+                'openstack endpoint create --region RegionOne object-store internal {0}'.format(internal_endpoint))
+            sudo(
+                'openstack endpoint create --region RegionOne object-store admin {0}'.format(admin_endpoint))
 
     def create_service_credentials(self, *args, **kwargs):
         r"""
@@ -102,13 +108,13 @@ class Swift(common.Common):
         if with_memcached:
             sudo('apt-get -y install memcached')
             # Configure /etc/memcached.conf to listen 0.0.0.0
-            with open('tmp_memcached_conf_'+env.host_string, 'w') as f:
+            with open('tmp_memcached_conf_' + env.host_string, 'w') as f:
                 f.write(conf_memcached_conf)
-            files.upload_template(filename='tmp_memcached_conf_'+env.host_string,
-                                    destination='/etc/memcached.conf',
-                                    use_sudo=True,
-                                    backup=True)
-            os.remove('tmp_memcached_conf_'+env.host_string)
+            files.upload_template(filename='tmp_memcached_conf_' + env.host_string,
+                                  destination='/etc/memcached.conf',
+                                  use_sudo=True,
+                                  backup=True)
+            os.remove('tmp_memcached_conf_' + env.host_string)
             sudo('service memcached restart')
 
         sudo('mkdir /etc/swift')
@@ -170,4 +176,3 @@ class Swift(common.Common):
         :returns: None
         """
         return execute(self._finalize_install, *args, **kwargs)
-

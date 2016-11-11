@@ -1,16 +1,18 @@
 import argparse
+import sys
+
 from fabric.api import *
+from fabric.colors import red
 from fabric.contrib import files
 from fabric.network import disconnect_all
-from fabric.colors import red
-import sys
-from playback import __version__
-from playback import common
+
+from playback import __version__, common
+
 
 class RabbitMq(common.Common):
     """RabbitMQ HA Installation
-    
-    :param user(str): the user for remote server to login 
+
+    :param user(str): the user for remote server to login
     :param hosts(list): this is a second param
     :param key_filename(str): the ssh private key to used, default None
     :param password(str): the password for remote server
@@ -48,7 +50,8 @@ class RabbitMq(common.Common):
         sudo('echo "%s" > /var/lib/rabbitmq/.erlang.cookie' % erlang_cookie)
         sudo('service rabbitmq-server start')
         sudo('rabbitmqctl add_user %s %s' % (rabbit_user, rabbit_pass))
-        sudo('echo "[{rabbit, [{loopback_users, []}]}]." > /etc/rabbitmq/rabbitmq.config')
+        sudo(
+            'echo "[{rabbit, [{loopback_users, []}]}]." > /etc/rabbitmq/rabbitmq.config')
         sudo('rabbitmqctl set_permissions %s ".*" ".*" ".*"' % rabbit_user)
         sudo('service rabbitmq-server restart')
 
@@ -67,7 +70,8 @@ class RabbitMq(common.Common):
         sudo('rabbitmqctl stop_app')
         sudo('rabbitmqctl join_cluster %s' % name)
         sudo('rabbitmqctl start_app')
-        sudo('rabbitmqctl set_policy ha-all \'^(?!amq\.).*\' \'{"ha-mode": "all"}\'')
+        sudo(
+            'rabbitmqctl set_policy ha-all \'^(?!amq\.).*\' \'{"ha-mode": "all"}\'')
 
     def join_cluster(self, *args, **kwargs):
         """
@@ -77,4 +81,3 @@ class RabbitMq(common.Common):
         :returns: None
         """
         return execute(self._join_cluster, *args, **kwargs)
-

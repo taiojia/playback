@@ -1,19 +1,21 @@
+import argparse
+import os
+import sys
+
 from fabric.api import *
+from fabric.colors import red
 from fabric.contrib import files
 from fabric.network import disconnect_all
-from fabric.colors import red
-import os
-import argparse
-import sys
-from playback import __version__
-from playback import common
+
+from playback import __version__, common
 from playback.templates.manila_conf import conf_manila_conf
+
 
 class Manila(common.Common):
     """
     Install manila service
-    
-    :param user(str): the user for remote server to login 
+
+    :param user(str): the user for remote server to login
     :param hosts(list): this is a second param
     :param key_filename(str): the ssh private key to used, default None
     :param password(str): the password for remote server
@@ -76,15 +78,18 @@ class Manila(common.Common):
     @runs_once
     def _create_manila_db(self, root_db_pass, manila_db_pass):
         sys.stdout.write(red(env.host_string + ' | Create manila database\n'))
-        sudo("mysql -uroot -p{0} -e \"CREATE DATABASE manila;\"".format(root_db_pass), shell=False)
-        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON manila.* TO 'manila'@'localhost' IDENTIFIED BY '{1}';\"".format(root_db_pass, manila_db_pass), shell=False)
-        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON manila.* TO 'manila'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, manila_db_pass), shell=False)
+        sudo(
+            "mysql -uroot -p{0} -e \"CREATE DATABASE manila;\"".format(root_db_pass), shell=False)
+        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON manila.* TO 'manila'@'localhost' IDENTIFIED BY '{1}';\"".format(
+            root_db_pass, manila_db_pass), shell=False)
+        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON manila.* TO 'manila'@'%' IDENTIFIED BY '{1}';\"".format(
+            root_db_pass, manila_db_pass), shell=False)
 
     def create_manila_db(self, *args, **kwargs):
         """
         Create manila database and the user named manila
 
-        :param root_db_pass: the password of mysql root user 
+        :param root_db_pass: the password of mysql root user
         :param manila_db_pass: the password of manila database user
         :returns: None
         """
@@ -98,24 +103,36 @@ class Manila(common.Common):
                        OS_TENANT_NAME='admin',
                        OS_USERNAME='admin',
                        OS_PASSWORD=os_password,
-                       OS_AUTH_URL=os_auth_url, 
+                       OS_AUTH_URL=os_auth_url,
                        OS_IDENTITY_API_VERSION='3',
                        OS_IMAGE_API_VERSION='2'):
-            sys.stdout.write(red(env.host_string + ' | Create a manila user\n'))
-            sudo('openstack user create --domain default --password {0} manila'.format(manila_pass))
-            sys.stdout.write(red(env.host_string + ' | Add the admin role to the manila user\n'))
+            sys.stdout.write(
+                red(env.host_string + ' | Create a manila user\n'))
+            sudo(
+                'openstack user create --domain default --password {0} manila'.format(manila_pass))
+            sys.stdout.write(
+                red(env.host_string + ' | Add the admin role to the manila user\n'))
             sudo('openstack role add --project service --user manila admin')
-            sys.stdout.write(red(env.host_string + ' | Create the manila and manilav2 service entities\n'))
+            sys.stdout.write(
+                red(env.host_string + ' | Create the manila and manilav2 service entities\n'))
             sudo('openstack service create --name manila --description "OpenStack Shared File Systems" share')
             sudo('openstack service create --name manilav2 --description "OpenStack Shared File Systems" sharev2')
-            sys.stdout.write(red(env.host_string + ' | Create the Shared File Systems service API endpoints v1\n'))
-            sudo('openstack endpoint create --region RegionOne share public {0}'.format(public_endpoint_v1))
-            sudo('openstack endpoint create --region RegionOne share internal {0}'.format(internal_endpoint_v1))
-            sudo('openstack endpoint create --region RegionOne share admin {0}'.format(admin_endpoint_v1))
-            sys.stdout.write(red(env.host_string + ' | Create the Shared File Systems service API endpoints v2\n'))
-            sudo('openstack endpoint create --region RegionOne sharev2 public {0}'.format(public_endpoint_v2))
-            sudo('openstack endpoint create --region RegionOne sharev2 internal {0}'.format(internal_endpoint_v2))
-            sudo('openstack endpoint create --region RegionOne sharev2 admin {0}'.format(admin_endpoint_v2))
+            sys.stdout.write(red(
+                env.host_string + ' | Create the Shared File Systems service API endpoints v1\n'))
+            sudo(
+                'openstack endpoint create --region RegionOne share public {0}'.format(public_endpoint_v1))
+            sudo(
+                'openstack endpoint create --region RegionOne share internal {0}'.format(internal_endpoint_v1))
+            sudo(
+                'openstack endpoint create --region RegionOne share admin {0}'.format(admin_endpoint_v1))
+            sys.stdout.write(red(
+                env.host_string + ' | Create the Shared File Systems service API endpoints v2\n'))
+            sudo(
+                'openstack endpoint create --region RegionOne sharev2 public {0}'.format(public_endpoint_v2))
+            sudo(
+                'openstack endpoint create --region RegionOne sharev2 internal {0}'.format(internal_endpoint_v2))
+            sudo(
+                'openstack endpoint create --region RegionOne sharev2 admin {0}'.format(admin_endpoint_v2))
 
     def create_service_credentials(self, *args, **kwargs):
         r"""
@@ -135,36 +152,40 @@ class Manila(common.Common):
         return execute(self._create_service_credentials, *args, **kwargs)
 
     def _install_manila(self, connection, auth_uri, auth_url, manila_pass, my_ip, memcached_servers, rabbit_hosts, rabbit_user, rabbit_pass, populate):
-        sys.stdout.write(red(env.host_string + ' | Install manila-api manila-scheduler python-manilaclient\n'))
+        sys.stdout.write(red(
+            env.host_string + ' | Install manila-api manila-scheduler python-manilaclient\n'))
         sudo('apt update')
         sudo('apt install manila-api manila-scheduler python-manilaclient -y')
 
-        sys.stdout.write(red(env.host_string + ' | Update /etc/manila/manila.conf\n'))
-        with open('tmp_manila_conf_' + env.host_string ,'w') as f:
+        sys.stdout.write(
+            red(env.host_string + ' | Update /etc/manila/manila.conf\n'))
+        with open('tmp_manila_conf_' + env.host_string, 'w') as f:
             f.write(conf_manila_conf)
         files.upload_template(filename='tmp_manila_conf_' + env.host_string,
-                                destination='/etc/manila/manila.conf',
-                                use_jinja=True,
-                                use_sudo=True,
-                                backup=True,
-                                context={
-                                    'connection': connection,
-                                    'rabbit_hosts': rabbit_hosts,
-                                    'rabbit_userid': rabbit_user,
-                                    'rabbit_password': rabbit_pass,
-                                    'memcached_servers': memcached_servers,
-                                    'auth_uri': auth_uri,
-                                    'auth_url': auth_url,
-                                    'manila_pass': manila_pass,
-                                    'my_ip': my_ip
-                                })
+                              destination='/etc/manila/manila.conf',
+                              use_jinja=True,
+                              use_sudo=True,
+                              backup=True,
+                              context={
+                                  'connection': connection,
+                                  'rabbit_hosts': rabbit_hosts,
+                                  'rabbit_userid': rabbit_user,
+                                  'rabbit_password': rabbit_pass,
+                                  'memcached_servers': memcached_servers,
+                                  'auth_uri': auth_uri,
+                                  'auth_url': auth_url,
+                                  'manila_pass': manila_pass,
+                                  'my_ip': my_ip
+                              })
         os.remove('tmp_manila_conf_' + env.host_string)
 
         if populate and env.host_string == self.hosts[0]:
-            sys.stdout.write(red(env.host_string + ' | Populate the Share File System database\n'))
+            sys.stdout.write(
+                red(env.host_string + ' | Populate the Share File System database\n'))
             sudo('su -s /bin/sh -c "manila-manage db sync" manila', shell=False)
-        
-        sys.stdout.write(red(env.host_string + ' | Restart the Share File Systems services\n'))
+
+        sys.stdout.write(
+            red(env.host_string + ' | Restart the Share File Systems services\n'))
         finalize = sudo('systemctl restart manila-scheduler manila-api')
         if finalize.failed or self._release == 'trusty':
             sudo('service manila-scheduler restart')
@@ -187,4 +208,3 @@ class Manila(common.Common):
         :returns: None
         """
         return execute(self._install_manila, *args, **kwargs)
-

@@ -1,19 +1,21 @@
+import argparse
+import os
+import sys
+
 from fabric.api import *
+from fabric.colors import red
 from fabric.contrib import files
 from fabric.network import disconnect_all
-from fabric.colors import red
-import os
-import argparse
-import sys
+
+from playback import __version__, common
 from playback.templates.nova_conf import conf_nova_conf
-from playback import __version__
-from playback import common
+
 
 class Nova(common.Common):
     """
     Deploy Nova
 
-    :param user(str): the user for remote server to login 
+    :param user(str): the user for remote server to login
     :param hosts(list): this is a second param
     :param key_filename(str): the ssh private key to used, default None
     :param password(str): the password for remote server
@@ -87,13 +89,19 @@ class Nova(common.Common):
     @runs_once
     def _create_nova_db(self, root_db_pass, nova_db_pass):
         print red(env.host_string + ' | Create nova database')
-        sudo("mysql -uroot -p{0} -e \"CREATE DATABASE nova;\"".format(root_db_pass), shell=False)
-        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'localhost' IDENTIFIED BY '{1}';\"".format(root_db_pass, nova_db_pass), shell=False)
-        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, nova_db_pass), shell=False)
+        sudo(
+            "mysql -uroot -p{0} -e \"CREATE DATABASE nova;\"".format(root_db_pass), shell=False)
+        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'localhost' IDENTIFIED BY '{1}';\"".format(
+            root_db_pass, nova_db_pass), shell=False)
+        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'%' IDENTIFIED BY '{1}';\"".format(
+            root_db_pass, nova_db_pass), shell=False)
         print red(env.host_string + ' | Create nova_api database')
-        sudo("mysql -uroot -p{0} -e \"CREATE DATABASE nova_api;\"".format(root_db_pass), shell=False)
-        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'localhost' IDENTIFIED BY '{1}';\"".format(root_db_pass, nova_db_pass), shell=False)
-        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'%' IDENTIFIED BY '{1}';\"".format(root_db_pass, nova_db_pass), shell=False)
+        sudo(
+            "mysql -uroot -p{0} -e \"CREATE DATABASE nova_api;\"".format(root_db_pass), shell=False)
+        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'localhost' IDENTIFIED BY '{1}';\"".format(
+            root_db_pass, nova_db_pass), shell=False)
+        sudo("mysql -uroot -p{0} -e \"GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'%' IDENTIFIED BY '{1}';\"".format(
+            root_db_pass, nova_db_pass), shell=False)
 
     def create_nova_db(self, *args, **kwargs):
         """
@@ -113,19 +121,24 @@ class Nova(common.Common):
                        OS_TENANT_NAME='admin',
                        OS_USERNAME='admin',
                        OS_PASSWORD=os_password,
-                       OS_AUTH_URL=os_auth_url, 
+                       OS_AUTH_URL=os_auth_url,
                        OS_IDENTITY_API_VERSION='3',
                        OS_IMAGE_API_VERSION='2'):
             print red(env.host_string + ' | Create the nova user')
-            sudo('openstack user create --domain default --password {0} nova'.format(nova_pass))
+            sudo(
+                'openstack user create --domain default --password {0} nova'.format(nova_pass))
             print red(env.host_string + ' | Add the admin role to the nova user and service project')
             sudo('openstack role add --project service --user nova admin')
             print red(env.host_string + ' | Create the nova service entity')
-            sudo('openstack service create --name nova --description "OpenStack Compute" compute')
+            sudo(
+                'openstack service create --name nova --description "OpenStack Compute" compute')
             print red(env.host_string + ' | Create the Compute service API endpoints')
-            sudo('openstack endpoint create --region RegionOne compute public {0}'.format(public_endpoint))
-            sudo('openstack endpoint create --region RegionOne compute internal {0}'.format(internal_endpoint))
-            sudo('openstack endpoint create --region RegionOne compute admin {0}'.format(admin_endpoint))
+            sudo(
+                'openstack endpoint create --region RegionOne compute public {0}'.format(public_endpoint))
+            sudo(
+                'openstack endpoint create --region RegionOne compute internal {0}'.format(internal_endpoint))
+            sudo(
+                'openstack endpoint create --region RegionOne compute admin {0}'.format(admin_endpoint))
 
     def create_service_credentials(self, *args, **kwargs):
         r"""
@@ -151,7 +164,7 @@ class Nova(common.Common):
         with open("tmp_nova_conf_" + env.host_string, "w") as f:
             f.write(conf_nova_conf)
 
-        files.upload_template(filename='tmp_nova_conf_'+env.host_string,
+        files.upload_template(filename='tmp_nova_conf_' + env.host_string,
                               destination='/etc/nova/nova.conf',
                               context={'connection': connection,
                                        'api_connection': api_connection,
@@ -187,7 +200,7 @@ class Nova(common.Common):
         sudo('service nova-scheduler restart')
         sudo('service nova-conductor restart')
         sudo('service nova-novncproxy restart')
-         
+
         print red(env.host_string + ' | Remove the SQLite database file')
         sudo('rm -f /var/lib/nova/nova.sqlite')
 
@@ -213,4 +226,3 @@ class Nova(common.Common):
         :returns: None
         """
         return execute(self._install_nova, *args, **kwargs)
-

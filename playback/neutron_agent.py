@@ -1,21 +1,24 @@
-from fabric.api import *
-from fabric.contrib import files
-from fabric.tasks import Task
-from fabric.network import disconnect_all
-from fabric.colors import red
-import os
 import argparse
+import os
 import sys
+
+from fabric.api import *
+from fabric.colors import red
+from fabric.contrib import files
+from fabric.network import disconnect_all
+from fabric.tasks import Task
+
+from playback import __version__, common
+from playback.templates.linuxbridge_agent_ini_for_agent import \
+    conf_linuxbridge_agent_ini
 from playback.templates.neutron_conf_for_agent import conf_neutron_conf
-from playback.templates.linuxbridge_agent_ini_for_agent import conf_linuxbridge_agent_ini
-from playback import __version__
-from playback import common
+
 
 class NeutronAgent(common.Common):
     """
     Deploy neutron agent
-    
-    :param user(str): the user for remote server to login 
+
+    :param user(str): the user for remote server to login
     :param hosts(list): this is a second param
     :param key_filename(str): the ssh private key to used, default None
     :param password(str): the password for remote server
@@ -106,11 +109,11 @@ class NeutronAgent(common.Common):
                               use_sudo=True,
                               backup=True,
                               context={'rabbit_hosts': rabbit_hosts,
-                                       'rabbit_user': rabbit_user, 
+                                       'rabbit_user': rabbit_user,
                                        'rabbit_password': rabbit_pass,
                                        'auth_uri': auth_uri,
                                        'auth_url': auth_url,
-                                       'neutron_pass': neutron_pass, 
+                                       'neutron_pass': neutron_pass,
                                        'memcached_servers': memcached_servers})
         os.remove('tmp_neutron_conf_' + env.host_string)
 
@@ -146,4 +149,3 @@ class NeutronAgent(common.Common):
         :returns: None
         """
         return execute(self._install, *args, **kwargs)
-
