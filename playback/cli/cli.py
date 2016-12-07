@@ -7,7 +7,7 @@ from playback import __version__
 def get_parser():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description='OpenStack provisioning and orchestration library and command-line'
+        description='OpenStack provisioning and orchestration library with command-line tools'
         )
     parser.add_argument(
         '-v', '--version',
