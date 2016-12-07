@@ -34,24 +34,24 @@ def get_parser():
         metavar='COMMAND',
         help='description',
         )
-    openstack_parser = subparser.add_parser(
-       'openstack',
+    provision_parser = subparser.add_parser(
+       'provision',
        help='provision and manage OpenStack'
         )
-    openstack_subparser = openstack_parser.add_subparsers(
+    provision_subparser = provision_parser.add_subparsers(
         title='commands',
         metavar='COMMAND',
         help='description',
     )
     entry_points = [
         (ep.name, ep.load())
-        for ep in pkg_resources.iter_entry_points('openstack')
+        for ep in pkg_resources.iter_entry_points('provision')
         ]
     entry_points.sort(
         key=lambda (name, fn): getattr(fn, 'priority', 100),
         )
     for (name, fn) in entry_points:
-        p = openstack_subparser.add_parser(
+        p = provision_subparser.add_parser(
             name,
             description=fn.__doc__,
             help=fn.__doc__,

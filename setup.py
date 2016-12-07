@@ -50,7 +50,28 @@ setup(name='playback',
     license='MIT',
     install_requires=['fabric == 1.10.2', 'ecdsa == 0.13', 'markupsafe == 0.23', 'paramiko == 1.16.0', 'jinja2 == 2.8', 'PyYAML == 3.11', 'setuptools == 19.6.2', 'pycrypto == 2.6.1', 'tqdm == 3.8.0'],
     packages=find_packages(),
-    entry_points={ 
-       'console_scripts': []
+    entry_points={
+       'console_scripts': [
+           'playback = playback.cli.cli:main',
+           ],
+
+        'provision': [
+            'environment = playback.cli.environment:make',
+            'mysql = playback.cli.mysql:make',
+            'haproxy = playback.cli.haproxy:make',
+            'rabbitmq = playback.cli.rabbitmq:make',
+            'keystone = playback.cli.keystone:make',
+            'glance = playback.cli.glance:make',
+            'nova = playback.cli.nova:make',
+            'nova-compute = playback.cli.nova_compute:make',
+            'neutron = playback.cli.neutron:make',
+            'neutron-agent = playback.cli.neutron_agent:make',
+            'horizon = playback.cli.horizon:make',
+            'cinder = playback.cli.cinder:make',
+            'swift = playback.cli.swift:make',
+            'swift-storage = playback.cli.swift_storage:make',
+            'manila = playback.cli.manila:make',
+            'manila-share = playback.cli.manila_share:make'
+        ],
        },
     )
