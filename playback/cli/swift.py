@@ -1,5 +1,5 @@
 import sys
-from playback.cliutil import priority
+from playback.cli.cliutil import priority
 from playback.api import Swift
 
 def create_service_credentials_subparser(s):

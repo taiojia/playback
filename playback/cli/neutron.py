@@ -1,5 +1,5 @@
 import sys
-from playback.cliutil import priority
+from playback.cli.cliutil import priority
 from playback.api import Neutron
 
 def create_neutron_db_subparser(s):

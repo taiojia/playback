@@ -2,7 +2,7 @@ import sys
 from playback.api import MysqlConfig
 from playback.api import MysqlManage
 from playback.api import MysqlInstallation
-from playback.cliutil import priority
+from playback.cli.cliutil import priority
 
 def install(args):
     try:

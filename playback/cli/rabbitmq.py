@@ -1,6 +1,6 @@
 import sys
 from playback.api import RabbitMq
-from playback.cliutil import priority
+from playback.cli.cliutil import priority
 
 def install_subparser(s):
     install_parser = s.add_parser('install', help='install RabbitMQ HA')

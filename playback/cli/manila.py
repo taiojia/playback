@@ -1,5 +1,5 @@
 import sys
-from playback.cliutil import priority
+from playback.cli.cliutil import priority
 from playback.manila import Manila
 
 def create_manila_db_subparser(s):

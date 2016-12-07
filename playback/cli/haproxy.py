@@ -2,7 +2,7 @@ import sys
 from playback.api import HaproxyInstall
 from playback.api import HaproxyConfig
 from playback.templates.haproxy_cfg import conf_haproxy_cfg
-from playback.cliutil import priority
+from playback.cli.cliutil import priority
 
 def install(args):
     try:

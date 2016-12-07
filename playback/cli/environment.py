@@ -2,7 +2,7 @@ import os
 import sys
 from playback.api import Cmd
 from playback.api import PrepareHost
-from playback.cliutil import priority
+from playback.cli.cliutil import priority
 
 def prepare_host(user, hosts, key_filename, password, public_interface):
     try:

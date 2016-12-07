@@ -1,4 +1,4 @@
-from playback.cliutil import priority
+from playback.cli.cliutil import priority
 from playback.api import Keystone
 
 def make_target(args):

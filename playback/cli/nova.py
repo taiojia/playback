@@ -1,5 +1,5 @@
 import sys
-from playback.cliutil import priority
+from playback.cli.cliutil import priority
 from playback.api import Nova
 
 def create_nova_db_subparser(s):

@@ -1,4 +1,4 @@
-from playback.cliutil import priority
+from playback.cli.cliutil import priority
 from playback.api import Glance
 
 def make_target(user, hosts, key_filename, password):
