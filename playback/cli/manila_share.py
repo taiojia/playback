@@ -99,7 +99,7 @@ def install(args):
 
 @priority(25)
 def make(parser):
-    """provison Manila with HA"""
+    """provison Manila Share with HA"""
     s = parser.add_subparsers(
         title='commands',
         metavar='COMMAND',
