@@ -30,7 +30,8 @@ except ImportError:
           " install setuptools).")
     sys.exit(1)
 
-from playback import __version__, __author__
+from playback import __version__ as VERSION
+from playback import __author__ as AUTHOR
 
 def read(fname):
     path = os.path.join(os.path.dirname(__file__), fname)
@@ -41,21 +42,20 @@ def read(fname):
     return f.read()
 
 setup(name='playback',
-    version=__version__,
+    version=VERSION,
     description='OpenStack provisioning and orchestration library with command-line tools',
     long_description=read('README.md'),
-    author=__author__,
+    author=AUTHOR,
     author_email='jiasir@icloud.com',
     url='https://github.com/jiasir/playback/',
     license='MIT',
-    install_requires=['fabric == 1.10.2', 'ecdsa == 0.13', 'markupsafe == 0.23', 'paramiko == 1.16.0', 'jinja2 == 2.8', 'PyYAML == 3.11', 'setuptools == 19.6.2', 'pycrypto == 2.6.1', 'tqdm == 3.8.0'],
+    install_requires=['cliff==2.3.0', 'fabric == 1.10.2', 'ecdsa == 0.13', 'markupsafe == 0.23', 'paramiko == 1.16.0', 'jinja2 == 2.8', 'PyYAML == 3.11', 'setuptools == 19.6.2', 'pycrypto == 2.6.1', 'tqdm == 3.8.0'],
     packages=find_packages(),
     entry_points={
        'console_scripts': [
-           'playback = playback.cli.cli:main',
-           ],
-
-        'provision': [
+           'playback = playback.cli.main:main',
+        ],
+        'cliff.playback': [
             'environment = playback.cli.environment:make',
             'mysql = playback.cli.mysql:make',
             'haproxy = playback.cli.haproxy:make',
