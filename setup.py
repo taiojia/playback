@@ -57,6 +57,7 @@ setup(name='playback',
         ],
         'cliff.playback': [
             'environment = playback.cli.environment:make',
+            'environment prepare-hosts = playback.cli.environment:PrepareHosts',
             'mysql = playback.cli.mysql:make',
             'haproxy = playback.cli.haproxy:make',
             'rabbitmq = playback.cli.rabbitmq:make',
