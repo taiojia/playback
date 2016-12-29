@@ -22,6 +22,18 @@ class Install(Command):
 
     def get_parser(self, prog_name):
         parser = super(Install, self).get_parser(prog_name)
+        parser.add_argument('--user',
+                            help='the username to connect to the remote host',
+                            action='store', default='ubuntu', dest='user')
+        parser.add_argument('--hosts',
+                            help='the remote host to connect to ',
+                            action='store', default=None, dest='hosts')
+        parser.add_argument('-i', '--key-filename',
+                            help='referencing file paths to SSH key files to try when connecting',
+                            action='store', dest='key_filename', default=None)
+        parser.add_argument('--password',
+                            help='the password used by the SSH layer when connecting to remote hosts',
+                            action='store', dest='password', default=None)
         parser.add_argument('--openstack-host',
                             help='configure the dashboard to use OpenStack services on the controller node e.g. CONTROLLER_VIP',
                             action='store', default=None, dest='openstack_host')

@@ -52,6 +52,18 @@ class CreateKeystoneDB(Command):
 
     def get_parser(self, prog_name):
         parser = super(CreateKeystoneDB, self).get_parser(prog_name)
+        parser.add_argument('--user',
+                            help='the username to connect to the remote host',
+                            action='store', default='ubuntu', dest='user')
+        parser.add_argument('--hosts',
+                            help='the remote host to connect to ',
+                            action='store', default=None, dest='hosts')
+        parser.add_argument('-i', '--key-filename',
+                            help='referencing file paths to SSH key files to try when connecting',
+                            action='store', dest='key_filename', default=None)
+        parser.add_argument('--password',
+                            help='the password used by the SSH layer when connecting to remote hosts',
+                            action='store', dest='password', default=None)
         parser.add_argument('--root-db-pass',
                             help='the openstack database root passowrd',
                             action='store', default=None, dest='root_db_pass')
@@ -71,6 +83,18 @@ class Install(Command):
 
     def get_parser(self, prog_name):
         parser = super(Install, self).get_parser(prog_name)
+        parser.add_argument('--user',
+                            help='the username to connect to the remote host',
+                            action='store', default='ubuntu', dest='user')
+        parser.add_argument('--hosts',
+                            help='the remote host to connect to ',
+                            action='store', default=None, dest='hosts')
+        parser.add_argument('-i', '--key-filename',
+                            help='referencing file paths to SSH key files to try when connecting',
+                            action='store', dest='key_filename', default=None)
+        parser.add_argument('--password',
+                            help='the password used by the SSH layer when connecting to remote hosts',
+                            action='store', dest='password', default=None)
         parser.add_argument('--admin-token',
                             help='define the value of the initial administration token',
                             action='store', default=None, dest='admin_token')
@@ -96,6 +120,18 @@ class CreateEntityAndEndpoint(Command):
 
     def get_parser(self, prog_name):
         parser = super(CreateEntityAndEndpoint, self).get_parser(prog_name)
+        parser.add_argument('--user',
+                            help='the username to connect to the remote host',
+                            action='store', default='ubuntu', dest='user')
+        parser.add_argument('--hosts',
+                            help='the remote host to connect to ',
+                            action='store', default=None, dest='hosts')
+        parser.add_argument('-i', '--key-filename',
+                            help='referencing file paths to SSH key files to try when connecting',
+                            action='store', dest='key_filename', default=None)
+        parser.add_argument('--password',
+                            help='the password used by the SSH layer when connecting to remote hosts',
+                            action='store', dest='password', default=None)
         parser.add_argument('--os-token',
                             help='the admin token',
                             action='store', default=None, dest='os_token')
@@ -124,6 +160,18 @@ class CreateProjectsUsersRoles(Command):
 
     def get_parser(self, prog_name):
         parser = super(CreateProjectsUsersRoles, self).get_parser(prog_name)
+        parser.add_argument('--user',
+                            help='the username to connect to the remote host',
+                            action='store', default='ubuntu', dest='user')
+        parser.add_argument('--hosts',
+                            help='the remote host to connect to ',
+                            action='store', default=None, dest='hosts')
+        parser.add_argument('-i', '--key-filename',
+                            help='referencing file paths to SSH key files to try when connecting',
+                            action='store', dest='key_filename', default=None)
+        parser.add_argument('--password',
+                            help='the password used by the SSH layer when connecting to remote hosts',
+                            action='store', dest='password', default=None)
         parser.add_argument('--os-token',
                             help='the admin token',
                             action='store', default=None, dest='os_token')
