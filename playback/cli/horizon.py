@@ -1,6 +1,6 @@
-import sys
-from playback.cli.cliutil import priority
+import sys, logging
 from playback.api import Horizon
+from cliff.command import Command
 
 def install(args):
     try:
@@ -14,31 +14,24 @@ def install(args):
             args.memcached_servers,
             args.time_zone)
 
-@priority(20)
-def make(parser):
-    """provison Horizon with HA"""
-    s = parser.add_subparsers(
-        title='commands',
-        metavar='COMMAND',
-        help='description',
-        )
 
-    def install_f(args):
-        install(args)
-    install_parser = s.add_parser('install', help='install horizon')
-    install_parser.add_argument('--openstack-host',
-                                help='configure the dashboard to use OpenStack services on the controller node e.g. CONTROLLER_VIP',
-                                action='store',
-                                default=None,
-                                dest='openstack_host')
-    install_parser.add_argument('--memcached-servers',
-                                help='django memcache e.g. CONTROLLER1:11211,CONTROLLER2:11211',
-                                action='store',
-                                default=None,
-                                dest='memcached_servers')
-    install_parser.add_argument('--time-zone',
-                                help='the timezone of the server. This should correspond with the timezone of your entire OpenStack installation e.g. Asia/Shanghai',
-                                action='store',
-                                default=None,
-                                dest='time_zone')
-    install_parser.set_defaults(func=install_f)
+class Install(Command):
+    """install horizon"""
+
+    log = logging.getLogger(__name__)
+
+    def get_parser(self, prog_name):
+        parser = super(Install, self).get_parser(prog_name)
+        parser.add_argument('--openstack-host',
+                            help='configure the dashboard to use OpenStack services on the controller node e.g. CONTROLLER_VIP',
+                            action='store', default=None, dest='openstack_host')
+        parser.add_argument('--memcached-servers',
+                            help='django memcache e.g. CONTROLLER1:11211,CONTROLLER2:11211',
+                            action='store', default=None, dest='memcached_servers')
+        parser.add_argument('--time-zone',
+                            help='the timezone of the server. This should correspond with the timezone of your entire OpenStack installation e.g. Asia/Shanghai',
+                            action='store', default=None, dest='time_zone')
+        return parser
+
+    def take_action(self, parsed_args):
+        install(parsed_args)
