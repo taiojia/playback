@@ -1,8 +1,9 @@
-import sys
+import sys, logging
 from playback.api import MysqlConfig
 from playback.api import MysqlManage
 from playback.api import MysqlInstallation
-from playback.cli.cliutil import priority
+from cliff.command import Command
+
 
 def install(args):
     try:
@@ -44,55 +45,104 @@ def manage(args):
             raise Exception('--root-db-pass is empty\n')
         target.show_cluster_status(args.root_db_pass)
 
-def install_subparser(s):
-    install_parser = s.add_parser('install', help='install Galera Cluster for MySQL')
-    return install_parser
 
-def config_subparser(s):
-    config_parser = s.add_parser('config', help='setup Galera Cluster for MySQL')
-    config_parser.add_argument('--wsrep-cluster-address', help='the IP addresses for each cluster node e.g. gcomm://CONTROLLER1_IP,CONTROLLER2_IP',
-                                action='store', dest='wsrep_cluster_address')
-    config_parser.add_argument('--wsrep-node-name', help='the logical name of the cluster node e.g. galera1',
-                                action='store', dest='wsrep_node_name')
-    config_parser.add_argument('--wsrep-node-address', help='the IP address of the cluster node e.g. CONTROLLER1_IP',
-                                action='store', dest='wsrep_node_address')
-    return config_parser
+class Install(Command):
+    """install Galera Cluster for MySQL"""
 
-def manage_subparser(s):
-    manage_parser = s.add_parser('manage', help='manage Galera Cluster for MySQL')
-    manage_parser.add_argument('--wsrep-new-cluster', help='initialize the Primary Component on one cluster node',
-                                action='store_true', default=False, dest='wsrep_new_cluster')
-    manage_parser.add_argument('--start', help='start the database server on all other cluster nodes',
-                                action='store_true', default=False, dest='start')
-    manage_parser.add_argument('--stop', help='stop the database server',
-                                action='store_true', default=False, dest='stop')
-    manage_parser.add_argument('--change-root-password', help='change the root password',
-                                action='store', default=False, dest='change_root_password')
-    manage_parser.add_argument('--show-cluster-status', help='show the cluster status',
-                                action='store_true', default=False, dest='show_cluster_status')
-    manage_parser.add_argument('--root-db-pass', help='the password of root user',
-                                action='store', default=None, dest='root_db_pass')
-    return manage_parser
+    log = logging.getLogger(__name__)
 
-@priority(11)
-def make(parser):
-    """provision MariaDB Galera Cluster"""
-    s = parser.add_subparsers(
-        title='commands',
-        metavar='COMMAND',
-        help='description',
-        )
-    def install_f(args):
-        install(args)
-    install_parser = install_subparser(s)
-    install_parser.set_defaults(func=install_f)
+    def get_parser(self, prog_name):
+        parser = super(Install, self).get_parser(prog_name)
+        parser.add_argument('--user',
+                            help='the username to connect to the remote host',
+                            action='store', default='ubuntu', dest='user')
+        parser.add_argument('--hosts',
+                            help='the remote host to connect to ',
+                            action='store', default=None, dest='hosts')
+        parser.add_argument('-i', '--key-filename',
+                            help='referencing file paths to SSH key files to try when connecting',
+                            action='store', dest='key_filename', default=None)
+        parser.add_argument('--password',
+                            help='the password used by the SSH layer when connecting to remote hosts',
+                            action='store', dest='password', default=None)
+        return parser
 
-    def config_f(args):
-        config(args)
-    config_parser = config_subparser(s)
-    config_parser.set_defaults(func=config_f)
+    def take_action(self, parsed_args):
+        install(parsed_args)
 
-    def manage_f(args):
-        manage(args)
-    manage_parser = manage_subparser(s)
-    manage_parser.set_defaults(func=manage_f)
+
+class Config(Command):
+    """setup Galera Cluster for MySQL"""
+
+    log = logging.getLogger(__name__)
+
+    def get_parser(self, prog_name):
+        parser = super(Config, self).get_parser(prog_name)
+        parser.add_argument('--user',
+                            help='the username to connect to the remote host',
+                            action='store', default='ubuntu', dest='user')
+        parser.add_argument('--hosts',
+                            help='the remote host to connect to ',
+                            action='store', default=None, dest='hosts')
+        parser.add_argument('-i', '--key-filename',
+                            help='referencing file paths to SSH key files to try when connecting',
+                            action='store', dest='key_filename', default=None)
+        parser.add_argument('--password',
+                            help='the password used by the SSH layer when connecting to remote hosts',
+                            action='store', dest='password', default=None)
+        parser.add_argument('--wsrep-cluster-address',
+                            help='the IP addresses for each cluster node e.g. gcomm://CONTROLLER1_IP,CONTROLLER2_IP',
+                            action='store', dest='wsrep_cluster_address')
+        parser.add_argument('--wsrep-node-name', help='the logical name of the cluster node e.g. galera1',
+                            action='store', dest='wsrep_node_name')
+        parser.add_argument('--wsrep-node-address',
+                            help='the IP address of the cluster node e.g. CONTROLLER1_IP',
+                            action='store', dest='wsrep_node_address')
+        return parser
+
+    def take_action(self, parsed_args):
+        config(parsed_args)
+
+
+class Manage(Command):
+    """manage Galera Cluster for MySQL"""
+
+    log = logging.getLogger(__name__)
+
+    def get_parser(self, prog_name):
+        parser = super(Manage, self).get_parser(prog_name)
+        parser.add_argument('--user',
+                            help='the username to connect to the remote host',
+                            action='store', default='ubuntu', dest='user')
+        parser.add_argument('--hosts',
+                            help='the remote host to connect to ',
+                            action='store', default=None, dest='hosts')
+        parser.add_argument('-i', '--key-filename',
+                            help='referencing file paths to SSH key files to try when connecting',
+                            action='store', dest='key_filename', default=None)
+        parser.add_argument('--password',
+                            help='the password used by the SSH layer when connecting to remote hosts',
+                            action='store', dest='password', default=None)
+        parser.add_argument('--wsrep-new-cluster',
+                            help='initialize the Primary Component on one cluster node',
+                            action='store_true', default=False, dest='wsrep_new_cluster')
+        parser.add_argument('--start',
+                            help='start the database server on all other cluster nodes',
+                            action='store_true', default=False, dest='start')
+        parser.add_argument('--stop',
+                            help='stop the database server',
+                            action='store_true', default=False, dest='stop')
+        parser.add_argument('--change-root-password',
+                            help='change the root password',
+                            action='store', default=False, dest='change_root_password')
+        parser.add_argument('--show-cluster-status',
+                            help='show the cluster status',
+                            action='store_true', default=False, dest='show_cluster_status')
+        parser.add_argument('--root-db-pass',
+                            help='the password of root user',
+                            action='store', default=None, dest='root_db_pass')
+        return parser
+
+    def take_action(self, parsed_args):
+        manage(parsed_args)
+
