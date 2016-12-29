@@ -1,5 +1,6 @@
-from playback.cli.cliutil import priority
+import sys, logging
 from playback.api import Keystone
+from cliff.command import Command
 
 def make_target(args):
     try:
@@ -43,124 +44,99 @@ def create_projects_users_roles(args):
         args.demo_pass)
     target.update_keystone_paste_ini()
 
-def create_keystone_db_subparser(s):
-    create_keystone_db_parser = s.add_parser('create-keystone-db', help='create the keystone database', )
-    create_keystone_db_parser.add_argument('--root-db-pass',
-                                           help='the openstack database root passowrd',
-                                           action='store',
-                                           default=None,
-                                           dest='root_db_pass')
-    create_keystone_db_parser.add_argument('--keystone-db-pass',
-                                           help='keystone db passowrd',
-                                           action='store',
-                                           default=None,
-                                           dest='keystone_db_pass')
-    return create_keystone_db_parser
 
-def install_subparser(s):
-    install_parser = s.add_parser('install', help='install keystone')
-    install_parser.add_argument('--admin-token',
-                                help='define the value of the initial administration token',
-                                action='store',
-                                default=None,
-                                dest='admin_token')
-    install_parser.add_argument('--connection',
-                                help='database connection string e.g. mysql+pymysql://keystone:PASS@CONTROLLER_VIP/keystone',
-                                action='store',
-                                default=None,
-                                dest='connection')
-    install_parser.add_argument('--memcached-servers',
-                                help='memcached servers. e.g. CONTROLLER1:11211,CONTROLLER2:11211',
-                                action='store',
-                                default=None,
-                                dest='memcached_servers')
-    install_parser.add_argument('--populate',
-                                help='populate the keystone database',
-                                action='store_true',
-                                default=False,
-                                dest='populate')
-    return install_parser
+class CreateKeystoneDB(Command):
+    """create the keystone database"""
 
-def create_entity_and_endpoint_subparser(s):
-    create_entity_and_endpoint_parser = s.add_parser('create-entity-and-endpoint',
-                                                       help='create the service entity and API endpoints',)
-    create_entity_and_endpoint_parser.add_argument('--os-token',
-                                                    help='the admin token',
-                                                    action='store',
-                                                    default=None,
-                                                    dest='os_token')
-    create_entity_and_endpoint_parser.add_argument('--os-url',
-                                                    help='keystone endpoint url e.g. http://CONTROLLER_VIP:35357/v3',
-                                                    action='store',
-                                                    default=None,
-                                                    dest='os_url')
-    create_entity_and_endpoint_parser.add_argument('--public-endpoint',
-                                                    help='the public endpoint e.g. http://CONTROLLER_VIP:5000/v3',
-                                                    action='store',
-                                                    default=None,
-                                                    dest='public_endpoint')
-    create_entity_and_endpoint_parser.add_argument('--internal-endpoint',
-                                                    help='the internal endpoint e.g. http://CONTROLLER_VIP:5000/v3',
-                                                    action='store',
-                                                    default=None,
-                                                    dest='internal_endpoint')
-    create_entity_and_endpoint_parser.add_argument('--admin-endpoint',
-                                                    help='the admin endpoint e.g. http://CONTROLLER_VIP:35357/v3',
-                                                    action='store',
-                                                    default=None,
-                                                    dest='admin_endpoint')
-    return create_entity_and_endpoint_parser
+    log = logging.getLogger(__name__)
 
-def create_projects_users_roles_subparser(s):
-    create_projects_users_roles_parser = s.add_parser('create-projects-users-roles',
-                                                        help='create an administrative and demo project, user, and role for administrative and testing operations in your environment')
-    create_projects_users_roles_parser.add_argument('--os-token',
-                                                    help='the admin token',
-                                                    action='store',
-                                                    default=None,
-                                                    dest='os_token')
-    create_projects_users_roles_parser.add_argument('--os-url',
-                                                    help='keystone endpoint url e.g. http://CONTROLLER_VIP:35357/v3',
-                                                    action='store',
-                                                    default=None,
-                                                    dest='os_url')
-    create_projects_users_roles_parser.add_argument('--admin-pass',
-                                                    help='passowrd for admin user',
-                                                    action='store',
-                                                    default=None,
-                                                    dest='admin_pass')
-    create_projects_users_roles_parser.add_argument('--demo-pass',
-                                                    help='passowrd for demo user',
-                                                    action='store',
-                                                    default=None,
-                                                    dest='demo_pass')
-    return create_projects_users_roles_parser
+    def get_parser(self, prog_name):
+        parser = super(CreateKeystoneDB, self).get_parser(prog_name)
+        parser.add_argument('--root-db-pass',
+                            help='the openstack database root passowrd',
+                            action='store', default=None, dest='root_db_pass')
+        parser.add_argument('--keystone-db-pass',
+                            help='keystone db passowrd',
+                            action='store', default=None, dest='keystone_db_pass')
+        return parser
 
-@priority(14)
-def make(parser):
-    """provison Keystone with HA"""
-    s = parser.add_subparsers(
-        title='commands',
-        metavar='COMMAND',
-        help='description',
-        )
+    def take_action(self, parsed_args):
+        create_keystone_db(parsed_args)
 
-    def create_keystone_db_f(args):
-        create_keystone_db(args)
-    create_keystone_db_parser = create_keystone_db_subparser(s)
-    create_keystone_db_parser.set_defaults(func=create_keystone_db_f)
 
-    def install_f(args):
-        install(args)
-    install_parser = install_subparser(s)
-    install_parser.set_defaults(func=install_f)
+class Install(Command):
+    """install keystone"""
 
-    def create_entity_and_endpoint_f(args):
-        create_entity_and_endpoint(args)
-    create_entity_and_endpoint_parser = create_entity_and_endpoint_subparser(s)
-    create_entity_and_endpoint_parser.set_defaults(func=create_entity_and_endpoint_f)
+    log = logging.getLogger(__name__)
 
-    def create_projects_users_roles_f(args):
-        create_projects_users_roles(args)
-    create_projects_users_roles_parser = create_projects_users_roles_subparser(s)
-    create_projects_users_roles_parser.set_defaults(func=create_projects_users_roles_f)
+    def get_parser(self, prog_name):
+        parser = super(Install, self).get_parser(prog_name)
+        parser.add_argument('--admin-token',
+                            help='define the value of the initial administration token',
+                            action='store', default=None, dest='admin_token')
+        parser.add_argument('--connection',
+                            help='database connection string e.g. mysql+pymysql://keystone:PASS@CONTROLLER_VIP/keystone',
+                            action='store', default=None, dest='connection')
+        parser.add_argument('--memcached-servers',
+                            help='memcached servers. e.g. CONTROLLER1:11211,CONTROLLER2:11211',
+                            action='store', default=None, dest='memcached_servers')
+        parser.add_argument('--populate',
+                            help='populate the keystone database',
+                            action='store_true', default=False, dest='populate')
+        return parser
+
+    def take_action(self, parsed_args):
+        install(parsed_args)
+
+
+class CreateEntityAndEndpoint(Command):
+    """create the service entity and API endpoints"""
+
+    log = logging.getLogger(__name__)
+
+    def get_parser(self, prog_name):
+        parser = super(CreateEntityAndEndpoint, self).get_parser(prog_name)
+        parser.add_argument('--os-token',
+                            help='the admin token',
+                            action='store', default=None, dest='os_token')
+        parser.add_argument('--os-url',
+                            help='keystone endpoint url e.g. http://CONTROLLER_VIP:35357/v3',
+                            action='store', default=None, dest='os_url')
+        parser.add_argument('--public-endpoint',
+                            help='the public endpoint e.g. http://CONTROLLER_VIP:5000/v3',
+                            action='store', default=None, dest='public_endpoint')
+        parser.add_argument('--internal-endpoint',
+                            help='the internal endpoint e.g. http://CONTROLLER_VIP:5000/v3',
+                            action='store', default=None, dest='internal_endpoint')
+        parser.add_argument('--admin-endpoint',
+                            help='the admin endpoint e.g. http://CONTROLLER_VIP:35357/v3',
+                            action='store', default=None, dest='admin_endpoint')
+        return parser
+
+    def take_action(self, parsed_args):
+        create_entity_and_endpoint(parsed_args)
+
+
+class CreateProjectsUsersRoles(Command):
+    """create an administrative and demo project, user, and role for administrative and testing operations in your environment"""
+
+    log = logging.getLogger(__name__)
+
+    def get_parser(self, prog_name):
+        parser = super(CreateProjectsUsersRoles, self).get_parser(prog_name)
+        parser.add_argument('--os-token',
+                            help='the admin token',
+                            action='store', default=None, dest='os_token')
+        parser.add_argument('--os-url',
+                            help='keystone endpoint url e.g. http://CONTROLLER_VIP:35357/v3',
+                            action='store', default=None, dest='os_url')
+        parser.add_argument('--admin-pass',
+                            help='passowrd for admin user',
+                            action='store', default=None, dest='admin_pass')
+        parser.add_argument('--demo-pass',
+                            help='passowrd for demo user',
+                            action='store', default=None, dest='demo_pass')
+        return parser
+
+    def take_action(self, parsed_args):
+        create_projects_users_roles(parsed_args)
