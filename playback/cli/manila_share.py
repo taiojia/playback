@@ -1,3 +1,4 @@
+"""DEPRECATED! Manila and Manila Share services"""
 import sys
 from playback.cli.cliutil import priority
 from playback.manila_share import ManilaShare
