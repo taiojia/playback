@@ -33,6 +33,7 @@ except ImportError:
 from playback import __version__ as VERSION
 from playback import __author__ as AUTHOR
 
+
 def read(fname):
     path = os.path.join(os.path.dirname(__file__), fname)
     try:
@@ -41,52 +42,55 @@ def read(fname):
         return None
     return f.read()
 
+
 setup(name='playback',
-    version=VERSION,
-    description='OpenStack provisioning and orchestration library with command-line tools',
-    long_description=read('README.md'),
-    author=AUTHOR,
-    author_email='jiasir@icloud.com',
-    url='https://github.com/jiasir/playback/',
-    license='MIT',
-    install_requires=['cliff==2.3.0', 'fabric == 1.10.2', 'ecdsa == 0.13', 'markupsafe == 0.23', 'paramiko == 1.16.0', 'jinja2 == 2.8', 'PyYAML == 3.11', 'setuptools == 19.6.2', 'pycrypto == 2.6.1', 'tqdm == 3.8.0'],
-    packages=find_packages(),
-    entry_points={
-       'console_scripts': [
-           'playback = playback.cli.main:main',
-        ],
-        'cliff.playback': [
-            'environment prepare-hosts = playback.cli.environment:PrepareHosts',
-            'mysql = playback.cli.mysql:Install',
-            'mysql config = playback.cli.mysql:Config',
-            'mysql manage = playback.cli.mysql:Manage',
-            'haproxy = playback.cli.haproxy:make',
-            'haproxy install = playback.cli.haproxy:Install',
-            'haproxy config = playback.cli.haproxy:Config',
-            'haproxy gen-conf = playback.cli.haproxy:GenConf',
-            'rabbitmq = playback.cli.rabbitmq:make',
-            'keystone = playback.cli.keystone:make',
-            'keystone create db = playback.cli.keystone:CreateKeystoneDB',
-            'keystone install = playback.cli.keystone:Install',
-            'keystone create entity-and-endpoint= playback.cli.keystone:CreateEntityAndEndpoint',
-            'keystone create projects-users-roles = playback.cli.keystone:CreateProjectsUsersRoles',
-            'glance create db = playback.cli.glance:CreateGlanceDB',
-            'glance create service-credentials = playback.cli.glance:CreateServiceCredentials',
-            'glance install = playback.cli.glance:Install',
-            'nova = playback.cli.nova:make',
-            'nova-compute = playback.cli.nova_compute:make',
-            'neutron create db = playback.cli.neutron:CreateNeutronDB',
-            'neutron create service-credentials = playback.cli.neutron:CreateServiceCredentials',
-            'neutron install = playback.cli.neutron:Install',
-            'neutron-agent = playback.cli.neutron_agent:make',
-            'horizon = playback.cli.horizon:Install',
-            'cinder create db = playback.cli.cinder:CreateCinderDB',
-            'cinder create service-credentials = playback.cli.cinder:CreateServiceCredentials',
-            'cinder install = playback.cli.cinder:Install',
-            'swift = playback.cli.swift:make',
-            'swift-storage = playback.cli.swift_storage:make'
-            #'manila = playback.cli.manila:make',
-            #'manila-share = playback.cli.manila_share:make'
-        ],
-       },
-    )
+      version=VERSION,
+      description='OpenStack provisioning and orchestration library with command-line tools',
+      long_description=read('README.md'),
+      author=AUTHOR,
+      author_email='jiasir@icloud.com',
+      url='https://github.com/jiasir/playback/',
+      license='MIT',
+      install_requires=['cliff==2.3.0', 'fabric == 1.10.2', 'ecdsa == 0.13', 'markupsafe == 0.23', 'paramiko == 1.16.0',
+                        'jinja2 == 2.8', 'PyYAML == 3.11', 'setuptools == 19.6.2', 'pycrypto == 2.6.1',
+                        'tqdm == 3.8.0'],
+      packages=find_packages(),
+      entry_points={
+          'console_scripts': [
+              'playback = playback.cli.main:main',
+          ],
+          'cliff.playback': [
+              'environment prepare-hosts = playback.cli.environment:PrepareHosts',
+              'mysql = playback.cli.mysql:Install',
+              'mysql config = playback.cli.mysql:Config',
+              'mysql manage = playback.cli.mysql:Manage',
+              'haproxy = playback.cli.haproxy:make',
+              'haproxy install = playback.cli.haproxy:Install',
+              'haproxy config = playback.cli.haproxy:Config',
+              'haproxy gen-conf = playback.cli.haproxy:GenConf',
+              'rabbitmq = playback.cli.rabbitmq:make',
+              'keystone = playback.cli.keystone:make',
+              'keystone create db = playback.cli.keystone:CreateKeystoneDB',
+              'keystone install = playback.cli.keystone:Install',
+              'keystone create entity-and-endpoint= playback.cli.keystone:CreateEntityAndEndpoint',
+              'keystone create projects-users-roles = playback.cli.keystone:CreateProjectsUsersRoles',
+              'glance create db = playback.cli.glance:CreateGlanceDB',
+              'glance create service-credentials = playback.cli.glance:CreateServiceCredentials',
+              'glance install = playback.cli.glance:Install',
+              'nova = playback.cli.nova:make',
+              'nova-compute = playback.cli.nova_compute:make',
+              'neutron create db = playback.cli.neutron:CreateNeutronDB',
+              'neutron create service-credentials = playback.cli.neutron:CreateServiceCredentials',
+              'neutron install = playback.cli.neutron:Install',
+              'neutron-agent install = playback.cli.neutron_agent:Install',
+              'horizon = playback.cli.horizon:Install',
+              'cinder create db = playback.cli.cinder:CreateCinderDB',
+              'cinder create service-credentials = playback.cli.cinder:CreateServiceCredentials',
+              'cinder install = playback.cli.cinder:Install',
+              'swift = playback.cli.swift:make',
+              'swift-storage = playback.cli.swift_storage:make'
+              # 'manila = playback.cli.manila:make',
+              # 'manila-share = playback.cli.manila_share:make'
+          ],
+      },
+      )
