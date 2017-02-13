@@ -81,7 +81,7 @@ class CreateServiceCredentials(Command):
         create_service_credentials(parsed_args)
 
 
-class Install(Command)
+class Install(Command):
     """install swift proxy"""
 
     log = logging.getLogger(__name__)
