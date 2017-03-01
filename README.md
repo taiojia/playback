@@ -36,7 +36,7 @@ Install playback on PLAYBACK-NODE
 Prepare the OpenStack environment.
 (NOTE) DO NOT setup eth1 in /etc/network/interfaces
 
-    playback --user ubuntu --hosts \
+    playback environment prepare-hosts --user ubuntu --hosts \
     HAPROXY1,\
     HAPROXY2,\
     CONTROLLER1,\
@@ -51,81 +51,79 @@ Prepare the OpenStack environment.
     COMPUTE8,\
     COMPUTE9,\
     COMPUTE10 \
-    provision \
-    environment \
-    prepare-host --public-interface eth1
+    --public-interface eth1
 
 ### MySQL HA
 
 Deploy to CONTROLLER1
 
-    playback --user ubuntu --hosts CONTROLLER1 provision mysql install
-    playback --user ubuntu --hosts CONTROLLER1 provision mysql config --wsrep-cluster-address "gcomm://CONTROLLER1,CONTROLLER2" --wsrep-node-name="galera1" --wsrep-node-address="CONTROLLER1"
+    playback mysql install --user ubuntu --hosts CONTROLLER1
+    playback mysql config --user ubuntu --hosts CONTROLLER1 --wsrep-cluster-address "gcomm://CONTROLLER1,CONTROLLER2" --wsrep-node-name="galera1" --wsrep-node-address="CONTROLLER1"
 
 Deploy to CONTROLLER2
 
-    playback --user ubuntu --hosts CONTROLLER2 provision mysql install
-    playback --user ubuntu --hosts CONTROLLER2 provision mysql config --wsrep-cluster-address "gcomm://CONTROLLER1,CONTROLLER2" --wsrep-node-name="galera2" --wsrep-node-address="CONTROLLER2"
+    playback mysql install --user ubuntu --hosts CONTROLLER2
+    playback mysql config --user ubuntu --hosts CONTROLLER2 --wsrep-cluster-address "gcomm://CONTROLLER1,CONTROLLER2" --wsrep-node-name="galera2" --wsrep-node-address="CONTROLLER2"
 
 Start the cluster
 
-    playback --user ubuntu --hosts CONTROLLER1 provision mysql manage --wsrep-new-cluster
-    playback --user ubuntu --hosts CONTROLLER2 provision mysql manage --start
-    playback --user ubuntu --hosts CONTROLLER1 provision mysql manage --change-root-password changeme
+    playback mysql manage --user ubuntu --hosts CONTROLLER1 --wsrep-new-cluster
+    playback mysql manage --user ubuntu --hosts CONTROLLER2 --start
+    playback mysql manage --user ubuntu --hosts CONTROLLER1 --change-root-password changeme
 
 Show the cluster status
 
-    playback --user ubuntu --hosts CONTROLLER1 provision mysql manage --show-cluster-status --root-db-pass changeme
+    playback mysql manage --user ubuntu --hosts CONTROLLER1 --show-cluster-status --root-db-pass changeme
 
 
 ### HAProxy HA
 
 Deploy to HAPROXY1
 
-    playback --user ubuntu --hosts HAPROXY1 provision haproxy install
+    playback haproxy install --user ubuntu --hosts HAPROXY1
 
 Deploy to HAPROXY2
 
-    playback --user ubuntu --hosts HAPROXY2 provision haproxy install
+    playback haproxy install --user ubuntu --hosts HAPROXY2
 
 Generate the HAProxy configuration and upload to target hosts(Do not forget to edit the generated configuration)
 
-    playback provision haproxygen-conf
-    playback --user ubuntu --hosts HAPROXY1,HAPROXY2 provision haproxy config --upload-conf haproxy.cfg
+    playback haproxy gen-conf
+    playback haproxy config --user ubuntu --hosts HAPROXY1,HAPROXY2 --upload-conf haproxy.cfg
 
 Configure Keepalived
 
-    playback --user ubuntu --hosts HAPROXY1 provision haproxy config --configure-keepalived --router_id lb1 --priority 150 --state MASTER --interface eth0 --vip CONTROLLER_VIP
-    playback --user ubuntu --hosts HAPROXY2 provision haproxy config --configure-keepalived --router_id lb2 --priority 100 --state SLAVE --interface eth0 --vip CONTROLLER_VIP
+    playback haproxy config --user ubuntu --hosts HAPROXY1 --configure-keepalived --router_id lb1 --priority 150 --state MASTER --interface eth0 --vip CONTROLLER_VIP
+    playback haproxy config --user ubuntu --hosts HAPROXY2 --configure-keepalived --router_id lb2 --priority 100 --state SLAVE --interface eth0 --vip CONTROLLER_VIP
 
 ### RabbitMQ HA
 
 Deploy to CONTROLLER1 and CONTROLLER2
 
-    playback --user ubuntu --hosts CONTROLLER1,CONTROLLER2 provision rabbitmq install --erlang-cookie changemechangeme --rabbit-user openstack --rabbit-pass changeme
+    playback rabbitmq install --user ubuntu --hosts CONTROLLER1,CONTROLLER2 --erlang-cookie changemechangeme --rabbit-user openstack --rabbit-pass changeme
 
 Create cluster(Ensure CONTROLLER2 can access CONTROLLER1 via hostname)
 
-    playback --user ubuntu --hosts CONTROLLER2 provision rabbitmq join-cluster --name rabbit@CONTROLLER1
+    playback rabbitmq join-cluster --user ubuntu --hosts CONTROLLER2 --name rabbit@CONTROLLER1
 
 ### Keystone HA
 
 Create keystone database
 
-    playback --user ubuntu --hosts CONTROLLER1 provision keystone create-keystone-db --root-db-pass changeme --keystone-db-pass changeme
+    playback keystone create db --user ubuntu --hosts CONTROLLER1 --root-db-pass changeme --keystone-db-pass changeme
 
 Install keystone on CONTROLLER1 and CONTROLLER2
 
-    playback --user ubuntu --hosts CONTROLLER1 provision keystone install --admin-token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
-    playback --user ubuntu --hosts CONTROLLER2 provision keystone install --admin-token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    playback keystone install --user ubuntu --hosts CONTROLLER1 --admin-token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
+    playback keystone install --user ubuntu --hosts CONTROLLER2 --admin-token changeme --connection mysql+pymysql://keystone:changeme@CONTROLLER_VIP/keystone --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
 
 Create the service entity and API endpoints
 
-    playback --user ubuntu --hosts CONTROLLER1 provision keystone create-entity-and-endpoint --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --public-endpoint http://CONTROLLER_VIP:5000/v3 --internal-endpoint http://CONTROLLER_VIP:5000/v3 --admin-endpoint http://CONTROLLER_vip:35357/v3
+    playback keystone create entity-and-endpoint --user ubuntu --hosts CONTROLLER1 --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --public-endpoint http://CONTROLLER_VIP:5000/v3 --internal-endpoint http://CONTROLLER_VIP:5000/v3 --admin-endpoint http://CONTROLLER_vip:35357/v3
 
 Create projects, users, and roles
 
-    playback --user ubuntu --hosts CONTROLLER1 provision keystone create-projects-users-roles --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --admin-pass changeme --demo-pass changeme
+    playback keystone create projects-users-roles --user ubuntu --hosts CONTROLLER1 --os-token changeme --os-url http://CONTROLLER_VIP:35357/v3 --admin-pass changeme --demo-pass changeme
 
 (OPTION) you will need to create OpenStack client environment scripts
 admin-openrc.sh
@@ -158,41 +156,41 @@ demo-openrc.sh
 
 Create glance database
 
-    playback --user ubuntu --hosts CONTROLLER1 provision glance create-glance-db --root-db-pass changeme --glance-db-pass changeme
+    playback glance create db --user ubuntu --hosts CONTROLLER1 --root-db-pass changeme --glance-db-pass changeme
 
 Create service credentials
 
-    playback --user ubuntu --hosts CONTROLLER1 provision glance create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --glance-pass changeme --public-endpoint http://CONTROLLER_VIP:9292 --internal-endpoint http://CONTROLLER_VIP:9292 --admin-endpoint http://CONTROLLER_VIP:9292
+    playback glance create service-credentials --user ubuntu --hosts CONTROLLER1 --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --glance-pass changeme --public-endpoint http://CONTROLLER_VIP:9292 --internal-endpoint http://CONTROLLER_VIP:9292 --admin-endpoint http://CONTROLLER_VIP:9292
 
 Install glance on CONTROLLER1 and CONTROLLER2
 
-    playback --user ubuntu --hosts CONTROLLER1 provision glance install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
-    playback --user ubuntu --hosts CONTROLLER2 provision glance install --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    playback glance install --user ubuntu --hosts CONTROLLER1 --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
+    playback glance install --user ubuntu --hosts CONTROLLER2 --connection mysql+pymysql://glance:GLANCE_PASS@CONTROLLER_VIP/glance --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --glance-pass changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
 
 ### Nova HA
 
 Create nova database
 
-    playback --user ubuntu --hosts CONTROLLER1 provision nova create-nova-db --root-db-pass changeme --nova-db-pass changeme
+    playback nova create db --user ubuntu --hosts CONTROLLER1 --root-db-pass changeme --nova-db-pass changeme
 
 Create service credentials
 
-    playback --user ubuntu --hosts CONTROLLER1 provision nova create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --nova-pass changeme --public-endpoint 'http://CONTROLLER_VIP:8774/v2.1/%\(tenant_id\)s' --internal-endpoint 'http://CONTROLLER_VIP:8774/v2.1/%\(tenant_id\)s' --admin-endpoint 'http://CONTROLLER_VIP:8774/v2.1/%\(tenant_id\)s'
+    playback nova create service-credentials --user ubuntu --hosts CONTROLLER1 --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --nova-pass changeme --public-endpoint 'http://CONTROLLER_VIP:8774/v2.1/%\(tenant_id\)s' --internal-endpoint 'http://CONTROLLER_VIP:8774/v2.1/%\(tenant_id\)s' --admin-endpoint 'http://CONTROLLER_VIP:8774/v2.1/%\(tenant_id\)s'
 
 Install nova on CONTROLLER1
 
-    playback --user ubuntu --hosts CONTROLLER1 provision nova install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --api-connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova_api --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme --populate
+    playback nova install --user ubuntu --hosts CONTROLLER1 --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --api-connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova_api --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme --populate
 
 Install nova on CONTROLLER2
 
-    playback --user ubuntu --hosts CONTROLLER2 provision nova install --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --api-connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova_api --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme
+    playback nova install --user ubuntu --hosts CONTROLLER2 --connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova --api-connection mysql+pymysql://nova:NOVA_PASS@CONTROLLER_VIP/nova_api --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --my-ip MANAGEMENT_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --metadata-proxy-shared-secret changeme
 
 ### Nova Compute
 
 Add nova computes(use `uuidgen` to generate the ceph uuid)
 
-    playback --user ubuntu --hosts COMPUTE1 provision nova-compute install --my-ip MANAGEMENT_IP --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
-    playback --user ubuntu --hosts COMPUTE2 provision nova-compute install --my-ip MANAGEMENT_IP --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    playback nova-compute install --user ubuntu --hosts COMPUTE1 --my-ip MANAGEMENT_IP --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    playback nova-compute install --user ubuntu --hosts COMPUTE2 --my-ip MANAGEMENT_IP --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --nova-pass changeme --novncproxy-base-url http://CONTROLLER_VIP:6080/vnc_auto.html --glance-api-servers http://CONTROLLER_VIP:9292 --neutron-endpoint http://CONTROLLER_VIP:9696 --neutron-pass changeme --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
 
 The libvirt defaults to using ceph as shared storage, the ceph pool for running instance is vms. if you do not using ceph as it's bachend, you must remove the following param:
 
@@ -209,116 +207,116 @@ The libvirt defaults to using ceph as shared storage, the ceph pool for running 
 
 Create nova database
 
-    playback --user ubuntu --hosts CONTROLLER1 provision neutron create-neutron-db --root-db-pass changeme --neutron-db-pass changeme
+    playback neutron create db --user ubuntu --hosts CONTROLLER1 --root-db-pass changeme --neutron-db-pass changeme
 
 Create service credentials
 
-    playback --user ubuntu --hosts CONTROLLER1 provision neutron create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --neutron-pass changeme --public-endpoint http://CONTROLLER_VIP:9696 --internal-endpoint http://CONTROLLER_VIP:9696 --admin-endpoint http://CONTROLLER_VIP:9696
+    playback neutron create service-credentials --user ubuntu --hosts CONTROLLER1 --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --neutron-pass changeme --public-endpoint http://CONTROLLER_VIP:9696 --internal-endpoint http://CONTROLLER_VIP:9696 --admin-endpoint http://CONTROLLER_VIP:9696
 
 Install Neutron for self-service
 
-    playback --user ubuntu --hosts CONTROLLER1 provision neutron install --connection mysql+pymysql://neutron:NEUTRON_PASS@CONTROLLER_VIP/neutron --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --nova-url http://CONTROLLER_VIP:8774/v2.1 --nova-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP --nova-metadata-ip CONTROLLER_VIP --metadata-proxy-shared-secret changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
-    playback --user ubuntu --hosts CONTROLLER2 provision neutron install --connection mysql+pymysql://neutron:NEUTRON_PASS@CONTROLLER_VIP/neutron --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --nova-url http://CONTROLLER_VIP:8774/v2.1 --nova-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP --nova-metadata-ip CONTROLLER_VIP --metadata-proxy-shared-secret changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    playback neutron install --user ubuntu --hosts CONTROLLER1 --connection mysql+pymysql://neutron:NEUTRON_PASS@CONTROLLER_VIP/neutron --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --nova-url http://CONTROLLER_VIP:8774/v2.1 --nova-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP --nova-metadata-ip CONTROLLER_VIP --metadata-proxy-shared-secret changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
+    playback neutron install --user ubuntu --hosts CONTROLLER2 --connection mysql+pymysql://neutron:NEUTRON_PASS@CONTROLLER_VIP/neutron --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --nova-url http://CONTROLLER_VIP:8774/v2.1 --nova-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP --nova-metadata-ip CONTROLLER_VIP --metadata-proxy-shared-secret changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
 
 
 ### Neutron Agent
 
 Install neutron agent on compute nodes
 
-    playback --user ubuntu --hosts COMPUTE1 provision neutron-agent install --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
-    playback --user ubuntu --hosts COMPUTE2 provision neutron-agent install --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    playback neutron-agent install --user ubuntu --hosts COMPUTE1 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    playback neutron-agent install --user ubuntu --hosts COMPUTE2 --rabbit-hosts CONTROLLER1,CONTROLLER2 --rabbit-user openstack --rabbit-pass changeme --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --neutron-pass changeme --public-interface eth1 --local-ip MANAGEMENT_INTERFACE_IP --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
 
 
 ### Horizon HA
 
 Install horizon on controller nodes
 
-    playback --user ubuntu --hosts CONTROLLER1,CONTROLLER2 provision horizon install --openstack-host CONTROLLER_VIP  --memcached-servers CONTROLLER1:11211 --time-zone Asia/Shanghai
+    playback horizon install --user ubuntu --hosts CONTROLLER1,CONTROLLER2 --openstack-host CONTROLLER_VIP  --memcached-servers CONTROLLER1:11211 --time-zone Asia/Shanghai
 
 
 ### Cinder HA
 
 Create cinder database
 
-    playback --user ubuntu --hosts CONTROLLER1 provision cinder create-cinder-db --root-db-pass changeme --cinder-db-pass changeme
+    playback cinder create db --user ubuntu --hosts CONTROLLER1 --root-db-pass changeme --cinder-db-pass changeme
 
 Create cinder service creadentials
 
-    playback --user ubuntu --hosts CONTROLLER1 provision cinder create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --cinder-pass changeme --public-endpoint-v1 'http://CONTROLLER_VIP:8776/v1/%\(tenant_id\)s' --internal-endpoint-v1 'http://CONTROLLER_VIP:8776/v1/%\(tenant_id\)s' --admin-endpoint-v1 'http://CONTROLLER_VIP:8776/v1/%\(tenant_id\)s' --public-endpoint-v2 'http://CONTROLLER_VIP:8776/v2/%\(tenant_id\)s' --internal-endpoint-v2 'http://CONTROLLER_VIP:8776/v2/%\(tenant_id\)s' --admin-endpoint-v2 'http://CONTROLLER_VIP:8776/v2/%\(tenant_id\)s'
+    playback cinder create service-credentials --user ubuntu --hosts CONTROLLER1 --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --cinder-pass changeme --public-endpoint-v1 'http://CONTROLLER_VIP:8776/v1/%\(tenant_id\)s' --internal-endpoint-v1 'http://CONTROLLER_VIP:8776/v1/%\(tenant_id\)s' --admin-endpoint-v1 'http://CONTROLLER_VIP:8776/v1/%\(tenant_id\)s' --public-endpoint-v2 'http://CONTROLLER_VIP:8776/v2/%\(tenant_id\)s' --internal-endpoint-v2 'http://CONTROLLER_VIP:8776/v2/%\(tenant_id\)s' --admin-endpoint-v2 'http://CONTROLLER_VIP:8776/v2/%\(tenant_id\)s'
 
 Install cinder-api and cinder-volume on controller nodes, the volume backend defaults to ceph (you must have ceph installed)
 
-    playback --user ubuntu --hosts CONTROLLER1 provision cinder install --connection mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinder --rabbit-user openstack --rabbit-pass changeme --rabbit-hosts CONTROLLER1,CONTROLLER2 --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --cinder-pass changeme --my-ip MANAGEMENT_INTERFACE_IP --glance-api-servers http://CONTROLLER_VIP:9292 --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
-    playback --user ubuntu --hosts CONTROLLER2 provision cinder install --connection mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinder --rabbit-user openstack --rabbit-pass changeme --rabbit-hosts CONTROLLER1,CONTROLLER2 --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --cinder-pass changeme --my-ip MANAGEMENT_INTERFACE_IP --glance-api-servers http://CONTROLLER_VIP:9292 --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    playback cinder install --user ubuntu --hosts CONTROLLER1 --connection mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinder --rabbit-user openstack --rabbit-pass changeme --rabbit-hosts CONTROLLER1,CONTROLLER2 --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --cinder-pass changeme --my-ip MANAGEMENT_INTERFACE_IP --glance-api-servers http://CONTROLLER_VIP:9292 --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211 --populate
+    playback cinder install --user ubuntu --hosts CONTROLLER2 --connection mysql+pymysql://cinder:CINDER_PASS@CONTROLLER_VIP/cinder --rabbit-user openstack --rabbit-pass changeme --rabbit-hosts CONTROLLER1,CONTROLLER2 --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --cinder-pass changeme --my-ip MANAGEMENT_INTERFACE_IP --glance-api-servers http://CONTROLLER_VIP:9292 --rbd-secret-uuid changeme-changeme-changeme-changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
 
 ### Swift proxy HA
 
 Create the Identity service credentials
 
-    playback --user ubuntu --hosts CONTROLLER1 provision swift create-service-credentials --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --swift-pass changeme --public-endpoint 'http://CONTROLLER_VIP:8080/v1/AUTH_%\(tenant_id\)s' --internal-endpoint 'http://CONTROLLER_VIP:8080/v1/AUTH_%\(tenant_id\)s' --admin-endpoint http://CONTROLLER_VIP:8080/v1
+    playback swift create service-credentials --user ubuntu --hosts CONTROLLER1 --os-password changeme --os-auth-url http://CONTROLLER_VIP:35357/v3 --swift-pass changeme --public-endpoint 'http://CONTROLLER_VIP:8080/v1/AUTH_%\(tenant_id\)s' --internal-endpoint 'http://CONTROLLER_VIP:8080/v1/AUTH_%\(tenant_id\)s' --admin-endpoint http://CONTROLLER_VIP:8080/v1
 
 Install swift proxy
 
-    playback --user ubuntu --hosts CONTROLLER1,CONTROLLER2 provision swift install --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --swift-pass changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
+    playback swift install --user ubuntu --hosts CONTROLLER1,CONTROLLER2 --auth-uri http://CONTROLLER_VIP:5000 --auth-url http://CONTROLLER_VIP:35357 --swift-pass changeme --memcached-servers CONTROLLER1:11211,CONTROLLER2:11211
 
 
 ### Swift storage
 
 Prepare disks on storage node
 
-    playback --user ubuntu --hosts OBJECT1,OBJECT2 provision swift-storage prepare-disks --name sdb,sdc,sdd,sde
+    playback swift-storage prepare-disks --user ubuntu --hosts OBJECT1,OBJECT2 --name sdb,sdc,sdd,sde
 
 Install swift storage on storage node
 
-    playback --user ubuntu --hosts OBJECT1 provision swift-storage install --address MANAGEMENT_INTERFACE_IP --bind-ip MANAGEMENT_INTERFACE_IP
-    playback --user ubuntu --hosts OBJECT2 provision swift-storage install --address MANAGEMENT_INTERFACE_IP --bind-ip MANAGEMENT_INTERFACE_IP
+    playback swift-storage install --user ubuntu --hosts OBJECT1 --address MANAGEMENT_INTERFACE_IP --bind-ip MANAGEMENT_INTERFACE_IP
+    playback swift-storage install --user ubuntu --hosts OBJECT2 --address MANAGEMENT_INTERFACE_IP --bind-ip MANAGEMENT_INTERFACE_IP
 
 Create account ring on controller node
 
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage create-account-builder-file --partitions 10 --replicas 3 --moving 1
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage account-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdb --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage account-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdc --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage account-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdd --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage account-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sde --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage account-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdb --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage account-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdc --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage account-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdd --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage account-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sde --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage account-builder-rebalance
+    playback swift-storage create account-builder-file --user ubuntu --hosts CONTROLLER1 --partitions 10 --replicas 3 --moving 1
+    playback swift-storage account-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdb --weight 100
+    playback swift-storage account-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdc --weight 100
+    playback swift-storage account-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdd --weight 100
+    playback swift-storage account-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sde --weight 100
+    playback swift-storage account-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdb --weight 100
+    playback swift-storage account-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdc --weight 100
+    playback swift-storage account-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdd --weight 100
+    playback swift-storage account-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sde --weight 100
+    playback swift-storage account-builder-rebalance --user ubuntu --hosts CONTROLLER1
 
 Create container ring on controller node
 
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage create-container-builder-file --partitions 10 --replicas 3 --moving 1
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage container-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdb --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage container-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdc --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage container-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdd --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage container-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sde --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage container-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdb --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage container-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdc --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage container-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdd --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage container-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sde --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage container-builder-rebalance
+    playback swift-storage create container-builder-file --user ubuntu --hosts CONTROLLER1 --partitions 10 --replicas 3 --moving 1
+    playback swift-storage container-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdb --weight 100
+    playback swift-storage container-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdc --weight 100
+    playback swift-storage container-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdd --weight 100
+    playback swift-storage container-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sde --weight 100
+    playback swift-storage container-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdb --weight 100
+    playback swift-storage container-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdc --weight 100
+    playback swift-storage container-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdd --weight 100
+    playback swift-storage container-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sde --weight 100
+    playback swift-storage container-builder-rebalance --user ubuntu --hosts CONTROLLER1
 
 Create object ring on controller node
 
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage create-object-builder-file --partitions 10 --replicas 3 --moving 1
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage object-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdb --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage object-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdc --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage object-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdd --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage object-builder-add --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sde --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage object-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdb --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage object-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdc --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage object-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdd --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage object-builder-add --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sde --weight 100
-    playback --user ubuntu --hosts CONTROLLER1 provision swift-storage object-builder-rebalance
+    playback swift-storage create object-builder-file --user ubuntu --hosts CONTROLLER1 --partitions 10 --replicas 3 --moving 1
+    playback swift-storage object-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdb --weight 100
+    playback swift-storage object-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdc --weight 100
+    playback swift-storage object-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sdd --weight 100
+    playback swift-storage object-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT1_MANAGEMENT_IP --device sde --weight 100
+    playback swift-storage object-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdb --weight 100
+    playback swift-storage object-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdc --weight 100
+    playback swift-storage object-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sdd --weight 100
+    playback swift-storage object-builder-add --user ubuntu --hosts CONTROLLER1 --region 1 --zone 1 --ip OBJECT2_MANAGEMENT_IP --device sde --weight 100
+    playback swift-storage object-builder-rebalance --user ubuntu --hosts CONTROLLER1
 
  Sync the builder file from controller node to each storage node and other any proxy node
 
-    playback --user ubuntu --host CONTROLLER1 provision swift-storage sync-builder-file --to CONTROLLER2,OBJECT1,OBJECT2
+    playback swift-storage sync-builder-file --user ubuntu --host CONTROLLER1 --to CONTROLLER2,OBJECT1,OBJECT2
 
 Finalize installation on all nodes
 
-    playback --user ubuntu --hosts CONTROLLER1,CONTROLLER2,OBJECT1,OBJECT2 provision swift finalize-install --swift-hash-path-suplaybackix changeme --swift-hash-path-prefix changeme
+    playback swift finalize --user ubuntu --hosts CONTROLLER1,CONTROLLER2,OBJECT1,OBJECT2 --swift-hash-path-suplaybackix changeme --swift-hash-path-prefix changeme
 
 ### Ceph Guide
 
@@ -446,7 +444,7 @@ Then, on the `compute nodes`, add the secret key to `libvirt` and remove the tem
 
 Notes: you need to restart the `nova-compute`, `cinder-volume` and `glance-api` services to finalize the installation.
 
-### Shared File Systems service
+### Shared File Systems service(DEPRECATED)
 
 Create manila database and service credentials
 
