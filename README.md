@@ -473,5 +473,5 @@ http://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance-manila-dhs
 
 ## Current version
 
-* v0.3.9 (Ris)
-  Improved documents
+* v0.4.0 (Ris)
+  New command line interface
