@@ -121,7 +121,7 @@ class Install(Command):
         install(parsed_args)
 
 
-class InstallFinalize(Command):
+class Finalize(Command):
     """finalize swift installation"""
 
     log = logging.getLogger(__name__)
