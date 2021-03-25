@@ -52,7 +52,7 @@ setup(name='playback',
       url='https://github.com/jiasir/playback/',
       license='MIT',
       install_requires=['cliff==2.3.0', 'fabric == 1.10.2', 'ecdsa == 0.13', 'markupsafe == 0.23', 'paramiko == 1.16.0',
-                        'jinja2 == 2.8', 'PyYAML == 3.11', 'setuptools == 19.6.2', 'pycrypto == 2.6.1',
+                        'jinja2 == 2.8', 'PyYAML == 5.4', 'setuptools == 19.6.2', 'pycrypto == 2.6.1',
                         'tqdm == 3.8.0'],
       packages=find_packages(),
       entry_points={
