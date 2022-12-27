@@ -4,7 +4,7 @@ markupsafe==0.23
 paramiko==1.16.0
 jinja2==2.11.3
 PyYAML==5.4
-setuptools==19.6.2
+setuptools==65.5.1
 pycrypto==2.6.1
 tqdm==3.8.0
 #ceph-deploy==1.5.34
